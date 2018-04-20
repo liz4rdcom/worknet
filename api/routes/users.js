@@ -387,6 +387,18 @@ router.put('/profile/languages/:languageName/level', isAuthorized, async (req, r
   }
 })
 
+router.get('/profile/desirableJobLocations', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getDesirableJobLocations(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 module.exports = {
   router,
   baseUrl
