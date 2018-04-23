@@ -9,18 +9,22 @@
     >
         დაამატე სასურველი ტრეინინგები
     </b-button>
-    <desirable-trainings-section v-if="sectionOpen" />
+    <div v-if="sectionOpen">
+      <desirable-trainings/>
+      <desirable-training-locations/>
+    </div>
   </b-card>
 </div>
 </template>
 
 <script>
-import desirableTrainingsSection from './desirable-trainings-section'
+import desirableTrainings from './desirable-trainings'
+import desirableTrainingLocations from './desirable-training-locations'
 
 export default {
   name: 'desirable-trainings-manager',
   data: () => ({
-    sectionOpen: false
+    sectionOpen: false // todo this should be false is not a single training or training location is selected
   }),
   methods: {
     openSection() {
@@ -28,7 +32,8 @@ export default {
     }
   },
   components: {
-    'desirable-trainings-section': desirableTrainingsSection
+    'desirable-trainings': desirableTrainings,
+    'desirable-training-locations': desirableTrainingLocations
   },
   computed: {
     cardTitle () {

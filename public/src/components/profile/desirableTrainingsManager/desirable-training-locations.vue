@@ -1,12 +1,12 @@
 <template>
-<div class="desirable-trainings-section">
-  bom bom
+<div class="desirable-training-locations">
+  desirable training locations
 </div>
 </template>
 
 <script>
 export default {
-  name: 'desirable-trainings-section',
+  name: 'desirable-training-locations',
   data: () => ({
   }),
   methods: {
