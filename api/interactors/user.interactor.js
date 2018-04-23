@@ -3,6 +3,7 @@ const shortid = require('shortid')
 const userRepository = require('../infrastructure/user.repository')
 const skillInterctor = require('./skill.interactor')
 const desirableJobInterctor = require('./desirable.job.interactor')
+const desirableTrainingInterctor = require('./desirable.training.interactor')
 const factory = require('../domain/factory')
 const RecordError = require('../exceptions/record.error')
 const domainUtils = require('../domain/domainUtils')
@@ -137,6 +138,52 @@ async function removeDesirableJob(userName, desirableJob) {
   }
 
   return await userRepository.saveUser(user)
+}
+
+async function getDesirableTrainings(userName) {
+  return await userRepository.getDesirableTrainings(userName)
+}
+
+async function addDesirableTraining(userName, desirableTraining) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.addDesirableTraining(desirableTraining)
+
+    await desirableTrainingInterctor.addIfNotExists(desirableTraining)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function removeDesirableTraining(userName, desirableTraining) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.removeDesirableTraining(desirableTraining)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function getDesirableTrainingLocations(userName) {
+  return await userRepository.getDesirableTrainings(userName)
 }
 
 async function getJobExperiences(userName) {
@@ -331,6 +378,10 @@ module.exports = {
   getDesirableJobs,
   addDesirableJob,
   removeDesirableJob,
+  getDesirableTrainings,
+  addDesirableTraining,
+  removeDesirableTraining,
+  getDesirableTrainingLocations,
   getJobExperiences,
   addJobExperience,
   replaceJobExperience,
