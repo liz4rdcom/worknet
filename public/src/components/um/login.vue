@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="welcome-element">გაიარეთ ავტორიზაცია Worknet-ზე</h1>
+    <h1 class="welcome-element">შედით თქვენს პროფილში</h1>
     <b-card class="login" @keyup.enter="login">
       <b-form-group label="მომხმარებლის სახელი">
           <b-form-input v-model="userName"

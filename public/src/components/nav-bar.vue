@@ -13,7 +13,7 @@
 
       <b-navbar-nav class="ml-auto">
         <b-navbar-nav>
-          <b-nav-item v-if="!loggedIn" href="#/login">ავტორიზაცია</b-nav-item>
+          <b-nav-item v-if="!loggedIn" href="#/login">შესვლა</b-nav-item>
           <b-nav-item v-if="!loggedIn" href="#/register">რეგისტრაცია</b-nav-item>
         </b-navbar-nav>
 
