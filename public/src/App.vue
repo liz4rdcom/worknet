@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <toolbar></toolbar>
+    <nav-bar></nav-bar>
     <router-view/>
     <notify></notify>
   </div>
@@ -8,11 +8,14 @@
 
 <script>
   import notify from './components/common/notify'
-  import toolbar from './components/toolbar'
+  import navBar from './components/nav-bar'
 
   export default {
     name: 'app',
-    components: { notify, toolbar }
+    components: {
+      notify,
+      'nav-bar': navBar
+    }
   }
 </script>
 
