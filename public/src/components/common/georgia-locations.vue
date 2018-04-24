@@ -13,7 +13,7 @@
 
   export default {
     name: 'georgia-locations',
-    props: ['currentLocationName', 'currentLocationUnitName'],
+    props: ['currentLocationName', 'currentLocationUnitName', 'onLocationChanged'],
     data() {
       return {
         locationList: []

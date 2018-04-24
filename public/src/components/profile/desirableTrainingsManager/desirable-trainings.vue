@@ -4,7 +4,7 @@
     ref="desirableTrainingInput"
     placeholder="მაგ. კულინარია, მზარეული"
     :editable="true"
-    :list="desirableTrainingList"
+    :list="desirableTrainingNameList"
     :getAutocompleteData="searchDesirableTrainings"
     @onAddNewElement="onAddNewDesirableTraining"
     @onRemoveElement="onRemoveDesirableTraining"
@@ -22,25 +22,14 @@ const searchUrl = '/api/desirableTrainings/search'
 
 export default {
   name: 'profile-desirable-trainings',
-  data: () => ({
-    desirableTrainings: []
-  }),
-  async created() {
-    try {
-      let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
-
-      this.desirableTrainings = response.data
-    } catch (error) {
-      bus.$emit('error', error)
-    }
-  },
+  props: ['desirableTrainingList'],
   methods: {
     async searchDesirableTrainings(desirableTraining) {
       return await this.$http.get(searchUrl, {params: {query: desirableTraining}, headers: utils.getHeaders()})
     },
 
     async onAddNewDesirableTraining(desirableTraining) {
-      let indexOfDesirableTraining = this.desirableTrainings.findIndex(t => t.name.toLowerCase() === desirableTraining.toLowerCase())
+      let indexOfDesirableTraining = this.desirableTrainingList.findIndex(t => t.name.toLowerCase() === desirableTraining.toLowerCase())
       if (indexOfDesirableTraining !== -1) {
         // TODO alert or notify
         console.error('this desirable training already exists')
@@ -56,14 +45,14 @@ export default {
           headers: utils.getHeaders()
         })
 
-        this.desirableTrainings.push(desirableTrainingObject)
+        this.desirableTrainingList.push(desirableTrainingObject)
         this.$refs.desirableTrainingInput.clear()
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     async onRemoveDesirableTraining(desirableTraining) {
-      let indexOfDesirableTraining = this.desirableTrainings.findIndex(t => t.name === desirableTraining)
+      let indexOfDesirableTraining = this.desirableTrainingList.findIndex(t => t.name === desirableTraining)
       if (indexOfDesirableTraining === -1) {
         // TODO alert or notify
         console.error('can\'t find index of desirable training')
@@ -77,15 +66,15 @@ export default {
           headers: utils.getHeaders()
         })
 
-        this.desirableTrainings.splice(indexOfDesirableTraining, 1)
+        this.desirableTrainingList.splice(indexOfDesirableTraining, 1)
       } catch (error) {
         bus.$emit('error', error)
       }
     }
   },
   computed: {
-    desirableTrainingList() {
-      return this.desirableTrainings.map(item => item.name)
+    desirableTrainingNameList() {
+      return this.desirableTrainingList.map(item => item.name)
     }
   },
   components: {

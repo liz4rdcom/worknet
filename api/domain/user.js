@@ -47,7 +47,7 @@ class User {
     this.desirableTrainings.splice(index, 1)
   }
 
-  addDesirableTrainingLocations(desirableTrainingLocation) {
+  addDesirableTrainingLocation(desirableTrainingLocation) {
     const newLocName = desirableTrainingLocation.name
     const newLocUnitName = desirableTrainingLocation.unitName
 

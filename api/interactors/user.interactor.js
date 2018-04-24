@@ -183,7 +183,43 @@ async function removeDesirableTraining(userName, desirableTraining) {
 }
 
 async function getDesirableTrainingLocations(userName) {
-  return await userRepository.getDesirableTrainings(userName)
+  return await userRepository.getDesirableTrainingLocations(userName)
+}
+
+async function addDesirableTrainingLocation(userName, desirableTrainingLocation) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.addDesirableTrainingLocation(desirableTrainingLocation)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function removeDesirableTrainingLocation(userName, desirableTrainingLocation) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.removeDesirableTrainingLocation(desirableTrainingLocation)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
 }
 
 async function getJobExperiences(userName) {
@@ -382,6 +418,8 @@ module.exports = {
   addDesirableTraining,
   removeDesirableTraining,
   getDesirableTrainingLocations,
+  addDesirableTrainingLocation,
+  removeDesirableTrainingLocation,
   getJobExperiences,
   addJobExperience,
   replaceJobExperience,

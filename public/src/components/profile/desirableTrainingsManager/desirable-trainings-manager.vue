@@ -10,22 +10,46 @@
         დაამატე სასურველი ტრეინინგები
     </b-button>
     <div v-if="sectionOpen">
-      <desirable-trainings/>
-      <desirable-training-locations/>
+      <b-card class="desirable-training-container">
+        <desirable-trainings :desirableTrainingList="desirableTrainingList"/>
+      </b-card>
+      <b-card>
+        <desirable-training-locations :desirableTrainingLocationList="desirableTrainingLocationList"/>
+      </b-card>
     </div>
   </b-card>
 </div>
 </template>
 
 <script>
+import { bus } from '../../common/bus'
+import utils from '../../../utils'
 import desirableTrainings from './desirable-trainings'
 import desirableTrainingLocations from './desirable-training-locations'
+
+const desirableTrainingsUrl = '/api/users/profile/desirableTrainings'
+const desirableTrainingLocationsUrl = '/api/users/profile/desirableTrainingLocations'
 
 export default {
   name: 'desirable-trainings-manager',
   data: () => ({
-    sectionOpen: false // todo this should be false is not a single training or training location is selected
+    desirableTrainingList: [],
+    desirableTrainingLocationList: [],
+    sectionOpen: false
   }),
+  async created() {
+    try {
+      let desirableTrainings = await this.$http.get(desirableTrainingsUrl, {headers: utils.getHeaders()})
+      let desirableTrainingLocations = await this.$http.get(desirableTrainingLocationsUrl, {headers: utils.getHeaders()})
+
+      this.desirableTrainingList = desirableTrainings.data
+      this.desirableTrainingLocationList = desirableTrainingLocations.data
+
+      this.sectionOpen = this.desirableTrainingList.length !== 0 || this.desirableTrainingLocationList.length !== 0
+    } catch (error) {
+      bus.$emit('error', error)
+    }
+  },
   methods: {
     openSection() {
       this.sectionOpen = true
@@ -49,4 +73,7 @@ export default {
 </script>
 
 <style scoped>
+.desirable-training-container {
+  margin-bottom: 10px;
+}
 </style>
