@@ -1,18 +1,21 @@
 <template>
-  <div class="login" @keyup.enter="login">
-    <b-form-group label="მომხმარებლის სახელი">
-       <b-form-input v-model="userName"
-                    type="text"
-      ></b-form-input>
-    </b-form-group>
-    <b-form-group label="პაროლი">
-       <b-form-input v-model="password"
-                    type="text"
-      ></b-form-input>
-    </b-form-group>
-    <b-button variant="primary" @click="login">
-      შესვლა
-    </b-button>
+  <div>
+    <h1 class="welcome-element">გაიარეთ ავტორიზაცია Worknet-ზე</h1>
+    <b-card class="login" @keyup.enter="login">
+      <b-form-group label="მომხმარებლის სახელი">
+          <b-form-input v-model="userName"
+                      type="text"
+        ></b-form-input>
+      </b-form-group>
+      <b-form-group label="პაროლი">
+          <b-form-input v-model="password"
+                      type="text"
+        ></b-form-input>
+      </b-form-group>
+      <b-button variant="primary" @click="login">
+        შესვლა
+      </b-button>
+    </b-card>
   </div>
 </template>
 
@@ -48,4 +51,12 @@ export default {
 </script>
 
 <style scoped>
+.login {
+  max-width: 25%;
+  margin: auto;
+  margin-top: 30px;
+}
+.welcome-element {
+  margin-top: 20px;
+}
 </style>

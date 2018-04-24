@@ -3,7 +3,7 @@
 
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-    <b-navbar-brand href="#">WORKNET</b-navbar-brand>
+    <b-navbar-brand href="#/vacancies">WORKNET</b-navbar-brand>
 
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
@@ -17,8 +17,8 @@
           <b-nav-item v-if="!loggedIn" href="#/register">რეგისტრაცია</b-nav-item>
         </b-navbar-nav>
 
-        <b-nav-item-dropdown text="" right>
-          <b-dropdown-item v-if="loggedIn" @click="logout">გასვლა</b-dropdown-item>
+        <b-nav-item-dropdown v-if="loggedIn" text="" right>
+          <b-dropdown-item @click="logout">გასვლა</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
