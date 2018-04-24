@@ -10,6 +10,8 @@
 
     <desirable-jobs/>
 
+    <desirable-trainings-manager/>
+
     <languages></languages>
   </div>
 </template>
@@ -21,6 +23,7 @@
   import experiences from './experiences'
   import educations from './educations'
   import desirableJobs from './desirable-jobs'
+  import desirableTrainingsManager from './desirableTrainingsManager/desirable-trainings-manager'
   import languages from './languages'
 
   const baseUrl = '/api/users/profile'
@@ -51,6 +54,7 @@
       'experiences': experiences,
       'educations': educations,
       'desirable-jobs': desirableJobs,
+      'desirable-trainings-manager': desirableTrainingsManager,
       'languages': languages
     }
   }

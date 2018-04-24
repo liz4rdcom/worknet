@@ -117,6 +117,84 @@ router.delete('/profile/desirableJobs/:desirableJobName', isAuthorized, async (r
   }
 })
 
+router.get('/profile/desirableTrainings', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getDesirableTrainings(userName)
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/desirableTrainings', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.addDesirableTraining(userName, req.body.name)
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.delete('/profile/desirableTrainings/:desirableTrainingName', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.removeDesirableTraining(userName, req.params.desirableTrainingName)
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
+// >>>
+router.get('/profile/desirableTrainingLocations', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getDesirableTrainingLocations(userName)
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/desirableTrainingLocations', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.addDesirableTrainingLocation(userName, {
+      name: req.body.name,
+      unitName: req.body.unitName
+    })
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.delete(
+  '/profile/desirableTrainingLocations/:desirableTrainingLocationName/:desirableTrainingLocationUnitName',
+  isAuthorized,
+  async (req, res, next) => {
+    let userName = utils.getUserNameFromRequest(req)
+
+    try {
+      await userInteractor.removeDesirableTrainingLocation(userName, {
+        name: req.params.desirableTrainingLocationName,
+        unitName: req.params.desirableTrainingLocationUnitName
+      })
+      next({})
+    } catch (error) {
+      next({error})
+    }
+  }
+)
+// <<<
+
 router.get('/profile/experiences', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 

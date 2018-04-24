@@ -80,6 +80,15 @@ const desirableJobIndex = {
   }
 }
 
+const desirableTrainingIndex = {
+  'settings': {
+    'index': {
+      'number_of_shards': 1,
+      'number_of_replicas': 1
+    }
+  }
+}
+
 const testUsers = [{
   'userName': 'root',
   'firstName': 'სახელი',
@@ -214,14 +223,20 @@ const testUsers = [{
   ],
   'desirableTrainings': [
     {
-      'trainigName': 'კომპიუტერული პროგრამები და ბუღალტერია',
-      'locationName': 'თბილისი',
-      'locationUnitName': 'ვაკე'
+      'name': 'კომპიუტერული პროგრამები და ბუღალტერია'
     },
     {
-      'trainigName': ' კულინარია, მზარეული',
-      'locationName': 'თბილისი',
-      'locationUnitName': 'ვაკე'
+      'name': ' კულინარია, მზარეული'
+    }
+  ],
+  'desirableTrainingLocations': [
+    {
+      'name': 'თბილისი',
+      'unitName': 'ისანი'
+    },
+    {
+      'name': 'თბილისი',
+      'unitName': 'ვაკე'
     }
   ],
   'desirableSalary': 5000,
@@ -232,7 +247,6 @@ const testUsers = [{
   'interestedToBeVolunteer': true,
   'interestedInTemporaryJob': true,
   'interestedInDangerousJob': true,
-  'interestedInTraining': true,
   'unemployed': false,
   'useMediationService': true
 }]
@@ -528,7 +542,15 @@ const testDesirableJobs = [
   { name: 'ფინანსთა მენეჯერები' },
   { name: 'საინფორმაციო ტექნოლოგიის ტრენერები' },
   { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' }
-]  
+]
+
+const testDesirableTrainings = [
+  { name: 'training 1' },
+  { name: 'training 2' },
+  { name: 'training 3' },
+  { name: 'კომპიუტერული პროგრამები და ბუღალტერია' },
+  { name: ' კულინარია, მზარეული' }
+]
 
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   try {
@@ -545,7 +567,7 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
     await insertData(index, type, data)
   } catch (error) {
     console.error(error)
-    process.exit();
+    process.exit()
   }
 }
 
@@ -557,3 +579,4 @@ seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationL
 seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
 seedData(testDesirableJobs, 'desirablejob', desirableJobIndex, 'desirablejob', true)
+seedData(testDesirableTrainings, 'desirabletraining', desirableTrainingIndex, 'desirabletraining', true)

@@ -132,6 +132,52 @@ async function getDesirableJobs(userName) {
   return result.hits.hits[0]._source.desirableJobs
 }
 
+async function getDesirableTrainings(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    },
+    _sourceInclude: [
+      'desirableTrainings'
+    ]
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.desirableTrainings
+}
+
+async function getDesirableTrainingLocations(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    },
+    _sourceInclude: [
+      'desirableTrainingLocations'
+    ]
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.desirableTrainingLocations
+}
+
 async function getJobExperiences(userName) {
   let options = {
     index,
@@ -268,7 +314,7 @@ async function getFormalEducationLevel(userName) {
     ]
   }
 
-  let result = await client.search(options)
+  let result = await client.search(options) // here
 
   if (result.hits.total === 0) return []
 
@@ -350,6 +396,8 @@ module.exports = {
   saveUser,
   getSkills,
   getDesirableJobs,
+  getDesirableTrainings,
+  getDesirableTrainingLocations,
   getJobExperiences,
   saveJobExperiences,
   getEducations,
