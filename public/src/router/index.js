@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Cookies from 'js-cookie'
 import HelloWorld from '@/components/HelloWorld'
 import profile from '../components/profile/profile'
 import vacancies from '../components/vacancy/vacancies'
@@ -54,8 +55,9 @@ let router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (!await utils.isTokenValid()) {
+  if (!Cookies.get('token')) {
     bus.$emit('logout')
+
     if (to.path === '/login' || to.path === '/register') {
       next()
       return
@@ -70,7 +72,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.path === '/login' || to.path === '/register') {
-    router.push('/profile')
+    router.push('/vacancies')
     return
   }
 
