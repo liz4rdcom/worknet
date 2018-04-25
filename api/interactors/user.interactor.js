@@ -328,7 +328,7 @@ async function deleteDesirableJobLocations(userName, location) {
   return await userRepository.saveDesirableJobLocations(userName, desirableJobLocations)
 }
 
-async function addDesirableJobLocations(userName, location){
+async function addDesirableJobLocations(userName, location) {
   let jobLocation = {
     locationName: location.locationName,
     locationUnitName: location.locationUnitName
@@ -349,7 +349,7 @@ async function getDrivingLicence(userName) {
   return await userRepository.getDrivingLicence(userName)
 }
 
-async function addDrivingLicence(userName, licence){
+async function addDrivingLicence(userName, licence) {
   let drivingLicence = await userRepository.getDrivingLicence(userName)
   drivingLicence = licence
   await userRepository.saveDrivingLicence(userName, drivingLicence)
@@ -359,7 +359,7 @@ async function getHasDrivingLicence(userName) {
   return await userRepository.getHasDrivingLicence(userName)
 }
 
-async function addHasDrivingLicence(userName, licence){
+async function addHasDrivingLicence(userName, licence) {
   let drivingLicence = await userRepository.getHasDrivingLicence(userName)
   drivingLicence = licence
   await userRepository.saveHasDrivingLicence(userName, drivingLicence)
@@ -369,7 +369,7 @@ async function getMilitaryObligation(userName) {
   return await userRepository.getMilitaryObligation(userName)
 }
 
-async function addMilitaryObligation(userName, obligation){
+async function addMilitaryObligation(userName, obligation) {
   let militaryObligation = await userRepository.getMilitaryObligation(userName)
   militaryObligation = obligation
   await userRepository.saveMilitaryObligation(userName, militaryObligation)
@@ -379,7 +379,7 @@ async function getDesirableSalary(userName) {
   return await userRepository.getDesirableSalary(userName)
 }
 
-async function addDesirableSalary(userName, salary){
+async function addDesirableSalary(userName, salary) {
   let desirableSalary = await userRepository.getDesirableSalary(userName)
   desirableSalary = salary
   await userRepository.saveDesirableSalary(userName, desirableSalary)
@@ -389,7 +389,7 @@ async function getJobDescription(userName) {
   return await userRepository.getJobDescription(userName)
 }
 
-async function addJobDescription(userName, jobDesc){
+async function addJobDescription(userName, jobDesc) {
   let jobDescription = await userRepository.getDrivingLicence(userName)
   jobDescription = jobDesc
   await userRepository.saveJobDescription(userName, jobDescription)
@@ -399,7 +399,7 @@ async function getUseMediationService(userName) {
   return await userRepository.getUseMediationService(userName)
 }
 
-async function addUseMediationService(userName, useMediation){
+async function addUseMediationService(userName, useMediation) {
   let useMediationService = await userRepository.getUseMediationService(userName)
   useMediationService = useMediation
   await userRepository.saveUseMediationService(userName, useMediationService)
