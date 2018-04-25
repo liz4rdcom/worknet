@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie'
-import axios from 'axios'
 
 /**
  * Java ს String.hashCode() მეთოდის იმპლემენტაცია Javascript ზე.
@@ -27,23 +26,8 @@ function getHeaders() {
   }
 }
 
-async function isTokenValid() {
-  if (!Cookies.get('token')) {
-    return false
-  }
-
-  try {
-    await axios.head('/um/authorization', {headers: getHeaders()})
-
-    return true
-  } catch (error) {
-    return false
-  }
-}
-
 export default {
   hashOfString: hashCode,
   isNullOrUndefined,
-  getHeaders,
-  isTokenValid
+  getHeaders
 }
