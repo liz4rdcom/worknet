@@ -15,6 +15,10 @@ Vue.use(Router)
 let router = new Router({
   routes: [
     {
+      path: '/',
+      redirect: '/vacancies'
+    },
+    {
       path: '/profile',
       name: 'profile',
       component: profile
@@ -64,14 +68,14 @@ router.beforeEach(async (to, from, next) => {
       return
     }
 
-    router.push('/vacancies')
+    next('/vacancies')
     return
   }
 
   // console.log('yes token')
 
   if (to.path === '/login' || to.path === '/register') {
-    router.push('/vacancies')
+    next('/vacancies')
 
     // console.log('yes token: login, register')
 
