@@ -18,7 +18,6 @@ async function getUserMainInfo(userName) {
 }
 
 async function updateMainInfo(userName, mainInfo) {
-
   let foundUser = await userRepository.getUserByUserName(userName)
 
   let userToSave
@@ -31,7 +30,6 @@ async function updateMainInfo(userName, mainInfo) {
 
   let result = await userRepository.saveUser(userToSave)
   return result._id
-
 }
 
 async function getUserProfile(userName) {

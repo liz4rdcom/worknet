@@ -411,7 +411,7 @@ async function getDesirableJobLocations(userName) {
   return result.hits.hits[0]._source.desirableJobLocations
 }
 
-async function saveDesirableJobLocations(userName, desirableJobLocations) {                       
+async function saveDesirableJobLocations(userName, desirableJobLocations) {
   let options = {
     index,
     type,
@@ -465,7 +465,7 @@ async function getDrivingLicence(userName) {
   return result.hits.hits[0]._source
 }
 
-async function saveDrivingLicence(userName, drivingLicence) {                       
+async function saveDrivingLicence(userName, drivingLicence) {
   let options = {
     index,
     type,
@@ -518,7 +518,7 @@ async function getHasDrivingLicence(userName) {
   return result.hits.hits[0]._source.hasDrivingLicence
 }
 
-async function saveHasDrivingLicence(userName, hasDrivingLicence) {                       
+async function saveHasDrivingLicence(userName, hasDrivingLicence) {
   let options = {
     index,
     type,
@@ -563,7 +563,7 @@ async function getMilitaryObligation(userName) {
   return result.hits.hits[0]._source.militaryObligation
 }
 
-async function saveMilitaryObligation(userName, militaryObligation) {                       
+async function saveMilitaryObligation(userName, militaryObligation) {
   let options = {
     index,
     type,
@@ -608,7 +608,7 @@ async function getDesirableSalary(userName) {
   return result.hits.hits[0]._source.desirableSalary
 }
 
-async function saveDesirableSalary(userName, desirableSalary) {                       
+async function saveDesirableSalary(userName, desirableSalary) {
   let options = {
     index,
     type,
@@ -661,7 +661,7 @@ async function getJobDescription(userName) {
   return result.hits.hits[0]._source
 }
 
-async function saveJobDescription(userName, jobDescription) {                       
+async function saveJobDescription(userName, jobDescription) {
   let options = {
     index,
     type,
@@ -713,7 +713,7 @@ async function getUseMediationService(userName) {
   return result.hits.hits[0]._source.useMediationService
 }
 
-async function saveUseMediationService(userName, useMediationService) {                       
+async function saveUseMediationService(userName, useMediationService) {
   let options = {
     index,
     type,

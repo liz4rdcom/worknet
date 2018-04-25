@@ -6,13 +6,13 @@ const baseUrl = '/api/vacancies'
 const vacancyInteractor = require('../interactors/vacancy.interactor')
 const utils = require('../utils')
 
-router.get('/', isAuthorized, function(req, res, next) {
+router.get('/', isAuthorized, (req, res, next) => {
   vacancyInteractor.getList(req.query.query)
     .then(res.send.bind(res))
     .catch(next)
 })
 
-router.get('/own', isAuthorized, function(req, res, next) {
+router.get('/own', isAuthorized, (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 
   vacancyInteractor.getUserVacancies(userName)
@@ -20,17 +20,17 @@ router.get('/own', isAuthorized, function(req, res, next) {
     .catch(next)
 })
 
-router.get('/:id', isAuthorized, function(req, res, next) {
+router.get('/:id', isAuthorized, (req, res, next) => {
   vacancyInteractor.getById(req.params.id)
     .then(res.send.bind(res))
     .catch(next)
 })
 
-router.post('/', isAuthorized, function(req, res, next) {
+router.post('/', isAuthorized, (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 
   vacancyInteractor.addVacancy(userName, req.body)
-    .then(function(id) {
+    .then((id) => {
       res.send({
         id: id
       })
@@ -38,11 +38,11 @@ router.post('/', isAuthorized, function(req, res, next) {
     .catch(next)
 })
 
-router.put('/:id', isAuthorized, function(req, res, next) {
+router.put('/:id', isAuthorized, (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 
   vacancyInteractor.editVacancy(userName, req.params.id, req.body)
-    .then(function() {
+    .then(() => {
       res.send({
         success: true
       })
@@ -50,11 +50,11 @@ router.put('/:id', isAuthorized, function(req, res, next) {
     .catch(next)
 })
 
-router.delete('/:id', isAuthorized, function(req, res, next) {
+router.delete('/:id', isAuthorized, (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 
   vacancyInteractor.deleteVacancy(userName, req.params.id)
-    .then(function() {
+    .then(() => {
       res.send({
         success: true
       })
