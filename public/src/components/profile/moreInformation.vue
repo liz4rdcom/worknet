@@ -219,8 +219,8 @@ export default {
     },
     addDrivingLicence: async function (key, value) {
       try {
-      this.drivingLicence[key] = value
-      await this.$http.post(baseUrl + 'drivinglicence', this.drivingLicence, {headers: utils.getHeaders()})
+        this.drivingLicence[key] = value
+        await this.$http.post(baseUrl + 'drivinglicence', this.drivingLicence, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
@@ -234,32 +234,32 @@ export default {
     },
     AddDesirableSalary: async function () {
       try {
-              await this.$http.post(baseUrl + 'desirableSalary', {desirableSalary: this.desirableSalary}, {headers: utils.getHeaders()})
-      this.desirableSalaryFilled = true
+        await this.$http.post(baseUrl + 'desirableSalary', {desirableSalary: this.desirableSalary}, {headers: utils.getHeaders()})
+        this.desirableSalaryFilled = true
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     desirableSalaryChange: async function () {
       try {
-      await this.$http.post(baseUrl + 'desirableSalary', {desirableSalary: null}, {headers: utils.getHeaders()})
-      this.desirableSalary = null
-      this.desirableSalaryFilled = false
+        await this.$http.post(baseUrl + 'desirableSalary', {desirableSalary: null}, {headers: utils.getHeaders()})
+        this.desirableSalary = null
+        this.desirableSalaryFilled = false
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     addJobDescription: async function (key, value) {
       try {
-      this.jobDescription[key] = value
-      await this.$http.post(baseUrl + 'jobDescription', this.jobDescription, {headers: utils.getHeaders()})
+        this.jobDescription[key] = value
+        await this.$http.post(baseUrl + 'jobDescription', this.jobDescription, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     addUseMediationService: async function (value) {
       try {
-      await this.$http.post(baseUrl + 'usemediationservice',{useMediationService: value} , {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl + 'usemediationservice',{useMediationService: value} , {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
