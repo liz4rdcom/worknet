@@ -30,7 +30,7 @@
   import desirableTrainingsManager from './desirableTrainingsManager/desirable-trainings-manager'
   import languages from './languages'
   import desirableJobLocations from './desirable-job-locations'
-  import moreInformation from './moreinformation'
+  import moreInformation from './moreInformation'
 
   const baseUrl = '/api/users/profile'
 
