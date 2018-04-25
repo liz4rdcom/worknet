@@ -24,7 +24,7 @@
     "jsonwebtoken": "^8.2.1",
     "lodash": "^4.17.4",
     "shortid": "^2.2.8",
-    "umpack-express": "^1.13.0"
+    "umpack-express": "^1.14.0"
   },
   "devDependencies": {
     "eslint": "4.13.1",
