@@ -499,7 +499,7 @@ router.get('/profile/desirableSalary', isAuthorized, async (req, res, next) => {
 
   try {
     let result = await userInteractor.getDesirableSalary(userName)
-    
+
     next({result: {
       salary: result
     }})
@@ -547,7 +547,7 @@ router.get('/profile/usemediationservice', isAuthorized, async (req, res, next) 
 
   try {
     let result = await userInteractor.getUseMediationService(userName)
-    
+
     next({result})
   } catch (error) {
     next({error})

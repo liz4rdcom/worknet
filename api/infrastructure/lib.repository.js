@@ -17,7 +17,6 @@ const formalEducationLevelIndex = config.get('elastic.formalEducationLevelIndex'
 const formalEducationLevelType = config.get('elastic.formalEducationLevelType')
 
 async function getLocationsInGeorgia() {
-
   let options = {
     index,
     type
