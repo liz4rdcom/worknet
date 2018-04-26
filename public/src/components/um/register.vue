@@ -83,9 +83,12 @@ export default {
   methods: {
     async performRegister() {
       try {
+        // userName, password, email, contactNumber, birthDate
+
         const registerConfig = {
           userName: this.personalIdOrUserName,
-          password: this.password
+          password: this.password,
+          birthDate: this.birthDate
         }
 
         if (this.email) {
@@ -96,7 +99,7 @@ export default {
           registerConfig.phone = this.contactNumber
         }
 
-        await this.$http.post('/um/signup', registerConfig)
+        await this.$http.post('/api/umpackPlus/register', registerConfig)
 
         this.$router.push('/login')
 
@@ -151,11 +154,9 @@ export default {
       }
       // <<< end of validation here
 
-      const birthDate = new Date(this.birthYear, this.birthMonth, this.birthDay)
-
       if (utils.couldBePersonalId(this.personalIdOrUserName)) {
         try {
-          const arePerIdAndBirthDateValid = await dummyCRA.arePersonalIdAndBirthDateValid(this.personalIdOrUserName, birthDate, true)
+          const arePerIdAndBirthDateValid = await dummyCRA.arePersonalIdAndBirthDateValid(this.personalIdOrUserName, this.birthDate, true)
 
           if (arePerIdAndBirthDateValid) {
             this.performRegister()
@@ -194,6 +195,9 @@ export default {
       retVal.splice(0, 0, { value: null, text: '- წელი -' })
 
       return retVal
+    },
+    birthDate() {
+      return new Date(this.birthYear, this.birthMonth, this.birthDay)
     }
   }
 }

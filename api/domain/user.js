@@ -74,13 +74,9 @@ const getRegisteringUser = ({
   userName,
   birthDate,
   personalId,
-  contactNumber,
+  phone,
   email
 }) => {
-  if (!contactNumber && !email) {
-    throw new Error('user needs at least one of: contactNumber, email.')
-  }
-
   const newUser = {
     'userName': userName,
     'birthDate': birthDate,
@@ -98,8 +94,8 @@ const getRegisteringUser = ({
     newUser.personalId = personalId
   }
 
-  if (contactNumber) {
-    newUser.mobileNumber = contactNumber
+  if (phone) {
+    newUser.mobileNumber = phone
   }
 
   if (email) {
