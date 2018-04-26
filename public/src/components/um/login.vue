@@ -9,7 +9,7 @@
       </b-form-group>
       <b-form-group label="პაროლი">
           <b-form-input v-model="password"
-                      type="text"
+                      type="password"
         ></b-form-input>
       </b-form-group>
       <b-button variant="primary" @click="login">
@@ -21,7 +21,7 @@
 
 <script>
 import Cookies from 'js-cookie'
-import {bus} from '../common/bus'
+import { bus } from '../common/bus'
 
 export default {
   name: 'login',
