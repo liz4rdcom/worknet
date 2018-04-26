@@ -13,7 +13,6 @@ const getRegisteringUser = require('../domain/user').getRegisteringUser
 const utils = require('../utils')
 const dummyCRA = require('../infrastructure/dummy.CRA')
 
-
 async function register({ userName, password, email, phone, birthDate }) {
   if (!userName) {
     throw new PermissionError('მიუთითეთ userName.', 400)
