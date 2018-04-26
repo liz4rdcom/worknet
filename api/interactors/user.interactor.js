@@ -49,11 +49,16 @@ async function register({ userName, password, email, phone, birthDate }) {
     email
   }
 
-  if (utils.couldBePersonalId(userName) && true) { // todo CRA
-    userObj.personalId = userName
-  }
+  try {
+    if (utils.couldBePersonalId(userName) && true) { // todo CRA instead of true (it will be request)
+      userObj.personalId = userName
+    }
 
-  await userRepository.saveUser(getRegisteringUser(userObj))
+    await userRepository.saveUser(getRegisteringUser(userObj))
+  } catch (e) {
+    // todo signup reverse
+    throw e
+  }
 
   return umpackResult
 }
