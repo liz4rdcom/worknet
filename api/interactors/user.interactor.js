@@ -11,6 +11,8 @@ const umpack = require('../umpack')
 const PermissionError = require('../exceptions/permission.error')
 const getRegisteringUser = require('../domain/user').getRegisteringUser
 const utils = require('../utils')
+const dummyCRA = require('../infrastructure/dummy.CRA')
+
 
 async function register({ userName, password, email, phone, birthDate }) {
   if (!userName) {
@@ -50,7 +52,7 @@ async function register({ userName, password, email, phone, birthDate }) {
   }
 
   try {
-    if (utils.couldBePersonalId(userName) && true) { // todo CRA instead of true (it will be request)
+    if (utils.couldBePersonalId(userName) && dummyCRA.arePersonalIdAndBirthDateValid(userName, birthDate, true)) { // todo CRA instead
       userObj.personalId = userName
     }
 

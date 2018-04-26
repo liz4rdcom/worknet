@@ -64,7 +64,6 @@
 <script>
 import reverse from 'lodash/reverse'
 import { MAX_DAYS_IN_MONTH, MONTH_NAMES, EARLIEST_REALISTIC_BIRTH_YEAR } from '../../constants'
-import dummyCRA from '../../dummyCRA'
 import utils from '../../utils'
 import { bus } from '../common/bus'
 
@@ -133,7 +132,7 @@ export default {
           !this.password ||
           !this.confirmPassword ||
           !this.birthDay ||
-          !this.birthMonth ||
+          (this.birthMonth !== 0 && !this.birthMonth) ||
           !this.birthYear
       ) {
         alert('VALIDATION: რომელიღაცა არ შეგიყვანია: personalIdOrUserName, password, confirmPassword, birthDay, birthMonth, birthYear.')
@@ -154,21 +153,7 @@ export default {
       }
       // <<< end of validation here
 
-      if (utils.couldBePersonalId(this.personalIdOrUserName)) {
-        try {
-          const arePerIdAndBirthDateValid = await dummyCRA.arePersonalIdAndBirthDateValid(this.personalIdOrUserName, this.birthDate, true)
-
-          if (arePerIdAndBirthDateValid) {
-            this.performRegister()
-          } else {
-            alert('პირადი ნომერი ან დაბადების თარიღი არასწორია') // todo eventually validation should be not alert
-          }
-        } catch (craError) {
-          bus.$emit('error', craError)
-        }
-      } else {
-        this.performRegister()
-      }
+      this.performRegister()
     }
   },
   computed: {

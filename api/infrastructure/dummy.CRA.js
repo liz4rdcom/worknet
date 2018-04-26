@@ -4,6 +4,6 @@ const arePersonalIdAndBirthDateValid = (personalId, birthDate, retVal = true) =>
   })
 }
 
-export default {
+module.exports = {
   arePersonalIdAndBirthDateValid
 }
