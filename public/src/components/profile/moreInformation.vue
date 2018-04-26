@@ -171,7 +171,7 @@ export default {
       interestedToBeVolunteer: false,
       interestedInTemporaryJob: false,
       interestedInDangerousJob: false,
-      unemployed: false,
+      unemployed: false
     },
     militaryObligation: false,
     useMediationService: false,
@@ -200,8 +200,9 @@ export default {
       this.militaryObligation = obligationResponse.data
       this.desirableSalary = salaryResponse.data.salary
 
-      if(salaryResponse.data.salary !== null)
+      if (salaryResponse.data.salary !== null) {
         this.desirableSalaryFilled = true
+      }
 
       this.jobDescription = jobResponse.data
       this.useMediationService = useMediationServiceResponse.data
@@ -212,7 +213,7 @@ export default {
   methods: {
     addHasDrivingLicence: async function (value) {
       try {
-        await this.$http.post(baseUrl + 'hasdrivingLicence',{hasDrivingLicence: value} , {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl + 'hasdrivingLicence', {hasDrivingLicence: value}, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
@@ -227,7 +228,7 @@ export default {
     },
     addMilitaryObligation: async function (value) {
       try {
-        await this.$http.post(baseUrl + 'militaryObligation',{militaryObligation: value} , {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl + 'militaryObligation', {militaryObligation: value}, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
@@ -259,7 +260,7 @@ export default {
     },
     addUseMediationService: async function (value) {
       try {
-        await this.$http.post(baseUrl + 'usemediationservice',{useMediationService: value} , {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl + 'usemediationservice', {useMediationService: value}, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
