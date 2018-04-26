@@ -40,7 +40,9 @@ const getRangeNumberArray = (start, end) => {
 
 const stringContainsOnlyNumbers = str => /^\d+$/.test(str)
 
-const couldBePersonalNumber = num => isString(num) && num.length === PERSONAL_NUMBER_LENGTH && stringContainsOnlyNumbers(num)
+const isValidEmail = str => /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/i.test(str)
+
+const couldBePersonalId = num => isString(num) && num.length === PERSONAL_NUMBER_LENGTH && stringContainsOnlyNumbers(num)
 
 export default {
   hashOfString: hashCode,
@@ -48,5 +50,6 @@ export default {
   getHeaders,
   getRangeNumberArray,
   stringContainsOnlyNumbers,
-  couldBePersonalNumber
+  isValidEmail,
+  couldBePersonalId
 }

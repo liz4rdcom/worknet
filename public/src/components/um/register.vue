@@ -3,7 +3,7 @@
     <h1 class="hint-element">დარეგისტრირდით მარტივად</h1>
     <b-card class="register">
       <b-form-group label="დარეგისტრირდით პირადი ნომერით ან მოიფიქრეთ მომხმარებლის სახელი">
-          <b-form-input autofocus v-model="personalNumberOrUserName"
+          <b-form-input autofocus v-model="personalIdOrUserName"
                       type="text"
           ></b-form-input>
       </b-form-group>
@@ -71,7 +71,7 @@ import { bus } from '../common/bus'
 export default {
   name: 'register',
   data: () => ({
-    personalNumberOrUserName: '',
+    personalIdOrUserName: '',
     password: '',
     confirmPassword: '',
     email: '',
@@ -84,7 +84,7 @@ export default {
     async performRegister() {
       try {
         const registerConfig = {
-          userName: this.personalNumberOrUserName,
+          userName: this.personalIdOrUserName,
           password: this.password
         }
 
@@ -109,7 +109,7 @@ export default {
     async register() {
       console.log(
         'register: ',
-        '\n personalNumberOrUserName: ', this.personalNumberOrUserName + ' @@END',
+        '\n personalIdOrUserName: ', this.personalIdOrUserName + ' @@END',
         '\n password: ', this.password + ' @@END',
         '\n confirmPassword: ', this.confirmPassword + ' @@END',
         '\n email: ', this.email + ' @@END',
@@ -126,14 +126,14 @@ export default {
       it's here for development/testing purposes, it's for developers, so that they
       don't register users badly
       */
-      if (!this.personalNumberOrUserName ||
+      if (!this.personalIdOrUserName ||
           !this.password ||
           !this.confirmPassword ||
           !this.birthDay ||
           !this.birthMonth ||
           !this.birthYear
       ) {
-        alert('VALIDATION: რომელიღაცა არ შეგიყვანია: personalNumberOrUserName, password, confirmPassword, birthDay, birthMonth, birthYear.')
+        alert('VALIDATION: რომელიღაცა არ შეგიყვანია: personalIdOrUserName, password, confirmPassword, birthDay, birthMonth, birthYear.')
 
         return
       }
@@ -153,11 +153,11 @@ export default {
 
       const birthDate = new Date(this.birthYear, this.birthMonth, this.birthDay)
 
-      if (utils.couldBePersonalNumber(this.personalNumberOrUserName)) {
+      if (utils.couldBePersonalId(this.personalIdOrUserName)) {
         try {
-          const arePerNumAndBirthDateValid = await dummyCRA.arePersonalNumberAndBirthDateValid(this.personalNumberOrUserName, birthDate, true)
+          const arePerIdAndBirthDateValid = await dummyCRA.arePersonalIdAndBirthDateValid(this.personalIdOrUserName, birthDate, true)
 
-          if (arePerNumAndBirthDateValid) {
+          if (arePerIdAndBirthDateValid) {
             this.performRegister()
           } else {
             alert('პირადი ნომერი ან დაბადების თარიღი არასწორია') // todo eventually validation should be not alert

@@ -70,4 +70,45 @@ class User {
   }
 }
 
+const getRegisteringUser = ({
+  userName,
+  birthDate,
+  personalId,
+  contactNumber,
+  email
+}) => {
+  if (!contactNumber && !email) {
+    throw new Error('user needs at least one of: contactNumber, email.')
+  }
+
+  const newUser = {
+    'userName': userName,
+    'birthDate': birthDate,
+    'educations': [],
+    'languages': [],
+    'skills': [],
+    'jobExperiences': [],
+    'desirableJobs': [],
+    'desirableJobLocations': [],
+    'desirableTrainings': [],
+    'desirableTrainingLocations': []
+  }
+
+  if (personalId) {
+    newUser.personalId = personalId
+  }
+
+  if (contactNumber) {
+    newUser.mobileNumber = contactNumber
+  }
+
+  if (email) {
+    newUser.email = email
+  }
+
+  return newUser
+}
+
 module.exports = User
+
+module.exports.getRegisteringUser = getRegisteringUser
