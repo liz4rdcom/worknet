@@ -5,6 +5,7 @@ const umpack = require('./umpack')
 
 const app = express()
 
+const umpackPlus = require('./routes/umpack.plus')
 const vacancies = require('./routes/vacancies')
 const users = require('./routes/users')
 const skills = require('./routes/skills')
@@ -17,6 +18,8 @@ app.use(bodyParser.urlencoded({
   extended: false
 }))
 app.use(express.static('../public/dist'))
+
+app.use(umpackPlus.baseUrl, umpackPlus.router)
 
 app.use('/um', umpack.router)
 
