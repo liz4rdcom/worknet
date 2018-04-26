@@ -187,7 +187,7 @@ export default {
         jobResponse,
         useMediationServiceResponse
       ] = await Promise.all([
-        this.$http.get(baseUrl + 'drivinglicence', { eaders: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'drivinglicence', { headers: utils.getHeaders() }),
         this.$http.get(baseUrl + 'hasdrivinglicence', { headers: utils.getHeaders() }),
         this.$http.get(baseUrl + 'militaryObligation', { headers: utils.getHeaders() }),
         this.$http.get(baseUrl + 'desirableSalary', { headers: utils.getHeaders() }),
