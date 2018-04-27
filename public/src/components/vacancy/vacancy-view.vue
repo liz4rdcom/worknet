@@ -12,7 +12,7 @@
   <label>გასაუბრებების დაწყების სავარაუდო თარიღი: <b>{{vacancy.interviewSupposedStartDate}}</b></label><br />
   <label>ბოლო ვადა: <b>{{vacancy.endDate}}</b></label><br />
   <label>ვაკანტური ადგილები: <b>{{vacancy.vacantPlacesQuantity}}</b></label><br />
-  <label>ანაზღაურება: <b>{{vacancy.averageSalaryName}}</b></label><br />
+  <label>ანაზღაურება: <b>{{vacancy.salaryInfoName}}</b></label><br />
   <label>განათლების საფეხური: <b>{{vacancy.formalEducationLevelName}}</b></label><br />
   <label>სავალდებულო ენები: <b>{{languagesText}}</b></label><br />
   <label>სამუშაოს ტიპი: <b>{{jobType}}</b></label><br />

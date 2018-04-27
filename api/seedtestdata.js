@@ -215,7 +215,7 @@ const testJobs = [{
   'vacantPlacesQuantity': 2,
   'functionsDescription': 'blablablabla',
   'additionalDescription': 'damatebiti informacia TEST TEST',
-  'averageSalaryName': '150-300', //
+  'salaryInfoName': '150-300', //
   'fullTime': true, //
   'partTime': true, //
   'shiftBased': true, //
@@ -246,7 +246,8 @@ const testJobs = [{
     {
       'skillName': 'CSS'
     }
-  ]
+  ],
+  'published': true
 }]
 
 const testLibs = [{

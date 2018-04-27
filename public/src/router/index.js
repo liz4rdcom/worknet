@@ -35,7 +35,7 @@ let router = new Router({
       props: true
     },
     {
-      path: '/vacancies/new',
+      path: '/vacancies/add',
       name: 'vacancy-add',
       component: vacancyAdd
     },
@@ -53,17 +53,17 @@ let router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  // console.log('start', to.path)
+  // console.log('start', to.path) //
 
   if (!Cookies.get('token')) {
     bus.$emit('logout')
 
-    // console.log('no token')
+    // console.log('no token') //
 
     if (to.path === '/login' || to.path === '/register' || to.path === '/vacancies') {
       next()
 
-      // console.log('no token: login, register, vacancies')
+      // console.log('no token: login, register, vacancies') //
 
       return
     }
@@ -72,12 +72,12 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
-  // console.log('yes token')
+  // console.log('yes token') //
 
   if (to.path === '/login' || to.path === '/register') {
     next('/vacancies')
 
-    // console.log('yes token: login, register')
+    // console.log('yes token: login, register') //
 
     return
   }
