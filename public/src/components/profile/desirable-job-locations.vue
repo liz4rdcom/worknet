@@ -58,7 +58,7 @@ export default {
     },
     addLocation: async function () {
       try {
-        await this.$http.post(baseUrl, this.location, {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl, this.location, { headers: utils.getHeaders() })
         this.desirableJobLocations.push(this.location)
       } catch (error) {
         bus.$emit('error', error)

@@ -1,4 +1,6 @@
 import Cookies from 'js-cookie'
+import isString from 'lodash/isString'
+import { PERSONAL_NUMBER_LENGTH } from './constants'
 
 /**
  * Java ს String.hashCode() მეთოდის იმპლემენტაცია Javascript ზე.
@@ -26,8 +28,28 @@ function getHeaders() {
   }
 }
 
+const getRangeNumberArray = (start, end) => {
+  const retVal = []
+
+  for (let i = start; i < end + 1; i++) {
+    retVal.push(i)
+  }
+
+  return retVal
+}
+
+const stringContainsOnlyNumbers = str => /^\d+$/.test(str)
+
+const isValidEmail = str => /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/i.test(str)
+
+const couldBePersonalId = num => isString(num) && num.length === PERSONAL_NUMBER_LENGTH && stringContainsOnlyNumbers(num)
+
 export default {
   hashOfString: hashCode,
   isNullOrUndefined,
-  getHeaders
+  getHeaders,
+  getRangeNumberArray,
+  stringContainsOnlyNumbers,
+  isValidEmail,
+  couldBePersonalId
 }

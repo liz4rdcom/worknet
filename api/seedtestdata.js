@@ -37,57 +37,6 @@ const indexDefaultOptions = {
     }
   }
 }
-const userIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-const jobIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-const libIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-
-const skillIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-
-const desirableJobIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-
-const desirableTrainingIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
 
 const testUsers = [{
   'userName': 'root',
@@ -562,21 +511,21 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 
     if (!exists) {
       await createIndex(index, indexOption)
-    }
 
-    await insertData(index, type, data)
+      await insertData(index, type, data)
+    }
   } catch (error) {
     console.error(error)
     process.exit()
   }
 }
 
-seedData(testUsers, 'user', userIndex, 'user', true)
-seedData(testJobs, 'job', jobIndex, 'job', true)
-seedData(testLibs, 'lib', libIndex, 'location', true)
+seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
+seedData(testJobs, 'job', indexDefaultOptions, 'job', false)
+seedData(testLibs, 'location', indexDefaultOptions, 'location', true)
 seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
 seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
 seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
-seedData(testSkills, 'skill', skillIndex, 'skill', true)
-seedData(testDesirableJobs, 'desirablejob', desirableJobIndex, 'desirablejob', true)
-seedData(testDesirableTrainings, 'desirabletraining', desirableTrainingIndex, 'desirabletraining', true)
+seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
+seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
+seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
