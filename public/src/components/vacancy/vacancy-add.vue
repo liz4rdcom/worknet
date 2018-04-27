@@ -2,7 +2,6 @@
 <div class="vacancy-add">
   <div class="data-visually">
     <b-form-checkbox
-      id="showDataVisually"
       v-model="showDataVisually"
       :value="true"
       :unchecked-value="false"
@@ -24,7 +23,6 @@
 
   <b-card>
     <b-form-checkbox
-      id="isOrganization"
       v-model="isOrganization"
       :value="false"
       :unchecked-value="true"
@@ -54,7 +52,6 @@
 
   <b-form-group label="'addressLine': 'დამატებითი მისამართი',"> <!-- optional -->
     <b-form-textarea
-      id="addressLine"
       v-model="vacancy.addressLine"
       :rows="3"
       :max-rows="6"
@@ -78,7 +75,6 @@
           </b-col>
 
           <b-form-radio-group
-            id="interview-supposed-start-year"
             v-model="vacancy.interviewSupposedStartYear"
             name="radioSubComponent"
             button-variant="outline-primary"
@@ -113,69 +109,205 @@
       </b-container>
   </b-form-group>
 
-  <b-form-group label="'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',">
+  <!-- <b-form-group label="'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',">
     NOT NEEDED IN VACANCY ADD
-  </b-form-group>
+  </b-form-group> -->
+
   <b-form-group label="'useMediationService': true,">
-    soon checkbox
+    <b-form-checkbox
+      v-model="vacancy.useMediationService"
+      :value="true"
+      :unchecked-value="false"
+    >
+      gamoiyene mediaciis servisi
+    </b-form-checkbox>
   </b-form-group>
+
   <b-form-group label="'vacantPlacesQuantity': 2,"> <!-- optional -->
-    soon optional
+    <b-form-input type="number" v-model="vacancy.vacantPlacesQuantity" />
   </b-form-group>
+
   <b-form-group label="'functionsDescription': 'blablablabla',"> <!-- optional -->
-    soon optional
+    <b-form-textarea
+      v-model="vacancy.functionsDescription"
+      :rows="3"
+      :max-rows="6"
+    >
+    </b-form-textarea>
   </b-form-group>
+
   <b-form-group label="'additionalDescription': 'damatebiti informacia TEST TEST',"> <!-- optional -->
-    soon optional nevismieri rame
+    <b-form-textarea
+      v-model="vacancy.additionalDescription"
+      :rows="3"
+      :max-rows="6"
+    >
+    </b-form-textarea>
   </b-form-group>
+
   <b-form-group label="'salaryInfoName': '150-300', //"> <!-- optional -->
-    soon text area with placeholders
+    <b-form-textarea
+      v-model="vacancy.salaryInfoName"
+      :rows="3"
+      :max-rows="6"
+    >
+    </b-form-textarea>
   </b-form-group>
-  <b-form-group label="'fullTime': true, //"> <!-- optional -->
-    soon
+
+  <b-card>
+      <b-form-group label="'fullTime': true, //"> <!-- optional -->
+        <b-form-checkbox
+          v-model="vacancy.fullTime"
+          :value="true"
+          :unchecked-value="false"
+        >
+          fullTime
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group label="'partTime': true, //"> <!-- optional -->
+        <b-form-checkbox
+          v-model="vacancy.partTime"
+          :value="true"
+          :unchecked-value="false"
+        >
+          partTime
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group label="'shiftBased': true, //"> <!-- optional -->
+        <b-form-checkbox
+          v-model="vacancy.shiftBased"
+          :value="true"
+          :unchecked-value="false"
+        >
+          shiftBased
+        </b-form-checkbox>
+      </b-form-group>
+  </b-card>
+
+  <b-form-group label="'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //"> <!-- optional, minimaluri ganatlebis done -->
+    <b-form-select v-model="vacancy.formalEducationLevelName">
+      <option v-for="level in formalEducationLevelsOptions">{{level}}</option>
+    </b-form-select>
   </b-form-group>
-  <b-form-group label="'partTime': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'shiftBased': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //"> <!-- optional -->
-    soon checkboxes
-  </b-form-group>
-  <b-form-group label="'formalEducationLevelId': '3', //"> <!-- optional -->
-    soon minimaluri ganatlebis done
-  </b-form-group>
-  <b-form-group label="'drivingLicenceA': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'drivingLicenceB': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'drivingLicenceC': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'drivingLicenceD': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'drivingLicenceE': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'drivingLicenceT1': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'drivingLicenceT2': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'airLicence': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'seaLicence': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
-  <b-form-group label="'railwayLicence': true, //"> <!-- optional -->
-    soon
-  </b-form-group>
+  <!-- optional -->
+  <!-- <b-form-group label="'formalEducationLevelId': '3', //">
+    soon (gasarkvevia 3 da 2stan, educationshi profileshi id ar iyenebs 3)
+  </b-form-group> -->
+
+  <b-card>
+    <b-form-group label="should have driving licence"> <!-- optional sawyisi value eqneba da ar aaq mnishvneloba optional ari tu ara-->
+      <b-form-checkbox
+          v-model="vacancy.shouldHaveDrivingLicence"
+          :value="true"
+          :unchecked-value="false"
+        >
+          shouldHaveDrivingLicence
+        </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'drivingLicenceA': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.drivingLicenceA"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        drivingLicenceA
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'drivingLicenceB': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.drivingLicenceB"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        drivingLicenceB
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'drivingLicenceC': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.drivingLicenceC"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        drivingLicenceC
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'drivingLicenceD': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.drivingLicenceD"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        drivingLicenceD
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'drivingLicenceE': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.drivingLicenceE"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        drivingLicenceE
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'drivingLicenceT1': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.drivingLicenceT1"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        drivingLicenceT1
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'drivingLicenceT2': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.drivingLicenceT2"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        drivingLicenceT2
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'airLicence': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.airLicence"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        airLicence
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'seaLicence': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.seaLicence"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        seaLicence
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group label="'railwayLicence': true, //"> <!-- optional -->
+      <b-form-checkbox
+        v-model="vacancy.railwayLicence"
+        :disabled="!vacancy.shouldHaveDrivingLicence"
+        :value="true"
+        :unchecked-value="false"
+      >
+        railwayLicence
+      </b-form-checkbox>
+    </b-form-group>
+  </b-card>
+
   <b-form-group label="'languages': [ //"> <!-- optional -->
     soon
   </b-form-group>
@@ -193,6 +325,8 @@ import reverse from 'lodash/reverse'
 import georgiaLocations from '../common/georgia-locations'
 import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../constants'
 import utils from '../../utils'
+import { bus } from '../common/bus'
+import libs from '../../libs'
 
 export default {
   name: 'vacancy-add',
@@ -209,11 +343,39 @@ export default {
       interviewSupposedStartYear: new Date().getFullYear(),
       endDateDay: null,
       endDateMonth: null,
-      endDateYear: null
+      endDateYear: null,
+      useMediationService: true,
+      vacantPlacesQuantity: null,
+      functionsDescription: null,
+      additionalDescription: null,
+      salaryInfoName: null,
+      fullTime: null,
+      partTime: null,
+      shiftBased: null,
+      formalEducationLevelName: '- აირჩიე -',
+      shouldHaveDrivingLicence: false,
+      drivingLicenceA: false,
+      drivingLicenceB: false,
+      drivingLicenceC: false,
+      drivingLicenceD: false,
+      drivingLicenceE: false,
+      drivingLicenceT1: false,
+      drivingLicenceT2: false,
+      airLicence: false,
+      seaLicence: false,
+      railwayLicence: false
     },
+    formalEducationLevels: [],
     isOrganization: true,
-    showDataVisually: true
+    showDataVisually: false
   }),
+  async created() {
+    try {
+      this.formalEducationLevels = await libs.fetchFormalEducationLevels()
+    } catch (error) {
+      bus.$emit('error', error)
+    }
+  },
   methods: {
     onLocationChanged(location) {
       this.vacancy.locationName = location.locationName
@@ -244,6 +406,13 @@ export default {
       retVal.splice(0, 0, { value: null, text: '- წელი -' })
 
       return retVal
+    },
+    formalEducationLevelsOptions() {
+      const retVal = this.formalEducationLevels
+
+      retVal.splice(0, 0, '- აირჩიე -')
+
+      return retVal
     }
   },
   components: {
@@ -258,6 +427,8 @@ export default {
   z-index: 999;
   background-color: lightcoral;
   opacity: 0.2;
+  max-height: 70%;
+  overflow-y: auto;
 }
 .data-visually:hover {
   opacity: 1;
