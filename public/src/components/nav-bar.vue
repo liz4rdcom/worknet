@@ -35,7 +35,7 @@ import passwordChange from './um/password-change'
 export default {
   name: 'navbar',
   components: {
-    passwordChange
+    'password-change': passwordChange
   },
   data: () => ({
     loggedIn: false
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     modalTrue: function () {
-      this.$refs.modalRef.readRef()
+      this.$refs.modalRef.openModal()
     },
     logout() {
       Cookies.remove('token')
