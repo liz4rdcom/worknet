@@ -213,7 +213,7 @@ export default {
   methods: {
     addHasDrivingLicence: async function (value) {
       try {
-        await this.$http.post(baseUrl + 'hasdrivingLicence', { hasDrivingLicence: value }, {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl + 'hasdrivingLicence', {hasDrivingLicence: value}, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
