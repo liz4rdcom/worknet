@@ -255,8 +255,8 @@ const testJobs = [{
   'positionName': 'JavaScript Developer',
   'organization': 'შპს FX1',
   'organizationTaxCode': '123456789',
-  'locationName': 'თბილისი',
-  'locationUnitName': 'ისანი',
+  'locationName': 'თბილისი', //
+  'locationUnitName': 'ისანი', //
   'addressLine': 'დამატებითი მისამართი',
   'publishDate': '2017-12-03T00:00:00',
   'interviewSupposedStartDate': '2018-01-01T00:00:00',
@@ -266,23 +266,23 @@ const testJobs = [{
   'vacantPlacesQuantity': 2,
   'functionsDescription': 'blablablabla',
   'additionalDescription': 'damatebiti informacia TEST TEST',
-  'averageSalaryName': '150-300',
-  'fullTime': true,
-  'partTime': true,
-  'shiftBased': true,
-  'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
-  'formalEducationLevelId': '3',
-  'drivingLicenceA': true,
-  'drivingLicenceB': true,
-  'drivingLicenceC': true,
-  'drivingLicenceD': true,
-  'drivingLicenceE': true,
-  'drivingLicenceT1': true,
-  'drivingLicenceT2': true,
-  'airLicence': true,
-  'seaLicence': true,
-  'railwayLicence': true,
-  'languages': [
+  'averageSalaryName': '150-300', //
+  'fullTime': true, //
+  'partTime': true, //
+  'shiftBased': true, //
+  'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //
+  'formalEducationLevelId': '3', //
+  'drivingLicenceA': true, //
+  'drivingLicenceB': true, //
+  'drivingLicenceC': true, //
+  'drivingLicenceD': true, //
+  'drivingLicenceE': true, //
+  'drivingLicenceT1': true, //
+  'drivingLicenceT2': true, //
+  'airLicence': true, //
+  'seaLicence': true, //
+  'railwayLicence': true, //
+  'languages': [ //
     {
       'languageName': 'აფხაზური'
     },
@@ -290,7 +290,7 @@ const testJobs = [{
       'languageName': 'ქართული'
     }
   ],
-  'skills': [
+  'skills': [ //
     {
       'skillName': 'Javascript'
     },
