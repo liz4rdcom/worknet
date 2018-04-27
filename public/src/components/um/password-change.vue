@@ -41,7 +41,7 @@ export default {
       this.modalShow = true
     },
     handleOk: async function () {
-     try {
+      try {
         if (this.passwordChange.oldPassword === '' || this.passwordChange.newPassword === '' || this.passwordChange.reNewPassword === '') {
           this.errotText = 'შეავსეთ მონაცემები'
           return
@@ -69,7 +69,7 @@ export default {
       const payloadString = jwt.split('.')[1]
       const jsonString = Buffer.from(payloadString, 'base64').toString()
       return JSON.parse(jsonString)
-     }
-    }  
+    }
+  }
 }
 </script>
