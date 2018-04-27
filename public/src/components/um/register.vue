@@ -14,7 +14,7 @@
           </b-row>
           <b-row>
               <b-col class="password-col">
-                  <b-form-group> 
+                  <b-form-group>
                       <b-form-input v-model="password"
                                   type="password"
                       ></b-form-input>
@@ -52,7 +52,7 @@
                   <b-form-select v-model="birthYear" :options="birthYearOptions"/>
               </b-col>
             </b-row>
-        </b-container>  
+        </b-container>
       </b-form-group>
       <b-button variant="primary" @click="register">
         რეგისტრაციის დასრულება

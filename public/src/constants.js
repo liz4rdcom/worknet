@@ -18,3 +18,5 @@ export const MONTH_NAMES = [
 export const EARLIEST_REALISTIC_BIRTH_YEAR = 1905
 
 export const PERSONAL_NUMBER_LENGTH = 11
+
+export const VACANCY_END_MAX_YEAR_COUNT = 11
