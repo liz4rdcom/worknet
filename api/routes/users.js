@@ -387,6 +387,184 @@ router.put('/profile/languages/:languageName/level', isAuthorized, async (req, r
   }
 })
 
+router.get('/profile/desirableJobLocations', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getDesirableJobLocations(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.delete('/profile/desirableJobLocations', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  let location = {
+    locationName: req.query.locationName,
+    locationUnitName: req.query.locationUnitName
+  }
+  try {
+    await userInteractor.deleteDesirableJobLocations(userName, location)
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/desirableJobLocations', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+  try {
+    let result = await userInteractor.addDesirableJobLocations(userName, req.body)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.get('/profile/drivinglicence', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getDrivingLicence(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/drivinglicence', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+  try {
+    let result = await userInteractor.addDrivingLicence(userName, req.body)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.get('/profile/hasdrivinglicence', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getHasDrivingLicence(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/hasdrivinglicence', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+  try {
+    let result = await userInteractor.addHasDrivingLicence(userName, req.body.hasDrivingLicence)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.get('/profile/militaryObligation', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getMilitaryObligation(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/militaryObligation', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+  try {
+    let result = await userInteractor.addMilitaryObligation(userName, req.body.militaryObligation)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.get('/profile/desirableSalary', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getDesirableSalary(userName)
+
+    next({result: {
+      salary: result
+    }})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/desirableSalary', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+  try {
+    let result = await userInteractor.addDesirableSalary(userName, req.body.desirableSalary)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.get('/profile/jobDescription', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getJobDescription(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/jobDescription', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+  try {
+    let result = await userInteractor.addJobDescription(userName, req.body)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.get('/profile/usemediationservice', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getUseMediationService(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/usemediationservice', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+  try {
+    let result = await userInteractor.addUseMediationService(userName, req.body.useMediationService)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 module.exports = {
   router,
   baseUrl

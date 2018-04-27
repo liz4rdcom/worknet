@@ -27,3 +27,4 @@ um:
   passwordHashSecret: 'mypasswordsecret'
   accessTokenExpiresIn: '1h'
   cookieAccessTokenName: 'accessToken'
+  activateOnSignup: true

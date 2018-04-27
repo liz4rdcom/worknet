@@ -31,10 +31,10 @@ export default {
     query: ''
   }),
   created() {
-    this.$http.get(baseUrl)
-      .then(response => {
-        this.vacancies = response.data
-      })
+    // this.$http.get(baseUrl)
+    //   .then(response => {
+    //     this.vacancies = response.data
+    //   })
   },
   methods: {
     viewVacancy(vacancyId) {
