@@ -9,7 +9,10 @@
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
         <b-nav-item href="#/vacancies">ვაკანსიები</b-nav-item>
-        <b-nav-item v-if="loggedIn" href="#/vacancies/add">ვაკანსიის დამატება</b-nav-item>
+        <b-nav-item-dropdown v-if="loggedIn" text="ვაკანსიების მენეჯმენტი" right>
+          <b-dropdown-item href="#/vacancies/add">ახლის დამატება</b-dropdown-item>
+          <b-dropdown-item href="#/vacancies/own">ჩემი ვაკანსიები</b-dropdown-item>
+        </b-nav-item-dropdown>
         <b-nav-item v-if="loggedIn" href="#/profile">პროფილი</b-nav-item>
       </b-navbar-nav>
 

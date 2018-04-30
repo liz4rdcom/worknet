@@ -5,6 +5,7 @@ import profile from '../components/profile/profile'
 import vacancies from '../components/vacancy/vacancies'
 import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancyAdd/vacancy-add'
+import ownVacancies from '../components/vacancy/vacancyAdd/own-vacancies'
 import login from '../components/um/login'
 import register from '../components/um/register'
 // import utils from '../utils'
@@ -38,6 +39,11 @@ let router = new Router({
       path: '/vacancies/add',
       name: 'vacancy-add',
       component: vacancyAdd,
+    },
+    {
+      path: '/vacancies/own',
+      name: 'vacancies-own',
+      component: ownVacancies,
     },
     {
       path: '/login',

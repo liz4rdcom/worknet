@@ -14,11 +14,14 @@ async function getVacancies(query = '*') {
   let options = {
     index,
     type,
-    q: query,
-    searchType: 'dfs_query_then_fetch',
+    // q: query,
+    // searchType: 'dfs_query_then_fetch',
   }
+  console.log('aaaaaaaaa', query)
 
   let result = await client.search(options)
+
+  console.log('pppppppppp')
 
   return result.hits.hits.map(utils.toObject)
 }

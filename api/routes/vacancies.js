@@ -7,6 +7,8 @@ const vacancyInteractor = require('../interactors/vacancy.interactor')
 const utils = require('../utils')
 
 router.get('/', isAuthorized, (req, res, next) => {
+  console.log('yyyy')
+
   vacancyInteractor.getList(req.query.query)
     .then(res.send.bind(res))
     .catch(next)
