@@ -77,7 +77,7 @@ export default {
     contactNumber: '',
     birthDay: '',
     birthMonth: '',
-    birthYear: ''
+    birthYear: '',
   }),
   methods: {
     async performRegister() {
@@ -87,7 +87,7 @@ export default {
         const registerConfig = {
           userName: this.personalIdOrUserName,
           password: this.password,
-          birthDate: this.birthDate
+          birthDate: this.birthDate,
         }
 
         if (this.email) {
@@ -154,7 +154,7 @@ export default {
       // <<< end of validation here
 
       this.performRegister()
-    }
+    },
   },
   computed: {
     birthDayOptions() {
@@ -183,8 +183,8 @@ export default {
     },
     birthDate() {
       return new Date(this.birthYear, this.birthMonth, this.birthDay)
-    }
-  }
+    },
+  },
 }
 </script>
 

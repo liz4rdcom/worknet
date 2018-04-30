@@ -14,8 +14,8 @@
     name: 'app',
     components: {
       notify,
-      'nav-bar': navBar
-    }
+      'nav-bar': navBar,
+    },
   }
 </script>
 

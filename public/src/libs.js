@@ -65,5 +65,5 @@ export default {
   fetchEducationTypes,
   fetchEducationLevels,
   fetchFormalEducationLevels,
-  fetchLanguages
+  fetchLanguages,
 }

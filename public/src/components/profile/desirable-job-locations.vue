@@ -28,17 +28,17 @@ export default {
   data: () => ({
     locationsList: [],
     desirableJobLocations: [],
-    location: {}
+    location: {},
   }),
   async created() {
     let response
 
     [
       this.locationsList,
-      response
+      response,
     ] = await Promise.all([
       libs.fetchLocationsOfGeorgia(),
-      this.$http.get(baseUrl, {headers: utils.getHeaders()})
+      this.$http.get(baseUrl, {headers: utils.getHeaders()}),
     ])
 
     this.desirableJobLocations = response.data
@@ -63,11 +63,11 @@ export default {
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   components: {
-    locations
-  }
+    locations,
+  },
 }
 </script>
 

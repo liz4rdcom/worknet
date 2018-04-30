@@ -37,12 +37,12 @@ export default {
       }
 
       let desirableTrainingObject = {
-        name: desirableTraining
+        name: desirableTraining,
       }
 
       try {
         await this.$http.post(baseUrl, desirableTrainingObject, {
-          headers: utils.getHeaders()
+          headers: utils.getHeaders(),
         })
 
         this.desirableTrainingList.push(desirableTrainingObject)
@@ -63,23 +63,23 @@ export default {
         const url = baseUrl + `/${desirableTraining}`
 
         await this.$http.delete(url, {
-          headers: utils.getHeaders()
+          headers: utils.getHeaders(),
         })
 
         this.desirableTrainingList.splice(indexOfDesirableTraining, 1)
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   computed: {
     desirableTrainingNameList() {
       return this.desirableTrainingList.map(item => item.name)
-    }
+    },
   },
   components: {
-    'subset-selector': subsetSelector
-  }
+    'subset-selector': subsetSelector,
+  },
 }
 </script>
 

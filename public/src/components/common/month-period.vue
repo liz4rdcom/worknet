@@ -27,18 +27,18 @@ export default {
   props: {
     minYear: {
       type: Number,
-      default: new Date().getFullYear() - 60
+      default: new Date().getFullYear() - 60,
     },
     month: {
-      type: Number
+      type: Number,
     },
     year: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data: () => ({
     monthOptions: new Array(12).fill(0).map((item, index) => index + 1),
-    yearOptions: []
+    yearOptions: [],
   }),
   created() {
     let currentYear = new Date().getFullYear()
@@ -52,8 +52,8 @@ export default {
     },
     onYearInput(value) {
       this.$emit('year', Number(value))
-    }
-  }
+    },
+  },
 }
 </script>
 

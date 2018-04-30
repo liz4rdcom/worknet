@@ -16,7 +16,7 @@
     props: ['currentLocationName', 'currentLocationUnitName', 'onLocationChanged'],
     data() {
       return {
-        locationList: []
+        locationList: [],
       }
     },
     async created() {
@@ -28,7 +28,7 @@
         console.error(e)
       }
     },
-    components: { 'locations': locations }
+    components: { 'locations': locations },
   }
 </script>
 

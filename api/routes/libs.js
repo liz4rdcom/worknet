@@ -56,5 +56,5 @@ router.get('/languages', isAuthorized, async (req, res, next) => {
 
 module.exports = {
   router,
-  baseUrl
+  baseUrl,
 }

@@ -32,7 +32,7 @@ async function register({ userName, password, email, phone, birthDate }) {
 
   const signUpObj = {
     userName,
-    password
+    password,
   }
 
   if (email) {
@@ -47,7 +47,7 @@ async function register({ userName, password, email, phone, birthDate }) {
     userName,
     birthDate,
     phone,
-    email
+    email,
   }
 
   try {
@@ -101,7 +101,7 @@ async function fillUserProfile(userName, profile) {
 
   if (!foundUser) {
     userToSave = Object.assign({
-      userName
+      userName,
     }, profile)
   } else {
     userToSave = Object.assign(foundUser, profile)
@@ -416,7 +416,7 @@ async function getLanguages(userName) {
 async function addLanguage(userName, languageObject) {
   let language = {
     languageName: languageObject.languageName,
-    languageLevel: languageObject.languageLevel
+    languageLevel: languageObject.languageLevel,
   }
 
   let languages = await userRepository.getLanguages(userName)
@@ -468,7 +468,7 @@ async function deleteDesirableJobLocations(userName, location) {
 async function addDesirableJobLocations(userName, location) {
   let jobLocation = {
     locationName: location.locationName,
-    locationUnitName: location.locationUnitName
+    locationUnitName: location.locationUnitName,
   }
 
   let desirableJobLocations = await userRepository.getDesirableJobLocations(userName)
@@ -591,5 +591,5 @@ module.exports = {
   addJobDescription,
   getUseMediationService,
   addUseMediationService,
-  register
+  register,
 }

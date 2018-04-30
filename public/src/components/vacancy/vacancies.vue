@@ -25,7 +25,7 @@ export default {
   name: 'vacancies',
   data: () => ({
     vacancies: [],
-    query: ''
+    query: '',
   }),
   created() {
     // this.$http.get(baseUrl)
@@ -42,8 +42,8 @@ export default {
         .then(response => {
           this.vacancies = response.data
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

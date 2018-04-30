@@ -12,7 +12,7 @@ export const MONTH_NAMES = [
   'სექტემბერი',
   'ოქტომბერი',
   'ნოემბერი',
-  'დეკემბერი'
+  'დეკემბერი',
 ]
 
 export const EARLIEST_REALISTIC_BIRTH_YEAR = 1905

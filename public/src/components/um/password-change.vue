@@ -32,9 +32,9 @@ export default {
     passwordChange: {
       oldPassword: '',
       newPassword: '',
-      reNewPassword: ''
+      reNewPassword: '',
     },
-    errotText: ''
+    errotText: '',
   }),
   methods: {
     openModal: function () {
@@ -69,7 +69,7 @@ export default {
       const payloadString = jwt.split('.')[1]
       const jsonString = Buffer.from(payloadString, 'base64').toString()
       return JSON.parse(jsonString)
-    }
-  }
+    },
+  },
 }
 </script>

@@ -39,11 +39,11 @@
       return {
         locationDefaultObject: Object.freeze({
           locationName: '',
-          units: []
+          units: [],
         }),
         selectedLocationName: '',
         selectedLocationUnitName: '',
-        selectedLocation: this.locationDefaultObject
+        selectedLocation: this.locationDefaultObject,
       }
     },
     created() {
@@ -62,7 +62,7 @@
       },
       currentLocationUnitName(value) {
         this.selectedLocationUnitName = value
-      }
+      },
     },
     methods: {
       locationChanged(locationName) {
@@ -77,7 +77,7 @@
 
         this.$emit('onLocationChanged', {
           locationName: this.selectedLocationName,
-          locationUnitName: this.selectedLocationUnitName
+          locationUnitName: this.selectedLocationUnitName,
         })
       },
       loadOptions() {
@@ -86,8 +86,8 @@
 
           this.selectedLocation = location || this.locationDefaultObject
         }
-      }
-    }
+      },
+    },
   }
 </script>
 

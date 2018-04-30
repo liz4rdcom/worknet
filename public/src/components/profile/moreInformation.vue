@@ -160,7 +160,7 @@ export default {
       drivingLicenceT2: false,
       airLicence: false,
       seaLicence: false,
-      railwayLicence: false
+      railwayLicence: false,
     },
     desirableSalary: null,
     jobDescription: {
@@ -171,11 +171,11 @@ export default {
       interestedToBeVolunteer: false,
       interestedInTemporaryJob: false,
       interestedInDangerousJob: false,
-      unemployed: false
+      unemployed: false,
     },
     militaryObligation: false,
     useMediationService: false,
-    desirableSalaryFilled: false
+    desirableSalaryFilled: false,
   }),
   created: async function () {
     try {
@@ -185,14 +185,14 @@ export default {
         obligationResponse,
         salaryResponse,
         jobResponse,
-        useMediationServiceResponse
+        useMediationServiceResponse,
       ] = await Promise.all([
         this.$http.get(baseUrl + 'drivinglicence', { headers: utils.getHeaders() }),
         this.$http.get(baseUrl + 'hasdrivinglicence', { headers: utils.getHeaders() }),
         this.$http.get(baseUrl + 'militaryObligation', { headers: utils.getHeaders() }),
         this.$http.get(baseUrl + 'desirableSalary', { headers: utils.getHeaders() }),
         this.$http.get(baseUrl + 'jobDescription', { headers: utils.getHeaders() }),
-        this.$http.get(baseUrl + 'usemediationservice', { headers: utils.getHeaders() })
+        this.$http.get(baseUrl + 'usemediationservice', { headers: utils.getHeaders() }),
       ])
 
       this.drivingLicence = licenceResponse.data
@@ -264,7 +264,7 @@ export default {
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
-  }
+    },
+  },
 }
 </script>
