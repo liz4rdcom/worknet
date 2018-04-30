@@ -213,7 +213,7 @@ const testJobs = [{
   'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
   'useMediationService': true,
   'vacantPlacesQuantity': 2,
-  'functionsDescription': 'blablablabla',
+  'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
   'additionalDescription': 'damatebiti informacia TEST TEST',
   'averageSalaryName': '150-300',
   'fullTime': true,
@@ -245,6 +245,42 @@ const testJobs = [{
     },
     {
       'skillName': 'CSS'
+    },
+    {
+      'skillName': 'Javascript1'
+    },
+    {
+      'skillName': 'Javascript2'
+    },
+    {
+      'skillName': 'Javascript3'
+    },
+    {
+      'skillName': 'Javascript4'
+    },
+    {
+      'skillName': 'Javascript5'
+    },
+    {
+      'skillName': 'Javascript6'
+    },
+    {
+      'skillName': 'Javascript7'
+    },
+    {
+      'skillName': 'Javascript8'
+    },
+    {
+      'skillName': 'Javascript9'
+    },
+    {
+      'skillName': 'Javascript0'
+    },
+    {
+      'skillName': 'Javascript11'
+    },
+    {
+      'skillName': 'Javascript12'
     }
   ]
 }]
@@ -509,7 +545,7 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
       await deleteIndex(index)
     }
 
-    if (!exists) {
+    if (dropIndexIfExists === true || !exists) {
       await createIndex(index, indexOption)
 
       await insertData(index, type, data)
@@ -521,7 +557,7 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 }
 
 seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
-seedData(testJobs, 'job', indexDefaultOptions, 'job', false)
+seedData(testJobs, 'job', indexDefaultOptions, 'job', true)
 seedData(testLibs, 'location', indexDefaultOptions, 'location', true)
 seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
 seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
