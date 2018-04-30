@@ -44,13 +44,26 @@ async function fetchFormalEducationLevels() {
   return this.formalEducationLevels
 }
 
+/**
+ * ენების ჩატვირთვა
+ * @return {Array<String>}
+ */
+async function fetchLanguages() {
+  if (this.languagesSelect) return this.languagesSelect
+  let response = await axios.get('api/libs/languages', {headers: utils.getHeaders()})
+  this.languagesSelect = response.data
+  return this.languagesSelect
+}
+
 export default {
   locationsOfGeorgia: undefined,
   educationTypes: undefined,
   educationLevels: undefined,
   formalEducationLevels: undefined,
+  languagesSelect: undefined,
   fetchLocationsOfGeorgia,
   fetchEducationTypes,
   fetchEducationLevels,
-  fetchFormalEducationLevels
+  fetchFormalEducationLevels,
+  fetchLanguages
 }

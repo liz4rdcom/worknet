@@ -15,6 +15,8 @@ const educationLevelIndex = config.get('elastic.educationLevelIndex')
 const educationLevelType = config.get('elastic.educationLevelType')
 const formalEducationLevelIndex = config.get('elastic.formalEducationLevelIndex')
 const formalEducationLevelType = config.get('elastic.formalEducationLevelType')
+const languagesIndex = config.get('elastic.languagesIndex')
+const languagesType = config.get('elastic.languagesType')
 
 async function getLocationsInGeorgia() {
   let options = {
@@ -61,9 +63,21 @@ async function getFormalEducationLevels() {
   return result.hits.hits.map(item => item._source.name)
 }
 
+async function getLanguages() {
+  let options = {
+    index: languagesIndex,
+    type: languagesType
+  }
+
+  let result = await client.search(options)
+
+  return result.hits.hits.map(item => item._source.name)
+}
+
 module.exports = {
   getLocationsInGeorgia,
   getEducationTypes,
   getEducationLevels,
-  getFormalEducationLevels
+  getFormalEducationLevels,
+  getLanguages
 }

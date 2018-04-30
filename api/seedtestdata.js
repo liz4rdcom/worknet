@@ -397,6 +397,16 @@ const testLibs = [{
   ]
 }]
 
+const testLanguages = [
+  { name: 'ქართული' },
+  { name: 'ინგლისური' },
+  { name: 'რუსული' },
+  { name: 'ფრანგული' },
+  { name: 'გერმანული' },
+  { name: 'ესპანური' },
+  { name: 'არაბული' }
+]
+
 const testEducationTypes = [
   { name: 'უმაღლესი განათლება' },
   { name: 'პროფესიული განათლება' },
@@ -530,3 +540,4 @@ seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions,
 seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
 seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
 seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
+seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', true)
