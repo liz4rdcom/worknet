@@ -21,6 +21,8 @@ elastic:
   educationLevelType: 'educationLevel'
   formalEducationLevelIndex: 'formaleducationlevel'
   formalEducationLevelType: 'formalEducationLevel'
+  languagesIndex: 'languages'
+  languagesType: 'languages'
 um:
   mongodbConnectionString: 'mongodb://localhost:27017/umpack'
   accessTokenSecret: 'myrandomstring'

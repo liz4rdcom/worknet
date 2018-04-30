@@ -39,7 +39,7 @@
     data() {
       return {
         msg: 'profile page',
-        myProfile: {}
+        myProfile: {},
       }
     },
     created() {
@@ -52,7 +52,7 @@
       keyOfObject(obj) {
         let objString = JSON.stringify(obj)
         return utils.hashOfString(objString)
-      }
+      },
     },
     components: {
       'maininfo': maininfo,
@@ -63,8 +63,8 @@
       'desirable-trainings-manager': desirableTrainingsManager,
       'languages': languages,
       'desirable-job-locations': desirableJobLocations,
-      'more-information': moreInformation
-    }
+      'more-information': moreInformation,
+    },
   }
 </script>
 

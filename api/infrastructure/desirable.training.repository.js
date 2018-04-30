@@ -2,7 +2,7 @@ const elasticsearch = require('elasticsearch')
 const config = require('config')
 
 const client = new elasticsearch.Client({
-  host: config.get('elastic.host')
+  host: config.get('elastic.host'),
 })
 
 const index = config.get('elastic.desirableTrainingsIndex')
@@ -14,7 +14,7 @@ async function search(queryString) {
   const options = {
     index,
     type,
-    q: '*' + queryString + '*'
+    q: '*' + queryString + '*',
   }
 
   let result = await client.search(options)
@@ -29,10 +29,10 @@ async function exists(desirableTraining) {
     body: {
       query: {
         term: {
-          'name.keyword': desirableTraining
-        }
-      }
-    }
+          'name.keyword': desirableTraining,
+        },
+      },
+    },
   }
 
   let result = await client.search(options)
@@ -45,8 +45,8 @@ async function add(desirableTraining) {
     index,
     type,
     body: {
-      name: desirableTraining
-    }
+      name: desirableTraining,
+    },
   }
 
   return await client.index(options)
@@ -55,5 +55,5 @@ async function add(desirableTraining) {
 module.exports = {
   search,
   exists,
-  add
+  add,
 }

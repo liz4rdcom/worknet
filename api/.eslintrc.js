@@ -26,6 +26,7 @@ module.exports = {
     'no-multiple-empty-lines': 1,
     'eol-last': 1,
     'padded-blocks': 1,
-    'prefer-arrow-callback': 1
+    'prefer-arrow-callback': 1,
+    "comma-dangle": [2, 'always-multiline']
   }
 }

@@ -24,14 +24,14 @@ export default {
   data: () => ({
     chosenLocation: {
       name: null,
-      unitName: null
-    }
+      unitName: null,
+    },
   }),
   methods: {
     onLocationChanged(location) {
       this.chosenLocation = {
         name: location.locationName,
-        unitName: location.locationUnitName
+        unitName: location.locationUnitName,
       }
     },
     async addLocation() {
@@ -52,12 +52,12 @@ export default {
 
       let locationObject = {
         name: this.chosenLocation.name,
-        unitName: this.chosenLocation.unitName
+        unitName: this.chosenLocation.unitName,
       }
 
       try {
         await this.$http.post(baseUrl, locationObject, {
-          headers: utils.getHeaders()
+          headers: utils.getHeaders(),
         })
 
         this.desirableTrainingLocationList.push(locationObject)
@@ -80,18 +80,18 @@ export default {
         const url = baseUrl + `/${location.name}` + `/${location.unitName}`
 
         await this.$http.delete(url, {
-          headers: utils.getHeaders()
+          headers: utils.getHeaders(),
         })
 
         this.desirableTrainingLocationList.splice(indexOfLocation, 1)
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   components: {
-    'georgia-locations': georgiaLocations
-  }
+    'georgia-locations': georgiaLocations,
+  },
 }
 </script>
 

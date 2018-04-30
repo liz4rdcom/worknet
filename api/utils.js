@@ -12,5 +12,5 @@ const couldBePersonalId = num => _.isString(num) && num.length === 11 && stringC
 module.exports = {
   getUserNameFromRequest,
   stringContainsOnlyNumbers,
-  couldBePersonalId
+  couldBePersonalId,
 }

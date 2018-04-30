@@ -7,7 +7,7 @@ class User {
     this.skills.push({
       skillName: skill,
       endorsements: 0,
-      users: []
+      users: [],
     })
   }
 
@@ -75,7 +75,7 @@ const getRegisteringUser = ({
   birthDate,
   personalId,
   phone,
-  email
+  email,
 }) => {
   const newUser = {
     'userName': userName,
@@ -87,7 +87,7 @@ const getRegisteringUser = ({
     'desirableJobs': [],
     'desirableJobLocations': [],
     'desirableTrainings': [],
-    'desirableTrainingLocations': []
+    'desirableTrainingLocations': [],
   }
 
   if (personalId) {

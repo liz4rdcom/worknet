@@ -50,7 +50,7 @@ export default {
   name: 'vacancy-view',
   props: ['id'],
   data: () => ({
-    vacancy: {}
+    vacancy: {},
   }),
   created() {
     this.$http.get(baseUrl + '/' + this.id)
@@ -61,7 +61,7 @@ export default {
   methods: {
     goBack() {
       this.$router.back()
-    }
+    },
   },
   computed: {
     languagesText() {
@@ -94,8 +94,8 @@ export default {
       if (this.vacancy.railwayLicence) licences.push('სარკინიგზო')
 
       return licences
-    }
-  }
+    },
+  },
 }
 </script>
 

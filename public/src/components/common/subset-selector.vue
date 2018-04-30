@@ -37,7 +37,7 @@
     data() {
       return {
         newElement: '',
-        autocompleteElements: []
+        autocompleteElements: [],
       }
     },
     methods: {
@@ -62,11 +62,11 @@
         let {data} = await this.getAutocompleteData(value)
 
         this.autocompleteElements = data || []
-      }
+      },
     },
     components: {
-      autocomplete
-    }
+      autocomplete,
+    },
   }
 </script>
 

@@ -14,5 +14,5 @@ async function addIfNotExists(desirableTraining) {
 
 module.exports = {
   search,
-  addIfNotExists
+  addIfNotExists,
 }

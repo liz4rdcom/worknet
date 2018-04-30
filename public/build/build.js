@@ -24,7 +24,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       modules: false,
       children: false, // if you are using ts-loader, setting this to true will make tyescript errors show up during build
       chunks: false,
-      chunkModules: false
+      chunkModules: false,
     }) + '\n\n')
 
     if (stats.hasErrors()) {

@@ -7,5 +7,5 @@ function toObject(elasticHit) {
 }
 
 module.exports = {
-  toObject
+  toObject,
 }

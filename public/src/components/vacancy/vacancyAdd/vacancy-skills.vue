@@ -1,5 +1,5 @@
 <template>
-<div class="profile-skills">
+<div class="vacancy-skills">
   <b-card title="უნარები">
     <subset-selector
       ref="skillInput"
@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import subsetSelector from '../common/subset-selector'
-import { bus } from '../common/bus'
-import utils from '../../utils'
+import subsetSelector from '../../common/subset-selector'
+import { bus } from '../../common/bus'
+import utils from '../../../utils'
 
-const baseUrl = '/api/users/profile/skills'
+const baseUrl = '/api/users/vacancy/skills'
 const searchUrl = '/api/skills/search'
 
 export default {
-  name: 'profile-skills',
+  name: 'vacancy-skills',
   data: () => ({
     skills: [],
   }),

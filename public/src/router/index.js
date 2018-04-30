@@ -4,7 +4,8 @@ import Cookies from 'js-cookie'
 import profile from '../components/profile/profile'
 import vacancies from '../components/vacancy/vacancies'
 import vacancyView from '../components/vacancy/vacancy-view'
-import vacancyAdd from '../components/vacancy/vacancy-add'
+import vacancyAdd from '../components/vacancy/vacancyAdd/vacancy-add'
+import ownVacancies from '../components/vacancy/vacancyAdd/own-vacancies'
 import login from '../components/um/login'
 import register from '../components/um/register'
 // import utils from '../utils'
@@ -16,40 +17,45 @@ let router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/vacancies'
+      redirect: '/vacancies',
     },
     {
       path: '/profile',
       name: 'profile',
-      component: profile
+      component: profile,
     },
     {
       path: '/vacancies',
       name: 'vacancies',
-      component: vacancies
+      component: vacancies,
     },
     {
       path: '/vacancies/:id/view',
       name: 'vacancy-view',
       component: vacancyView,
-      props: true
+      props: true,
     },
     {
       path: '/vacancies/add',
       name: 'vacancy-add',
-      component: vacancyAdd
+      component: vacancyAdd,
+    },
+    {
+      path: '/vacancies/own',
+      name: 'vacancies-own',
+      component: ownVacancies,
     },
     {
       path: '/login',
       component: login,
-      name: 'login'
+      name: 'login',
     },
     {
       path: '/register',
       component: register,
-      name: 'register'
-    }
-  ]
+      name: 'register',
+    },
+  ],
 })
 
 router.beforeEach(async (to, from, next) => {

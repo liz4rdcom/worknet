@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import autocomplete from '../common/autocomplete'
-import utils from '../../utils'
-import { bus } from '../common/bus'
+import autocomplete from '../../common/autocomplete'
+import utils from '../../../utils'
+import { bus } from '../../common/bus'
+import libs from '../../../libs'
 import language from './language'
-import libs from '../../libs'
 
 const baseUrl = '/api/users/profile/languages'
 

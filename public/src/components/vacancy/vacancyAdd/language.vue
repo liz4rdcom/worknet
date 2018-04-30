@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import utils from '../../utils'
-import { bus } from '../common/bus'
+import utils from '../../../utils'
+import { bus } from '../../common/bus'
 
 const baseUrl = '/api/users/profile/languages'
 

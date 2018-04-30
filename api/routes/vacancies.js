@@ -7,6 +7,8 @@ const vacancyInteractor = require('../interactors/vacancy.interactor')
 const utils = require('../utils')
 
 router.get('/', isAuthorized, (req, res, next) => {
+  console.log('yyyy')
+
   vacancyInteractor.getList(req.query.query)
     .then(res.send.bind(res))
     .catch(next)
@@ -32,7 +34,7 @@ router.post('/', isAuthorized, (req, res, next) => {
   vacancyInteractor.addVacancy(userName, req.body)
     .then((id) => {
       res.send({
-        id: id
+        id: id,
       })
     })
     .catch(next)
@@ -44,7 +46,7 @@ router.put('/:id', isAuthorized, (req, res, next) => {
   vacancyInteractor.editVacancy(userName, req.params.id, req.body)
     .then(() => {
       res.send({
-        success: true
+        success: true,
       })
     })
     .catch(next)
@@ -56,7 +58,7 @@ router.delete('/:id', isAuthorized, (req, res, next) => {
   vacancyInteractor.deleteVacancy(userName, req.params.id)
     .then(() => {
       res.send({
-        success: true
+        success: true,
       })
     })
     .catch(next)
@@ -64,5 +66,5 @@ router.delete('/:id', isAuthorized, (req, res, next) => {
 
 module.exports = {
   router,
-  baseUrl
+  baseUrl,
 }
