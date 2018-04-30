@@ -49,22 +49,20 @@ export default {
         await this.$http.delete(baseUrl, {params: item, headers: utils.getHeaders()})
         let index = this.desirableJobLocations.findIndex((d) => d.locationName === item.locationName && d.locationUnitName === item.locationUnitName)
         this.desirableJobLocations.splice(index, 1)
-      } catch(error){
+      } catch (error) {
         bus.$emit('error', error)
       }
-
     },
     onLocationChanged(location) {
       this.location = location
     },
     addLocation: async function () {
       try {
-        await this.$http.post(baseUrl,  this.location, {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl, this.location, {headers: utils.getHeaders()})
         this.desirableJobLocations.push(this.location)
-      } catch(error){
+      } catch (error) {
         bus.$emit('error', error)
       }
-
     }
   },
   components: {

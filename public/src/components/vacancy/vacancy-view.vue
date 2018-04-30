@@ -1,45 +1,47 @@
 <template>
 <div id="">
-  <div class="backButton">
-    <a @click="goBack">
-      <i class="fa fa-arrow-left fa-2x" aria-hidden="true"></i>
-    </a>
-  </div>
-  <label>პოზიცია: <b>{{vacancy.positionName}}</b></label><br />
-  <label>ორგანიზაცია: <b>{{vacancy.organization}}</b></label><br />
-  <label>მისამართი: <b>{{vacancy.locationName}} &nbsp; {{vacancy.locationUnitName}} &nbsp; {{vacancy.addressLine}}</b></label><br />
-  <label>ვაკანსიის დადების თარიღი: <b>{{vacancy.publishDate}}</b></label><br />
-  <label>გასაუბრებების დაწყების სავარაუდო თარიღი: <b>{{vacancy.interviewSupposedStartDate}}</b></label><br />
-  <label>ბოლო ვადა: <b>{{vacancy.endDate}}</b></label><br />
-  <label>ვაკანტური ადგილები: <b>{{vacancy.vacantPlacesQuantity}}</b></label><br />
-  <label>ანაზღაურება: <b>{{vacancy.averageSalaryName}}</b></label><br />
-  <label>განათლების საფეხური: <b>{{vacancy.formalEducationLevelName}}</b></label><br />
-  <label>სავალდებულო ენები: <b>{{languagesText}}</b></label><br />
-  <label>სამუშაოს ტიპი: <b>{{jobType}}</b></label><br />
-
-  <label v-if="drivingLicences.length > 0">
-      <span v-if="drivingLicences.length === 1">სავალდებულო მართვის მოწმობა</span>
-      <span v-else>სავალდებულო მართვის მოწმობები</span>
-      : <b>{{drivingLicences.join(' , ')}}</b>
-  </label><br />
-
-  <div class="description">
-    <div class="description-title">სამუშაოს აღწერა</div>
-    <div class="description-text">{{vacancy.functionsDescription}}</div>
-  </div>
-
-  <div class="list-field">
-    <div class="list-title">სავალდებულო მოთხოვნები:</div>
-    <ul>
-      <li v-for="skill in vacancy.skills" :key="skill.skillName">{{skill.skillName}}</li>
-    </ul>
-  </div>
-
-  <div class="description">
-    <div class="description-title">დამატებითი ინფორმაცია</div>
-    <div class="description-text">{{vacancy.additionalDescription}}</div>
-  </div>
-
+  <b-card title="ორგანიზაციის შესახებ">
+    <label>ორგანიზაცია: <b>{{vacancy.organization}}</b></label><br />
+    <label>მისამართი: <b>{{vacancy.locationName}} &nbsp; {{vacancy.locationUnitName}} &nbsp; {{vacancy.addressLine}}</b></label><br />
+  </b-card>
+  <b-card title="თარირები">
+    <label>ვაკანსიის დადების თარიღი: <b>{{vacancy.publishDate}}</b></label><br />
+    <label>გასაუბრებების დაწყების სავარაუდო თარიღი: <b>{{vacancy.interviewSupposedStartDate}}</b></label><br />
+    <label>ბოლო ვადა: <b>{{vacancy.endDate}}</b></label><br />
+  </b-card>
+  <b-card title="ვაკანსიის მოკლე აღწერილობა">
+    <label>პოზიცია: <b>{{vacancy.positionName}}</b></label><br />
+    <label>ვაკანტური ადგილების რაოდენობა: <b>{{vacancy.vacantPlacesQuantity}}</b></label><br />
+    <label>ანაზღაურება: <b>{{vacancy.averageSalaryName}}</b></label><br />
+    <label v-if="jobDescription.fullTime"><div class="chip">სრული განაკვეთი</div></label>
+    <label v-if="jobDescription.partTime"><div class="chip">არასრული განაკვეთი</div></label>
+    <label v-if="jobDescription.shiftBased"><div class="chip">ცვლებში</div></label>
+  </b-card>
+   <b-card title="განათლება">
+    <label>განათლება: <b>{{vacancy.formalEducationLevelName}}</b></label>
+  </b-card>
+   <b-card title="ენები">
+     <div class="chip" v-for="item in languagesArray">
+        {{item.languageName}}
+      </div>
+   </b-card>
+   <b-card title="სკილები">
+     <div class="chip" v-for="item in skillsArray">
+        {{item.skillName}}
+      </div>
+   </b-card>
+   <b-card title="მართვის მოწმობა">
+     <label v-if="drivingLicence.drivingLicenceA"><div class="chip">ლიცენზია A</div></label>
+     <label v-if="drivingLicence.drivingLicenceB"><div class="chip">ლიცენზია B</div></label>
+     <label v-if="drivingLicence.drivingLicenceC"><div class="chip">ლიცენზია C</div></label>
+     <label v-if="drivingLicence.drivingLicenceD"><div class="chip">ლიცენზია D</div></label>
+     <label v-if="drivingLicence.drivingLicenceE"><div class="chip">ლიცენზია E</div></label>
+     <label v-if="drivingLicence.drivingLicenceT1"><div class="chip">ლიცენზია T1</div></label>
+     <label v-if="drivingLicence.drivingLicenceT2"><div class="chip">ლიცენზია T2</div></label>
+     <label v-if="drivingLicence.airLicence"><div class="chip">ფრენის ლიცენზია</div></label>
+     <label v-if="drivingLicence.seaLicence"><div class="chip">საზღვაო ლიცენზია</div></label>
+     <label v-if="drivingLicence.railwayLicence"><div class="chip">სარკინიგზო ლიცენზია</div></label>
+   </b-card>
 </div>
 </template>
 
@@ -50,13 +52,50 @@ export default {
   name: 'vacancy-view',
   props: ['id'],
   data: () => ({
-    vacancy: {}
+    vacancy: {},
+    jobDescription: {
+      fullTime: false,
+      partTime: false,
+      shiftBased: false
+    },
+    drivingLicence: {
+      drivingLicenceA: false,
+      drivingLicenceB: false,
+      drivingLicenceC: false,
+      drivingLicenceD: false,
+      drivingLicenceE: false,
+      drivingLicenceT1: false,
+      drivingLicenceT2: false,
+      airLicence: false,
+      seaLicence: false,
+      railwayLicence: false
+    },
+    languagesArray: [],
+    skillsArray: []
   }),
-  created() {
-    this.$http.get(baseUrl + '/' + this.id)
-      .then(response => {
-        this.vacancy = response.data
-      })
+  async created() {
+    let response = await this.$http.get(baseUrl + '/' + this.id)
+
+    this.vacancy = response.data
+
+    this.jobDescription.fullTime = response.data.fullTime
+    this.jobDescription.partTime = response.data.partTime
+    this.jobDescription.shiftBased = response.data.shiftBased
+
+    this.drivingLicence.drivingLicenceA = response.data.drivingLicenceA
+    this.drivingLicence.drivingLicenceB = response.data.drivingLicenceB
+    this.drivingLicence.drivingLicenceC = response.data.drivingLicenceC
+    this.drivingLicence.drivingLicenceD = response.data.drivingLicenceD
+    this.drivingLicence.drivingLicenceE = response.data.drivingLicenceE
+    this.drivingLicence.drivingLicenceT1 = response.data.drivingLicenceT1
+    this.drivingLicence.drivingLicenceT2 = response.data.drivingLicenceT2
+    this.drivingLicence.airLicence = response.data.airLicence
+    this.drivingLicence.seaLicence = response.data.seaLicence
+    this.drivingLicence.railwayLicence = response.data.railwayLicence
+
+    this.languagesArray = response.data.languages
+
+    this.skillsArray = response.data.skills
   },
   methods: {
     goBack() {
@@ -134,4 +173,15 @@ export default {
   text-align: start;
   margin-left: 5%;
 }
+
+.chip {
+    display: inline-block;
+    padding: 0 25px;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: gold;
+    margin: 5px;
+  }
 </style>
