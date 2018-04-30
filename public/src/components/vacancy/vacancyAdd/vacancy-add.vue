@@ -191,10 +191,6 @@
       <option v-for="level in formalEducationLevelsOptions">{{level}}</option>
     </b-form-select>
   </b-form-group>
-  <!-- optional -->
-  <!-- <b-form-group label="'formalEducationLevelId': '3', //">
-    soon (gasarkvevia 3 da 2stan, educationshi profileshi id ar iyenebs 3)
-  </b-form-group> -->
 
   <b-card>
     <b-form-group label="should have driving licence"> <!-- optional sawyisi value eqneba da ar aaq mnishvneloba optional ari tu ara-->
@@ -309,74 +305,30 @@
   </b-card>
 
   <b-form-group label="'languages': [ //"> <!-- optional -->
-    <div>
-      <b-card title="ენების ცოდნა">
-        <div class="mb-4">
-          <div style="position:relative">
-            <autocomplete synchronous :value="newLanguage" :list="languagesSelect" @input="onAutocompleteInput" @enter="addLanguage(newLanguage)">
-              <div slot="input" slot-scope="{onInput, inputValue}">
-                <b-input-group>
-                  <b-form-input type="text"
-                    autocomplete="off"
-                    :value="inputValue"
-                    @input="onInput">
-                  </b-form-input>
-                  <b-input-group-button slot="right">
-                    <b-btn @click="addLanguage(newLanguage)">დამატება</b-btn>
-                  </b-input-group-button>
-                </b-input-group>
-              </div>
-            </autocomplete>
-          </div>
-        </div>
-
-        <b-card class="mb-2">
-            <div class="language-body">
-              <h4>{{language.languageName}}</h4>
-              <span v-if="!isEditMode">
-                <label><b>ცოდნის დონე</b> &nbsp;  {{language.languageLevel}}</label>
-                <b-button @click="isEditMode = true">
-                  <i class="fa fa-edit"></i>
-                </b-button>
-              </span>
-              <span v-if="isEditMode">
-                <b-form-textarea
-                  v-model="level"
-                  placeholder="რა დონეზე ფლობთ?"
-                  class="mb-1"
-                  :rows="1"
-                  :max-rows="2">
-                </b-form-textarea>
-                <b-button @click="saveLevelEdit()"><i class="fa fa-check"></i></b-button>
-                <b-button @click="cancelLevelEdit()"><i class="fa fa-times"></i></b-button>
-              </span>
-
-              <b-button class="" @click="deleteClick()">
-                წაშლა
-              </b-button>
-            </div>
-          </b-card>
-      </b-card>
-    </div>
+    <languages />
   </b-form-group>
 
   <b-form-group label="'skills': [ //"> <!-- optional -->
-    soon
+    <vacancy-skills/>
   </b-form-group>
-  <b-form-group label="'published': true"> <!-- optional -->
+
+  <!-- optional -->
+  <!-- <b-form-group label="'published': true">
     NOT NEEDED ON FRONT
-  </b-form-group>
+  </b-form-group> -->
 </div>
 </template>
 
 <script>
 import reverse from 'lodash/reverse'
-import georgiaLocations from '../common/georgia-locations'
-import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../constants'
-import utils from '../../utils'
-import { bus } from '../common/bus'
-import libs from '../../libs'
-import autocomplete from '../common/autocomplete'
+import georgiaLocations from '../../common/georgia-locations'
+import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../../constants'
+import utils from '../../../utils'
+import { bus } from '../../common/bus'
+import libs from '../../../libs'
+import autocomplete from '../../common/autocomplete'
+import languages from './languages'
+import vacancySkills from './vacancy-skills'
 
 export default {
   name: 'vacancy-add',
@@ -468,6 +420,8 @@ export default {
   components: {
     'georgia-locations': georgiaLocations,
     autocomplete,
+    languages,
+    'vacancy-skills': vacancySkills,
   },
 }
 </script>

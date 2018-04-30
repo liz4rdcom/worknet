@@ -220,7 +220,6 @@ const testJobs = [{
   'partTime': true, //
   'shiftBased': true, //
   'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //
-  'formalEducationLevelId': '3', //
   'drivingLicenceA': true, //
   'drivingLicenceB': true, //
   'drivingLicenceC': true, //
