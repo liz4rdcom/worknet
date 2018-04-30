@@ -58,7 +58,11 @@ async function getFormalEducationLevels() {
     type: formalEducationLevelType,
   }
 
+  console.log('boommmmmmmmmmmmmmmmmmm')
+
   let result = await client.search(options)
+
+  console.log('bammmmmmmmmmmmmmmmmmmmm')
 
   return result.hits.hits.map(item => item._source.name)
 }
