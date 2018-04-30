@@ -2,7 +2,7 @@ const elasticsearch = require('elasticsearch')
 const config = require('config')
 
 const client = new elasticsearch.Client({
-  host: config.get('elastic.host')
+  host: config.get('elastic.host'),
 })
 
 const utils = require('./utils')
@@ -15,7 +15,7 @@ async function getVacancies(query = '*') {
     index,
     type,
     q: query,
-    searchType: 'dfs_query_then_fetch'
+    searchType: 'dfs_query_then_fetch',
   }
 
   let result = await client.search(options)
@@ -27,7 +27,7 @@ async function getById(id) {
   const options = {
     index,
     type,
-    id
+    id,
   }
 
   let result = await client.get(options)
@@ -39,7 +39,7 @@ async function getByAuthorUserName(userName) {
   const options = {
     index,
     type,
-    q: `authorUserName:${userName}`
+    q: `authorUserName:${userName}`,
   }
 
   let result = await client.search(options)
@@ -51,7 +51,7 @@ async function addVacancy(vacancy) {
   let options = {
     index,
     type,
-    body: vacancy
+    body: vacancy,
   }
 
   let result = await client.index(options)
@@ -64,7 +64,7 @@ async function editVacancy(id, vacancy) {
     index,
     type,
     body: vacancy,
-    id: id
+    id: id,
   }
 
   await client.index(options)
@@ -74,7 +74,7 @@ async function deleteVacancy(id) {
   let options = {
     index,
     type,
-    id
+    id,
   }
 
   await client.delete(options)
@@ -86,5 +86,5 @@ module.exports = {
   editVacancy,
   deleteVacancy,
   getById,
-  getByAuthorUserName
+  getByAuthorUserName,
 }

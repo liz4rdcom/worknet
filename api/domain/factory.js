@@ -9,5 +9,5 @@ function createUser(userObject) {
 }
 
 module.exports = {
-  createUser
+  createUser,
 }

@@ -16,40 +16,40 @@ let router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/vacancies'
+      redirect: '/vacancies',
     },
     {
       path: '/profile',
       name: 'profile',
-      component: profile
+      component: profile,
     },
     {
       path: '/vacancies',
       name: 'vacancies',
-      component: vacancies
+      component: vacancies,
     },
     {
       path: '/vacancies/:id/view',
       name: 'vacancy-view',
       component: vacancyView,
-      props: true
+      props: true,
     },
     {
       path: '/vacancies/add',
       name: 'vacancy-add',
-      component: vacancyAdd
+      component: vacancyAdd,
     },
     {
       path: '/login',
       component: login,
-      name: 'login'
+      name: 'login',
     },
     {
       path: '/register',
       component: register,
-      name: 'register'
-    }
-  ]
+      name: 'register',
+    },
+  ],
 })
 
 router.beforeEach(async (to, from, next) => {

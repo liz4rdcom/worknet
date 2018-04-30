@@ -38,7 +38,7 @@ export default {
   props: ['language'],
   data: () => ({
     isEditMode: false,
-    level: ''
+    level: '',
   }),
   created() {
     this.level = this.language.languageLevel
@@ -64,8 +64,8 @@ export default {
     },
     deleteClick() {
       this.$emit('delete')
-    }
-  }
+    },
+  },
 }
 </script>
 

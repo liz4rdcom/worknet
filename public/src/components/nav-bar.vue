@@ -36,10 +36,10 @@ import passwordChange from './um/password-change'
 export default {
   name: 'navbar',
   components: {
-    'password-change': passwordChange
+    'password-change': passwordChange,
   },
   data: () => ({
-    loggedIn: false
+    loggedIn: false,
   }),
   created() {
     this.loggedIn = !!Cookies.get('token')
@@ -62,8 +62,8 @@ export default {
       this.loggedIn = false
 
       this.$router.push('/vacancies')
-    }
-  }
+    },
+  },
 }
 </script>
 

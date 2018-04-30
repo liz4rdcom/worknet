@@ -309,8 +309,57 @@
   </b-card>
 
   <b-form-group label="'languages': [ //"> <!-- optional -->
-    soon
+    <div>
+      <b-card title="ენების ცოდნა">
+        <div class="mb-4">
+          <div style="position:relative">
+            <autocomplete synchronous :value="newLanguage" :list="languagesSelect" @input="onAutocompleteInput" @enter="addLanguage(newLanguage)">
+              <div slot="input" slot-scope="{onInput, inputValue}">
+                <b-input-group>
+                  <b-form-input type="text"
+                    autocomplete="off"
+                    :value="inputValue"
+                    @input="onInput">
+                  </b-form-input>
+                  <b-input-group-button slot="right">
+                    <b-btn @click="addLanguage(newLanguage)">დამატება</b-btn>
+                  </b-input-group-button>
+                </b-input-group>
+              </div>
+            </autocomplete>
+          </div>
+        </div>
+
+        <b-card class="mb-2">
+            <div class="language-body">
+              <h4>{{language.languageName}}</h4>
+              <span v-if="!isEditMode">
+                <label><b>ცოდნის დონე</b> &nbsp;  {{language.languageLevel}}</label>
+                <b-button @click="isEditMode = true">
+                  <i class="fa fa-edit"></i>
+                </b-button>
+              </span>
+              <span v-if="isEditMode">
+                <b-form-textarea
+                  v-model="level"
+                  placeholder="რა დონეზე ფლობთ?"
+                  class="mb-1"
+                  :rows="1"
+                  :max-rows="2">
+                </b-form-textarea>
+                <b-button @click="saveLevelEdit()"><i class="fa fa-check"></i></b-button>
+                <b-button @click="cancelLevelEdit()"><i class="fa fa-times"></i></b-button>
+              </span>
+
+              <b-button class="" @click="deleteClick()">
+                წაშლა
+              </b-button>
+            </div>
+          </b-card>
+      </b-card>
+    </div>
   </b-form-group>
+
   <b-form-group label="'skills': [ //"> <!-- optional -->
     soon
   </b-form-group>
@@ -327,6 +376,7 @@ import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../.
 import utils from '../../utils'
 import { bus } from '../common/bus'
 import libs from '../../libs'
+import autocomplete from '../common/autocomplete'
 
 export default {
   name: 'vacancy-add',
@@ -363,11 +413,11 @@ export default {
       drivingLicenceT2: false,
       airLicence: false,
       seaLicence: false,
-      railwayLicence: false
+      railwayLicence: false,
     },
     formalEducationLevels: [],
     isOrganization: true,
-    showDataVisually: false
+    showDataVisually: false,
   }),
   async created() {
     try {
@@ -380,7 +430,7 @@ export default {
     onLocationChanged(location) {
       this.vacancy.locationName = location.locationName
       this.vacancy.locationUnitName = location.locationUnitName
-    }
+    },
   },
   computed: {
     daysOptions() {
@@ -413,11 +463,12 @@ export default {
       retVal.splice(0, 0, '- აირჩიე -')
 
       return retVal
-    }
+    },
   },
   components: {
-    'georgia-locations': georgiaLocations
-  }
+    'georgia-locations': georgiaLocations,
+    autocomplete,
+  },
 }
 </script>
 <style scoped>

@@ -45,7 +45,7 @@ export default {
   data: () => ({
     languages: [],
     languagesSelect: [],
-    newLanguage: ''
+    newLanguage: '',
   }),
   async created() {
     let languagesRes = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
@@ -62,7 +62,7 @@ export default {
 
       let language = {
         languageName: languageName,
-        languageLevel: ''
+        languageLevel: '',
       }
 
       try {
@@ -98,12 +98,12 @@ export default {
     },
     onLevelChange(language, level) {
       language.languageLevel = level
-    }
+    },
   },
   components: {
     autocomplete,
-    language
-  }
+    language,
+  },
 
 }
 </script>
