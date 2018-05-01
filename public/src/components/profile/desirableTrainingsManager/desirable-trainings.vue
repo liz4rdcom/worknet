@@ -1,6 +1,7 @@
 <template>
 <div class="desirable-trainings">
   <subset-selector
+    idPrefix="desirable-trainings"
     ref="desirableTrainingInput"
     placeholder="მაგ. კულინარია, მზარეული"
     :editable="true"

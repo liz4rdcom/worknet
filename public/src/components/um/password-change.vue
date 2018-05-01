@@ -1,22 +1,28 @@
 <template>
   <b-modal v-model="modalShow" title="პაროლის შეცვლა">
-    <b-form-input v-model="passwordChange.oldPassword"
-        type="password"
-        placeholder="ძველი პაროლი"></b-form-input>
-    <b-form-input v-model="passwordChange.newPassword"
-        type="password"
-        placeholder="ახალი პაროლი"></b-form-input>
-    <b-form-input v-model="passwordChange.reNewPassword"
-        type="password"
-        placeholder="გაიმეორეთ ახალი პაროლი"></b-form-input>
+    <b-form-input
+      id="password-change-old-password"
+      v-model="passwordChange.oldPassword"
+      type="password"
+      placeholder="ძველი პაროლი"></b-form-input>
+    <b-form-input
+      id="password-change-new-password"
+      v-model="passwordChange.newPassword"
+      type="password"
+      placeholder="ახალი პაროლი"></b-form-input>
+    <b-form-input
+      id="password-change-confirm-new-password"
+      v-model="passwordChange.reNewPassword"
+      type="password"
+      placeholder="გაიმეორეთ ახალი პაროლი"></b-form-input>
     <label v-text="errotText"></label>
     <div slot="modal-footer" class="w-100">
-     <b-btn size="sm" class="float-right" variant="primary" @click="modalShow1=false">
+      <b-btn size="sm" class="float-right" variant="primary" @click="modalShow1=false">
         Close
-     </b-btn>
-     <b-btn size="sm" class="float-right" variant="primary" @click="handleOk">
+      </b-btn>
+      <b-btn size="sm" class="float-right" variant="primary" @click="handleOk">
         OK
-    </b-btn>
+      </b-btn>
     </div>
   </b-modal>
 </template>

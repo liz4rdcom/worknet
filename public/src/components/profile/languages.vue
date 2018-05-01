@@ -8,6 +8,7 @@
               <b-input-group>
                 <b-form-input type="text"
                   autocomplete="off"
+                  id="languages-autocomplete-input"
                   :value="inputValue"
                   @input="onInput">
                 </b-form-input>
@@ -25,7 +26,8 @@
         @levelChange="onLevelChange(language, $event)"
         @delete="removeLanguage(language.languageName)"
         v-for="language in languages"
-        :key="language.languageName">
+        :key="language.languageName"
+        :idPrefix="'profile-language-' + language.languageName">
       </language>
     </b-card>
   </div>

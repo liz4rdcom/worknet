@@ -5,7 +5,7 @@ const libRepository = require('../infrastructure/lib.repository')
 
 const baseUrl = '/api/libs'
 
-router.get('/locationsOfGeorgia', isAuthorized, async (req, res) => {
+router.get('/locationsOfGeorgia', async (req, res) => {
   try {
     let result = await libRepository.getLocationsInGeorgia()
     res.send(result[0].locationsInGeorgia)

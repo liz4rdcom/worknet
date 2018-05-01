@@ -723,15 +723,15 @@ async function deleteIndexesStatically() {
 comment seedDada(s) if uncommenting this, because seeds don't wait for
 this to finish and will probably cause error.
 */
-// deleteIndexesStatically()
+deleteIndexesStatically()
 
-seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
-seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', false)
-seedData(testLibs, 'location', indexDefaultOptions, 'location', true)
-seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
-seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
-seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
-seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
-seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
-seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
-seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', true)
+// seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
+// seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', false)
+// seedData(testLibs, 'location', indexDefaultOptions, 'location', true)
+// seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
+// seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
+// seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
+// seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
+// seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
+// seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
+// seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', true)

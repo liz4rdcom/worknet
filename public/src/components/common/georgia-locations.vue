@@ -1,5 +1,6 @@
 <template>
     <locations
+      :idPrefix="idPrefix"
       :locations="locationList"
       :currentLocationName="currentLocationName"
       :currentLocationUnitName="currentLocationUnitName"
@@ -13,7 +14,7 @@
 
   export default {
     name: 'georgia-locations',
-    props: ['currentLocationName', 'currentLocationUnitName', 'onLocationChanged'],
+    props: ['currentLocationName', 'currentLocationUnitName', 'onLocationChanged', 'idPrefix'],
     data() {
       return {
         locationList: [],

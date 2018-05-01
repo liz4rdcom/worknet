@@ -33,12 +33,12 @@
   <div class="experience-modal">
     <b-modal ref="experienceModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="onHide">
       <b-form-group label="პოზიცია">
-        <b-form-input v-model="currentExperience.jobTitle" type="text"></b-form-input>
+        <b-form-input id="experience-job-title" v-model="currentExperience.jobTitle" type="text"></b-form-input>
       </b-form-group>
       <b-form-group label="ორგანიზაცია">
-        <b-form-input v-model="currentExperience.organization" type="text"></b-form-input>
+        <b-form-input id="experience-organization" v-model="currentExperience.organization" type="text"></b-form-input>
       </b-form-group>
-      <b-form-checkbox v-model="currentExperience.locationIsInGeorgia">
+      <b-form-checkbox id="experience-location-georgia-checkbox" v-model="currentExperience.locationIsInGeorgia">
         ორგანიზაცია საქართველოშია
       </b-form-checkbox>
       <div v-if="currentExperience.locationIsInGeorgia">
@@ -46,6 +46,7 @@
           <b>რეგიონი & რაიონი</b>
         </label>
         <locations v-if="locationList.length>0"
+            idPrefix="experience"
             :locations="locationList"
             :currentLocationName="currentExperience.locationName"
             :currentLocationUnitName="currentExperience.locationUnitName"
@@ -53,7 +54,7 @@
         </locations>
       </div>
       <b-form-group label="მისამართი">
-        <b-form-input v-model="currentExperience.additionalAddressInfo" type="text"></b-form-input>
+        <b-form-input id="experience-address-info" v-model="currentExperience.additionalAddressInfo" type="text"></b-form-input>
       </b-form-group>
       <b-container class="periods">
         <b-row no-gutters>
@@ -61,6 +62,7 @@
             <div class="monthPeriod">
                 <label>დასაწყისი</label>
                 <month-period
+                  idPrefix="experience-start"
                   :month="currentExperience.startMonth"
                   :year="currentExperience.startYear"
                   @month="onStartMonthChange"
@@ -72,6 +74,7 @@
             <div class="monthPeriod" v-if="!workNow">
               <label>დასასრული</label>
               <month-period
+                idPrefix="experience-end"
                 :month="currentExperience.endMonth"
                 :year="currentExperience.endYear"
                 @month="onEndMonthChange"
@@ -85,7 +88,7 @@
         </b-row>
       </b-container>
 
-      <b-form-checkbox v-model="workNow">
+      <b-form-checkbox id="experience-still-working" v-model="workNow">
         ახლაც აქ ვმუშაობ
       </b-form-checkbox>
 

@@ -77,7 +77,7 @@
     </div>
     <div>
       <b-input-group v-if="desirableSalaryFilled === false">
-        <b-form-input type="text"
+        <b-form-input id="desirable-salary" type="text"
           placeholder="სასურველი ხელფასი"
           v-model="desirableSalary">
         </b-form-input>

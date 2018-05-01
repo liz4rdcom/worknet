@@ -1,5 +1,5 @@
 <template>
-<div id="">
+<div class="vacancy-view">
   <b-card title="ორგანიზაციის შესახებ">
     <label>ორგანიზაცია: <b>{{vacancy.organization}}</b></label><br />
     <label>მისამართი: <b>{{vacancy.locationName}} &nbsp; {{vacancy.locationUnitName}} &nbsp; {{vacancy.addressLine}}</b></label><br />
@@ -21,12 +21,12 @@
     <label>განათლება: <b>{{vacancy.formalEducationLevelName}}</b></label>
   </b-card>
   <b-card title="ენები">
-    <div class="chip" v-for="item in languagesArray">
+    <div class="chip" v-for="item in languagesArray" :key="item.languageName">
       {{item.languageName}}
     </div>
   </b-card>
   <b-card title="სკილები">
-    <div class="chip" v-for="item in skillsArray">
+    <div class="chip" v-for="item in skillsArray" :key="item.skillName">
       {{item.skillName}}
     </div>
   </b-card>

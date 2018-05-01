@@ -2,6 +2,7 @@
 <div class="profile-skills">
   <b-card title="უნარები">
     <subset-selector
+      idPrefix="profile-skills"
       ref="skillInput"
       placeholder="მაგ. ანალიტიკოსი"
       :editable="true"
