@@ -3,14 +3,10 @@
     <h1 class="welcome-element">შედით თქვენს პროფილში</h1>
     <b-card class="login" @keyup.enter="login">
       <b-form-group label="პირადი ნომერი / მომხმარებლის სახელი / იმეილი">
-          <b-form-input autofocus v-model="userNameOrEmail"
-                      type="text"
-        ></b-form-input>
+        <b-form-input id="login-username" autofocus v-model="userNameOrEmail" type="text"></b-form-input>
       </b-form-group>
       <b-form-group label="პაროლი">
-          <b-form-input v-model="password"
-                      type="password"
-        ></b-form-input>
+        <b-form-input id="login-password" v-model="password" type="password"></b-form-input>
       </b-form-group>
       <b-button variant="primary" @click="login">
         შესვლა
