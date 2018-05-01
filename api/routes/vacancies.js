@@ -27,7 +27,7 @@ router.get('/:id', async (req, res, next) => {
   try {
     let result = await vacancyInteractor.getById(req.params.id)
     next({result})
-  }catch (error) {
+  } catch (error) {
     next({error})
   }
 })
