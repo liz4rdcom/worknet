@@ -46,7 +46,6 @@ export default {
   data: () => ({
     vacancies: [],
     query: '',
-    descriptionArray: [],
     vacancyId: null
   }),
   async created() {

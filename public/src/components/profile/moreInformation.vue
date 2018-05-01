@@ -77,7 +77,7 @@
     </div>
     <div>
       <b-input-group v-if="desirableSalaryFilled === false">
-        <b-form-input type="text"
+        <b-form-input id="desirable-salary" type="text"
           placeholder="სასურველი ხელფასი"
           v-model="desirableSalary">
         </b-form-input>
@@ -187,12 +187,12 @@ export default {
         jobResponse,
         useMediationServiceResponse
       ] = await Promise.all([
-        this.$http.get(baseUrl + 'drivinglicence', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'hasdrivinglicence', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'militaryObligation', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'desirableSalary', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'jobDescription', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'usemediationservice', {headers: utils.getHeaders()})
+        this.$http.get(baseUrl + 'drivinglicence', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'hasdrivinglicence', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'militaryObligation', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'desirableSalary', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'jobDescription', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'usemediationservice', { headers: utils.getHeaders() })
       ])
 
       this.drivingLicence = licenceResponse.data

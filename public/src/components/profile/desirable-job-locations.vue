@@ -2,7 +2,7 @@
   <div>
     <b-card title="სასურველი სამსახურის ადგილმდებარეობა">
       <div>
-        <locations :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
+        <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
         <b-button  variant="primary" @click="addLocation">
           დამატება
         </b-button>

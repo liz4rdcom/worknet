@@ -2,6 +2,7 @@
 <div class="desirable-jobs">
   <b-card title="სასურველი სამსახური">
     <subset-selector
+      idPrefix="desirable-jobs"
       ref="desirableJobInput"
       placeholder="მაგ. პროგრამისტი"
       :editable="true"

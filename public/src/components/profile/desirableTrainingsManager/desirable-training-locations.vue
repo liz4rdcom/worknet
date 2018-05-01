@@ -1,6 +1,6 @@
 <template>
 <div class="desirable-training-locations">
-  <georgia-locations :onLocationChanged="onLocationChanged" />
+  <georgia-locations idPrefix="desirable-trainings" :onLocationChanged="onLocationChanged" />
   <div class="add-button-container">
     <b-btn @click="addLocation">დამატება</b-btn>
   </div>
