@@ -8,6 +8,7 @@
               <b-input-group>
                 <b-form-input type="text"
                   autocomplete="off"
+                  id="languages-autocomplete-input"
                   :value="inputValue"
                   @input="onInput">
                 </b-form-input>
@@ -25,29 +26,9 @@
         @levelChange="onLevelChange(language, $event)"
         @delete="removeLanguage(language.languageName)"
         v-for="language in languages"
-        :key="language.languageName">
+        :key="language.languageName"
+        :idPrefix="'profile-language-' + language.languageName">
       </language>
-
-      <!-- <b-list-group class="right-clear">
-        <b-list-group-item v-for="language in languages" :key="language.languageName">
-          <b-row>
-            <b-col cols="3">
-              <h4 style="margin-top: 10%;">{{language.languageName}}: </h4>
-            </b-col>
-            <b-col cols="5">
-              <b-form-group label="რა დონეზე ფლობთ?">
-                <b-form-input v-model="language.languageLevel"
-                  type="text"
-                  placeholder="">
-                </b-form-input>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <div class="right-float">
-            <b-btn @click="removeLanguage(language.languageName)">წაშლა</b-btn>
-          </div>
-        </b-list-group-item>
-      </b-list-group> -->
     </b-card>
   </div>
 </template>
