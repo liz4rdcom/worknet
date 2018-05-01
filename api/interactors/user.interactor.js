@@ -7,6 +7,62 @@ const desirableTrainingInterctor = require('./desirable.training.interactor')
 const factory = require('../domain/factory')
 const RecordError = require('../exceptions/record.error')
 const domainUtils = require('../domain/domainUtils')
+const umpack = require('../umpack')
+const PermissionError = require('../exceptions/permission.error')
+const getRegisteringUser = require('../domain/user').getRegisteringUser
+const utils = require('../utils')
+const dummyCRA = require('../infrastructure/dummy.CRA')
+
+async function register({ userName, password, email, phone, birthDate }) {
+  if (!userName) {
+    throw new PermissionError('მიუთითეთ userName.', 400)
+  }
+
+  if (!password) {
+    throw new PermissionError('მიუთითეთ password.', 400)
+  }
+
+  if (!birthDate) {
+    throw new PermissionError('მიუთითეთ birthDate.', 400)
+  }
+
+  if (!email && !phone) {
+    throw new PermissionError('იმაილი და საკონტაქტო ნომერიდან ერთერთი მაინც უნდა შეიყვანო.', 400)
+  }
+
+  const signUpObj = {
+    userName,
+    password
+  }
+
+  if (email) {
+    signUpObj.email = email
+  } else {
+    signUpObj.phone = phone
+  }
+
+  const umpackResult = await umpack.signup(signUpObj)
+
+  const userObj = {
+    userName,
+    birthDate,
+    phone,
+    email
+  }
+
+  try {
+    if (utils.couldBePersonalId(userName) && dummyCRA.arePersonalIdAndBirthDateValid(userName, birthDate, true)) { // todo CRA instead
+      userObj.personalId = userName
+    }
+
+    await userRepository.saveUser(getRegisteringUser(userObj))
+  } catch (e) {
+    // todo signup reverse
+    throw e
+  }
+
+  return umpackResult
+}
 
 async function getList() {
   return await userRepository.getUsers()
@@ -534,5 +590,6 @@ module.exports = {
   getJobDescription,
   addJobDescription,
   getUseMediationService,
-  addUseMediationService
+  addUseMediationService,
+  register
 }

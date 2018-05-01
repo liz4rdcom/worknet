@@ -1,4 +1,5 @@
 <template>
+<div>
   <b-navbar toggleable="md" type="dark" variant="dark">
 
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
@@ -16,21 +17,26 @@
           <b-nav-item v-if="!loggedIn" href="#/login">შესვლა</b-nav-item>
           <b-nav-item v-if="!loggedIn" href="#/register">რეგისტრაცია</b-nav-item>
         </b-navbar-nav>
-
         <b-nav-item-dropdown v-if="loggedIn" text="" right>
+          <b-dropdown-item id="show-modal" @click="modalTrue">პაროლის შეცვლა</b-dropdown-item>
           <b-dropdown-item @click="logout">გასვლა</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
+ <password-change ref="modalRef"></password-change>
+</div>
 </template>
 
 <script>
 import Cookies from 'js-cookie'
 import { bus } from './common/bus'
-
+import passwordChange from './um/password-change'
 export default {
   name: 'navbar',
+  components: {
+    'password-change': passwordChange
+  },
   data: () => ({
     loggedIn: false
   }),
@@ -46,6 +52,9 @@ export default {
     })
   },
   methods: {
+    modalTrue: function () {
+      this.$refs.modalRef.openModal()
+    },
     logout() {
       Cookies.remove('token')
 
