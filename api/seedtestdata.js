@@ -202,6 +202,7 @@ const testUsers = [{
 
 const testJobs = [
   {
+    'authorUserName': 'root',
     'positionName': 'JavaScript Developer',
     'organization': 'შპს FX1',
     'organizationTaxCode': '123456789',
@@ -286,6 +287,7 @@ const testJobs = [
     'status': 0, // 0 - draft, 1 - published, 2 - expired.
   },
   {
+    'authorUserName': 'root',
     'positionName': 'butler',
     'organization': 'შპს organization 1',
     'organizationTaxCode': '111111111',
@@ -320,6 +322,7 @@ const testJobs = [
     'status': 0,
   },
   {
+    'authorUserName': 'root',
     'positionName': 'bounty hunter',
     'organization': 'შპს organization 2',
     'organizationTaxCode': '222222222',
@@ -354,6 +357,7 @@ const testJobs = [
     'status': 1,
   },
   {
+    'authorUserName': 'root',
     'positionName': 'chef',
     'organization': 'შპს organization 3',
     'organizationTaxCode': '333333333',
@@ -698,7 +702,7 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
   }
 }
 
-async function bla() {
+async function deleteIndexesStatically() {
   try { await deleteIndex('job') } catch (e) {}
   try { await deleteIndex('location') } catch (e) {}
   try { await deleteIndex('lib') } catch (e) {}
@@ -715,7 +719,11 @@ async function bla() {
   try { await deleteIndex('languages') } catch (e) {}
 }
 
-// bla()
+/*
+comment seedDada(s) if uncommenting this, because seeds don't wait for
+this to finish and will probably cause error.
+*/
+// deleteIndexesStatically()
 
 seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
 seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', false)

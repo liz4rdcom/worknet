@@ -1,19 +1,7 @@
 <template>
   <div class="vacancy-add">
     <b-form>
-      <div class="data-visually">
-        <b-form-checkbox
-          v-model="showDataVisually"
-          :value="true"
-          :unchecked-value="false"
-        >
-          Show Data
-        </b-form-checkbox>
-
-        <pre v-if="showDataVisually">{{
-          JSON.stringify(this.$data, null, 2)
-        }}</pre>
-      </div>
+      <data-shower :data="this.$data" />
 
       <h1 class="hint-element">დაამატეთ ვაკანსია</h1>
 
@@ -333,11 +321,13 @@ import utils from '../../../utils'
 import { bus } from '../../common/bus'
 import libs from '../../../libs'
 import autocomplete from '../../common/autocomplete'
+import dataShower from '../../common/data-shower'
 import languages from './languages'
 import vacancySkills from './vacancy-skills'
 
 export default {
   name: 'vacancy-add',
+  props: ['id'],
   data: () => ({
     vacancy: {
       positionName: null,
@@ -375,7 +365,6 @@ export default {
     formalEducationLevels: [],
     isOrganization: true,
     shouldHaveDrivingLicence: false,
-    showDataVisually: false,
   }),
   async created() {
     try {
@@ -433,22 +422,11 @@ export default {
     autocomplete,
     languages,
     'vacancy-skills': vacancySkills,
+    'data-shower': dataShower,
   },
 }
 </script>
 <style scoped>
-.data-visually {
-  border: 1px solid black;
-  position: absolute;
-  z-index: 999;
-  background-color: lightcoral;
-  opacity: 0.2;
-  max-height: 70%;
-  overflow-y: auto;
-}
-.data-visually:hover {
-  opacity: 1;
-}
 .vacancy-add {
   margin: auto;
   width: 90%;

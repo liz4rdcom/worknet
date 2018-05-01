@@ -26,7 +26,7 @@
 <script>
 import utils from '../../utils'
 
-const vacanciesUrl = '/api/vacancies'
+const vacanciesOwnUrl = '/api/vacancies/own'
 
 export default {
   name: 'own-vacancies',
@@ -36,7 +36,7 @@ export default {
   }),
   async created() {
     try {
-      const response = await this.$http.get(vacanciesUrl, {headers: utils.getHeaders()})
+      const response = await this.$http.get(vacanciesOwnUrl, {headers: utils.getHeaders()})
 
       this.vacancies = response.data
     } catch (e) {

@@ -22,8 +22,6 @@ async function getUsers() {
 }
 
 async function getMainInfo(userName) {
-  console.log(userName)
-
   let options = {
     index,
     type,
@@ -82,7 +80,7 @@ async function updateMainInfo(userName, mainInfo) {
     },
   }
   let result = await client.updateByQuery(options)
-  console.log(result)
+
   return result
 }
 

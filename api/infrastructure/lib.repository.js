@@ -25,7 +25,6 @@ async function getLocationsInGeorgia() {
   }
 
   let result = await client.search(options)
-  console.log(result)
 
   return result.hits.hits.map(utils.toObject)
 }
