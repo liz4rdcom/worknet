@@ -3,56 +3,49 @@
     <h1 class="hint-element">დარეგისტრირდით მარტივად</h1>
     <b-card class="register">
       <b-form-group label="დარეგისტრირდით პირადი ნომერით ან მოიფიქრეთ მომხმარებლის სახელი">
-          <b-form-input autofocus v-model="personalIdOrUserName"
-                      type="text"
-          ></b-form-input>
+        <b-form-input id="register-username" autofocus v-model="personalIdOrUserName" type="text">
+        </b-form-input>
       </b-form-group>
       <b-container>
-          <b-row>
-              <b-col>მოიფიქრეთ პაროლი</b-col>
-              <b-col>აკრიფეთ პაროლი მეორედ</b-col>
-          </b-row>
-          <b-row>
-              <b-col class="password-col">
-                  <b-form-group> 
-                      <b-form-input v-model="password"
-                                  type="password"
-                      ></b-form-input>
-                  </b-form-group>
-              </b-col>
-              <b-col class="confirm-password-col">
-                  <b-form-group>
-                      <b-form-input v-model="confirmPassword"
-                                  type="password"
-                      ></b-form-input>
-                  </b-form-group>
-              </b-col>
-          </b-row>
+        <b-row>
+          <b-col>მოიფიქრეთ პაროლი</b-col>
+          <b-col>აკრიფეთ პაროლი მეორედ</b-col>
+        </b-row>
+        <b-row>
+          <b-col class="password-col">
+            <b-form-group>
+              <b-form-input id="register-password" v-model="password" type="password">
+              </b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col class="confirm-password-col">
+            <b-form-group>
+              <b-form-input id="register-confirm-password" v-model="confirmPassword" type="password">
+              </b-form-input>
+            </b-form-group>
+          </b-col>
+        </b-row>
       </b-container>
       <b-form-group label="ელექტრონული ფოსტა (იმეილი)">
-          <b-form-input v-model="email"
-                      type="text"
-          ></b-form-input>
+        <b-form-input id="register-email" v-model="email" type="text"></b-form-input>
       </b-form-group>
       <b-form-group label="საკონტაქტო ნომერი">
-          <b-form-input v-model="contactNumber"
-                      type="text"
-          ></b-form-input>
+        <b-form-input id="register-contact-number" v-model="contactNumber" type="text"></b-form-input>
       </b-form-group>
       <b-form-group label="დაბადების თარიღი">
         <b-container>
-            <b-row>
-              <b-col class="birth-day-col">
-                  <b-form-select v-model="birthDay" :options="birthDayOptions"/>
-              </b-col>
-              <b-col class="birth-month-col">
-                  <b-form-select v-model="birthMonth" :options="birthMonthOptions"/>
-              </b-col>
-              <b-col class="birth-year-col">
-                  <b-form-select v-model="birthYear" :options="birthYearOptions"/>
-              </b-col>
-            </b-row>
-        </b-container>  
+          <b-row>
+            <b-col class="birth-day-col">
+              <b-form-select id="register-birth-day" v-model="birthDay" :options="birthDayOptions"/>
+            </b-col>
+            <b-col class="birth-month-col">
+              <b-form-select id="register-birth-month" v-model="birthMonth" :options="birthMonthOptions"/>
+            </b-col>
+            <b-col class="birth-year-col">
+              <b-form-select id="register-birth-year" v-model="birthYear" :options="birthYearOptions"/>
+            </b-col>
+          </b-row>
+        </b-container>
       </b-form-group>
       <b-button variant="primary" @click="register">
         რეგისტრაციის დასრულება

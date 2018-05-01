@@ -44,6 +44,12 @@ const isValidEmail = str => /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/i.test(str)
 
 const couldBePersonalId = num => isString(num) && num.length === PERSONAL_NUMBER_LENGTH && stringContainsOnlyNumbers(num)
 
+function idWithPrefix(idPrefix, idPart) {
+  if (!idPrefix) return idPart
+
+  return idPrefix + '-' + idPart
+}
+
 export default {
   hashOfString: hashCode,
   isNullOrUndefined,
@@ -51,5 +57,6 @@ export default {
   getRangeNumberArray,
   stringContainsOnlyNumbers,
   isValidEmail,
-  couldBePersonalId
+  couldBePersonalId,
+  idWithPrefix
 }
