@@ -41,6 +41,11 @@ let router = new Router({
       component: vacancyAdd,
     },
     {
+      path: '/vacancies/add/:id',
+      name: 'vacancy-add-id',
+      component: vacancyAdd,
+    },
+    {
       path: '/vacancies/own',
       component: ownVacancies,
       children: [

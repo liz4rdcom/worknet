@@ -6,16 +6,16 @@
 
     <b-container class="bv-example-row">
         <b-row>
-            <b-col cols="2">
-                <b-nav vertical class="w-25">
-                    <b-nav-item href="#/vacancies/own/all">ყველა</b-nav-item>
-                    <b-nav-item href="#/vacancies/own/published">გამოქვეყნებულები</b-nav-item>
-                    <b-nav-item href="#/vacancies/own/draft">მონახაზები</b-nav-item>
-                    <b-nav-item href="#/vacancies/own/expired">ვადაგასულები</b-nav-item>
+            <b-col cols="3">
+                <b-nav vertical>
+                    <b-nav-item href="#/vacancies/own/all">ყველა ({{allCount}})</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/published">გამოქვეყნებულები ({{publishedCount}})</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/draft">მონახაზები ({{draftCount}})</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/expired">ვადაგასულები ({{expiredCount}})</b-nav-item>
                   </b-nav>
             </b-col>
 
-            <b-col v-if="vacancies !== null" cols="10">
+            <b-col v-if="vacancies !== null" cols="9">
                 <router-view :vacancies="vacancies"></router-view>
             </b-col>
         </b-row>
@@ -48,6 +48,18 @@ export default {
   methods: {
   },
   computed: {
+    allCount() {
+      return this.vacancies ? this.vacancies.length : 0
+    },
+    draftCount() {
+      return this.vacancies ? this.vacancies.filter(({ status }) => status === 0).length : 0
+    },
+    publishedCount() {
+      return this.vacancies ? this.vacancies.filter(({ status }) => status === 1).length : 0
+    },
+    expiredCount() {
+      return this.vacancies ? this.vacancies.filter(({ status }) => status === 2).length : 0
+    },
   },
 }
 </script>

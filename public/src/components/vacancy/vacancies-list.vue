@@ -9,7 +9,7 @@
     </b-list-group>
 
     <b-card v-if="currentVacancyIsDraft">
-        <b-button variant="primary">მონახაზის გაგრძელება</b-button>
+        <b-button variant="primary" :href="`#/vacancies/add/${$route.params.id}`">მონახაზის გაგრძელება</b-button>
     </b-card>
 
     <router-view></router-view>
