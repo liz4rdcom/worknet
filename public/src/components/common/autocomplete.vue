@@ -5,6 +5,7 @@
     @keydown.up='up'>
     <slot name="input" :onInput="onInput" :inputValue="inputValue">
       <b-form-input type="text" autocomplete="off"
+        :id="idWithPrefix(idPrefix, 'autocomplete-input')"
         :value="inputValue"
         @input="onInput">
       </b-form-input>
@@ -20,6 +21,8 @@
 </template>
 
 <script>
+import utils from '../../utils'
+
 export default {
   name: 'autocomplete',
   props: {
@@ -32,12 +35,16 @@ export default {
     synchronous: {
       type: Boolean,
       default: false
+    },
+    idPrefix: {
+      type: String
     }
   },
   data: () => ({
     open: false,
     current: 0,
-    inputValue: ''
+    inputValue: '',
+    idWithPrefix: utils.idWithPrefix
   }),
   methods: {
     onInput(value) {
