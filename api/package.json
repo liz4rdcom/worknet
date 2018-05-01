@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set NODE_ENV=development&& nodemon app.js -e js,yaml"
+    "start": "set NODE_ENV=development&& nodemon app.js -e js,yaml",
+    "lint": "set NODE_ENV=development&& eslint ./"
   },
   "keywords": [
     "worknet",
