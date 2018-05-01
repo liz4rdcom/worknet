@@ -16,7 +16,7 @@
   export default {
     name: 'side-modal',
     data: () => ({
-      show: false
+      show: false,
     }),
     methods: {
       sideModalOpen() {
@@ -32,8 +32,8 @@
         let modal = document.getElementById('myModal2')
         window.onclick = () => {}
         modal.style.display = 'none'
-      }
-    }
+      },
+    },
   }
 </script>
 <style scoped>

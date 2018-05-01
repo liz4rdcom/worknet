@@ -147,7 +147,7 @@ export default {
     educationLevels: [],
     formalEducationLevels: [],
     locationList: [],
-    educationToSubmit: {}
+    educationToSubmit: {},
   }),
   async created() {
     try {
@@ -157,14 +157,14 @@ export default {
         types,
         levels,
         formalEducationLevels,
-        formalEduLevelResponse
+        formalEduLevelResponse,
       ] = await Promise.all([
         this.$http.get(baseUrl, {headers: utils.getHeaders()}),
         libs.fetchLocationsOfGeorgia(),
         libs.fetchEducationTypes(),
         libs.fetchEducationLevels(),
         libs.fetchFormalEducationLevels(),
-        this.$http.get(baseUrl + '/formalEducationLevel', {headers: utils.getHeaders()})
+        this.$http.get(baseUrl + '/formalEducationLevel', {headers: utils.getHeaders()}),
       ])
 
       this.educations = response.data
@@ -189,7 +189,7 @@ export default {
         endYear: null,
         locationIsInGeorgia: true,
         locationName: null,
-        locationUnitName: null
+        locationUnitName: null,
       }
     },
     show(education) {
@@ -322,12 +322,12 @@ export default {
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   components: {
     'month-period': monthPeriod,
-    'locations': locations
-  }
+    'locations': locations,
+  },
 }
 </script>
 

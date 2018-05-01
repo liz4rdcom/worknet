@@ -14,8 +14,8 @@
     name: 'app',
     components: {
       notify,
-      'nav-bar': navBar
-    }
+      'nav-bar': navBar,
+    },
   }
 </script>
 
@@ -28,6 +28,7 @@
     color: #2c3e50;
     background: whitesmoke;
     height: 100%;
+    overflow-y: auto;
   }
 
   .flex {

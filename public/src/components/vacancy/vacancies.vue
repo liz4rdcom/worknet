@@ -1,8 +1,5 @@
 <template>
 <div id="vacancies">
-  <b-button  variant="primary" @click="redirectToVacancyAdd">
-      ახალი ვაკანსია5
-  </b-button>
   <div class="searchArea">
     <div class="form-group flex" @keyup.enter="search">
       <input type="text" class="form-control" v-model="query">
@@ -41,12 +38,12 @@ export default {
   name: 'vacancies',
   components: {
     'side-modal': sideModal,
-    'vacancy-view': vacancyView
+    'vacancy-view': vacancyView,
   },
   data: () => ({
     vacancies: [],
     query: '',
-    vacancyId: null
+    vacancyId: null,
   }),
   async created() {
     try {
@@ -88,10 +85,7 @@ export default {
         bus.$emit('error', error)
       }
     },
-    redirectToVacancyAdd() {
-      this.$router.push('/vacancies/new')
-    }
-  }
+  },
 }
 </script>
 

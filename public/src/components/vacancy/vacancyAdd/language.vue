@@ -10,7 +10,6 @@
       </span>
       <span v-if="isEditMode">
         <b-form-textarea
-          :id="idWithPrefix(idPrefix, 'level')"
           v-model="level"
           placeholder="რა დონეზე ფლობთ?"
           class="mb-1"
@@ -29,18 +28,17 @@
 </template>
 
 <script>
-import utils from '../../utils'
-import { bus } from '../common/bus'
+import utils from '../../../utils'
+import { bus } from '../../common/bus'
 
 const baseUrl = '/api/users/profile/languages'
 
 export default {
   name: 'language',
-  props: ['language', 'idPrefix'],
+  props: ['language'],
   data: () => ({
     isEditMode: false,
     level: '',
-    idWithPrefix: utils.idWithPrefix,
   }),
   created() {
     this.level = this.language.languageLevel

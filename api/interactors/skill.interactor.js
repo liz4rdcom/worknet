@@ -14,5 +14,5 @@ async function addIfNotExists(skillName) {
 
 module.exports = {
   search,
-  addIfNotExists
+  addIfNotExists,
 }

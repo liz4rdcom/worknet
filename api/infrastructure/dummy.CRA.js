@@ -5,5 +5,5 @@ const arePersonalIdAndBirthDateValid = (personalId, birthDate, retVal = true) =>
 }
 
 module.exports = {
-  arePersonalIdAndBirthDateValid
+  arePersonalIdAndBirthDateValid,
 }

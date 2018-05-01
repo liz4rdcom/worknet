@@ -35,6 +35,7 @@ module.exports = {
     'no-param-reassign': 0,
     'no-return-await': 0,
     'no-plusplus': 0,
-    'no-unused-vars': 1
+    "comma-dangle": [2, 'always-multiline'],
+    'no-unused-vars': 1,
   }
 }

@@ -12,30 +12,30 @@ describe('locations component', () => {
         locationName: 'თბილისი',
         units: [
           {
-            locationUnitName: 'ვაკე'
+            locationUnitName: 'ვაკე',
           },
           {
-            locationUnitName: 'ისანი'
-          }
-        ]
+            locationUnitName: 'ისანი',
+          },
+        ],
       },
       {
         locationName: 'გურია',
         units: [
           {
-            locationUnitName: 'ოზურგეთი'
+            locationUnitName: 'ოზურგეთი',
           },
           {
-            locationUnitName: 'ლანჩხუთი'
-          }
-        ]
-      }
+            locationUnitName: 'ლანჩხუთი',
+          },
+        ],
+      },
     ]
 
     let props = {
       locations: locationsProp,
       currentLocationName: 'თბილისი',
-      currentLocationUnitName: 'ვაკე'
+      currentLocationUnitName: 'ვაკე',
     }
 
     const wrapper = mount(locations, {propsData: props, localVue})

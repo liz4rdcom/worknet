@@ -56,7 +56,7 @@ export default {
     jobDescription: {
       fullTime: false,
       partTime: false,
-      shiftBased: false
+      shiftBased: false,
     },
     drivingLicence: {
       drivingLicenceA: false,
@@ -68,10 +68,10 @@ export default {
       drivingLicenceT2: false,
       airLicence: false,
       seaLicence: false,
-      railwayLicence: false
+      railwayLicence: false,
     },
     languagesArray: [],
-    skillsArray: []
+    skillsArray: [],
   }),
   async created() {
     let response = await this.$http.get(baseUrl + '/' + this.id)
@@ -100,7 +100,7 @@ export default {
   methods: {
     goBack() {
       this.$router.back()
-    }
+    },
   },
   computed: {
     languagesText() {
@@ -133,8 +133,8 @@ export default {
       if (this.vacancy.railwayLicence) licences.push('სარკინიგზო')
 
       return licences
-    }
-  }
+    },
+  },
 }
 </script>
 

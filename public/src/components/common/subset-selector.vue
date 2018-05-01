@@ -40,7 +40,7 @@
       return {
         newElement: '',
         autocompleteElements: [],
-        idWithPrefix: utils.idWithPrefix
+        idWithPrefix: utils.idWithPrefix,
       }
     },
     methods: {
@@ -65,11 +65,11 @@
         let {data} = await this.getAutocompleteData(value)
 
         this.autocompleteElements = data || []
-      }
+      },
     },
     components: {
-      autocomplete
-    }
+      autocomplete,
+    },
   }
 </script>
 

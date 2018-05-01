@@ -1,8 +1,7 @@
 <template>
-<div class="profile-skills">
+<div class="vacancy-skills">
   <b-card title="უნარები">
     <subset-selector
-      idPrefix="profile-skills"
       ref="skillInput"
       placeholder="მაგ. ანალიტიკოსი"
       :editable="true"
@@ -16,27 +15,18 @@
 </template>
 
 <script>
-import subsetSelector from '../common/subset-selector'
-import { bus } from '../common/bus'
-import utils from '../../utils'
+import subsetSelector from '../../common/subset-selector'
+import { bus } from '../../common/bus'
+import utils from '../../../utils'
 
-const baseUrl = '/api/users/profile/skills'
+const baseUrl = 'blabla'
 const searchUrl = '/api/skills/search'
 
 export default {
-  name: 'profile-skills',
+  name: 'vacancy-skills',
   data: () => ({
     skills: [],
   }),
-  async created() {
-    try {
-      let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
-
-      this.skills = response.data
-    } catch (error) {
-      bus.$emit('error', error)
-    }
-  },
   methods: {
     async searchSkills(skill) {
       return await this.$http.get(searchUrl, {params: {query: skill}, headers: utils.getHeaders()})

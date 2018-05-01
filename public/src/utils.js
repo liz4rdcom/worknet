@@ -24,7 +24,7 @@ function isNullOrUndefined(value) {
 
 function getHeaders() {
   return {
-    authorization: Cookies.get('token')
+    authorization: Cookies.get('token'),
   }
 }
 
@@ -58,5 +58,5 @@ export default {
   stringContainsOnlyNumbers,
   isValidEmail,
   couldBePersonalId,
-  idWithPrefix
+  idWithPrefix,
 }

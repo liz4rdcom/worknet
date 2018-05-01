@@ -45,7 +45,7 @@ router.post('/profile', isAuthorized, (req, res, next) => {
   userInteractor.fillUserProfile(userName, req.body)
     .then(() => {
       res.send({
-        success: true
+        success: true,
       })
     })
     .catch(next)
@@ -150,7 +150,6 @@ router.delete('/profile/desirableTrainings/:desirableTrainingName', isAuthorized
   }
 })
 
-// >>>
 router.get('/profile/desirableTrainingLocations', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
@@ -168,7 +167,7 @@ router.post('/profile/desirableTrainingLocations', isAuthorized, async (req, res
   try {
     await userInteractor.addDesirableTrainingLocation(userName, {
       name: req.body.name,
-      unitName: req.body.unitName
+      unitName: req.body.unitName,
     })
     next({})
   } catch (error) {
@@ -185,7 +184,7 @@ router.delete(
     try {
       await userInteractor.removeDesirableTrainingLocation(userName, {
         name: req.params.desirableTrainingLocationName,
-        unitName: req.params.desirableTrainingLocationUnitName
+        unitName: req.params.desirableTrainingLocationUnitName,
       })
       next({})
     } catch (error) {
@@ -193,7 +192,6 @@ router.delete(
     }
   }
 )
-// <<<
 
 router.get('/profile/experiences', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
@@ -321,7 +319,7 @@ router.post('/profile/deactivation', isAuthorized, (req, res, next) => {
   userInteractor.deactivateUserProfile(userName)
     .then(() => {
       res.send({
-        success: true
+        success: true,
       })
     })
     .catch(next)
@@ -333,7 +331,7 @@ router.post('/profile/activation', isAuthorized, (req, res, next) => {
   userInteractor.activateUserProfile(userName)
     .then(() => {
       res.send({
-        success: true
+        success: true,
       })
     })
     .catch(next)
@@ -404,7 +402,7 @@ router.delete('/profile/desirableJobLocations', isAuthorized, async (req, res, n
 
   let location = {
     locationName: req.query.locationName,
-    locationUnitName: req.query.locationUnitName
+    locationUnitName: req.query.locationUnitName,
   }
   try {
     await userInteractor.deleteDesirableJobLocations(userName, location)
@@ -501,7 +499,7 @@ router.get('/profile/desirableSalary', isAuthorized, async (req, res, next) => {
     let result = await userInteractor.getDesirableSalary(userName)
 
     next({result: {
-      salary: result
+      salary: result,
     }})
   } catch (error) {
     next({error})
@@ -567,5 +565,5 @@ router.post('/profile/usemediationservice', isAuthorized, async (req, res, next)
 
 module.exports = {
   router,
-  baseUrl
+  baseUrl,
 }

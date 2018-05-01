@@ -15,5 +15,5 @@ router.get('/search', isAuthorized, async (req, res, next) => {
 
 module.exports = {
   router,
-  baseUrl
+  baseUrl,
 }

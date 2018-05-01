@@ -30,21 +30,21 @@ export default {
     value: {},
     minimumChars: {
       type: Number,
-      default: 2
+      default: 2,
     },
     synchronous: {
       type: Boolean,
-      default: false
+      default: false,
     },
     idPrefix: {
-      type: String
-    }
+      type: String,
+    },
   },
   data: () => ({
     open: false,
     current: 0,
     inputValue: '',
-    idWithPrefix: utils.idWithPrefix
+    idWithPrefix: utils.idWithPrefix,
   }),
   methods: {
     onInput(value) {
@@ -97,12 +97,12 @@ export default {
       this.inputValue = this.suggestions[this.current]
 
       this.$emit('input', this.inputValue)
-    }
+    },
   },
   watch: {
     value(val) {
       this.inputValue = val
-    }
+    },
   },
   computed: {
     openSuggestion () {
@@ -114,8 +114,8 @@ export default {
       if (!this.synchronous) return this.list
 
       return this.list.filter(item => item.includes(this.inputValue))
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -35,7 +35,7 @@ export default {
   data: () => ({
     desirableTrainingList: [],
     desirableTrainingLocationList: [],
-    sectionOpen: false
+    sectionOpen: false,
   }),
   async created() {
     try {
@@ -53,11 +53,11 @@ export default {
   methods: {
     openSection() {
       this.sectionOpen = true
-    }
+    },
   },
   components: {
     'desirable-trainings': desirableTrainings,
-    'desirable-training-locations': desirableTrainingLocations
+    'desirable-training-locations': desirableTrainingLocations,
   },
   computed: {
     cardTitle () {
@@ -67,8 +67,8 @@ export default {
       if (!this.synchronous) return this.list
 
       return this.list.filter(item => item.includes(this.inputValue))
-    }
-  }
+    },
+  },
 }
 </script>
 

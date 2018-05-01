@@ -24,7 +24,7 @@ export default {
   name: 'login',
   data: () => ({
     userNameOrEmail: '',
-    password: ''
+    password: '',
   }),
   methods: {
     async login() {
@@ -47,8 +47,8 @@ export default {
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

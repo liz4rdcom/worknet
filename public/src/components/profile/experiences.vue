@@ -113,13 +113,13 @@ export default {
     currentExperience: {},
     workNow: true,
     locationList: [],
-    experienceToSubmit: {}
+    experienceToSubmit: {},
   }),
   async created() {
     this.currentExperience = this.experienceStartState()
 
     let response = await this.$http.get(baseUrl, {
-      headers: utils.getHeaders()
+      headers: utils.getHeaders(),
     })
 
     this.experiences = response.data
@@ -135,7 +135,7 @@ export default {
         endYear: null,
         locationIsInGeorgia: true,
         locationName: null,
-        locationUnitName: null
+        locationUnitName: null,
       }
     },
     keyOfObject(obj) {
@@ -230,12 +230,12 @@ export default {
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   components: {
     'locations': locations,
-    'month-period': monthPeriod
-  }
+    'month-period': monthPeriod,
+  },
 }
 </script>
 

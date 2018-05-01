@@ -47,5 +47,5 @@ module.exports = {
   editVacancy,
   deleteVacancy,
   getUserVacancies,
-  getById
+  getById,
 }

@@ -67,7 +67,7 @@
       return {
         baseUrl: 'api/users/profile/maininfo',
         locationList: [], // რეგიონები რაიონები
-        profileData: {}
+        profileData: {},
       }
     },
     async created() {
@@ -90,7 +90,7 @@
       },
       factAddress() {
         return `${this.profileData.factLocationName} ${this.profileData.factLocationUnitName} - ${this.profileData.factAddressDescription}`
-      }
+      },
     },
     methods: {
       onFactLocationChanged(location) {
@@ -104,9 +104,9 @@
         } catch (error) {
           bus.$emit('error', error)
         }
-      }
+      },
     },
-    components: { 'locations': locations }
+    components: { 'locations': locations },
   }
 </script>
 <style scoped>

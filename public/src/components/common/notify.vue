@@ -16,7 +16,7 @@
         notification: 'test notification',
         dismissSecs: 10,
         dismissCountDown: 0,
-        notificationType: 'success'
+        notificationType: 'success',
       }
     },
     created() {
@@ -37,8 +37,8 @@
       },
       showAlert() {
         this.dismissCountDown = this.dismissSecs
-      }
-    }
+      },
+    },
   }
 </script>
 <style scoped>

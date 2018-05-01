@@ -8,7 +8,6 @@
               <b-input-group>
                 <b-form-input type="text"
                   autocomplete="off"
-                  id="languages-autocomplete-input"
                   :value="inputValue"
                   @input="onInput">
                 </b-form-input>
@@ -26,19 +25,18 @@
         @levelChange="onLevelChange(language, $event)"
         @delete="removeLanguage(language.languageName)"
         v-for="language in languages"
-        :key="language.languageName"
-        :idPrefix="'profile-language-' + language.languageName">
+        :key="language.languageName">
       </language>
     </b-card>
   </div>
 </template>
 
 <script>
-import autocomplete from '../common/autocomplete'
-import utils from '../../utils'
-import { bus } from '../common/bus'
+import autocomplete from '../../common/autocomplete'
+import utils from '../../../utils'
+import { bus } from '../../common/bus'
+import libs from '../../../libs'
 import language from './language'
-import libs from '../../libs'
 
 const baseUrl = '/api/users/profile/languages'
 

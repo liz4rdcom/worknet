@@ -2,7 +2,7 @@ const elasticsearch = require('elasticsearch')
 const config = require('config')
 
 const client = new elasticsearch.Client({
-  host: config.get('elastic.host')
+  host: config.get('elastic.host'),
 })
 
 const utils = require('./utils')
@@ -15,15 +15,16 @@ const educationLevelIndex = config.get('elastic.educationLevelIndex')
 const educationLevelType = config.get('elastic.educationLevelType')
 const formalEducationLevelIndex = config.get('elastic.formalEducationLevelIndex')
 const formalEducationLevelType = config.get('elastic.formalEducationLevelType')
+const languagesIndex = config.get('elastic.languagesIndex')
+const languagesType = config.get('elastic.languagesType')
 
 async function getLocationsInGeorgia() {
   let options = {
     index,
-    type
+    type,
   }
 
   let result = await client.search(options)
-  console.log(result)
 
   return result.hits.hits.map(utils.toObject)
 }
@@ -31,7 +32,7 @@ async function getLocationsInGeorgia() {
 async function getEducationTypes() {
   let options = {
     index: educationTypesIndex,
-    type: educationTypesType
+    type: educationTypesType,
   }
 
   let result = await client.search(options)
@@ -42,7 +43,7 @@ async function getEducationTypes() {
 async function getEducationLevels() {
   let options = {
     index: educationLevelIndex,
-    type: educationLevelType
+    type: educationLevelType,
   }
 
   let result = await client.search(options)
@@ -53,7 +54,18 @@ async function getEducationLevels() {
 async function getFormalEducationLevels() {
   let options = {
     index: formalEducationLevelIndex,
-    type: formalEducationLevelType
+    type: formalEducationLevelType,
+  }
+
+  let result = await client.search(options)
+
+  return result.hits.hits.map(item => item._source.name)
+}
+
+async function getLanguages() {
+  let options = {
+    index: languagesIndex,
+    type: languagesType,
   }
 
   let result = await client.search(options)
@@ -65,5 +77,6 @@ module.exports = {
   getLocationsInGeorgia,
   getEducationTypes,
   getEducationLevels,
-  getFormalEducationLevels
+  getFormalEducationLevels,
+  getLanguages,
 }
