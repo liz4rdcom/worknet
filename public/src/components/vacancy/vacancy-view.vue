@@ -17,31 +17,31 @@
     <label v-if="jobDescription.partTime"><div class="chip">არასრული განაკვეთი</div></label>
     <label v-if="jobDescription.shiftBased"><div class="chip">ცვლებში</div></label>
   </b-card>
-   <b-card title="განათლება">
+  <b-card title="განათლება">
     <label>განათლება: <b>{{vacancy.formalEducationLevelName}}</b></label>
   </b-card>
-   <b-card title="ენები">
-     <div class="chip" v-for="item in languagesArray">
-        {{item.languageName}}
-      </div>
-   </b-card>
-   <b-card title="სკილები">
-     <div class="chip" v-for="item in skillsArray">
-        {{item.skillName}}
-      </div>
-   </b-card>
-   <b-card title="მართვის მოწმობა">
-     <label v-if="drivingLicence.drivingLicenceA"><div class="chip">ლიცენზია A</div></label>
-     <label v-if="drivingLicence.drivingLicenceB"><div class="chip">ლიცენზია B</div></label>
-     <label v-if="drivingLicence.drivingLicenceC"><div class="chip">ლიცენზია C</div></label>
-     <label v-if="drivingLicence.drivingLicenceD"><div class="chip">ლიცენზია D</div></label>
-     <label v-if="drivingLicence.drivingLicenceE"><div class="chip">ლიცენზია E</div></label>
-     <label v-if="drivingLicence.drivingLicenceT1"><div class="chip">ლიცენზია T1</div></label>
-     <label v-if="drivingLicence.drivingLicenceT2"><div class="chip">ლიცენზია T2</div></label>
-     <label v-if="drivingLicence.airLicence"><div class="chip">ფრენის ლიცენზია</div></label>
-     <label v-if="drivingLicence.seaLicence"><div class="chip">საზღვაო ლიცენზია</div></label>
-     <label v-if="drivingLicence.railwayLicence"><div class="chip">სარკინიგზო ლიცენზია</div></label>
-   </b-card>
+  <b-card title="ენები">
+    <div class="chip" v-for="item in languagesArray">
+      {{item.languageName}}
+    </div>
+  </b-card>
+  <b-card title="სკილები">
+    <div class="chip" v-for="item in skillsArray">
+      {{item.skillName}}
+    </div>
+  </b-card>
+  <b-card title="მართვის მოწმობა">
+    <label v-if="drivingLicence.drivingLicenceA"><div class="chip">ლიცენზია A</div></label>
+    <label v-if="drivingLicence.drivingLicenceB"><div class="chip">ლიცენზია B</div></label>
+    <label v-if="drivingLicence.drivingLicenceC"><div class="chip">ლიცენზია C</div></label>
+    <label v-if="drivingLicence.drivingLicenceD"><div class="chip">ლიცენზია D</div></label>
+    <label v-if="drivingLicence.drivingLicenceE"><div class="chip">ლიცენზია E</div></label>
+    <label v-if="drivingLicence.drivingLicenceT1"><div class="chip">ლიცენზია T1</div></label>
+    <label v-if="drivingLicence.drivingLicenceT2"><div class="chip">ლიცენზია T2</div></label>
+    <label v-if="drivingLicence.airLicence"><div class="chip">ფრენის ლიცენზია</div></label>
+    <label v-if="drivingLicence.seaLicence"><div class="chip">საზღვაო ლიცენზია</div></label>
+    <label v-if="drivingLicence.railwayLicence"><div class="chip">სარკინიგზო ლიცენზია</div></label>
+  </b-card>
 </div>
 </template>
 
