@@ -10,7 +10,15 @@
         Tab Contents 2
       </b-tab>
       <b-tab title="draft">
-        Tab Contents 3
+          {{!!id}}
+          <pre v-if="!!id">{{
+            JSON.stringify(vacancies, null, 2)
+          }}</pre>
+          <b-list-group v-else flush >
+            <b-list-group-item href="#">Cras justo odio</b-list-group-item>
+            <b-list-group-item href="#">Dapibus ac facilisis in</b-list-group-item>
+            <b-list-group-item href="#">Vestibulum at eros</b-list-group-item>
+          </b-list-group>
       </b-tab>
       <b-tab title="expired">
         Tab Contents 4
@@ -26,7 +34,7 @@ const vacanciesUrl = '/api/vacancies'
 
 export default {
   name: 'language',
-  props: ['language'],
+  props: ['language', 'id'],
   data: () => ({
     vacancies: [],
   }),
@@ -42,6 +50,11 @@ export default {
     }
   },
   methods: {
+  },
+  computed: {
+    draftVacancies: () => this.vacancies.filter(({ status }) => status === 0),
+    publishedVacancies: () => this.vacancies.filter(({ status }) => status === 1),
+    expiredVacancies: () => this.vacancies.filter(({ status }) => status === 2),
   },
 }
 </script>

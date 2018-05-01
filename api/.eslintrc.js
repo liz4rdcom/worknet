@@ -5,9 +5,14 @@ module.exports = {
   },
 
   extends: 'standard',
+  plugins: [
+    'node',
+    'standard'
+  ],
 
   // add your custom rules here
   'rules': {
+    'node/exports-style': ['error', 'module.exports'],
     'no-console': 0,
     'no-unused-expressions': 0,
     'arrow-body-style': 0,

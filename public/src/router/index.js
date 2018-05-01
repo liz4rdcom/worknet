@@ -43,6 +43,21 @@ let router = new Router({
       path: '/vacancies/own',
       name: 'vacancies-own',
       component: ownVacancies,
+      children: [
+        {
+          path: 'draft',
+          component: ownVacancies,
+          props: true,
+        },
+        {
+          path: 'published',
+          component: ownVacancies,
+        },
+        {
+          path: 'expired',
+          component: ownVacancies,
+        },
+      ],
     },
     {
       path: '/login',

@@ -213,7 +213,7 @@ const testJobs = [{
   'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
   'useMediationService': true,
   'vacantPlacesQuantity': 2,
-  'functionsDescription': 'blablablabla',
+  'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
   'additionalDescription': 'damatebiti informacia TEST TEST',
   'salaryInfoName': '150-300', //
   'fullTime': true, //
@@ -244,6 +244,42 @@ const testJobs = [{
     },
     {
       'skillName': 'CSS',
+    },
+    {
+      'skillName': 'Javascript1',
+    },
+    {
+      'skillName': 'Javascript2',
+    },
+    {
+      'skillName': 'Javascript3',
+    },
+    {
+      'skillName': 'Javascript4',
+    },
+    {
+      'skillName': 'Javascript5',
+    },
+    {
+      'skillName': 'Javascript6',
+    },
+    {
+      'skillName': 'Javascript7',
+    },
+    {
+      'skillName': 'Javascript8',
+    },
+    {
+      'skillName': 'Javascript9',
+    },
+    {
+      'skillName': 'Javascript0',
+    },
+    {
+      'skillName': 'Javascript11',
+    },
+    {
+      'skillName': 'Javascript12',
     },
   ],
   'status': 0, // 0 - draft, 1 - published, 2 - expired.
@@ -523,7 +559,7 @@ async function seedData (data, index, indexOption, type, dropIndexIfExists = fal
       await deleteIndex(index)
     }
 
-    if (!exists) {
+    if (dropIndexIfExists === true || !exists) {
       await createIndex(index, indexOption)
 
       await insertData(index, type, data)
