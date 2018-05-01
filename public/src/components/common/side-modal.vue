@@ -1,49 +1,40 @@
 <template>
   <div>
     <div class="custom-modal" id="myModal2" aria-labelledby="myModalLabel2">
-		
 			<div class="custom-modal-content">
-
 				<div class="modal-header">
 					<button type="button" class="close" @click="closeModal"><span aria-hidden="true">&times;</span></button>
 				</div>
-
 				<div class="custom-modal-body">
 					<slot></slot>
 				</div>
 			</div>
 	</div>
-  </div> 
+  </div>
 </template>
 <script>
-
   export default {
-	name: 'side-modal',
+    name: 'side-modal',
     data: () => ({
-		show: false,
-	}),
+      show: false
+    }),
     methods: {
-       sideModalOpen() {
-		   let modal = document.getElementById('myModal2');
-
-		   	window.onclick = (event) => {
-				if (event.target == modal) {
-					this.closeModal()
-				}
-			}
-
-		   modal.style.display = "block";
-	   },
-	   closeModal() {
-		   let modal = document.getElementById('myModal2');
-
-		   window.onclick = () => {}
-
-		   modal.style.display = "none";
-	   }
+      sideModalOpen() {
+        let modal = document.getElementById('myModal2')
+        window.onclick = (event) => {
+          if (event.target === modal) {
+            this.closeModal()
+          }
+        }
+        modal.style.display = 'block'
+      },
+      closeModal() {
+        let modal = document.getElementById('myModal2')
+        window.onclick = () => {}
+        modal.style.display = 'none'
+      }
     }
   }
-
 </script>
 <style scoped>
 	.custom-modal {

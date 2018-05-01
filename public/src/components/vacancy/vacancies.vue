@@ -80,7 +80,6 @@ export default {
     viewVacancy(vacancyId) {
       this.$refs.modalRef.sideModalOpen()
       this.vacancyId = vacancyId
-      // this.$router.push(`/vacancies/${vacancyId}/view`)
     },
     async search() {
       try {
