@@ -23,21 +23,31 @@
       <h5 class="card-text">სრულად ნახვა...</h5>
     </div>
   </b-card>
+  <side-modal ref="modalRef">
+    <vacancy-view :id="vacancyId" v-if="vacancyId"></vacancy-view>
+  </side-modal>
 </div>
 </template>
 
 <script>
 import utils from '../../utils'
 import { bus } from '../common/bus'
+import sideModal from '../common/side-modal'
+import vacancyView from './vacancy-view'
 
 const baseUrl = '/api/vacancies'
 
 export default {
   name: 'vacancies',
+  components: {
+    'side-modal': sideModal,
+    'vacancy-view': vacancyView
+  },
   data: () => ({
     vacancies: [],
     query: '',
-    descriptionArray: []
+    descriptionArray: [],
+    vacancyId: null
   }),
   async created() {
     try {
@@ -68,7 +78,9 @@ export default {
       return arr
     },
     viewVacancy(vacancyId) {
-      this.$router.push(`/vacancies/${vacancyId}/view`)
+      this.$refs.modalRef.sideModalOpen()
+      this.vacancyId = vacancyId
+      // this.$router.push(`/vacancies/${vacancyId}/view`)
     },
     async search() {
       try {
