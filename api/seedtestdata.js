@@ -501,7 +501,12 @@ const testDesirableTrainings = [
   { name: ' კულინარია, მზარეული' }
 ]
 
-async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
+/*
+old one with bug, we delete this when time passes and new seedData method
+prooves to be correct
+*/
+/*
+async function seedData (data, index, indexOption, type, dropIndexIfExists = false) {
   try {
     let exists = await client.indices.exists({ index: index })
 
@@ -510,6 +515,30 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
     }
 
     if (!exists) {
+      await createIndex(index, indexOption)
+
+      await insertData(index, type, data)
+    }
+  } catch (error) {
+    console.error(error)
+    process.exit()
+  }
+}
+*/
+
+async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
+  try {
+    let exists = await client.indices.exists({ index: index })
+
+    if (exists) {
+      if (dropIndexIfExists) {
+        await deleteIndex(index)
+
+        await createIndex(index, indexOption)
+
+        await insertData(index, type, data)
+      }
+    } else {
       await createIndex(index, indexOption)
 
       await insertData(index, type, data)
