@@ -13,7 +13,7 @@ elastic:
   desirableTrainingsType: 'desirabletraining'
   desirableTrainingLocationsIndex: 'desirabletraininglocation'
   desirableTrainingLocationsType: 'desirabletraininglocation'
-  libIndex: 'lib'
+  libIndex: 'location'
   locationType: 'location'
   educationTypesIndex: 'educationtype'
   educationTypesType: 'educationType'
