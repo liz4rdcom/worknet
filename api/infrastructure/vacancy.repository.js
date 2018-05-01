@@ -10,11 +10,11 @@ const utils = require('./utils')
 const index = config.get('elastic.vacanciesIndex')
 const type = config.get('elastic.vacanciesType')
 
-async function getVacancies(query = '*') {
+async function getVacancies(query = '') {
   let options = {
     index,
     type,
-    q: query,
+    q: '*' + query + '*',
     searchType: 'dfs_query_then_fetch'
   }
 
