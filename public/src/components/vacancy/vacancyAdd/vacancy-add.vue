@@ -189,7 +189,7 @@
 
       <b-form-group label="'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //"> <!-- optional, minimaluri ganatlebis done -->
         <b-form-select v-model="vacancy.formalEducationLevelName">
-          <option v-for="level in formalEducationLevelsOptions">{{level}}</option>
+          <option v-for="(level, index) in formalEducationLevelsOptions" :key="index">{{level}}</option>
         </b-form-select>
       </b-form-group>
 
