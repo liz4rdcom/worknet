@@ -42,7 +42,6 @@ let router = new Router({
     },
     {
       path: '/vacancies/own',
-      name: 'vacancies-own',
       component: ownVacancies,
       children: [
         {
@@ -56,7 +55,7 @@ let router = new Router({
           children: [
             {
               path: ':id',
-              name: 'vacancies-own',
+              name: 'all-vacancies-own',
               component: vacancyView,
               props: true,
             },
@@ -69,7 +68,7 @@ let router = new Router({
           children: [
             {
               path: ':id',
-              name: 'vacancies-own',
+              name: 'draft-vacancies-own',
               component: vacancyView,
               props: true,
             },
@@ -82,7 +81,7 @@ let router = new Router({
           children: [
             {
               path: ':id',
-              name: 'vacancies-own',
+              name: 'published-vacancies-own',
               component: vacancyView,
               props: true,
             },
@@ -95,7 +94,7 @@ let router = new Router({
           children: [
             {
               path: ':id',
-              name: 'vacancies-own',
+              name: 'expired-vacancies-own',
               component: vacancyView,
               props: true,
             },

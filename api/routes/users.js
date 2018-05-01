@@ -150,7 +150,6 @@ router.delete('/profile/desirableTrainings/:desirableTrainingName', isAuthorized
   }
 })
 
-// >>>
 router.get('/profile/desirableTrainingLocations', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
@@ -193,7 +192,6 @@ router.delete(
     }
   }
 )
-// <<<
 
 router.get('/profile/experiences', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)

@@ -78,8 +78,6 @@ export default {
   },
   computed: {
     skillList() {
-      console.log('ttt', this.skills)
-
       return this.skills.map(item => item.skillName)
     },
   },

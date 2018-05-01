@@ -27,6 +27,6 @@ um:
   mongodbConnectionString: 'mongodb://localhost:27017/umpack'
   accessTokenSecret: 'myrandomstring'
   passwordHashSecret: 'mypasswordsecret'
-  accessTokenExpiresIn: '1h'
+  accessTokenExpiresIn: '5h'
   cookieAccessTokenName: 'accessToken'
   activateOnSignup: true

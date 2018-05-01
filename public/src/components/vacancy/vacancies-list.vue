@@ -8,14 +8,20 @@
       <b-list-group-item :href="getVacancyViewUrl(nextCurVac.id)">{{nextCurVac.positionName}}</b-list-group-item>
     </b-list-group>
 
+    <b-card v-if="currentVacancyIsDraft">
+        <b-button variant="primary">მონახაზის გაგრძელება</b-button>
+    </b-card>
+
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import find from 'lodash/find'
+
 export default {
   name: 'vacancies-list',
-  props: ['vacancies', 'vacanciesStatus', 'id'],
+  props: ['vacancies', 'vacanciesStatus'],
   data: () => ({}),
   methods: {
     getVacancyViewUrl(id) {
@@ -59,6 +65,9 @@ export default {
         default:
           return this.vacancies
       }
+    },
+    currentVacancyIsDraft() {
+      return this.$route.params.id ? find(this.vacancies, vacan => vacan.id === this.$route.params.id).status === 0 : false
     },
   },
 }

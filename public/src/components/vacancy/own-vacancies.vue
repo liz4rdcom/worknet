@@ -8,14 +8,14 @@
         <b-row>
             <b-col cols="2">
                 <b-nav vertical class="w-25">
-                    <b-nav-item href="#/vacancies/own/all">all</b-nav-item>
-                    <b-nav-item href="#/vacancies/own/published">published</b-nav-item>
-                    <b-nav-item href="#/vacancies/own/draft">draft</b-nav-item>
-                    <b-nav-item href="#/vacancies/own/expired">expired</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/all">ყველა</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/published">გამოქვეყნებულები</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/draft">მონახაზები</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/expired">ვადაგასულები</b-nav-item>
                   </b-nav>
             </b-col>
 
-            <b-col  cols="10">
+            <b-col v-if="vacancies !== null" cols="10">
                 <router-view :vacancies="vacancies"></router-view>
             </b-col>
         </b-row>
@@ -32,7 +32,7 @@ export default {
   name: 'own-vacancies',
   props: ['language'],
   data: () => ({
-    vacancies: [],
+    vacancies: null,
   }),
   async created() {
     try {
