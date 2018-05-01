@@ -44,6 +44,7 @@ let router = new Router({
       path: '/vacancies/add/:id',
       name: 'vacancy-add-id',
       component: vacancyAdd,
+      props: true,
     },
     {
       path: '/vacancies/own',

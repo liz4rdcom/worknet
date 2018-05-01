@@ -1,6 +1,6 @@
 <template>
   <div class="vacancy-add">
-    <b-form>
+    <b-form @submit="onSubmit">
       <data-shower :data="this.$data" />
 
       <h1 class="hint-element">დაამატეთ ვაკანსია</h1>
@@ -77,9 +77,7 @@
         </b-container>
       </b-form-group>
 
-      <!-- optional soon draftshi gadava tu gavida vada, da mere draftshi imit mixvdebi ro gadmosulia
-        da ara saerotd gamouqveynebeli ro end date naklebi iqneba now-ze tu draftshi iyo da gavida vada,
-        mainc daiwyeba axlandelidan dropdown, mara dzveli daewera tavze, tu ra iyo dzveli. -->
+      <!-- optional -->
       <b-form-group label="'endDate': '2018-01-07T00:00:00',">
           <b-container>
               <b-row>
@@ -175,7 +173,7 @@
           </b-form-group>
       </b-card>
 
-      <b-form-group label="'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //"> <!-- optional, minimaluri ganatlebis done -->
+      <b-form-group label="'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //"> <!-- optional -->
         <b-form-select v-model="vacancy.formalEducationLevelName">
           <option v-for="(level, index) in formalEducationLevelsOptions" :key="index">{{level}}</option>
         </b-form-select>
@@ -293,20 +291,23 @@
         </b-form-group>
       </b-card>
 
-      <b-form-group label="'languages': [ //"> <!-- optional -->
+      <!-- optional -->
+      <!-- todo kitxe enebze cnodnis done unda tu ara, wordis documentshi ewera arao -->
+      <!-- <b-form-group label="'languages': [ //">
         <languages />
-      </b-form-group>
-
-      <b-form-group label="'skills': [ //"> <!-- optional -->
-        <vacancy-skills/>
-      </b-form-group>
-
-      <b-button type="submit" variant="secondary">მონახაზად შენახვა</b-button>
-
-      <b-button type="reset" variant="primary">დამატება</b-button>
+      </b-form-group> -->
 
       <!-- optional -->
-      <!-- <b-form-group label="'published': true">
+      <!-- <b-form-group label="'skills': [ //">
+        <vacancy-skills/>
+      </b-form-group> -->
+
+      <b-button variant="secondary">მონახაზად შენახვა</b-button>
+
+      <b-button type="submit" variant="primary">დამატება</b-button>
+
+      <!-- optional -->
+      <!-- <b-form-group label="'status': 0,">
         NOT NEEDED ON FRONT
       </b-form-group> -->
     </b-form>
@@ -315,6 +316,7 @@
 
 <script>
 import reverse from 'lodash/reverse'
+import isNil from 'lodash/isNil'
 import georgiaLocations from '../../common/georgia-locations'
 import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../../constants'
 import utils from '../../../utils'
@@ -324,6 +326,8 @@ import autocomplete from '../../common/autocomplete'
 import dataShower from '../../common/data-shower'
 import languages from './languages'
 import vacancySkills from './vacancy-skills'
+
+const baseUrl = '/api/vacancies'
 
 export default {
   name: 'vacancy-add',
@@ -342,7 +346,7 @@ export default {
       endDateDay: null,
       endDateMonth: null,
       endDateYear: null,
-      useMediationService: true,
+      useMediationService: false,
       vacantPlacesQuantity: null,
       functionsDescription: null,
       additionalDescription: null,
@@ -372,11 +376,162 @@ export default {
     } catch (error) {
       bus.$emit('error', error)
     }
+
+    this.loadVacancy()
   },
   methods: {
+    async loadVacancy() {
+      if (this.id) {
+        try {
+          let vacancyResult = await this.$http.get(baseUrl + '/' + this.id, {headers: utils.getHeaders()})
+
+          vacancyResult = vacancyResult.data
+
+          if (vacancyResult.positionName) {
+            this.vacancy.positionName = vacancyResult.positionName
+          }
+
+          /* todo ask if organization is, always will be organization tax code too */
+          if (vacancyResult.organization) {
+            this.vacancy.organization = vacancyResult.organization
+            this.vacancy.organizationTaxCode = vacancyResult.organizationTaxCode
+          } else {
+            this.isOrganization = false
+          }
+
+          if (vacancyResult.locationName) {
+            this.vacancy.locationName = vacancyResult.locationName
+          }
+
+          if (vacancyResult.locationUnitName) {
+            this.vacancy.locationUnitName = vacancyResult.locationUnitName
+          }
+
+          if (vacancyResult.addressLine) {
+            this.vacancy.addressLine = vacancyResult.addressLine
+          }
+
+          if (vacancyResult.interviewSupposedStartDate) {
+            const interviewSupposedStartDateConstructed = new Date(vacancyResult.interviewSupposedStartDate)
+
+            this.vacancy.interviewSupposedStartDay = interviewSupposedStartDateConstructed.getDate()
+            this.vacancy.interviewSupposedStartMonth = interviewSupposedStartDateConstructed.getMonth()
+            this.vacancy.interviewSupposedStartYear = interviewSupposedStartDateConstructed.getFullYear()
+          }
+
+          if (vacancyResult.endDate) {
+            const endDateConstructed = new Date(vacancyResult.endDate)
+
+            this.vacancy.endDateDay = endDateConstructed.getDate()
+            this.vacancy.endDateMonth = endDateConstructed.getMonth()
+            this.vacancy.endDateYear = endDateConstructed.getFullYear()
+          }
+
+          if (!isNil(vacancyResult.useMediationService)) {
+            this.vacancy.useMediationService = vacancyResult.useMediationService
+          }
+
+          if (vacancyResult.vacantPlacesQuantity || vacancyResult.vacantPlacesQuantity === 0) {
+            this.vacancy.vacantPlacesQuantity = vacancyResult.vacantPlacesQuantity
+          }
+
+          if (vacancyResult.functionsDescription) {
+            this.vacancy.functionsDescription = vacancyResult.functionsDescription
+          }
+
+          if (vacancyResult.additionalDescription) {
+            this.vacancy.additionalDescription = vacancyResult.additionalDescription
+          }
+
+          if (vacancyResult.salaryInfoName) {
+            this.vacancy.salaryInfoName = vacancyResult.salaryInfoName
+          }
+
+          if (!isNil(vacancyResult.fullTime)) {
+            this.vacancy.fullTime = vacancyResult.fullTime
+          }
+
+          if (!isNil(vacancyResult.partTime)) {
+            this.vacancy.partTime = vacancyResult.partTime
+          }
+
+          if (!isNil(vacancyResult.shiftBased)) {
+            this.vacancy.shiftBased = vacancyResult.shiftBased
+          }
+
+          if (vacancyResult.formalEducationLevelName) {
+            this.vacancy.formalEducationLevelName = vacancyResult.formalEducationLevelName
+          }
+
+          if (vacancyResult.drivingLicenceA ||
+              vacancyResult.drivingLicenceB ||
+              vacancyResult.drivingLicenceC ||
+              vacancyResult.drivingLicenceD ||
+              vacancyResult.drivingLicenceE ||
+              vacancyResult.drivingLicenceT1 ||
+              vacancyResult.drivingLicenceT2 ||
+              vacancyResult.airLicence ||
+              vacancyResult.seaLicence ||
+              vacancyResult.railwayLicence
+          ) {
+            this.shouldHaveDrivingLicence = true
+
+            if (!isNil(vacancyResult.drivingLicenceA)) {
+              this.vacancy.drivingLicenceA = vacancyResult.drivingLicenceA
+            }
+
+            if (!isNil(vacancyResult.drivingLicenceB)) {
+              this.vacancy.drivingLicenceB = vacancyResult.drivingLicenceB
+            }
+
+            if (!isNil(vacancyResult.drivingLicenceC)) {
+              this.vacancy.drivingLicenceC = vacancyResult.drivingLicenceC
+            }
+
+            if (!isNil(vacancyResult.drivingLicenceD)) {
+              this.vacancy.drivingLicenceD = vacancyResult.drivingLicenceD
+            }
+
+            if (!isNil(vacancyResult.drivingLicenceE)) {
+              this.vacancy.drivingLicenceE = vacancyResult.drivingLicenceE
+            }
+
+            if (!isNil(vacancyResult.drivingLicenceT1)) {
+              this.vacancy.drivingLicenceT1 = vacancyResult.drivingLicenceT1
+            }
+
+            if (!isNil(vacancyResult.drivingLicenceT2)) {
+              this.vacancy.drivingLicenceT2 = vacancyResult.drivingLicenceT2
+            }
+
+            if (!isNil(vacancyResult.airLicence)) {
+              this.vacancy.airLicence = vacancyResult.airLicence
+            }
+
+            if (!isNil(vacancyResult.seaLicence)) {
+              this.vacancy.seaLicence = vacancyResult.seaLicence
+            }
+
+            if (!isNil(vacancyResult.railwayLicence)) {
+              this.vacancy.railwayLicence = vacancyResult.railwayLicence
+            }
+          }
+        } catch (error) {
+          bus.$emit('error', error)
+        }
+      }
+    },
     onLocationChanged(location) {
       this.vacancy.locationName = location.locationName
       this.vacancy.locationUnitName = location.locationUnitName
+    },
+    validation() {},
+    onSubmit(evt) {
+      evt.preventDefault()
+
+      this.validation()
+
+      alert('submitted')
     },
   },
   computed: {
@@ -410,11 +565,6 @@ export default {
       retVal.splice(0, 0, '- აირჩიე -')
 
       return retVal
-    },
-    onSubmit (evt) {
-      evt.preventDefault()
-
-      alert(JSON.stringify(this.form))
     },
   },
   components: {
