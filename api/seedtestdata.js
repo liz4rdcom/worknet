@@ -200,90 +200,194 @@ const testUsers = [{
   'useMediationService': true,
 }]
 
-const testJobs = [{
-  'positionName': 'JavaScript Developer',
-  'organization': 'შპს FX1',
-  'organizationTaxCode': '123456789',
-  'locationName': 'თბილისი', //
-  'locationUnitName': 'ისანი', //
-  'addressLine': 'დამატებითი მისამართი',
-  'publishDate': '2017-12-03T00:00:00',
-  'interviewSupposedStartDate': '2018-01-01T00:00:00',
-  'endDate': '2018-01-07T00:00:00',
-  'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
-  'useMediationService': true,
-  'vacantPlacesQuantity': 2,
-  'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
-  'additionalDescription': 'damatebiti informacia TEST TEST',
-  'salaryInfoName': '150-300', //
-  'fullTime': true, //
-  'partTime': true, //
-  'shiftBased': true, //
-  'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //
-  'drivingLicenceA': true, //
-  'drivingLicenceB': true, //
-  'drivingLicenceC': true, //
-  'drivingLicenceD': true, //
-  'drivingLicenceE': true, //
-  'drivingLicenceT1': true, //
-  'drivingLicenceT2': true, //
-  'airLicence': true, //
-  'seaLicence': true, //
-  'railwayLicence': true, //
-  'languages': [ //
-    {
-      'languageName': 'აფხაზური',
-    },
-    {
-      'languageName': 'ქართული',
-    },
-  ],
-  'skills': [ //
-    {
-      'skillName': 'Javascript',
-    },
-    {
-      'skillName': 'CSS',
-    },
-    {
-      'skillName': 'Javascript1',
-    },
-    {
-      'skillName': 'Javascript2',
-    },
-    {
-      'skillName': 'Javascript3',
-    },
-    {
-      'skillName': 'Javascript4',
-    },
-    {
-      'skillName': 'Javascript5',
-    },
-    {
-      'skillName': 'Javascript6',
-    },
-    {
-      'skillName': 'Javascript7',
-    },
-    {
-      'skillName': 'Javascript8',
-    },
-    {
-      'skillName': 'Javascript9',
-    },
-    {
-      'skillName': 'Javascript0',
-    },
-    {
-      'skillName': 'Javascript11',
-    },
-    {
-      'skillName': 'Javascript12',
-    },
-  ],
-  'status': 0, // 0 - draft, 1 - published, 2 - expired.
-}]
+const testJobs = [
+  {
+    'positionName': 'JavaScript Developer',
+    'organization': 'შპს FX1',
+    'organizationTaxCode': '123456789',
+    'locationName': 'თბილისი', //
+    'locationUnitName': 'ისანი', //
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2018-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'salaryInfoName': '150-300', //
+    'fullTime': true, //
+    'partTime': true, //
+    'shiftBased': true, //
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //
+    'drivingLicenceA': true, //
+    'drivingLicenceB': true, //
+    'drivingLicenceC': true, //
+    'drivingLicenceD': true, //
+    'drivingLicenceE': true, //
+    'drivingLicenceT1': true, //
+    'drivingLicenceT2': true, //
+    'airLicence': true, //
+    'seaLicence': true, //
+    'railwayLicence': true, //
+    'languages': [ //
+      {
+        'languageName': 'აფხაზური',
+      },
+      {
+        'languageName': 'ქართული',
+      },
+    ],
+    'skills': [ //
+      {
+        'skillName': 'Javascript',
+      },
+      {
+        'skillName': 'CSS',
+      },
+      {
+        'skillName': 'Javascript1',
+      },
+      {
+        'skillName': 'Javascript2',
+      },
+      {
+        'skillName': 'Javascript3',
+      },
+      {
+        'skillName': 'Javascript4',
+      },
+      {
+        'skillName': 'Javascript5',
+      },
+      {
+        'skillName': 'Javascript6',
+      },
+      {
+        'skillName': 'Javascript7',
+      },
+      {
+        'skillName': 'Javascript8',
+      },
+      {
+        'skillName': 'Javascript9',
+      },
+      {
+        'skillName': 'Javascript0',
+      },
+      {
+        'skillName': 'Javascript11',
+      },
+      {
+        'skillName': 'Javascript12',
+      },
+    ],
+    'status': 0, // 0 - draft, 1 - published, 2 - expired.
+  },
+  {
+    'positionName': 'butler',
+    'organization': 'შპს organization 1',
+    'organizationTaxCode': '111111111',
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2018-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'salaryInfoName': '150-300',
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [{ 'languageName': 'აფხაზური' }],
+    'skills': [{ 'skillName': 'Javascript' }],
+    'status': 0,
+  },
+  {
+    'positionName': 'bounty hunter',
+    'organization': 'შპს organization 2',
+    'organizationTaxCode': '222222222',
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2018-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'salaryInfoName': '150-300',
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [{ 'languageName': 'აფხაზური' }],
+    'skills': [{ 'skillName': 'Javascript' }],
+    'status': 1,
+  },
+  {
+    'positionName': 'chef',
+    'organization': 'შპს organization 3',
+    'organizationTaxCode': '333333333',
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2018-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'salaryInfoName': '150-300',
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [{ 'languageName': 'აფხაზური' }],
+    'skills': [{ 'skillName': 'Javascript' }],
+    'status': 2,
+  },
+]
 
 const testLibs = [{
   locationsInGeorgia: [
@@ -593,6 +697,25 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
     process.exit()
   }
 }
+
+async function bla() {
+  try { await deleteIndex('job') } catch (e) {}
+  try { await deleteIndex('location') } catch (e) {}
+  try { await deleteIndex('lib') } catch (e) {}
+
+  try { await deleteIndex('user') } catch (e) {}
+  try { await deleteIndex('vacancy') } catch (e) {}
+  try { await deleteIndex('location') } catch (e) {}
+  try { await deleteIndex('educationtype') } catch (e) {}
+  try { await deleteIndex('educationlevel') } catch (e) {}
+  try { await deleteIndex('formaleducationlevel') } catch (e) {}
+  try { await deleteIndex('skill') } catch (e) {}
+  try { await deleteIndex('desirablejob') } catch (e) {}
+  try { await deleteIndex('desirabletraining') } catch (e) {}
+  try { await deleteIndex('languages') } catch (e) {}
+}
+
+// bla()
 
 seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
 seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', false)

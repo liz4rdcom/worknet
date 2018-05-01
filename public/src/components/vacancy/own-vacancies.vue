@@ -1,29 +1,25 @@
 <template>
   <div>
-    <b-tabs pills card vertical nav-wrapper-class="vacancy-nav">
-      <b-tab title="all vacancies" active>
-        <pre>{{
-          JSON.stringify(vacancies, null, 2)
-        }}</pre>
-      </b-tab>
-      <b-tab title="published">
-        Tab Contents 2
-      </b-tab>
-      <b-tab title="draft">
-          {{!!id}}
-          <pre v-if="!!id">{{
-            JSON.stringify(vacancies, null, 2)
-          }}</pre>
-          <b-list-group v-else flush >
-            <b-list-group-item href="#">Cras justo odio</b-list-group-item>
-            <b-list-group-item href="#">Dapibus ac facilisis in</b-list-group-item>
-            <b-list-group-item href="#">Vestibulum at eros</b-list-group-item>
-          </b-list-group>
-      </b-tab>
-      <b-tab title="expired">
-        Tab Contents 4
-      </b-tab>
-    </b-tabs>
+    <!-- <pre>{{
+      JSON.stringify(vacancies, null, 2)
+    }}</pre> -->
+
+    <b-container class="bv-example-row">
+        <b-row>
+            <b-col cols="2">
+                <b-nav vertical class="w-25">
+                    <b-nav-item href="#/vacancies/own/all">all</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/published">published</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/draft">draft</b-nav-item>
+                    <b-nav-item href="#/vacancies/own/expired">expired</b-nav-item>
+                  </b-nav>
+            </b-col>
+
+            <b-col  cols="10">
+                <router-view :vacancies="vacancies"></router-view>
+            </b-col>
+        </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -33,8 +29,8 @@ import utils from '../../utils'
 const vacanciesUrl = '/api/vacancies'
 
 export default {
-  name: 'language',
-  props: ['language', 'id'],
+  name: 'own-vacancies',
+  props: ['language'],
   data: () => ({
     vacancies: [],
   }),
@@ -52,9 +48,6 @@ export default {
   methods: {
   },
   computed: {
-    draftVacancies: () => this.vacancies.filter(({ status }) => status === 0),
-    publishedVacancies: () => this.vacancies.filter(({ status }) => status === 1),
-    expiredVacancies: () => this.vacancies.filter(({ status }) => status === 2),
   },
 }
 </script>

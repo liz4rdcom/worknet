@@ -6,6 +6,7 @@ import vacancies from '../components/vacancy/vacancies'
 import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancyAdd/vacancy-add'
 import ownVacancies from '../components/vacancy/own-vacancies'
+import vacanciesList from '../components/vacancy/vacancies-list'
 import login from '../components/um/login'
 import register from '../components/um/register'
 import { bus } from '../components/common/bus'
@@ -45,17 +46,60 @@ let router = new Router({
       component: ownVacancies,
       children: [
         {
+          path: '/',
+          redirect: '/vacancies/own/all',
+        },
+        {
+          path: 'all',
+          component: vacanciesList,
+          props: { vacanciesStatus: 3 },
+          children: [
+            {
+              path: ':id',
+              name: 'vacancies-own',
+              component: vacancyView,
+              props: true,
+            },
+          ],
+        },
+        {
           path: 'draft',
-          component: ownVacancies,
-          props: true,
+          component: vacanciesList,
+          props: { vacanciesStatus: 0 },
+          children: [
+            {
+              path: ':id',
+              name: 'vacancies-own',
+              component: vacancyView,
+              props: true,
+            },
+          ],
         },
         {
           path: 'published',
-          component: ownVacancies,
+          component: vacanciesList,
+          props: { vacanciesStatus: 1 },
+          children: [
+            {
+              path: ':id',
+              name: 'vacancies-own',
+              component: vacancyView,
+              props: true,
+            },
+          ],
         },
         {
           path: 'expired',
-          component: ownVacancies,
+          component: vacanciesList,
+          props: { vacanciesStatus: 2 },
+          children: [
+            {
+              path: ':id',
+              name: 'vacancies-own',
+              component: vacancyView,
+              props: true,
+            },
+          ],
         },
       ],
     },

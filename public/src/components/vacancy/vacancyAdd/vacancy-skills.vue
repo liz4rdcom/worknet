@@ -19,6 +19,7 @@ import subsetSelector from '../../common/subset-selector'
 import { bus } from '../../common/bus'
 import utils from '../../../utils'
 
+const baseUrl = 'blabla'
 const searchUrl = '/api/skills/search'
 
 export default {
