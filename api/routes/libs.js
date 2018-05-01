@@ -36,16 +36,10 @@ router.get('/educationLevels', isAuthorized, async (req, res, next) => {
 
 router.get('/formalEducationLevels', isAuthorized, async (req, res, next) => {
   try {
-    console.log('----------')
-    
     let result = await libRepository.getFormalEducationLevels()
-    
-    console.log('<<<<<<<<')
 
     next({result})
   } catch (error) {
-    console.log('0000000000000')
-
     next({error})
   }
 })

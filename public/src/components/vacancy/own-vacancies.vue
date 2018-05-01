@@ -35,8 +35,6 @@ export default {
       const response = await this.$http.get(vacanciesUrl, {headers: utils.getHeaders()})
 
       this.vacancies = response.data
-
-      console.log('999', response, response.data)
     } catch (e) {
       // TODO Notify
       this.vacancies = []

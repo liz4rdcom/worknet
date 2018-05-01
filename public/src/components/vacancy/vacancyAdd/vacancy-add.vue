@@ -196,7 +196,7 @@
       <b-card>
         <b-form-group label="should have driving licence"> <!-- optional sawyisi value eqneba da ar aaq mnishvneloba optional ari tu ara-->
           <b-form-checkbox
-              v-model="vacancy.shouldHaveDrivingLicence"
+              v-model="shouldHaveDrivingLicence"
               :value="true"
               :unchecked-value="false"
             >
@@ -206,7 +206,7 @@
         <b-form-group label="'drivingLicenceA': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.drivingLicenceA"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -216,7 +216,7 @@
         <b-form-group label="'drivingLicenceB': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.drivingLicenceB"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -226,7 +226,7 @@
         <b-form-group label="'drivingLicenceC': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.drivingLicenceC"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -236,7 +236,7 @@
         <b-form-group label="'drivingLicenceD': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.drivingLicenceD"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -246,7 +246,7 @@
         <b-form-group label="'drivingLicenceE': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.drivingLicenceE"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -256,7 +256,7 @@
         <b-form-group label="'drivingLicenceT1': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.drivingLicenceT1"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -266,7 +266,7 @@
         <b-form-group label="'drivingLicenceT2': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.drivingLicenceT2"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -276,7 +276,7 @@
         <b-form-group label="'airLicence': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.airLicence"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -286,7 +286,7 @@
         <b-form-group label="'seaLicence': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.seaLicence"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -296,7 +296,7 @@
         <b-form-group label="'railwayLicence': true, //"> <!-- optional -->
           <b-form-checkbox
             v-model="vacancy.railwayLicence"
-            :disabled="!vacancy.shouldHaveDrivingLicence"
+            :disabled="!shouldHaveDrivingLicence"
             :value="true"
             :unchecked-value="false"
           >
@@ -361,7 +361,6 @@ export default {
       partTime: null,
       shiftBased: null,
       formalEducationLevelName: '- აირჩიე -',
-      shouldHaveDrivingLicence: false,
       drivingLicenceA: false,
       drivingLicenceB: false,
       drivingLicenceC: false,
@@ -375,6 +374,7 @@ export default {
     },
     formalEducationLevels: [],
     isOrganization: true,
+    shouldHaveDrivingLicence: false,
     showDataVisually: false,
   }),
   async created() {

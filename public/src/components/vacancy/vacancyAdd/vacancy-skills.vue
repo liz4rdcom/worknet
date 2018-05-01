@@ -19,7 +19,6 @@ import subsetSelector from '../../common/subset-selector'
 import { bus } from '../../common/bus'
 import utils from '../../../utils'
 
-const baseUrl = '/api/users/vacancy/skills'
 const searchUrl = '/api/skills/search'
 
 export default {
@@ -27,15 +26,6 @@ export default {
   data: () => ({
     skills: [],
   }),
-  async created() {
-    try {
-      let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
-
-      this.skills = response.data
-    } catch (error) {
-      bus.$emit('error', error)
-    }
-  },
   methods: {
     async searchSkills(skill) {
       return await this.$http.get(searchUrl, {params: {query: skill}, headers: utils.getHeaders()})
@@ -87,6 +77,8 @@ export default {
   },
   computed: {
     skillList() {
+      console.log('ttt', this.skills)
+
       return this.skills.map(item => item.skillName)
     },
   },
