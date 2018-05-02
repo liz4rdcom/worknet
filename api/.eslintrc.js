@@ -32,6 +32,6 @@ module.exports = {
     'eol-last': 1,
     'padded-blocks': 1,
     'prefer-arrow-callback': 1,
-    "comma-dangle": [2, 'always-multiline']
+    "comma-dangle": [1, 'always-multiline']
   }
 }
