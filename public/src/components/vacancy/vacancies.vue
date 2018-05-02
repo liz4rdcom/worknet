@@ -8,7 +8,11 @@
     <b-button class="searchButton" variant="primary" size="" @click="search">
       <i class="fa fa-search fa-2x" aria-hidden="true"></i>
     </b-button>
+    <b-button @click="filterClick">Filter</b-button>
   </div>
+  <b-card v-if="filter">
+    <button></button>
+  </b-card>
   <b-card class="mb-2 vacancy" v-for="vacancy in vacancies" :key="vacancy.id">
     <div @click="viewVacancy(vacancy.id)">
       <h3 class="card-title">{{vacancy.positionName}}</h3>
@@ -44,6 +48,7 @@ export default {
     vacancies: [],
     query: '',
     vacancyId: null,
+    filter: false,
   }),
   async created() {
     try {
@@ -54,6 +59,9 @@ export default {
     }
   },
   methods: {
+    filterClick () {
+      this.filter = !this.filter
+    },
     getFunctionDescription(vacancy) {
       let arr = vacancy.functionsDescription.split(' ', 10)
       let string = ''
