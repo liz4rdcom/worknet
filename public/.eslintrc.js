@@ -34,6 +34,8 @@ module.exports = {
     'class-methods-use-this': 0,
     'no-param-reassign': 0,
     'no-return-await': 0,
-    'no-plusplus': 0
+    'no-plusplus': 0,
+    "comma-dangle": [1, 'always-multiline'],
+    'no-unused-vars': 1,
   }
 }

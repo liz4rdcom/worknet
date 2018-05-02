@@ -2,6 +2,7 @@
 <div class="profile-skills">
   <b-card title="უნარები">
     <subset-selector
+      idPrefix="profile-skills"
       ref="skillInput"
       placeholder="მაგ. ანალიტიკოსი"
       :editable="true"
@@ -25,7 +26,7 @@ const searchUrl = '/api/skills/search'
 export default {
   name: 'profile-skills',
   data: () => ({
-    skills: []
+    skills: [],
   }),
   async created() {
     try {
@@ -50,12 +51,12 @@ export default {
       }
 
       let skillObject = {
-        skillName: skill
+        skillName: skill,
       }
 
       try {
         await this.$http.post(baseUrl, skillObject, {
-          headers: utils.getHeaders()
+          headers: utils.getHeaders(),
         })
 
         this.skills.push(skillObject)
@@ -76,23 +77,23 @@ export default {
         const url = baseUrl + `/${skill}`
 
         await this.$http.delete(url, {
-          headers: utils.getHeaders()
+          headers: utils.getHeaders(),
         })
 
         this.skills.splice(indexOfSkill, 1)
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   computed: {
     skillList() {
       return this.skills.map(item => item.skillName)
-    }
+    },
   },
   components: {
-    'subset-selector': subsetSelector
-  }
+    'subset-selector': subsetSelector,
+  },
 }
 </script>
 

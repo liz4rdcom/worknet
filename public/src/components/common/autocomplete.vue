@@ -5,6 +5,7 @@
     @keydown.up='up'>
     <slot name="input" :onInput="onInput" :inputValue="inputValue">
       <b-form-input type="text" autocomplete="off"
+        :id="idWithPrefix(idPrefix, 'autocomplete-input')"
         :value="inputValue"
         @input="onInput">
       </b-form-input>
@@ -20,6 +21,8 @@
 </template>
 
 <script>
+import utils from '../../utils'
+
 export default {
   name: 'autocomplete',
   props: {
@@ -27,17 +30,21 @@ export default {
     value: {},
     minimumChars: {
       type: Number,
-      default: 2
+      default: 2,
     },
     synchronous: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    idPrefix: {
+      type: String,
+    },
   },
   data: () => ({
     open: false,
     current: 0,
-    inputValue: ''
+    inputValue: '',
+    idWithPrefix: utils.idWithPrefix,
   }),
   methods: {
     onInput(value) {
@@ -90,12 +97,12 @@ export default {
       this.inputValue = this.suggestions[this.current]
 
       this.$emit('input', this.inputValue)
-    }
+    },
   },
   watch: {
     value(val) {
       this.inputValue = val
-    }
+    },
   },
   computed: {
     openSuggestion () {
@@ -107,8 +114,8 @@ export default {
       if (!this.synchronous) return this.list
 
       return this.list.filter(item => item.includes(this.inputValue))
-    }
-  }
+    },
+  },
 }
 </script>
 

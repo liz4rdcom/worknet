@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
-import axios from 'axios'
+import isString from 'lodash/isString'
+import { PERSONAL_NUMBER_LENGTH } from './constants'
 
 /**
  * Java ს String.hashCode() მეთოდის იმპლემენტაცია Javascript ზე.
@@ -23,27 +24,39 @@ function isNullOrUndefined(value) {
 
 function getHeaders() {
   return {
-    authorization: Cookies.get('token')
+    authorization: Cookies.get('token'),
   }
 }
 
-async function isTokenValid() {
-  if (!Cookies.get('token')) {
-    return false
+const getRangeNumberArray = (start, end) => {
+  const retVal = []
+
+  for (let i = start; i < end + 1; i++) {
+    retVal.push(i)
   }
 
-  try {
-    await axios.head('/um/authorization', {headers: getHeaders()})
+  return retVal
+}
 
-    return true
-  } catch (error) {
-    return false
-  }
+const stringContainsOnlyNumbers = str => /^\d+$/.test(str)
+
+const isValidEmail = str => /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/i.test(str)
+
+const couldBePersonalId = num => isString(num) && num.length === PERSONAL_NUMBER_LENGTH && stringContainsOnlyNumbers(num)
+
+function idWithPrefix(idPrefix, idPart) {
+  if (!idPrefix) return idPart
+
+  return idPrefix + '-' + idPart
 }
 
 export default {
   hashOfString: hashCode,
   isNullOrUndefined,
   getHeaders,
-  isTokenValid
+  getRangeNumberArray,
+  stringContainsOnlyNumbers,
+  isValidEmail,
+  couldBePersonalId,
+  idWithPrefix,
 }

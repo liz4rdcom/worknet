@@ -2,7 +2,7 @@ const elasticsearch = require('elasticsearch')
 const config = require('config')
 
 const client = new elasticsearch.Client({
-  host: config.get('elastic.host')
+  host: config.get('elastic.host'),
 })
 
 const utils = require('./utils')
@@ -13,7 +13,7 @@ const type = config.get('elastic.usersType')
 async function getUsers() {
   let options = {
     index,
-    type
+    type,
   }
 
   let result = await client.search(options)
@@ -22,17 +22,15 @@ async function getUsers() {
 }
 
 async function getMainInfo(userName) {
-  console.log(userName)
-
   let options = {
     index,
     type,
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
       'firstName',
@@ -48,8 +46,8 @@ async function getMainInfo(userName) {
       'factAddressDescription',
       'mobileNumber',
       'email',
-      'contactDescription'
-    ]
+      'contactDescription',
+    ],
   }
 
   let result = await client.search(options)
@@ -66,23 +64,23 @@ async function updateMainInfo(userName, mainInfo) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         inline: 'ctx._source.factLocationUnitName = test',
-        params: { test: 'aaaaaaaaaa' }
-      }
+        params: { test: 'aaaaaaaaaa' },
+      },
       // script: {
       //   inline:
       //     `ctx._source.factLocationUnitName=${mainInfo.factLocationUnitName};
       //   ctx._source.mobileNumber=${mainInfo.mobileNumber};
       //   `
       // }
-    }
+    },
   }
   let result = await client.updateByQuery(options)
-  console.log(result)
+
   return result
 }
 
@@ -93,13 +91,13 @@ async function getSkills(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'skills'
-    ]
+      'skills',
+    ],
   }
 
   let result = await client.search(options)
@@ -116,13 +114,13 @@ async function getDesirableJobs(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'desirableJobs'
-    ]
+      'desirableJobs',
+    ],
   }
 
   let result = await client.search(options)
@@ -132,6 +130,52 @@ async function getDesirableJobs(userName) {
   return result.hits.hits[0]._source.desirableJobs
 }
 
+async function getDesirableTrainings(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName,
+        },
+      },
+    },
+    _sourceInclude: [
+      'desirableTrainings',
+    ],
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.desirableTrainings
+}
+
+async function getDesirableTrainingLocations(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName,
+        },
+      },
+    },
+    _sourceInclude: [
+      'desirableTrainingLocations',
+    ],
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.desirableTrainingLocations
+}
+
 async function getJobExperiences(userName) {
   let options = {
     index,
@@ -139,13 +183,13 @@ async function getJobExperiences(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'jobExperiences'
-    ]
+      'jobExperiences',
+    ],
   }
 
   let result = await client.search(options)
@@ -162,14 +206,14 @@ async function saveJobExperiences(userName, experiences) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.jobExperiences = params.experiences',
-        params: { experiences }
-      }
-    }
+        params: { experiences },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -182,10 +226,10 @@ async function getUserByUserName(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
-    }
+          userName: userName,
+        },
+      },
+    },
   }
 
   let result = await client.search(options)
@@ -199,7 +243,7 @@ async function saveUser(user) {
   let options = {
     index,
     type,
-    body: user
+    body: user,
   }
 
   if (user.id) options.id = user.id
@@ -214,13 +258,13 @@ async function getEducations(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'educations'
-    ]
+      'educations',
+    ],
   }
 
   let result = await client.search(options)
@@ -237,16 +281,16 @@ async function saveEducations(userName, educations) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.educations = params.educations',
         params: {
-          educations
-        }
-      }
-    }
+          educations,
+        },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -259,16 +303,16 @@ async function getFormalEducationLevel(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'formalEducationLevelName'
-    ]
+      'formalEducationLevelName',
+    ],
   }
 
-  let result = await client.search(options)
+  let result = await client.search(options) // here
 
   if (result.hits.total === 0) return []
 
@@ -282,16 +326,16 @@ async function setFormalEducationLevel(userName, level) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.formalEducationLevelName = params.level',
         params: {
-          level
-        }
-      }
-    }
+          level,
+        },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -304,13 +348,13 @@ async function getLanguages(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'languages'
-    ]
+      'languages',
+    ],
   }
 
   let result = await client.search(options)
@@ -327,16 +371,16 @@ async function saveLanguages(userName, languages) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.languages = params.languages',
         params: {
-          languages
-        }
-      }
-    }
+          languages,
+        },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -349,13 +393,13 @@ async function getDesirableJobLocations(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'desirableJobLocations'
-    ]
+      'desirableJobLocations',
+    ],
   }
 
   let result = await client.search(options)
@@ -365,23 +409,23 @@ async function getDesirableJobLocations(userName) {
   return result.hits.hits[0]._source.desirableJobLocations
 }
 
-async function saveDesirableJobLocations(userName, desirableJobLocations) {                       
+async function saveDesirableJobLocations(userName, desirableJobLocations) {
   let options = {
     index,
     type,
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.desirableJobLocations = params.desirableJobLocations',
         params: {
-          desirableJobLocations
-        }
-      }
-    }
+          desirableJobLocations,
+        },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -394,9 +438,9 @@ async function getDrivingLicence(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
       'drivingLicenceA',
@@ -408,8 +452,8 @@ async function getDrivingLicence(userName) {
       'drivingLicenceT2',
       'airLicence',
       'seaLicence',
-      'railwayLicence'
-    ]
+      'railwayLicence',
+    ],
   }
 
   let result = await client.search(options)
@@ -419,15 +463,15 @@ async function getDrivingLicence(userName) {
   return result.hits.hits[0]._source
 }
 
-async function saveDrivingLicence(userName, drivingLicence) {                       
+async function saveDrivingLicence(userName, drivingLicence) {
   let options = {
     index,
     type,
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: `ctx._source.drivingLicenceA = params.drivingLicenceA;
@@ -441,9 +485,9 @@ async function saveDrivingLicence(userName, drivingLicence) {
                  ctx._source.seaLicence = params.seaLicence;
                  ctx._source.railwayLicence = params.railwayLicence;
         `,
-        params: drivingLicence
-      }
-    }
+        params: drivingLicence,
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -456,13 +500,13 @@ async function getHasDrivingLicence(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'hasDrivingLicence'
-    ]
+      'hasDrivingLicence',
+    ],
   }
 
   let result = await client.search(options)
@@ -472,23 +516,23 @@ async function getHasDrivingLicence(userName) {
   return result.hits.hits[0]._source.hasDrivingLicence
 }
 
-async function saveHasDrivingLicence(userName, hasDrivingLicence) {                       
+async function saveHasDrivingLicence(userName, hasDrivingLicence) {
   let options = {
     index,
     type,
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.hasDrivingLicence = params.hasDrivingLicence',
         params: {
-          hasDrivingLicence
-        }
-      }
-    }
+          hasDrivingLicence,
+        },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -501,13 +545,13 @@ async function getMilitaryObligation(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'militaryObligation'
-    ]
+      'militaryObligation',
+    ],
   }
 
   let result = await client.search(options)
@@ -517,23 +561,23 @@ async function getMilitaryObligation(userName) {
   return result.hits.hits[0]._source.militaryObligation
 }
 
-async function saveMilitaryObligation(userName, militaryObligation) {                       
+async function saveMilitaryObligation(userName, militaryObligation) {
   let options = {
     index,
     type,
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.militaryObligation = params.militaryObligation',
         params: {
-          militaryObligation
-        }
-      }
-    }
+          militaryObligation,
+        },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -546,13 +590,13 @@ async function getDesirableSalary(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'desirableSalary'
-    ]
+      'desirableSalary',
+    ],
   }
 
   let result = await client.search(options)
@@ -562,23 +606,23 @@ async function getDesirableSalary(userName) {
   return result.hits.hits[0]._source.desirableSalary
 }
 
-async function saveDesirableSalary(userName, desirableSalary) {                       
+async function saveDesirableSalary(userName, desirableSalary) {
   let options = {
     index,
     type,
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.desirableSalary = params.desirableSalary',
         params: {
-          desirableSalary
-        }
-      }
-    }
+          desirableSalary,
+        },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -591,9 +635,9 @@ async function getJobDescription(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
       'fullTime',
@@ -604,8 +648,8 @@ async function getJobDescription(userName) {
       'interestedInTemporaryJob',
       'interestedInDangerousJob',
       'interestedInTraining',
-      'unemployed'
-    ]
+      'unemployed',
+    ],
   }
 
   let result = await client.search(options)
@@ -615,15 +659,15 @@ async function getJobDescription(userName) {
   return result.hits.hits[0]._source
 }
 
-async function saveJobDescription(userName, jobDescription) {                       
+async function saveJobDescription(userName, jobDescription) {
   let options = {
     index,
     type,
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: `ctx._source.fullTime = params.fullTime;
@@ -636,9 +680,9 @@ async function saveJobDescription(userName, jobDescription) {
                  ctx._source.interestedInTraining = params.interestedInTraining;
                  ctx._source.unemployed = params.unemployed;
         `,
-        params: jobDescription
-      }
-    }
+        params: jobDescription,
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -651,13 +695,13 @@ async function getUseMediationService(userName) {
     body: {
       query: {
         term: {
-          userName: userName
-        }
-      }
+          userName: userName,
+        },
+      },
     },
     _sourceInclude: [
-      'useMediationService'
-    ]
+      'useMediationService',
+    ],
   }
 
   let result = await client.search(options)
@@ -667,23 +711,23 @@ async function getUseMediationService(userName) {
   return result.hits.hits[0]._source.useMediationService
 }
 
-async function saveUseMediationService(userName, useMediationService) {                       
+async function saveUseMediationService(userName, useMediationService) {
   let options = {
     index,
     type,
     body: {
       query: {
         term: {
-          userName: userName
-        }
+          userName: userName,
+        },
       },
       script: {
         source: 'ctx._source.useMediationService = params.useMediationService',
         params: {
-          useMediationService
-        }
-      }
-    }
+          useMediationService,
+        },
+      },
+    },
   }
 
   await client.updateByQuery(options)
@@ -697,6 +741,8 @@ module.exports = {
   saveUser,
   getSkills,
   getDesirableJobs,
+  getDesirableTrainings,
+  getDesirableTrainingLocations,
   getJobExperiences,
   saveJobExperiences,
   getEducations,
@@ -718,5 +764,5 @@ module.exports = {
   getJobDescription,
   saveJobDescription,
   getUseMediationService,
-  saveUseMediationService
+  saveUseMediationService,
 }

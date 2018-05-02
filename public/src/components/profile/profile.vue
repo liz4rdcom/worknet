@@ -10,6 +10,8 @@
 
     <desirable-jobs/>
 
+    <desirable-trainings-manager/>
+
     <languages></languages>
 
     <desirable-job-locations></desirable-job-locations>
@@ -25,9 +27,10 @@
   import experiences from './experiences'
   import educations from './educations'
   import desirableJobs from './desirable-jobs'
+  import desirableTrainingsManager from './desirableTrainingsManager/desirable-trainings-manager'
   import languages from './languages'
   import desirableJobLocations from './desirable-job-locations'
-  import moreInformation from './moreinformation'
+  import moreInformation from './moreInformation'
 
   const baseUrl = '/api/users/profile'
 
@@ -36,7 +39,7 @@
     data() {
       return {
         msg: 'profile page',
-        myProfile: {}
+        myProfile: {},
       }
     },
     created() {
@@ -49,7 +52,7 @@
       keyOfObject(obj) {
         let objString = JSON.stringify(obj)
         return utils.hashOfString(objString)
-      }
+      },
     },
     components: {
       'maininfo': maininfo,
@@ -57,10 +60,11 @@
       'experiences': experiences,
       'educations': educations,
       'desirable-jobs': desirableJobs,
+      'desirable-trainings-manager': desirableTrainingsManager,
       'languages': languages,
       'desirable-job-locations': desirableJobLocations,
-      'more-information': moreInformation
-    }
+      'more-information': moreInformation,
+    },
   }
 </script>
 

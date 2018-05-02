@@ -1,8 +1,5 @@
 <template>
 <div id="vacancies">
-  <b-button  variant="primary" @click="redirectToVacancyAdd">
-      ახალი ვაკანსია
-  </b-button>
   <div class="searchArea">
     <div class="form-group flex" @keyup.enter="search">
       <input type="text" class="form-control" v-model="query">
@@ -16,40 +13,79 @@
     <div @click="viewVacancy(vacancy.id)">
       <h3 class="card-title">{{vacancy.positionName}}</h3>
       <h5 class="card-text">{{vacancy.organization}}</h5>
+      <h5 class="card-text" v-if="vacancies.averageSalaryName !== ''">{{vacancy.averageSalaryName}}</h5>
+      <h5 class="card-text">{{getFunctionDescription(vacancy)}}</h5>
+      <h5 class="card-text" v-for="skill in getSkills(vacancy)" :key="skill.skillName">{{skill.skillName}}</h5>
+      <h5 class="card-text">{{vacancy.publishDate}}</h5>
+      <h5 class="card-text">სრულად ნახვა...</h5>
     </div>
   </b-card>
+  <side-modal ref="modalRef">
+    <vacancy-view :id="vacancyId" v-if="vacancyId"></vacancy-view>
+  </side-modal>
 </div>
 </template>
 
 <script>
+import utils from '../../utils'
+import { bus } from '../common/bus'
+import sideModal from '../common/side-modal'
+import vacancyView from './vacancy-view'
+
 const baseUrl = '/api/vacancies'
 
 export default {
   name: 'vacancies',
+  components: {
+    'side-modal': sideModal,
+    'vacancy-view': vacancyView,
+  },
   data: () => ({
     vacancies: [],
-    query: ''
+    query: '',
+    vacancyId: null,
   }),
-  created() {
-    this.$http.get(baseUrl)
-      .then(response => {
-        this.vacancies = response.data
-      })
+  async created() {
+    try {
+      let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
+      this.vacancies = response.data
+    } catch (error) {
+      bus.$emit('error', error)
+    }
   },
   methods: {
+    getFunctionDescription(vacancy) {
+      let arr = vacancy.functionsDescription.split(' ', 10)
+      let string = ''
+      for (let i = 0; i < arr.length; i++) {
+        string += arr[i] + ' '
+      }
+      return string
+    },
+    getSkills(vacancy) {
+      let arr = []
+      let vacancyLeght = vacancy.skills.length
+      if (vacancyLeght > 10) {
+        vacancyLeght = 10
+      }
+      for (let i = 0; i < vacancyLeght; i++) {
+        arr.push(vacancy.skills[i])
+      }
+      return arr
+    },
     viewVacancy(vacancyId) {
-      this.$router.push(`/vacancies/${vacancyId}/view`)
+      this.$refs.modalRef.sideModalOpen()
+      this.vacancyId = vacancyId
     },
-    search() {
-      this.$http.get(baseUrl, {params: {query: this.query}})
-        .then(response => {
-          this.vacancies = response.data
-        })
+    async search() {
+      try {
+        let response = await this.$http.get(baseUrl, {params: {query: this.query}}, {headers: utils.getHeaders()})
+        this.vacancies = response.data
+      } catch (error) {
+        bus.$emit('error', error)
+      }
     },
-    redirectToVacancyAdd() {
-      this.$router.push('/vacancies/new')
-    }
-  }
+  },
 }
 </script>
 

@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div class="row">
-      <b-form-select :value="selectedLocationName" :options="locations" value-field="locationName" text-field="locationName" @change="locationChanged"
+      <b-form-select :id="idWithPrefix(idPrefix, 'location-region')" :value="selectedLocationName" :options="locations" value-field="locationName" text-field="locationName" @change="locationChanged"
         class="mb-3 col-6">
         <template slot="first">
           <option :value="null">- აირჩიე რეგიონი -</option>
         </template>
       </b-form-select>
-      <b-form-select :value="selectedLocationUnitName" :options="selectedLocation.units" value-field="locationUnitName" text-field="locationUnitName"
+      <b-form-select :id="idWithPrefix(idPrefix, 'location-district')" :value="selectedLocationUnitName" :options="selectedLocation.units" value-field="locationUnitName" text-field="locationUnitName"
         @change="locationUnitChanged" class="mb-3 col-6">
         <template slot="first">
           <option :value="null">- აირჩიე რაიონი -</option>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+  import utils from '../../utils'
+
   /**
    * კომპონენტი მისამართისთვის (რეგიონი & რაიონი) location , unit
    * გადაწოდებულ მისამართების მასივს (locations) უნდა ქონდეს შემდეგი სტრუქტურა
@@ -34,16 +36,17 @@
 
   export default {
     name: 'locations',
-    props: ['locations', 'currentLocationName', 'currentLocationUnitName'],
+    props: ['locations', 'currentLocationName', 'currentLocationUnitName', 'idPrefix'],
     data() {
       return {
         locationDefaultObject: Object.freeze({
           locationName: '',
-          units: []
+          units: [],
         }),
         selectedLocationName: '',
         selectedLocationUnitName: '',
-        selectedLocation: this.locationDefaultObject
+        selectedLocation: this.locationDefaultObject,
+        idWithPrefix: utils.idWithPrefix,
       }
     },
     created() {
@@ -62,7 +65,7 @@
       },
       currentLocationUnitName(value) {
         this.selectedLocationUnitName = value
-      }
+      },
     },
     methods: {
       locationChanged(locationName) {
@@ -77,7 +80,7 @@
 
         this.$emit('onLocationChanged', {
           locationName: this.selectedLocationName,
-          locationUnitName: this.selectedLocationUnitName
+          locationUnitName: this.selectedLocationUnitName,
         })
       },
       loadOptions() {
@@ -86,8 +89,8 @@
 
           this.selectedLocation = location || this.locationDefaultObject
         }
-      }
-    }
+      },
+    },
   }
 </script>
 

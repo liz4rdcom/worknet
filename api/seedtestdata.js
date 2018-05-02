@@ -1,20 +1,20 @@
 var elasticsearch = require('elasticsearch')
 var client = new elasticsearch.Client({
   host: 'localhost:9200',
-  log: 'error'
+  log: 'error',
 })
 const shortid = require('shortid')
 
 async function createIndex(name, option) {
   await client.indices.create({
     index: name,
-    body: option
+    body: option,
   })
 }
 
 async function deleteIndex(index) {
   await client.indices.delete({
-    index: index
+    index: index,
   })
 }
 
@@ -25,7 +25,7 @@ async function insertData(index, type, users) {
   users.forEach(item => bulk.push(action, item))
 
   await client.bulk({
-    body: bulk
+    body: bulk,
   })
 }
 
@@ -33,51 +33,9 @@ const indexDefaultOptions = {
   'settings': {
     'index': {
       'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-const userIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-const jobIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-const libIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-
-const skillIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
-}
-
-const desirableJobIndex = {
-  'settings': {
-    'index': {
-      'number_of_shards': 1,
-      'number_of_replicas': 1
-    }
-  }
+      'number_of_replicas': 1,
+    },
+  },
 }
 
 const testUsers = [{
@@ -110,20 +68,20 @@ const testUsers = [{
       'startYear': 2011,
       'endMonth': 5,
       'endYear': 2015,
-      'directionName': 'ბიზნესის ადმინისტრირება'
-    }
+      'directionName': 'ბიზნესის ადმინისტრირება',
+    },
   ],
   'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
   'formalEducationLevelId': '3',
   'languages': [
     {
       'languageName': 'აფხაზური',
-      'languageLevel': 'არ ვფლობ'
+      'languageLevel': 'არ ვფლობ',
     },
     {
       'languageName': 'ქართული',
-      'languageLevel': 'თავისუფლად'
-    }
+      'languageLevel': 'თავისუფლად',
+    },
   ],
   'skills': [
     {
@@ -132,8 +90,8 @@ const testUsers = [{
       'users': [
         'user_id1',
         'user_id2',
-        'user_id3'
-      ]
+        'user_id3',
+      ],
     },
     {
       'skillName': 'CSS',
@@ -141,9 +99,9 @@ const testUsers = [{
       'users': [
         'user_id1',
         'user_id2',
-        'user_id3'
-      ]
-    }
+        'user_id3',
+      ],
+    },
   ],
   'jobExperiences': [
     {
@@ -159,7 +117,7 @@ const testUsers = [{
       'startYear': 2012,
       'endMonth': 2,
       'endYear': 2015,
-      'hasDocument': true
+      'hasDocument': true,
     },
     {
       'id': shortid.generate(),
@@ -173,8 +131,8 @@ const testUsers = [{
       'startYear': 2013,
       'endMonth': 2,
       'endYear': 2016,
-      'hasDocument': false
-    }
+      'hasDocument': false,
+    },
   ],
   'hasDrivingLicence': true,
   'drivingLicenceA': true,
@@ -190,39 +148,45 @@ const testUsers = [{
   'militaryObligation': false,
   'desirableJobs': [
     {
-      'name': 'მთავარი მზარეულები'
+      'name': 'მთავარი მზარეულები',
     },
     {
-      'name': 'ფინანსთა მენეჯერები'
+      'name': 'ფინანსთა მენეჯერები',
     },
     {
-      'name': 'საინფორმაციო ტექნოლოგიის ტრენერები'
+      'name': 'საინფორმაციო ტექნოლოგიის ტრენერები',
     },
     {
-      'name': 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები'
-    }
+      'name': 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები',
+    },
   ],
   'desirableJobLocations': [
     {
       'locationName': 'თბილისი',
-      'locationUnitName': 'ისანი'
+      'locationUnitName': 'ისანი',
     },
     {
       'locationName': 'თბილისი',
-      'locationUnitName': 'ვაკე'
-    }
+      'locationUnitName': 'ვაკე',
+    },
   ],
   'desirableTrainings': [
     {
-      'trainigName': 'კომპიუტერული პროგრამები და ბუღალტერია',
-      'locationName': 'თბილისი',
-      'locationUnitName': 'ვაკე'
+      'name': 'კომპიუტერული პროგრამები და ბუღალტერია',
     },
     {
-      'trainigName': ' კულინარია, მზარეული',
-      'locationName': 'თბილისი',
-      'locationUnitName': 'ვაკე'
-    }
+      'name': ' კულინარია, მზარეული',
+    },
+  ],
+  'desirableTrainingLocations': [
+    {
+      'name': 'თბილისი',
+      'unitName': 'ისანი',
+    },
+    {
+      'name': 'თბილისი',
+      'unitName': 'ვაკე',
+    },
   ],
   'desirableSalary': 5000,
   'fullTime': true,
@@ -232,59 +196,203 @@ const testUsers = [{
   'interestedToBeVolunteer': true,
   'interestedInTemporaryJob': true,
   'interestedInDangerousJob': true,
-  'interestedInTraining': true,
   'unemployed': false,
-  'useMediationService': true
+  'useMediationService': true,
 }]
 
-const testJobs = [{
-  'positionName': 'JavaScript Developer',
-  'organization': 'შპს FX1',
-  'organizationTaxCode': '123456789',
-  'locationName': 'თბილისი',
-  'locationUnitName': 'ისანი',
-  'addressLine': 'დამატებითი მისამართი',
-  'publishDate': '2017-12-03T00:00:00',
-  'interviewSupposedStartDate': '2018-01-01T00:00:00',
-  'endDate': '2018-01-07T00:00:00',
-  'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
-  'useMediationService': true,
-  'vacantPlacesQuantity': 2,
-  'functionsDescription': 'blablablabla',
-  'additionalDescription': 'damatebiti informacia TEST TEST',
-  'averageSalaryName': '150-300',
-  'fullTime': true,
-  'partTime': true,
-  'shiftBased': true,
-  'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
-  'formalEducationLevelId': '3',
-  'drivingLicenceA': true,
-  'drivingLicenceB': true,
-  'drivingLicenceC': true,
-  'drivingLicenceD': true,
-  'drivingLicenceE': true,
-  'drivingLicenceT1': true,
-  'drivingLicenceT2': true,
-  'airLicence': true,
-  'seaLicence': true,
-  'railwayLicence': true,
-  'languages': [
-    {
-      'languageName': 'აფხაზური'
-    },
-    {
-      'languageName': 'ქართული'
-    }
-  ],
-  'skills': [
-    {
-      'skillName': 'Javascript'
-    },
-    {
-      'skillName': 'CSS'
-    }
-  ]
-}]
+const testJobs = [
+  {
+    'authorUserName': 'root',
+    'positionName': 'JavaScript Developer',
+    'organization': 'შპს FX1',
+    'organizationTaxCode': '123456789',
+    'locationName': 'თბილისი', //
+    'locationUnitName': 'ისანი', //
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2018-01-07T00:00:00',
+    // todo kitxe es cvladi sajiroa saertod? cvlilebebi ar iqneba da, mashin draftis cvlilebebi avsaxo? is unda
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'salaryInfoName': '150-300', //
+    'fullTime': true, //
+    'partTime': true, //
+    'shiftBased': true, //
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //
+    'drivingLicenceA': true, //
+    'drivingLicenceB': true, //
+    'drivingLicenceC': true, //
+    'drivingLicenceD': true, //
+    'drivingLicenceE': true, //
+    'drivingLicenceT1': true, //
+    'drivingLicenceT2': true, //
+    'airLicence': true, //
+    'seaLicence': true, //
+    'railwayLicence': true, //
+    'languages': [ //
+      {
+        'languageName': 'აფხაზური',
+      },
+      {
+        'languageName': 'ქართული',
+      },
+    ],
+    'skills': [ //
+      {
+        'skillName': 'Javascript',
+      },
+      {
+        'skillName': 'CSS',
+      },
+      {
+        'skillName': 'Javascript1',
+      },
+      {
+        'skillName': 'Javascript2',
+      },
+      {
+        'skillName': 'Javascript3',
+      },
+      {
+        'skillName': 'Javascript4',
+      },
+      {
+        'skillName': 'Javascript5',
+      },
+      {
+        'skillName': 'Javascript6',
+      },
+      {
+        'skillName': 'Javascript7',
+      },
+      {
+        'skillName': 'Javascript8',
+      },
+      {
+        'skillName': 'Javascript9',
+      },
+      {
+        'skillName': 'Javascript0',
+      },
+      {
+        'skillName': 'Javascript11',
+      },
+      {
+        'skillName': 'Javascript12',
+      },
+    ],
+    'status': 0, // 0 - draft, 1 - published, 2 - expired.
+  },
+  {
+    'authorUserName': 'root',
+    'positionName': 'butler',
+    'organization': 'შპს organization 1',
+    'organizationTaxCode': '111111111',
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2018-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'salaryInfoName': '150-300',
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [{ 'languageName': 'აფხაზური' }],
+    'skills': [{ 'skillName': 'Javascript' }],
+    'status': 0,
+  },
+  {
+    'authorUserName': 'root',
+    'positionName': 'bounty hunter',
+    'organization': 'შპს organization 2',
+    'organizationTaxCode': '222222222',
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2018-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'salaryInfoName': '150-300',
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [{ 'languageName': 'აფხაზური' }],
+    'skills': [{ 'skillName': 'Javascript' }],
+    'status': 1,
+  },
+  {
+    'authorUserName': 'root',
+    'positionName': 'chef',
+    'organization': 'შპს organization 3',
+    'organizationTaxCode': '333333333',
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2018-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'salaryInfoName': '150-300',
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [{ 'languageName': 'აფხაზური' }],
+    'skills': [{ 'skillName': 'Javascript' }],
+    'status': 2,
+  },
+]
 
 const testLibs = [{
   locationsInGeorgia: [
@@ -300,16 +408,16 @@ const testLibs = [{
         { locationUnitName: 'ნაძალადევი' },
         { locationUnitName: 'ჩუღურეთი' },
         { locationUnitName: 'საბურთალო' },
-        { locationUnitName: 'სამგორი' }
-      ]
+        { locationUnitName: 'სამგორი' },
+      ],
     },
     {
       locationName: 'გურია',
       units: [
         { locationUnitName: 'ოზურგეთი' },
         { locationUnitName: 'ლანჩხუთი' },
-        { locationUnitName: 'ჩოხატაური' }
-      ]
+        { locationUnitName: 'ჩოხატაური' },
+      ],
     },
     {
       locationName: 'რაჭა-ლეჩხუმი & ქვემო სვანეთი',
@@ -317,8 +425,8 @@ const testLibs = [{
         { locationUnitName: 'ამბროლაური' },
         { locationUnitName: 'ლენტეხი' },
         { locationUnitName: 'ონი' },
-        { locationUnitName: 'ცაგერი' }
-      ]
+        { locationUnitName: 'ცაგერი' },
+      ],
     },
     {
       locationName: 'კახეთი',
@@ -330,8 +438,8 @@ const testLibs = [{
         { locationUnitName: 'ლაგოდეხი' },
         { locationUnitName: 'საგარეჯო' },
         { locationUnitName: 'სიღნაღი' },
-        { locationUnitName: 'ყვარლი' }
-      ]
+        { locationUnitName: 'ყვარლი' },
+      ],
     },
     {
       locationName: 'იმერეთი',
@@ -347,8 +455,8 @@ const testLibs = [{
         { locationUnitName: 'წყალტუბო' },
         { locationUnitName: 'ჭიათურა' },
         { locationUnitName: 'ხარაგაული' },
-        { locationUnitName: 'ხონი' }
-      ]
+        { locationUnitName: 'ხონი' },
+      ],
     },
     {
       locationName: 'მცხეთა-მთიანეთი  ',
@@ -357,8 +465,8 @@ const testLibs = [{
         { locationUnitName: 'დუშეთი' },
         { locationUnitName: 'თიანეთი' },
         { locationUnitName: 'მცხეთა' },
-        { locationUnitName: 'ყაზბეგი' }
-      ]
+        { locationUnitName: 'ყაზბეგი' },
+      ],
     },
     {
       locationName: 'სამეგრელო-ზემო სვანეთი',
@@ -371,8 +479,8 @@ const testLibs = [{
         { locationUnitName: 'ფოთი' },
         { locationUnitName: 'ჩხოროწყუ' },
         { locationUnitName: 'წალენჯიხა' },
-        { locationUnitName: 'ხობი' }
-      ]
+        { locationUnitName: 'ხობი' },
+      ],
     },
     {
       locationName: 'სამცხე-ჯავახეთი',
@@ -382,8 +490,8 @@ const testLibs = [{
         { locationUnitName: 'ახალქალაქი' },
         { locationUnitName: 'ახალციხე' },
         { locationUnitName: 'ბორჯომი' },
-        { locationUnitName: 'ნინოწმინდა' }
-      ]
+        { locationUnitName: 'ნინოწმინდა' },
+      ],
     },
     {
       locationName: 'ქვემო ქართლი ',
@@ -394,8 +502,8 @@ const testLibs = [{
         { locationUnitName: 'თეთრი წყარო' },
         { locationUnitName: 'მარნეული' },
         { locationUnitName: 'რუსთავი' },
-        { locationUnitName: 'წალკის' }
-      ]
+        { locationUnitName: 'წალკის' },
+      ],
     },
     {
       locationName: 'შიდა ქართლი ',
@@ -403,8 +511,8 @@ const testLibs = [{
         { locationUnitName: 'გორი' },
         { locationUnitName: 'კასპი' },
         { locationUnitName: 'ქარელი' },
-        { locationUnitName: 'ხაშური' }
-      ]
+        { locationUnitName: 'ხაშური' },
+      ],
     },
     {
       locationName: 'აჭარის ავტონომიური რესპუბლიკა',
@@ -414,8 +522,8 @@ const testLibs = [{
         { locationUnitName: 'ქობულეთი' },
         { locationUnitName: 'შუახევი' },
         { locationUnitName: 'ხელვაჩაური' },
-        { locationUnitName: 'ხულო' }
-      ]
+        { locationUnitName: 'ხულო' },
+      ],
     },
     {
       locationName: 'აფხაზეთი',
@@ -426,25 +534,34 @@ const testLibs = [{
         { locationUnitName: 'გულრიფში' },
         { locationUnitName: 'ოჩამჩირე' },
         { locationUnitName: 'გალი' },
-        { locationUnitName: 'ტყვარჩელი' }
-      ]
-    }
-
-  ]
+        { locationUnitName: 'ტყვარჩელი' },
+      ],
+    },
+  ],
 }]
+
+const testLanguages = [
+  { name: 'ქართული' },
+  { name: 'ინგლისური' },
+  { name: 'რუსული' },
+  { name: 'ფრანგული' },
+  { name: 'გერმანული' },
+  { name: 'ესპანური' },
+  { name: 'არაბული' },
+]
 
 const testEducationTypes = [
   { name: 'უმაღლესი განათლება' },
   { name: 'პროფესიული განათლება' },
   { name: 'ტრენინგები' },
-  { name: 'არაფორმალური განათლება' }
+  { name: 'არაფორმალური განათლება' },
 ]
 
 const testEducationLevels = [
   { name: 'ბაკალავრი' },
   { name: 'მაგისტრი' },
   { name: 'მაგისტრთან გათანაბრებული' },
-  { name: 'დოქტორი' }
+  { name: 'დოქტორი' },
 ]
 
 const testFormalEducationLevels = [
@@ -458,7 +575,7 @@ const testFormalEducationLevels = [
   { name: 'საშუალო, ტექნიკური ან პროფესიული განათლება' },
   { name: 'საშუალო სკოლა (დასრულებული)' },
   { name: 'საშუალო სკოლა (დაუსრულებელი)' },
-  { name: 'დაწყებითი განათლება' }
+  { name: 'დაწყებითი განათლება' },
 ]
 
 const testSkills = [
@@ -514,7 +631,7 @@ const testSkills = [
   { name: 'Javascript' },
   { name: 'CSS' },
   { name: 'HTML' },
-  { name: 'oop' }
+  { name: 'oop' },
 ]
 
 const testDesirableJobs = [
@@ -527,10 +644,23 @@ const testDesirableJobs = [
   { name: 'მთავარი მზარეულები' },
   { name: 'ფინანსთა მენეჯერები' },
   { name: 'საინფორმაციო ტექნოლოგიის ტრენერები' },
-  { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' }
+  { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' },
 ]
 
-async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
+const testDesirableTrainings = [
+  { name: 'training 1' },
+  { name: 'training 2' },
+  { name: 'training 3' },
+  { name: 'კომპიუტერული პროგრამები და ბუღალტერია' },
+  { name: ' კულინარია, მზარეული' },
+]
+
+/*
+old one with bug, we delete this when time passes and new seedData method
+prooves to be correct
+*/
+/*
+async function seedData (data, index, indexOption, type, dropIndexIfExists = false) {
   try {
     let exists = await client.indices.exists({ index: index })
 
@@ -538,21 +668,71 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
       await deleteIndex(index)
     }
 
-    if (!exists) {
+    if (dropIndexIfExists === true || !exists) {
       await createIndex(index, indexOption)
-    }
 
-    await insertData(index, type, data)
+      await insertData(index, type, data)
+    }
   } catch (error) {
     console.error(error)
+    process.exit()
+  }
+}
+*/
+
+async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
+  try {
+    let exists = await client.indices.exists({ index: index })
+
+    if (exists) {
+      if (dropIndexIfExists) {
+        await deleteIndex(index)
+
+        await createIndex(index, indexOption)
+
+        await insertData(index, type, data)
+      }
+    } else {
+      await createIndex(index, indexOption)
+
+      await insertData(index, type, data)
+    }
+  } catch (error) {
+    console.error(error)
+    process.exit()
   }
 }
 
-seedData(testUsers, 'user', userIndex, 'user', true)
-seedData(testJobs, 'job', jobIndex, 'job', true)
-seedData(testLibs, 'lib', libIndex, 'location', true)
+async function deleteIndexesStatically() {
+  try { await deleteIndex('job') } catch (e) {}
+  try { await deleteIndex('location') } catch (e) {}
+  try { await deleteIndex('lib') } catch (e) {}
+
+  try { await deleteIndex('user') } catch (e) {}
+  try { await deleteIndex('vacancy') } catch (e) {}
+  try { await deleteIndex('location') } catch (e) {}
+  try { await deleteIndex('educationtype') } catch (e) {}
+  try { await deleteIndex('educationlevel') } catch (e) {}
+  try { await deleteIndex('formaleducationlevel') } catch (e) {}
+  try { await deleteIndex('skill') } catch (e) {}
+  try { await deleteIndex('desirablejob') } catch (e) {}
+  try { await deleteIndex('desirabletraining') } catch (e) {}
+  try { await deleteIndex('languages') } catch (e) {}
+}
+
+/*
+comment seedDada(s) if uncommenting this, because seeds don't wait for
+this to finish and will probably cause error.
+*/
+// deleteIndexesStatically()
+
+seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
+seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', false)
+seedData(testLibs, 'location', indexDefaultOptions, 'location', true)
 seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
 seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
 seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
-seedData(testSkills, 'skill', skillIndex, 'skill', true)
-seedData(testDesirableJobs, 'desirablejob', desirableJobIndex, 'desirablejob', true)
+seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
+seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
+seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
+seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', false)

@@ -23,27 +23,33 @@
         <label>
           <b>რეგიონი & რაიონი</b>
         </label>
-        <locations ref="modalLocation" v-if="locationList.length>0" :locations="locationList" :currentLocationName="profileData.factLocationName"
-          :currentLocationUnitName="profileData.factLocationUnitName" @onLocationChanged="onFactLocationChanged"></locations>
+        <locations
+          idPrefix="maininfo"
+          ref="modalLocation"
+          v-if="locationList.length>0" :locations="locationList"
+          :currentLocationName="profileData.factLocationName"
+          :currentLocationUnitName="profileData.factLocationUnitName"
+          @onLocationChanged="onFactLocationChanged">
+        </locations>
         <label>
           <b>მისამართი</b>
         </label>
-        <b-form-input v-model="profileData.factAddressDescription" type="text" placeholder="მისამართი"></b-form-input>
+        <b-form-input id="maininfo-address" v-model="profileData.factAddressDescription" type="text" placeholder="მისამართი"></b-form-input>
 
         <label>
           <b>ელ-ფოსტა</b>
         </label>
-        <b-form-input v-model="profileData.email" type="email" placeholder="ელ-ფოსტა"></b-form-input>
+        <b-form-input id="maininfo-email" v-model="profileData.email" type="email" placeholder="ელ-ფოსტა"></b-form-input>
 
         <label>
           <b>ტელეფონი</b>
         </label>
-        <b-form-input v-model="profileData.mobileNumber" type="text" placeholder="ტელეფონი"></b-form-input>
+        <b-form-input id="maininfo-phone" v-model="profileData.mobileNumber" type="text" placeholder="ტელეფონი"></b-form-input>
 
         <label>
           <b>დამატებითი საკონტაქტო</b>
         </label>
-        <b-form-input v-model="profileData.contactDescription" type="text" placeholder="დამატებითი საკონტაქტო"></b-form-input>
+        <b-form-input id="maininfo-contact-description" v-model="profileData.contactDescription" type="text" placeholder="დამატებითი საკონტაქტო"></b-form-input>
 
       </b-modal>
     </b-card>
@@ -61,7 +67,7 @@
       return {
         baseUrl: 'api/users/profile/maininfo',
         locationList: [], // რეგიონები რაიონები
-        profileData: {}
+        profileData: {},
       }
     },
     async created() {
@@ -84,7 +90,7 @@
       },
       factAddress() {
         return `${this.profileData.factLocationName} ${this.profileData.factLocationUnitName} - ${this.profileData.factAddressDescription}`
-      }
+      },
     },
     methods: {
       onFactLocationChanged(location) {
@@ -98,9 +104,9 @@
         } catch (error) {
           bus.$emit('error', error)
         }
-      }
+      },
     },
-    components: { 'locations': locations }
+    components: { 'locations': locations },
   }
 </script>
 <style scoped>

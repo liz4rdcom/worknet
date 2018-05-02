@@ -2,6 +2,7 @@
 <div class="desirable-jobs">
   <b-card title="სასურველი სამსახური">
     <subset-selector
+      idPrefix="desirable-jobs"
       ref="desirableJobInput"
       placeholder="მაგ. პროგრამისტი"
       :editable="true"
@@ -25,7 +26,7 @@ const searchUrl = '/api/desirableJobs/search'
 export default {
   name: 'profile-desirable-jobs',
   data: () => ({
-    desirableJobs: []
+    desirableJobs: [],
   }),
   async created() {
     try {
@@ -50,12 +51,12 @@ export default {
       }
 
       let desirableJobObject = {
-        name: desirableJob
+        name: desirableJob,
       }
 
       try {
         await this.$http.post(baseUrl, desirableJobObject, {
-          headers: utils.getHeaders()
+          headers: utils.getHeaders(),
         })
 
         this.desirableJobs.push(desirableJobObject)
@@ -76,23 +77,23 @@ export default {
         const url = baseUrl + `/${desirableJob}`
 
         await this.$http.delete(url, {
-          headers: utils.getHeaders()
+          headers: utils.getHeaders(),
         })
 
         this.desirableJobs.splice(indexOfDesirableJob, 1)
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   computed: {
     desirableJobList() {
       return this.desirableJobs.map(item => item.name)
-    }
+    },
   },
   components: {
-    'subset-selector': subsetSelector
-  }
+    'subset-selector': subsetSelector,
+  },
 }
 </script>
 

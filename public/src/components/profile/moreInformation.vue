@@ -77,7 +77,7 @@
     </div>
     <div>
       <b-input-group v-if="desirableSalaryFilled === false">
-        <b-form-input type="text"
+        <b-form-input id="desirable-salary" type="text"
           placeholder="სასურველი ხელფასი"
           v-model="desirableSalary">
         </b-form-input>
@@ -160,7 +160,7 @@ export default {
       drivingLicenceT2: false,
       airLicence: false,
       seaLicence: false,
-      railwayLicence: false
+      railwayLicence: false,
     },
     desirableSalary: null,
     jobDescription: {
@@ -175,7 +175,7 @@ export default {
     },
     militaryObligation: false,
     useMediationService: false,
-    desirableSalaryFilled: false
+    desirableSalaryFilled: false,
   }),
   created: async function () {
     try {
@@ -185,14 +185,14 @@ export default {
         obligationResponse,
         salaryResponse,
         jobResponse,
-        useMediationServiceResponse
+        useMediationServiceResponse,
       ] = await Promise.all([
-        this.$http.get(baseUrl + 'drivinglicence', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'hasdrivinglicence', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'militaryObligation', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'desirableSalary', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'jobDescription', {headers: utils.getHeaders()}),
-        this.$http.get(baseUrl + 'usemediationservice', {headers: utils.getHeaders()})
+        this.$http.get(baseUrl + 'drivinglicence', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'hasdrivinglicence', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'militaryObligation', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'desirableSalary', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'jobDescription', { headers: utils.getHeaders() }),
+        this.$http.get(baseUrl + 'usemediationservice', { headers: utils.getHeaders() }),
       ])
 
       this.drivingLicence = licenceResponse.data
@@ -200,8 +200,9 @@ export default {
       this.militaryObligation = obligationResponse.data
       this.desirableSalary = salaryResponse.data.salary
 
-      if(salaryResponse.data.salary !== null)
+      if (salaryResponse.data.salary !== null) {
         this.desirableSalaryFilled = true
+      }
 
       this.jobDescription = jobResponse.data
       this.useMediationService = useMediationServiceResponse.data
@@ -212,58 +213,58 @@ export default {
   methods: {
     addHasDrivingLicence: async function (value) {
       try {
-        await this.$http.post(baseUrl + 'hasdrivingLicence',{hasDrivingLicence: value} , {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl + 'hasdrivingLicence', {hasDrivingLicence: value}, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     addDrivingLicence: async function (key, value) {
       try {
-      this.drivingLicence[key] = value
-      await this.$http.post(baseUrl + 'drivinglicence', this.drivingLicence, {headers: utils.getHeaders()})
+        this.drivingLicence[key] = value
+        await this.$http.post(baseUrl + 'drivinglicence', this.drivingLicence, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     addMilitaryObligation: async function (value) {
       try {
-        await this.$http.post(baseUrl + 'militaryObligation',{militaryObligation: value} , {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl + 'militaryObligation', {militaryObligation: value}, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     AddDesirableSalary: async function () {
       try {
-              await this.$http.post(baseUrl + 'desirableSalary', {desirableSalary: this.desirableSalary}, {headers: utils.getHeaders()})
-      this.desirableSalaryFilled = true
+        await this.$http.post(baseUrl + 'desirableSalary', {desirableSalary: this.desirableSalary}, {headers: utils.getHeaders()})
+        this.desirableSalaryFilled = true
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     desirableSalaryChange: async function () {
       try {
-      await this.$http.post(baseUrl + 'desirableSalary', {desirableSalary: null}, {headers: utils.getHeaders()})
-      this.desirableSalary = null
-      this.desirableSalaryFilled = false
+        await this.$http.post(baseUrl + 'desirableSalary', {desirableSalary: null}, {headers: utils.getHeaders()})
+        this.desirableSalary = null
+        this.desirableSalaryFilled = false
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     addJobDescription: async function (key, value) {
       try {
-      this.jobDescription[key] = value
-      await this.$http.post(baseUrl + 'jobDescription', this.jobDescription, {headers: utils.getHeaders()})
+        this.jobDescription[key] = value
+        await this.$http.post(baseUrl + 'jobDescription', this.jobDescription, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
     },
     addUseMediationService: async function (value) {
       try {
-      await this.$http.post(baseUrl + 'usemediationservice',{useMediationService: value} , {headers: utils.getHeaders()})
+        await this.$http.post(baseUrl + 'usemediationservice', {useMediationService: value}, {headers: utils.getHeaders()})
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
-  }
+    },
+  },
 }
 </script>

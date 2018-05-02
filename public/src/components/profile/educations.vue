@@ -48,24 +48,24 @@
 
     <b-modal ref="educationModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="onHide">
       <b-form-group label="განათლების ტიპი">
-        <b-form-select v-model="currentEducation.educationType" class="mb-3">
+        <b-form-select id="education-type-select" v-model="currentEducation.educationType" class="mb-3">
           <option v-for="type in educationTypes">{{type}}</option>
         </b-form-select>
       </b-form-group>
       <b-form-group label="ხარისხი" v-if="showEducationLevel(currentEducation)">
-        <b-form-select v-model="currentEducation.educationLevel" class="mb-3">
+        <b-form-select id="education-level-select" v-model="currentEducation.educationLevel" class="mb-3">
           <option v-for="level in educationLevels">{{level}}</option>
         </b-form-select>
       </b-form-group>
       <b-form-group label="სასწავლებელი" v-if="showFormalEducationFields(currentEducation)">
-         <b-form-input v-model="currentEducation.institution" type="text">
+         <b-form-input id="education-institution" v-model="currentEducation.institution" type="text">
          </b-form-input>
       </b-form-group>
       <b-form-group label="მიმართულება">
-         <b-form-input v-model="currentEducation.directionName" type="text">
+         <b-form-input id="education-direction-name" v-model="currentEducation.directionName" type="text">
          </b-form-input>
       </b-form-group>
-      <b-form-checkbox v-model="currentEducation.locationIsInGeorgia" v-if="showFormalEducationFields(currentEducation)">
+      <b-form-checkbox id="education-location-georgia-checkbox" v-model="currentEducation.locationIsInGeorgia" v-if="showFormalEducationFields(currentEducation)">
         სასწავლებელი საქართველოშია
       </b-form-checkbox>
       <div v-if="currentEducation.locationIsInGeorgia && showFormalEducationFields(currentEducation)">
@@ -73,6 +73,7 @@
           <b>რეგიონი & რაიონი</b>
         </label>
         <locations v-if="locationList.length>0"
+            idPrefix="education"
             :locations="locationList"
             :currentLocationName="currentEducation.locationName"
             :currentLocationUnitName="currentEducation.locationUnitName"
@@ -80,7 +81,7 @@
         </locations>
       </div>
       <b-form-group label="მისამართი" v-if="showFormalEducationFields(currentEducation)">
-        <b-form-input v-model="currentEducation.additionalAddressInfo" type="text"></b-form-input>
+        <b-form-input id="education-address-info" v-model="currentEducation.additionalAddressInfo" type="text"></b-form-input>
       </b-form-group>
       <div v-if="showFormalEducationFields(currentEducation)">
         <b-container class="periods">
@@ -89,6 +90,7 @@
               <div class="monthPeriod">
                   <label>დასაწყისი</label>
                   <month-period
+                    idPrefix="education-start"
                     :month="currentEducation.startMonth"
                     :year="currentEducation.startYear"
                     @month="onStartMonthChange"
@@ -100,6 +102,7 @@
               <div class="monthPeriod" v-if="!stillLearning">
                 <label>დასასრული</label>
                 <month-period
+                  idPrefix="education-end"
                   :month="currentEducation.endMonth"
                   :year="currentEducation.endYear"
                   @month="onEndMonthChange"
@@ -113,7 +116,7 @@
           </b-row>
         </b-container>
 
-        <b-form-checkbox v-model="stillLearning">
+        <b-form-checkbox id="education-still-learning" v-model="stillLearning">
           ახლაც აქ ვსწავლობ
         </b-form-checkbox>
       </div>
@@ -144,7 +147,7 @@ export default {
     educationLevels: [],
     formalEducationLevels: [],
     locationList: [],
-    educationToSubmit: {}
+    educationToSubmit: {},
   }),
   async created() {
     try {
@@ -154,14 +157,14 @@ export default {
         types,
         levels,
         formalEducationLevels,
-        formalEduLevelResponse
+        formalEduLevelResponse,
       ] = await Promise.all([
         this.$http.get(baseUrl, {headers: utils.getHeaders()}),
         libs.fetchLocationsOfGeorgia(),
         libs.fetchEducationTypes(),
         libs.fetchEducationLevels(),
         libs.fetchFormalEducationLevels(),
-        this.$http.get(baseUrl + '/formalEducationLevel', {headers: utils.getHeaders()})
+        this.$http.get(baseUrl + '/formalEducationLevel', {headers: utils.getHeaders()}),
       ])
 
       this.educations = response.data
@@ -186,7 +189,7 @@ export default {
         endYear: null,
         locationIsInGeorgia: true,
         locationName: null,
-        locationUnitName: null
+        locationUnitName: null,
       }
     },
     show(education) {
@@ -319,12 +322,12 @@ export default {
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   components: {
     'month-period': monthPeriod,
-    'locations': locations
-  }
+    'locations': locations,
+  },
 }
 </script>
 

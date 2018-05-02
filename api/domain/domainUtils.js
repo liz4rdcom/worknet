@@ -21,5 +21,5 @@ function validatePeriod(startMonth, startYear, endMonth, endYear) {
 }
 
 module.exports = {
-  validatePeriod
+  validatePeriod,
 }

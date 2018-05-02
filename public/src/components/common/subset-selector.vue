@@ -7,6 +7,7 @@
             <b-input-group v-if="editable">
               <b-form-input type="text"
                 autocomplete="off"
+                :id="idWithPrefix(idPrefix, 'selector-autocomplete-input')"
                 :placeholder="placeholder"
                 :value="inputValue"
                 @input="onInput">
@@ -28,16 +29,18 @@
 
 <script>
   import autocomplete from './autocomplete'
+  import utils from '../../utils'
 
   const minimumChars = 2
 
   export default {
     name: 'subset-selector',
-    props: ['list', 'editable', 'placeholder', 'getAutocompleteData'],
+    props: ['list', 'editable', 'placeholder', 'getAutocompleteData', 'idPrefix'],
     data() {
       return {
         newElement: '',
-        autocompleteElements: []
+        autocompleteElements: [],
+        idWithPrefix: utils.idWithPrefix,
       }
     },
     methods: {
@@ -62,11 +65,11 @@
         let {data} = await this.getAutocompleteData(value)
 
         this.autocompleteElements = data || []
-      }
+      },
     },
     components: {
-      autocomplete
-    }
+      autocomplete,
+    },
   }
 </script>
 

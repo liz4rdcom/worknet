@@ -2,7 +2,7 @@
   <div>
     <b-card title="სასურველი სამსახურის ადგილმდებარეობა">
       <div>
-        <locations :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
+        <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
         <b-button  variant="primary" @click="addLocation">
           დამატება
         </b-button>
@@ -31,17 +31,17 @@ export default {
     location: {
       locationName: '',
       locationUnitName: ''
-    }
+    },
   }),
   async created() {
     let response
 
     [
       this.locationsList,
-      response
+      response,
     ] = await Promise.all([
       libs.fetchLocationsOfGeorgia(),
-      this.$http.get(baseUrl, {headers: utils.getHeaders()})
+      this.$http.get(baseUrl, {headers: utils.getHeaders()}),
     ])
 
     this.desirableJobLocations = response.data
@@ -70,11 +70,11 @@ export default {
       } catch (error) {
         bus.$emit('error', error)
       }
-    }
+    },
   },
   components: {
-    locations
-  }
+    locations,
+  },
 }
 </script>
 

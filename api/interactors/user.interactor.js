@@ -3,9 +3,66 @@ const shortid = require('shortid')
 const userRepository = require('../infrastructure/user.repository')
 const skillInterctor = require('./skill.interactor')
 const desirableJobInterctor = require('./desirable.job.interactor')
+const desirableTrainingInterctor = require('./desirable.training.interactor')
 const factory = require('../domain/factory')
 const RecordError = require('../exceptions/record.error')
 const domainUtils = require('../domain/domainUtils')
+const umpack = require('../umpack')
+const PermissionError = require('../exceptions/permission.error')
+const getRegisteringUser = require('../domain/user').getRegisteringUser
+const utils = require('../utils')
+const dummyCRA = require('../infrastructure/dummy.CRA')
+
+async function register({ userName, password, email, phone, birthDate }) {
+  if (!userName) {
+    throw new PermissionError('მიუთითეთ userName.', 400)
+  }
+
+  if (!password) {
+    throw new PermissionError('მიუთითეთ password.', 400)
+  }
+
+  if (!birthDate) {
+    throw new PermissionError('მიუთითეთ birthDate.', 400)
+  }
+
+  if (!email && !phone) {
+    throw new PermissionError('იმაილი და საკონტაქტო ნომერიდან ერთერთი მაინც უნდა შეიყვანო.', 400)
+  }
+
+  const signUpObj = {
+    userName,
+    password,
+  }
+
+  if (email) {
+    signUpObj.email = email
+  } else {
+    signUpObj.phone = phone
+  }
+
+  const umpackResult = await umpack.signup(signUpObj)
+
+  const userObj = {
+    userName,
+    birthDate,
+    phone,
+    email,
+  }
+
+  try {
+    if (utils.couldBePersonalId(userName) && dummyCRA.arePersonalIdAndBirthDateValid(userName, birthDate, true)) { // todo CRA instead
+      userObj.personalId = userName
+    }
+
+    await userRepository.saveUser(getRegisteringUser(userObj))
+  } catch (e) {
+    // todo signup reverse
+    throw e
+  }
+
+  return umpackResult
+}
 
 async function getList() {
   return await userRepository.getUsers()
@@ -17,7 +74,6 @@ async function getUserMainInfo(userName) {
 }
 
 async function updateMainInfo(userName, mainInfo) {
-
   let foundUser = await userRepository.getUserByUserName(userName)
 
   let userToSave
@@ -30,7 +86,6 @@ async function updateMainInfo(userName, mainInfo) {
 
   let result = await userRepository.saveUser(userToSave)
   return result._id
-
 }
 
 async function getUserProfile(userName) {
@@ -46,7 +101,7 @@ async function fillUserProfile(userName, profile) {
 
   if (!foundUser) {
     userToSave = Object.assign({
-      userName
+      userName,
     }, profile)
   } else {
     userToSave = Object.assign(foundUser, profile)
@@ -128,6 +183,88 @@ async function removeDesirableJob(userName, desirableJob) {
 
   try {
     user.removeDesirableJob(desirableJob)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function getDesirableTrainings(userName) {
+  return await userRepository.getDesirableTrainings(userName)
+}
+
+async function addDesirableTraining(userName, desirableTraining) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.addDesirableTraining(desirableTraining)
+
+    await desirableTrainingInterctor.addIfNotExists(desirableTraining)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function removeDesirableTraining(userName, desirableTraining) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.removeDesirableTraining(desirableTraining)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function getDesirableTrainingLocations(userName) {
+  return await userRepository.getDesirableTrainingLocations(userName)
+}
+
+async function addDesirableTrainingLocation(userName, desirableTrainingLocation) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.addDesirableTrainingLocation(desirableTrainingLocation)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function removeDesirableTrainingLocation(userName, desirableTrainingLocation) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.removeDesirableTrainingLocation(desirableTrainingLocation)
   } catch (e) {
     if (!(e instanceof RecordError)) {
       throw e
@@ -279,7 +416,7 @@ async function getLanguages(userName) {
 async function addLanguage(userName, languageObject) {
   let language = {
     languageName: languageObject.languageName,
-    languageLevel: languageObject.languageLevel
+    languageLevel: languageObject.languageLevel,
   }
 
   let languages = await userRepository.getLanguages(userName)
@@ -331,7 +468,7 @@ async function deleteDesirableJobLocations(userName, location) {
 async function addDesirableJobLocations(userName, location) {
   let jobLocation = {
     locationName: location.locationName,
-    locationUnitName: location.locationUnitName
+    locationUnitName: location.locationUnitName,
   }
 
   let desirableJobLocations = await userRepository.getDesirableJobLocations(userName)
@@ -419,6 +556,12 @@ module.exports = {
   getDesirableJobs,
   addDesirableJob,
   removeDesirableJob,
+  getDesirableTrainings,
+  addDesirableTraining,
+  removeDesirableTraining,
+  getDesirableTrainingLocations,
+  addDesirableTrainingLocation,
+  removeDesirableTrainingLocation,
   getJobExperiences,
   addJobExperience,
   replaceJobExperience,
@@ -447,5 +590,6 @@ module.exports = {
   getJobDescription,
   addJobDescription,
   getUseMediationService,
-  addUseMediationService
+  addUseMediationService,
+  register,
 }

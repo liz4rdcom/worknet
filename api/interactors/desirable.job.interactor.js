@@ -14,5 +14,5 @@ async function addIfNotExists(desirableJobName) {
 
 module.exports = {
   search,
-  addIfNotExists
+  addIfNotExists,
 }

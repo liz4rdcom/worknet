@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/liz4rdcom/worknet.svg?style=svg&circle-token=907f6e77c31e4e211c8814f834fbdfc63c8b1d2a)](https://circleci.com/gh/liz4rdcom/worknet)
 
 # worknet
-მალე
+მალე..
 
 
 ### დეველოპერებს
