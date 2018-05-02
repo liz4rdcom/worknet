@@ -697,9 +697,11 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 
       await insertData(index, type, data)
     }
+    
+    process.exit(0)
   } catch (error) {
     console.error(error)
-    process.exit()
+    process.exit(1)
   }
 }
 
