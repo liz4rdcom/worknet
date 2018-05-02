@@ -23,7 +23,7 @@ router.get('/own', isAuthorized, (req, res, next) => {
     .catch(next)
 })
 
-router.get('/:id', isAuthorized, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     let result = await vacancyInteractor.getById(req.params.id)
     next({result})
