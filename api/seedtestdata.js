@@ -212,6 +212,7 @@ const testJobs = [
     'publishDate': '2017-12-03T00:00:00',
     'interviewSupposedStartDate': '2018-01-01T00:00:00',
     'endDate': '2018-01-07T00:00:00',
+    // todo kitxe es cvladi sajiroa saertod? cvlilebebi ar iqneba da, mashin draftis cvlilebebi avsaxo? is unda
     'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
     'useMediationService': true,
     'vacantPlacesQuantity': 2,
@@ -734,4 +735,4 @@ seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions,
 seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
 seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
 seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
-seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', true)
+seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', false)
