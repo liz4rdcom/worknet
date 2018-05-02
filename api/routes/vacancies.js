@@ -44,8 +44,10 @@ router.post('/', isAuthorized, (req, res, next) => {
     .catch(next)
 })
 
-router.put('/:id', isAuthorized, (req, res, next) => {
+router.put('/:id', (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
+
+  console.log('ttttt')
 
   vacancyInteractor.editVacancy(userName, req.params.id, req.body)
     .then(() => {

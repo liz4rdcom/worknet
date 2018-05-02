@@ -726,13 +726,17 @@ this to finish and will probably cause error.
 */
 // deleteIndexesStatically()
 
-seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
-seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', false)
-seedData(testLibs, 'location', indexDefaultOptions, 'location', true)
-seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
-seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
-seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
-seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
-seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
-seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
-seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', false)
+async function seedAllData(dropAll = false) {
+  seedData(testUsers, 'user', indexDefaultOptions, 'user', dropAll || false)
+  seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', dropAll || false)
+  seedData(testLibs, 'location', indexDefaultOptions, 'location', dropAll || true)
+  seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', dropAll || true)
+  seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', dropAll || true)
+  seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', dropAll || true)
+  seedData(testSkills, 'skill', indexDefaultOptions, 'skill', dropAll || false)
+  seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false)
+  seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false)
+  seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false)
+}
+
+seedAllData(true)

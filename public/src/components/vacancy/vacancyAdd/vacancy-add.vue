@@ -526,19 +526,31 @@ export default {
       this.vacancy.locationName = location.locationName
       this.vacancy.locationUnitName = location.locationUnitName
     },
-    validation() {},
+    validation() {
+      if (!this.vacancy.positionName) {
+        alert('VALIDATION: no positionName')
+        return false
+      }
+
+      if (this.isOrganization && (!this.vacancy.organization || !this.vacancy.organizationTaxCode)) {
+        alert('VALIDATION: no organization, organizationTaxCode')
+        return false
+      }
+
+      return true
+    },
     getVacancyAddDataToSend(status) {
       const retVal = {
         positionName: this.vacancy.positionName,
         interviewSupposedStartDate: new Date(
-          this.vacancy.interviewSupposedStartDay,
-          this.vacancy.interviewSupposedStartMonth,
           this.vacancy.interviewSupposedStartYear,
+          this.vacancy.interviewSupposedStartMonth,
+          this.vacancy.interviewSupposedStartDay,
         ),
         endDate: new Date(
-          this.vacancy.endDateDay,
-          this.vacancy.endDateMonth,
           this.vacancy.endDateYear,
+          this.vacancy.endDateMonth,
+          this.vacancy.endDateDay,
         ),
         useMediationService: this.vacancy.useMediationService,
         fullTime: this.vacancy.fullTime,
@@ -604,7 +616,8 @@ export default {
         if (!this.id) {
           await this.$http.post(baseUrl, this.getVacancyAddDataToSend(0), {headers: utils.getHeaders()})
         } else {
-          await this.$http.post(baseUrl + `${this.id}`, this.getVacancyAddDataToSend(0), {headers: utils.getHeaders()})
+          console.log(222)
+          await this.$http.put(baseUrl + `/${this.id}`, this.getVacancyAddDataToSend(0), {headers: utils.getHeaders()})
         }
       } catch (error) {
         bus.$emit('error', error)
@@ -613,13 +626,21 @@ export default {
     async onSubmit(evt) {
       evt.preventDefault()
 
-      this.validation()
+      if (!this.validation()) {
+        return
+      }
 
       try {
-        await this.$http.post(baseUrl, this.getVacancyAddDataToSend(1), {headers: utils.getHeaders()})
+        if (!this.id) {
+          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(1), {headers: utils.getHeaders()})
+        } else {
+          await this.$http.put(baseUrl + `/${this.id}`, this.getVacancyAddDataToSend(1), {headers: utils.getHeaders()})
+        }
       } catch (error) {
         bus.$emit('error', error)
       }
+
+      alert('submitted')
     },
   },
   computed: {
