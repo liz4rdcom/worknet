@@ -1,14 +1,14 @@
 <template>
   <div>
-    <b-card title="სასურველი სამსახურის ადგილმდებარეობა"> 
+    <b-card title="სასურველი სამსახურის ადგილმდებარეობა">
       <div>
         <locations :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
         <b-button  variant="primary" @click="addLocation">
           დამატება
         </b-button>
       </div>
-      <div class="chip" v-for="item in desirableJobLocations" :key="item.locationName">
-        {{item.locationName}} <br/> {{item.locationUnitName}} 
+      <div class="chip" v-for="item in desirableJobLocations" :key="item.locationName + ' ' + item.locationUnitName">
+        {{item.locationName}} <br/> {{item.locationUnitName}}
         <span class="closebtn" @click="removeElement(item)">&times;</span>
       </div>
     </b-card>
@@ -28,7 +28,10 @@ export default {
   data: () => ({
     locationsList: [],
     desirableJobLocations: [],
-    location: {}
+    location: {
+      locationName: '',
+      locationUnitName: ''
+    }
   }),
   async created() {
     let response
@@ -45,26 +48,28 @@ export default {
   },
   methods: {
     removeElement: async function (item) {
-      try{
+      try {
         await this.$http.delete(baseUrl, {params: item, headers: utils.getHeaders()})
-      let index = this.desirableJobLocations.findIndex((d) => d.locationName === item.locationName && d.locationUnitName === item.locationUnitName)
-      this.desirableJobLocations.splice(index, 1)
-      }catch(error){
+        let index = this.desirableJobLocations.findIndex((d) => d.locationName === item.locationName && d.locationUnitName === item.locationUnitName)
+        this.desirableJobLocations.splice(index, 1)
+      } catch (error) {
         bus.$emit('error', error)
       }
-      
     },
     onLocationChanged(location) {
       this.location = location
     },
     addLocation: async function () {
-      try{
-        await this.$http.post(baseUrl,  this.location, {headers: utils.getHeaders()})
-        this.desirableJobLocations.push(this.location)
-      }catch(error){
+      try {
+        if (this.location.locationName !== '' || this.location.locationUnitName !== '') {
+          await this.$http.post(baseUrl, this.location, {headers: utils.getHeaders()})
+          this.desirableJobLocations.push(this.location)
+        } else {
+          bus.$emit('warning', 'გთხოვთ შეავსოთ მონაცემები')
+        }
+      } catch (error) {
         bus.$emit('error', error)
       }
-      
     }
   },
   components: {
