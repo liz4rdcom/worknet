@@ -30,7 +30,7 @@ export default {
     desirableJobLocations: [],
     location: {
       locationName: '',
-      locationUnitName: ''
+      locationUnitName: '',
     },
   }),
   async created() {
