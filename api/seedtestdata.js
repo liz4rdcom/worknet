@@ -726,13 +726,13 @@ this to finish and will probably cause error.
 */
 // deleteIndexesStatically()
 
-seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
-seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', false)
+seedData(testUsers, 'user', indexDefaultOptions, 'user', true)
+seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', true)
 seedData(testLibs, 'location', indexDefaultOptions, 'location', true)
 seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
 seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
 seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
-seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
-seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
-seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
+seedData(testSkills, 'skill', indexDefaultOptions, 'skill', true)
+seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', true)
+seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', true)
 seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', true)

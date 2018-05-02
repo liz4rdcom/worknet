@@ -26,9 +26,7 @@ async function editVacancy(userName, id, vacancy) {
     throw new PermissionError('edit is permitted only for author')
   }
 
-  Object.assign(foundVacancy, vacancy)
-
-  return await vacancyRepository.editVacancy(foundVacancy)
+  return await vacancyRepository.editVacancy(vacancy)
 }
 
 async function deleteVacancy(userName, id) {

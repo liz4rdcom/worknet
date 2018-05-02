@@ -302,7 +302,7 @@
         <vacancy-skills/>
       </b-form-group> -->
 
-      <b-button variant="secondary">მონახაზად შენახვა</b-button>
+      <b-button variant="secondary" @click="saveAsDraft">მონახაზად შენახვა</b-button>
 
       <b-button type="submit" variant="primary">დამატება</b-button>
 
@@ -399,6 +399,7 @@ export default {
             this.isOrganization = false
           }
 
+          // todo es ormagi binding ar ari da miuxedavad imisa ro cvlads vanijer mainc ar icvleba dropdown
           if (vacancyResult.locationName) {
             this.vacancy.locationName = vacancyResult.locationName
           }
@@ -526,12 +527,99 @@ export default {
       this.vacancy.locationUnitName = location.locationUnitName
     },
     validation() {},
-    onSubmit(evt) {
+    getVacancyAddDataToSend(status) {
+      const retVal = {
+        positionName: this.vacancy.positionName,
+        interviewSupposedStartDate: new Date(
+          this.vacancy.interviewSupposedStartDay,
+          this.vacancy.interviewSupposedStartMonth,
+          this.vacancy.interviewSupposedStartYear,
+        ),
+        endDate: new Date(
+          this.vacancy.endDateDay,
+          this.vacancy.endDateMonth,
+          this.vacancy.endDateYear,
+        ),
+        useMediationService: this.vacancy.useMediationService,
+        fullTime: this.vacancy.fullTime,
+        partTime: this.vacancy.fullTime,
+        shiftBased: this.vacancy.fullTime,
+        status,
+      }
+
+      if (this.isOrganization) {
+        retVal.organization = this.vacancy.organization
+        retVal.organizationTaxCode = this.vacancy.organizationTaxCode
+      }
+
+      if (this.vacancy.locationUnitName) {
+        retVal.locationUnitName = this.vacancy.locationUnitName
+      }
+
+      if (this.vacancy.locationName) {
+        retVal.locationName = this.vacancy.locationName
+      }
+
+      if (this.vacancy.addressLine) {
+        retVal.addressLine = this.vacancy.addressLine
+      }
+
+      if (this.vacancy.vacantPlacesQuantity || this.vacancy.vacantPlacesQuantity === 0) {
+        retVal.vacantPlacesQuantity = this.vacancy.vacantPlacesQuantity
+      }
+
+      if (this.vacancy.functionsDescription) {
+        retVal.functionsDescription = this.vacancy.functionsDescription
+      }
+
+      if (this.vacancy.additionalDescription) {
+        retVal.additionalDescription = this.vacancy.additionalDescription
+      }
+
+      if (this.vacancy.salaryInfoName) {
+        retVal.salaryInfoName = this.vacancy.salaryInfoName
+      }
+
+      if (this.vacancy.formalEducationLevelName) {
+        retVal.formalEducationLevelName = this.vacancy.formalEducationLevelName
+      }
+
+      if (this.shouldHaveDrivingLicence) {
+        retVal.drivingLicenceA = this.vacancy.drivingLicenceA
+        retVal.drivingLicenceB = this.vacancy.drivingLicenceB
+        retVal.drivingLicenceC = this.vacancy.drivingLicenceC
+        retVal.drivingLicenceD = this.vacancy.drivingLicenceD
+        retVal.drivingLicenceE = this.vacancy.drivingLicenceE
+        retVal.drivingLicenceT1 = this.vacancy.drivingLicenceT1
+        retVal.drivingLicenceT2 = this.vacancy.drivingLicenceT2
+        retVal.airLicence = this.vacancy.airLicence
+        retVal.seaLicence = this.vacancy.seaLicence
+        retVal.railwayLicence = this.vacancy.railwayLicence
+      }
+
+      return retVal
+    },
+    async saveAsDraft() {
+      try {
+        if (!this.id) {
+          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(0), {headers: utils.getHeaders()})
+        } else {
+          await this.$http.post(baseUrl + `${this.id}`, this.getVacancyAddDataToSend(0), {headers: utils.getHeaders()})
+        }
+      } catch (error) {
+        bus.$emit('error', error)
+      }
+    },
+    async onSubmit(evt) {
       evt.preventDefault()
 
       this.validation()
 
-      alert('submitted')
+      try {
+        await this.$http.post(baseUrl, this.getVacancyAddDataToSend(1), {headers: utils.getHeaders()})
+      } catch (error) {
+        bus.$emit('error', error)
+      }
     },
   },
   computed: {
