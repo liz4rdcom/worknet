@@ -11,7 +11,31 @@
     <b-button @click="filterClick">Filter</b-button>
   </div>
   <b-card v-if="filter">
-    <button></button>
+    <b-row>
+      <b-col lg="6">
+        <form class="go-bottom">
+          <h2>To Bottom</h2>
+          <div>
+            <input id="name" name="name" type="text" required>
+            <label for="name">Your Name</label>
+          </div>
+          <div>
+            <input id="phone" name="phone" type="tel" required>
+            <label for="phone">Primary Phone</label>
+          </div>
+          <div>
+            <textarea id="message" name="phone" required></textarea>
+            <label for="message">Message</label>
+          </div>
+        </form>
+      </b-col>
+      <b-col lg="6">
+        <div class="input-group">
+          <span class="input-group-addon">$</span>
+          <input id="msg1" type="text" class="form-control" name="msg" placeholder="მაქს">
+        </div>
+      </b-col>
+    </b-row>
   </b-card>
   <b-card class="mb-2 vacancy" v-for="vacancy in vacancies" :key="vacancy.id">
     <div @click="viewVacancy(vacancy.id)">
@@ -120,5 +144,123 @@ export default {
   margin: 16px;
   margin-top: 9px;
   margin-bottom: 9px;
+}
+* {
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+form {
+  width: 320px;
+  float: left;
+  margin: 20px;
+}
+
+form > div {
+  position: relative;
+  overflow: hidden;
+}
+
+form label {
+  transition:
+    background 0.2s,
+    color 0.2s,
+    top 0.2s,
+    bottom 0.2s,
+    right 0.2s,
+    left 0.2s;
+  position: absolute;
+  color: #999;
+  padding: 7px 6px;
+}
+
+form textarea {
+  display: block;
+  resize: vertical;
+}
+
+form input, textarea {
+  width: 100%;
+  border: 2px solid gray;
+  background: none;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 8px 12px;
+  outline: 0;
+}
+
+form textarea:valid {
+  background: white;
+}
+
+form input:valid {
+  background: white;
+}
+
+form textarea:focus {
+  border-color: #3A9F02;
+}
+
+form input:focus {
+  border-color: #3A9F02;
+}
+
+form textarea:focus + label {
+  background: #3A9F02;
+  color: white;
+  font-size: 70%;
+  padding: 1px 6px;
+  z-index: 2;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+form input:focus + label {
+  background: #3A9F02;
+  color: white;
+  font-size: 70%;
+  padding: 1px 6px;
+  z-index: 2;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+form.go-bottom input, textarea {
+  padding: 12px 12px 12px 12px;
+}
+
+form.go-bottom label {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+form.go-bottom input:focus, textarea:focus {
+  padding: 4px 6px 20px 6px;
+}
+
+form.go-bottom input:focus + label, textarea:focus + label {
+  top: 100%;
+  margin-top: -16px;
+}
+
+form.go-right label {
+  top: 2px;
+  right: 100%;
+  width: 100%;
+  margin-right: -100%;
+  bottom: 2px;
+}
+
+form.go-right input:focus + label, textarea:focus + label {
+  right: 0;
+  margin-right: 0;
+  padding-top: 5px;
 }
 </style>
