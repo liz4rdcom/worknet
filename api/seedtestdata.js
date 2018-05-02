@@ -212,7 +212,6 @@ const testJobs = [
     'publishDate': '2017-12-03T00:00:00',
     'interviewSupposedStartDate': '2018-01-01T00:00:00',
     'endDate': '2018-01-07T00:00:00',
-    // todo kitxe es cvladi sajiroa saertod? cvlilebebi ar iqneba da, mashin draftis cvlilebebi avsaxo? is unda
     'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
     'useMediationService': true,
     'vacantPlacesQuantity': 2,
@@ -290,8 +289,8 @@ const testJobs = [
   {
     'authorUserName': 'root',
     'positionName': 'butler',
-    'organization': 'შპს organization 1',
-    'organizationTaxCode': '111111111',
+    'authorFullName': 'იაგო მაისურაძე',
+    'authorPersonalId': '01234567890',
     'locationName': 'თბილისი',
     'locationUnitName': 'ისანი',
     'addressLine': 'დამატებითი მისამართი',
@@ -697,7 +696,7 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 
       await insertData(index, type, data)
     }
-    
+
     process.exit(0)
   } catch (error) {
     console.error(error)

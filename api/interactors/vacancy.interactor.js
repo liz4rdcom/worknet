@@ -15,56 +15,13 @@ async function getUserVacancies(userName) {
 }
 
 function validateVacancy(vacancy) {
-  const aa = {
-    'authorUserName': 'root',
-    'positionName': 'JavaScript Developer',
-    'organization': 'შპს FX1',
-    'organizationTaxCode': '123456789',
-    'locationName': 'თბილისი', //
-    'locationUnitName': 'ისანი', //
-    'addressLine': 'დამატებითი მისამართი',
-    'publishDate': '2017-12-03T00:00:00',
-    'interviewSupposedStartDate': '2018-01-01T00:00:00',
-    'endDate': '2018-01-07T00:00:00',
-    // todo kitxe es cvladi sajiroa saertod? cvlilebebi ar iqneba da, mashin draftis cvlilebebi avsaxo? is unda
-    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
-    'useMediationService': true,
-    'vacantPlacesQuantity': 2,
-    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
-    'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300', //
-    'fullTime': true, //
-    'partTime': true, //
-    'shiftBased': true, //
-    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //
-    'drivingLicenceA': true, //
-    'drivingLicenceB': true, //
-    'drivingLicenceC': true, //
-    'drivingLicenceD': true, //
-    'drivingLicenceE': true, //
-    'drivingLicenceT1': true, //
-    'drivingLicenceT2': true, //
-    'airLicence': true, //
-    'seaLicence': true, //
-    'railwayLicence': true, //
-    'languages': [ //
-      {
-        'languageName': 'აფხაზური',
-      },
-    ],
-    'skills': [ //
-      {
-        'skillName': 'Javascript',
-      },
-    ],
-    'status': 0, // 0 - draft, 1 - published, 2 - expired.
-  }
-
   const {
     authorUserName,
     positionName,
     organization,
     organizationTaxCode,
+    authorFullName,
+    authorPersonalId,
     locationName,
     locationUnitName,
     addressLine,
@@ -107,7 +64,23 @@ function validateVacancy(vacancy) {
     throw new PermissionError('userName not found', 400)
   }
 
-  // todo organization name an tu araa organizacia ramea mosatxovi ar vici jer ra
+  if (organization) {
+    if (!_.isString(organization) || !_.isString(organizationTaxCode)) {
+      throw new PermissionError('invalid: organization, organizationTaxCode', 400)
+    }
+  } else {
+    if (!_.isString(authorFullName)) {
+      throw new PermissionError('invalid: authorFullName', 400)
+    }
+
+    if (!_.isNil(authorPersonalId) && !_.isString(authorPersonalId)) {
+      throw new PermissionError('invalid: authorPersonalId', 400)
+    }
+  }
+
+  if ((locationName || locationUnitName) && (!_.isString(locationName) || !_.isString(locationUnitName))) {
+    throw new PermissionError('invalid: locationName, locationUnitName', 400)
+  }
 
   if (addressLine && !_.isString(addressLine)) {
     throw new PermissionError('addressLine must be string', 400)
@@ -120,8 +93,6 @@ function validateVacancy(vacancy) {
   if (endDate && !_.isString(endDate)) {
     throw new PermissionError('endDate must be string', 400)
   }
-
-  // todo rom gaarkvev date last changeds mere dawere validacia
 
   if (!_.isNil(useMediationService) && !_.isBoolean(useMediationService)) {
     throw new PermissionError('useMediationService boolean string', 400)
@@ -197,6 +168,14 @@ function validateVacancy(vacancy) {
 
   if (!_.isNil(railwayLicence) && !_.isBoolean(railwayLicence)) {
     throw new PermissionError('invalid railwayLicence', 400)
+  }
+
+  if (languages && !_.isArray(languages)) {
+    throw new PermissionError('invalid languages', 400)
+  }
+
+  if (skills && !_.isArray(skills)) {
+    throw new PermissionError('invalid skills', 400)
   }
 }
 
