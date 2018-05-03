@@ -1,5 +1,6 @@
 <template>
   <locations
+    v-if="locationList.length > 0"
     :idPrefix="idPrefix"
     :locations="locationList"
     :currentLocationName="currentLocationName"
