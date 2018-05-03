@@ -4,7 +4,7 @@
     <label>ორგანიზაცია: <b>{{vacancy.organization}}</b></label><br />
     <label>მისამართი: <b>{{vacancy.locationName}} &nbsp; {{vacancy.locationUnitName}} &nbsp; {{vacancy.addressLine}}</b></label><br />
   </b-card>
-  <b-card title="თარირები">
+  <b-card title="თარიღები">
     <label>ვაკანსიის დადების თარიღი: <b>{{vacancy.publishDate}}</b></label><br />
     <label>გასაუბრებების დაწყების სავარაუდო თარიღი: <b>{{vacancy.interviewSupposedStartDate}}</b></label><br />
     <label>ბოლო ვადა: <b>{{vacancy.endDate}}</b></label><br />
