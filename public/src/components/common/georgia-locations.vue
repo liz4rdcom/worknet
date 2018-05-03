@@ -1,11 +1,11 @@
 <template>
-    <locations
-      :idPrefix="idPrefix"
-      :locations="locationList"
-      :currentLocationName="currentLocationName"
-      :currentLocationUnitName="currentLocationUnitName"
-      @onLocationChanged="onLocationChanged"
-    />
+  <locations
+    :idPrefix="idPrefix"
+    :locations="locationList"
+    :currentLocationName="currentLocationName"
+    :currentLocationUnitName="currentLocationUnitName"
+    @onLocationChanged="onLocationChanged"
+  />
 </template>
 
 <script>

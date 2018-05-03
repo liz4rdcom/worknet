@@ -29,14 +29,23 @@
           ></b-form-input>
         </b-form-group>
 
-        <div v-if="!isOrganization">
-          tu organizacia ar aqvs anu vakansiis damdebi fizikuri piri tua, aq ra unda vuchveno ?
-          ra shevavsebino? anu ra unda shevekitxo Organizaciis saxlis da TaxCode-is magivrad ?
-        </div>
+        <b-form-group v-if="!isOrganization" label="authorFullName">
+          <b-form-input type="text" v-model="vacancy.authorFullName"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group v-if="!isOrganization" label="authorPersonalId">
+          <b-form-input type="text" v-model="vacancy.authorPersonalId"
+          ></b-form-input>
+        </b-form-group>
       </b-card>
 
       <b-form-group label="'locationName': 'თბილისი', //"> <!-- optional, optional, 'locationName': 'თბილისი', // locationUnitName': 'ისანი', // -->
-        <georgia-locations :onLocationChanged="onLocationChanged" />
+        <georgia-locations
+          :onLocationChanged="onLocationChanged"
+          :currentLocationName="'თბილისი'"
+          :currentLocationUnitName="'ისანი'"
+        />
       </b-form-group>
 
       <b-form-group label="'addressLine': 'დამატებითი მისამართი',"> <!-- optional -->
@@ -292,15 +301,14 @@
       </b-card>
 
       <!-- optional -->
-      <!-- todo kitxe enebze cnodnis done unda tu ara, wordis documentshi ewera arao -->
-      <!-- <b-form-group label="'languages': [ //">
+      <b-form-group label="'languages': [ //">
         <languages />
-      </b-form-group> -->
+      </b-form-group>
 
       <!-- optional -->
-      <!-- <b-form-group label="'skills': [ //">
+      <b-form-group label="'skills': [ //">
         <vacancy-skills/>
-      </b-form-group> -->
+      </b-form-group>
 
       <b-button variant="secondary" @click="saveAsDraft">მონახაზად შენახვა</b-button>
 
@@ -337,6 +345,8 @@ export default {
       positionName: null,
       organization: null,
       organizationTaxCode: null,
+      authorFullName: null,
+      authorPersonalId: null,
       locationName: null,
       locationUnitName: null,
       addressLine: null,
@@ -391,12 +401,17 @@ export default {
             this.vacancy.positionName = vacancyResult.positionName
           }
 
-          /* todo ask if organization is, always will be organization tax code too */
           if (vacancyResult.organization) {
             this.vacancy.organization = vacancyResult.organization
             this.vacancy.organizationTaxCode = vacancyResult.organizationTaxCode
           } else {
             this.isOrganization = false
+
+            this.vacancy.authorFullName = vacancyResult.authorFullName
+
+            if (vacancyResult.authorPersonalId) {
+              this.vacancy.authorPersonalId = vacancyResult.authorPersonalId
+            }
           }
 
           // todo es ormagi binding ar ari da miuxedavad imisa ro cvlads vanijer mainc ar icvleba dropdown
@@ -537,6 +552,11 @@ export default {
         return false
       }
 
+      if (!this.isOrganization && (!this.vacancy.authorFullName)) {
+        alert('VALIDATION: no authorFullName')
+        return false
+      }
+
       return true
     },
     getVacancyAddDataToSend(status) {
@@ -562,6 +582,12 @@ export default {
       if (this.isOrganization) {
         retVal.organization = this.vacancy.organization
         retVal.organizationTaxCode = this.vacancy.organizationTaxCode
+      } else {
+        retVal.authorFullName = this.vacancy.authorFullName
+
+        if (this.vacancy.authorPersonalId) {
+          retVal.authorPersonalId = this.vacancy.authorPersonalId
+        }
       }
 
       if (this.vacancy.locationUnitName) {
