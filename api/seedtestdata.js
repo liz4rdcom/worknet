@@ -284,7 +284,7 @@ const testJobs = [
         'skillName': 'Javascript12',
       },
     ],
-    'status': 0, // 0 - draft, 1 - published, 2 - expired.
+    'published': false,
   },
   {
     'authorUserName': 'root',
@@ -319,7 +319,7 @@ const testJobs = [
     'railwayLicence': true,
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
-    'status': 0,
+    'published': false,
   },
   {
     'authorUserName': 'root',
@@ -354,7 +354,7 @@ const testJobs = [
     'railwayLicence': true,
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
-    'status': 1,
+    'published': true,
   },
   {
     'authorUserName': 'root',
@@ -366,7 +366,7 @@ const testJobs = [
     'addressLine': 'დამატებითი მისამართი',
     'publishDate': '2017-12-03T00:00:00',
     'interviewSupposedStartDate': '2018-01-01T00:00:00',
-    'endDate': '2018-01-07T00:00:00',
+    'endDate': '2006-01-07T00:00:00',
     'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
     'useMediationService': true,
     'vacantPlacesQuantity': 2,
@@ -389,7 +389,7 @@ const testJobs = [
     'railwayLicence': true,
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
-    'status': 2,
+    'published': true,
   },
 ]
 

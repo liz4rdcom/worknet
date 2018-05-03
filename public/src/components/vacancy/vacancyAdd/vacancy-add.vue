@@ -277,11 +277,6 @@
     <b-button variant="secondary" @click="saveAsDraft">მონახაზად შენახვა</b-button>
 
     <b-button variant="primary" @click="onSubmit">დამატება</b-button>
-
-    <!-- optional -->
-    <!-- <b-form-group label="'status': 0,">
-      NOT NEEDED ON FRONT
-    </b-form-group> -->
   </div>
 </template>
 
@@ -532,7 +527,7 @@ export default {
 
       return true
     },
-    getVacancyAddDataToSend(status) {
+    getVacancyAddDataToSend(published) {
       const retVal = {
         positionName: this.vacancy.positionName,
         interviewSupposedStartDate: new Date(
@@ -551,7 +546,7 @@ export default {
         shiftBased: this.vacancy.fullTime,
         languages: this.vacancy.languages,
         skills: this.vacancy.skills,
-        status,
+        published,
       }
 
       if (this.isOrganization) {
@@ -615,9 +610,9 @@ export default {
     async saveAsDraft() {
       try {
         if (!this.id) {
-          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(0), {headers: utils.getHeaders()})
+          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(false), {headers: utils.getHeaders()})
         } else {
-          await this.$http.put(baseUrl + `/${this.id}`, this.getVacancyAddDataToSend(0), {headers: utils.getHeaders()})
+          await this.$http.put(baseUrl + `/${this.id}`, this.getVacancyAddDataToSend(false), {headers: utils.getHeaders()})
         }
 
         alert('saved as draft!')
@@ -634,9 +629,9 @@ export default {
 
       try {
         if (!this.id) {
-          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(1), {headers: utils.getHeaders()})
+          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(false), {headers: utils.getHeaders()})
         } else {
-          await this.$http.put(baseUrl + `/${this.id}`, this.getVacancyAddDataToSend(1), {headers: utils.getHeaders()})
+          await this.$http.put(baseUrl + `/${this.id}`, this.getVacancyAddDataToSend(true), {headers: utils.getHeaders()})
         }
       } catch (error) {
         bus.$emit('error', error)
