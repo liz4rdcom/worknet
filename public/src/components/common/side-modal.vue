@@ -27,6 +27,11 @@
           }
         }
         modal.style.display = 'block'
+        window.onkeydown = (event) => {
+          if (event.keyCode === 27) {
+            this.closeModal()
+          }
+        }
       },
       closeModal() {
         let modal = document.getElementById('myModal2')
