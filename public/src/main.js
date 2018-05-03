@@ -5,11 +5,10 @@ import BootstrapVue from 'bootstrap-vue'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'font-awesome/css/font-awesome.min.css'
 
 import App from './App'
 import router from './router'
-
-require('font-awesome/css/font-awesome.min.css')
 
 Vue.config.productionTip = false
 

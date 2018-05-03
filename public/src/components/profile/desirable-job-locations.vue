@@ -7,7 +7,7 @@
           დამატება
         </b-button>
       </div>
-      <div class="chip" v-for="item in desirableJobLocations" :key="item.locationName">
+      <div class="chip" v-for="item in desirableJobLocations" :key="item.locationName + ' ' + item.locationUnitName">
         {{item.locationName}} <br/> {{item.locationUnitName}}
         <span class="closebtn" @click="removeElement(item)">&times;</span>
       </div>
@@ -28,7 +28,10 @@ export default {
   data: () => ({
     locationsList: [],
     desirableJobLocations: [],
-    location: {},
+    location: {
+      locationName: '',
+      locationUnitName: '',
+    },
   }),
   async created() {
     let response
@@ -58,8 +61,12 @@ export default {
     },
     addLocation: async function () {
       try {
-        await this.$http.post(baseUrl, this.location, {headers: utils.getHeaders()})
-        this.desirableJobLocations.push(this.location)
+        if (this.location.locationName !== '' || this.location.locationUnitName !== '') {
+          await this.$http.post(baseUrl, this.location, {headers: utils.getHeaders()})
+          this.desirableJobLocations.push(this.location)
+        } else {
+          bus.$emit('warning', 'გთხოვთ შეავსოთ მონაცემები')
+        }
       } catch (error) {
         bus.$emit('error', error)
       }

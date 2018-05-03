@@ -30,6 +30,11 @@
         this.notificationType = (error.response.status === 500) ? 'danger' : 'warning'
         this.showAlert()
       })
+      bus.$on('warning', (text) => {
+        this.notification = text
+        this.notificationType = 'warning'
+        this.showAlert()
+      })
     },
     methods: {
       countDownChanged(dismissCountDown) {

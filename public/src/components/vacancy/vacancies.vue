@@ -55,6 +55,9 @@ export default {
   },
   methods: {
     getFunctionDescription(vacancy) {
+      if (vacancy.functionsDescription === null) {
+        return ''
+      }
       let arr = vacancy.functionsDescription.split(' ', 10)
       let string = ''
       for (let i = 0; i < arr.length; i++) {
