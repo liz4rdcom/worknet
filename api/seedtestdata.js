@@ -740,4 +740,4 @@ async function seedAllData(dropAll = false) {
   seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false)
 }
 
-seedAllData(true)
+seedAllData(false)
