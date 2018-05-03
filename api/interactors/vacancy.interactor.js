@@ -1,9 +1,14 @@
+const skillInterctor = require('./skill.interactor')
 const vacancyRepository = require('../infrastructure/vacancy.repository')
 const PermissionError = require('../exceptions/permission.error')
 const _ = require('lodash')
 
 async function getList(queryString) {
   return await vacancyRepository.getVacancies(queryString)
+}
+
+async function getPublishedList(queryString) {
+  return await vacancyRepository.getPublishedVacancies(queryString)
 }
 
 async function getById(id) {
@@ -185,6 +190,11 @@ async function addVacancy(userName, vacancy) {
   }
   vacan.dateLastChanged = nowDate
 
+  if (_.isArray(vacan.skills)) {
+    console.log(999, vacan.skills)
+    skillInterctor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
+  }
+
   return await vacancyRepository.addVacancy(vacan)
 }
 
@@ -207,6 +217,10 @@ async function editVacancy(userName, id, vacancy) {
   }
   vacan.dateLastChanged = nowDate
 
+  if (_.isArray(vacan.skills)) {
+    skillInterctor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
+  }
+
   return await vacancyRepository.editVacancy(id, vacan)
 }
 
@@ -222,6 +236,7 @@ async function deleteVacancy(userName, id) {
 
 module.exports = {
   getList,
+  getPublishedList,
   addVacancy,
   editVacancy,
   deleteVacancy,

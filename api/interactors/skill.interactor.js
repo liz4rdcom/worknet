@@ -1,15 +1,20 @@
+const _ = require('lodash')
 const skillRepo = require('../infrastructure/skill.repository')
 
 async function search(queryString) {
   return await skillRepo.search(queryString)
 }
 
-async function addIfNotExists(skillName) {
-  let exists = await skillRepo.exists(skillName)
+async function addIfNotExists(skillNames) {
+  const skillsToIter = _.isArray(skillNames) ? skillNames : [skillNames]
 
-  if (exists) return
+  skillsToIter.forEach(async nextSk => {
+    let exists = await skillRepo.exists(nextSk)
 
-  await skillRepo.add(skillName)
+    if (exists) return
+
+    await skillRepo.add(nextSk)
+  })
 }
 
 module.exports = {

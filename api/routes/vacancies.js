@@ -15,6 +15,15 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/published', async (req, res, next) => {
+  try {
+    let result = await vacancyInteractor.getPublishedList(req.query.query)
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 router.get('/own', isAuthorized, (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 

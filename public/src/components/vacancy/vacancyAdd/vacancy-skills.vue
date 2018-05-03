@@ -1,19 +1,19 @@
 <template>
-    <div class="vacancy-skills">
-      <b-card title="უნარები">
-        <subset-selector
-          idPrefix="vacancy-skills"
-          ref="skillInput"
-          placeholder="მაგ. ანალიტიკოსი"
-          :editable="true"
-          :list="skillList"
-          :getAutocompleteData="searchSkills"
-          @onAddNewElement="onAddNewSkill"
-          @onRemoveElement="onRemoveSkill"
-        />
-      </b-card>
-    </div>
-    </template>
+  <div class="vacancy-skills">
+    <b-card title="უნარები">
+      <subset-selector
+        idPrefix="vacancy-skills"
+        ref="skillInput"
+        placeholder="მაგ. ანალიტიკოსი"
+        :editable="true"
+        :list="skillList"
+        :getAutocompleteData="searchSkills"
+        @onAddNewElement="onAddNewSkill"
+        @onRemoveElement="onRemoveSkill"
+      />
+    </b-card>
+  </div>
+</template>
 
     <script>
     import subsetSelector from '../../common/subset-selector'
@@ -69,5 +69,15 @@
     }
     </script>
 
-    <style scoped>
-    </style>
+<style scoped>
+.card {
+  background: whitesmoke;
+}
+
+.card-title {
+  background-color: darkslategray;
+  color: whitesmoke;
+  border: solid darkslategray 10px;
+  border-radius: 15px;
+}
+</style>
