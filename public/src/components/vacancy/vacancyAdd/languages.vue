@@ -52,8 +52,6 @@ export default {
         languageName: languageName,
       }
 
-      console.log(3333111, this.languages)
-
       this.languages.push(language)
 
       this.newLanguage = ''
