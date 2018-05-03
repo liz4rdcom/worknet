@@ -27,7 +27,7 @@ async function getPublishedVacancies(query = '') {
   let options = {
     index,
     type,
-    q: '*' + query + '* AND status:0',
+    q: '*' + query + '* AND status:1',
     searchType: 'dfs_query_then_fetch',
   }
 
