@@ -32,7 +32,7 @@ import { bus } from '../common/bus'
 import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
 
-const baseUrl = '/api/vacancies'
+const baseUrl = '/api/vacancies/published'
 
 export default {
   name: 'vacancies',

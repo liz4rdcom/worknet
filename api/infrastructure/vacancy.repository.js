@@ -23,6 +23,19 @@ async function getVacancies(query = '') {
   return result.hits.hits.map(utils.toObject)
 }
 
+async function getPublishedVacancies(query = '') {
+  let options = {
+    index,
+    type,
+    q: '*' + query + '* AND published:true',
+    searchType: 'dfs_query_then_fetch',
+  }
+
+  let result = await client.search(options)
+
+  return result.hits.hits.map(utils.toObject)
+}
+
 async function getById(id) {
   const options = {
     index,
@@ -82,6 +95,7 @@ async function deleteVacancy(id) {
 
 module.exports = {
   getVacancies,
+  getPublishedVacancies,
   addVacancy,
   editVacancy,
   deleteVacancy,

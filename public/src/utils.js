@@ -50,6 +50,10 @@ function idWithPrefix(idPrefix, idPart) {
   return idPrefix + '-' + idPart
 }
 
+function compareDatesByMilliseconds(date1, date2) {
+  return date1.getMilliseconds() - date2.getMilliseconds()
+}
+
 export default {
   hashOfString: hashCode,
   isNullOrUndefined,
@@ -59,4 +63,5 @@ export default {
   isValidEmail,
   couldBePersonalId,
   idWithPrefix,
+  compareDatesByMilliseconds,
 }

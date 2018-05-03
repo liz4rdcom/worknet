@@ -1,11 +1,12 @@
 <template>
-    <locations
-      :idPrefix="idPrefix"
-      :locations="locationList"
-      :currentLocationName="currentLocationName"
-      :currentLocationUnitName="currentLocationUnitName"
-      @onLocationChanged="onLocationChanged"
-    />
+  <locations
+    v-if="locationList.length > 0"
+    :idPrefix="idPrefix"
+    :locations="locationList"
+    :currentLocationName="currentLocationName"
+    :currentLocationUnitName="currentLocationUnitName"
+    @onLocationChanged="onLocationChanged"
+  />
 </template>
 
 <script>
