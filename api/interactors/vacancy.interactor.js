@@ -16,7 +16,6 @@ async function getUserVacancies(userName) {
 
 function validateVacancy(vacancy) {
   const {
-    authorUserName,
     positionName,
     organization,
     organizationTaxCode,
@@ -25,7 +24,6 @@ function validateVacancy(vacancy) {
     locationName,
     locationUnitName,
     addressLine,
-    publishDate,
     interviewSupposedStartDate,
     endDate,
     useMediationService,
@@ -49,15 +47,14 @@ function validateVacancy(vacancy) {
     railwayLicence,
     languages,
     skills,
+    status,
     ...restProps
   } = vacancy
 
+  console.log(12121, restProps)
+
   if (!_.isEmpty(restProps)) {
     throw new PermissionError('extra properties found', 500)
-  }
-
-  if (!authorUserName || !_.isString(authorUserName)) {
-    throw new PermissionError('Internal error concerning authorUserName', 500)
   }
 
   if (!positionName || !_.isString(positionName)) {
@@ -86,10 +83,6 @@ function validateVacancy(vacancy) {
     throw new PermissionError('addressLine must be string', 400)
   }
 
-  if (!publishDate || !_.isString(publishDate)) {
-    throw new PermissionError('publishDate not found or is not string', 400)
-  }
-
   if (endDate && !_.isString(endDate)) {
     throw new PermissionError('endDate must be string', 400)
   }
@@ -98,7 +91,7 @@ function validateVacancy(vacancy) {
     throw new PermissionError('useMediationService boolean string', 400)
   }
 
-  if (vacantPlacesQuantity !== 0 || (vacantPlacesQuantity && (!_.isInteger(vacantPlacesQuantity) || vacantPlacesQuantity < 0))) {
+  if (vacantPlacesQuantity !== 0 && (vacantPlacesQuantity && (!_.isInteger(vacantPlacesQuantity) || vacantPlacesQuantity < 0))) {
     throw new PermissionError('invalid vacantPlacesQuantity', 400)
   }
 
@@ -180,11 +173,19 @@ function validateVacancy(vacancy) {
 }
 
 async function addVacancy(userName, vacancy) {
-  vacancy.authorUserName = userName
+  if (vacancy.status === 1) {
+    validateVacancy(vacancy)
+  }
 
-  validateVacancy(vacancy)
+  const vacan = { ...vacancy, authorUserName: userName }
 
-  return await vacancyRepository.addVacancy(vacancy)
+  const nowDate = new Date()
+  if (vacan.status === 1) {
+    vacan.publishDate = nowDate
+  }
+  vacan.dateLastChanged = nowDate
+
+  return await vacancyRepository.addVacancy(vacan)
 }
 
 async function editVacancy(userName, id, vacancy) {
@@ -194,7 +195,19 @@ async function editVacancy(userName, id, vacancy) {
     throw new PermissionError('edit is permitted only for author')
   }
 
-  return await vacancyRepository.editVacancy(id, {...vacancy, authorUserName: userName})
+  if (vacancy.status === 1) {
+    validateVacancy(vacancy)
+  }
+
+  const vacan = {...vacancy, authorUserName: userName}
+
+  const nowDate = new Date()
+  if (vacan.status === 1) {
+    vacan.publishDate = nowDate
+  }
+  vacan.dateLastChanged = nowDate
+
+  return await vacancyRepository.editVacancy(id, vacan)
 }
 
 async function deleteVacancy(userName, id) {

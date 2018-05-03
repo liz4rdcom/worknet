@@ -18,8 +18,6 @@ async function getVacancies(query = '') {
     searchType: 'dfs_query_then_fetch',
   }
 
-  console.log(777, options)
-
   let result = await client.search(options)
 
   return result.hits.hits.map(utils.toObject)
@@ -68,8 +66,6 @@ async function editVacancy(id, vacancy) {
     body: vacancy,
     id: id,
   }
-
-  console.log(555, index, type, id, vacancy)
 
   await client.index(options)
 }

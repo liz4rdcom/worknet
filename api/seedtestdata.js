@@ -547,6 +547,7 @@ const testLanguages = [
   { name: 'გერმანული' },
   { name: 'ესპანური' },
   { name: 'არაბული' },
+  { name: 'აფხაზური' },
 ]
 
 const testEducationTypes = [

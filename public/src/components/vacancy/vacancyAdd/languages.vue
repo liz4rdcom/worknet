@@ -20,38 +20,26 @@
         </div>
       </div>
 
-      <language
-        :language="language"
-        @levelChange="onLevelChange(language, $event)"
-        @delete="removeLanguage(language.languageName)"
-        v-for="language in languages"
-        :key="language.languageName">
-      </language>
+      <div class="chip" v-for="language in languages">
+        {{language.languageName}}
+      <span class="closebtn" @click="removeLanguage(language.languageName)">&times;</span>
+        </div>
     </b-card>
   </div>
 </template>
 
 <script>
 import autocomplete from '../../common/autocomplete'
-import utils from '../../../utils'
-import { bus } from '../../common/bus'
 import libs from '../../../libs'
-import language from './language'
-
-const baseUrl = '/api/users/profile/languages'
 
 export default {
   name: 'languages',
+  props: ['languages', 'onChange'],
   data: () => ({
-    languages: [],
     languagesSelect: [],
     newLanguage: '',
   }),
   async created() {
-    let languagesRes = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
-
-    this.languages = languagesRes.data
-
     this.languagesSelect = await libs.fetchLanguages()
   },
   methods: {
@@ -62,18 +50,15 @@ export default {
 
       let language = {
         languageName: languageName,
-        languageLevel: '',
       }
 
-      try {
-        await this.$http.post(baseUrl, language, {headers: utils.getHeaders()})
+      console.log(3333111, this.languages)
 
-        this.languages.push(language)
+      this.languages.push(language)
 
-        this.newLanguage = ''
-      } catch (error) {
-        bus.$emit('error', error)
-      }
+      this.newLanguage = ''
+
+      this.onChange(this.languages)
     },
     async removeLanguage(languageName) {
       let index = this.languages.findIndex(item => item.languageName === languageName)
@@ -83,26 +68,16 @@ export default {
         return
       }
 
-      let url = baseUrl + '/' + languageName
+      this.languages.splice(index, 1)
 
-      try {
-        await this.$http.delete(url, {headers: utils.getHeaders()})
-
-        this.languages.splice(index, 1)
-      } catch (error) {
-        bus.$emit('error', error)
-      }
+      this.onChange(this.languages)
     },
     onAutocompleteInput(value) {
       this.newLanguage = value
     },
-    onLevelChange(language, level) {
-      language.languageLevel = level
-    },
   },
   components: {
     autocomplete,
-    language,
   },
 
 }

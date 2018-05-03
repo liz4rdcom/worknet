@@ -32,30 +32,43 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', isAuthorized, (req, res, next) => {
+router.post('/', isAuthorized, async (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 
-  vacancyInteractor.addVacancy(userName, req.body)
-    .then((id) => {
-      res.send({
-        id: id,
-      })
-    })
-    .catch(next)
+  try {
+    let id = await vacancyInteractor.addVacancy(userName, req.body)
+
+    next({result: { id }})
+  } catch (error) {
+    next({error})
+  }
+  // vacancyInteractor.addVacancy(userName, req.body)
+  //   .then((id) => {
+  //     res.send({
+  //       id: id,
+  //     })
+  //   })
+  //   .catch(next)
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 
-  console.log('ttttt')
+  try {
+    await vacancyInteractor.editVacancy(userName, req.params.id, req.body)
 
-  vacancyInteractor.editVacancy(userName, req.params.id, req.body)
-    .then(() => {
-      res.send({
-        success: true,
-      })
-    })
-    .catch(next)
+    next({result: { success: true }})
+  } catch (error) {
+    next({error})
+  }
+
+  // vacancyInteractor.editVacancy(userName, req.params.id, req.body)
+  //   .then(() => {
+  //     res.send({
+  //       success: true,
+  //     })
+  //   })
+  //   .catch(next)
 })
 
 router.delete('/:id', isAuthorized, (req, res, next) => {
