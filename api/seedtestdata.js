@@ -1,6 +1,8 @@
-var elasticsearch = require('elasticsearch')
+const elasticsearch = require('elasticsearch')
+const config = require('config');
+
 var client = new elasticsearch.Client({
-  host: 'localhost:9200',
+  host: config.get('elastic.host'),
   log: 'error',
 })
 const shortid = require('shortid')
@@ -655,31 +657,6 @@ const testDesirableTrainings = [
   { name: ' კულინარია, მზარეული' },
 ]
 
-/*
-old one with bug, we delete this when time passes and new seedData method
-prooves to be correct
-*/
-/*
-async function seedData (data, index, indexOption, type, dropIndexIfExists = false) {
-  try {
-    let exists = await client.indices.exists({ index: index })
-
-    if (dropIndexIfExists === true && exists === true) {
-      await deleteIndex(index)
-    }
-
-    if (dropIndexIfExists === true || !exists) {
-      await createIndex(index, indexOption)
-
-      await insertData(index, type, data)
-    }
-  } catch (error) {
-    console.error(error)
-    process.exit()
-  }
-}
-*/
-
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   try {
     let exists = await client.indices.exists({ index: index })
@@ -703,29 +680,6 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
     process.exit(1)
   }
 }
-
-async function deleteIndexesStatically() {
-  try { await deleteIndex('job') } catch (e) {}
-  try { await deleteIndex('location') } catch (e) {}
-  try { await deleteIndex('lib') } catch (e) {}
-
-  try { await deleteIndex('user') } catch (e) {}
-  try { await deleteIndex('vacancy') } catch (e) {}
-  try { await deleteIndex('location') } catch (e) {}
-  try { await deleteIndex('educationtype') } catch (e) {}
-  try { await deleteIndex('educationlevel') } catch (e) {}
-  try { await deleteIndex('formaleducationlevel') } catch (e) {}
-  try { await deleteIndex('skill') } catch (e) {}
-  try { await deleteIndex('desirablejob') } catch (e) {}
-  try { await deleteIndex('desirabletraining') } catch (e) {}
-  try { await deleteIndex('languages') } catch (e) {}
-}
-
-/*
-comment seedDada(s) if uncommenting this, because seeds don't wait for
-this to finish and will probably cause error.
-*/
-// deleteIndexesStatically()
 
 async function seedAllData(dropAll = false) {
   seedData(testUsers, 'user', indexDefaultOptions, 'user', dropAll || false)
