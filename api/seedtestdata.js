@@ -694,4 +694,6 @@ async function seedAllData(dropAll = false) {
   seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false)
 }
 
-seedAllData(false)
+let dropOption = process.argv[2] === '--drop' ? true : false
+
+seedAllData(dropOption)
