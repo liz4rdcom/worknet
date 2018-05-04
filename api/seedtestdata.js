@@ -1,5 +1,5 @@
 const elasticsearch = require('elasticsearch')
-const config = require('config');
+const config = require('config')
 
 var client = new elasticsearch.Client({
   host: config.get('elastic.host'),
@@ -694,6 +694,6 @@ async function seedAllData(dropAll = false) {
   seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false)
 }
 
-let dropOption = process.argv[2] === '--drop' ? true : false
+let dropOption = process.argv[2] === '--drop'
 
 seedAllData(dropOption)
