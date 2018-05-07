@@ -58,6 +58,8 @@ export default {
   },
   methods: {
     async addLanguage(languageName) {
+      if (!languageName) return
+
       let index = this.languages.findIndex(item => item.languageName === languageName)
 
       if (index > -1) return
