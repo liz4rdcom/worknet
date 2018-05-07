@@ -657,6 +657,30 @@ const testDesirableTrainings = [
   { name: ' კულინარია, მზარეული' },
 ]
 
+async function deleteIndexesStatically() {
+  try { await deleteIndex('job') } catch (e) {}
+  try { await deleteIndex('location') } catch (e) {}
+  try { await deleteIndex('lib') } catch (e) {}
+
+  try { await deleteIndex('user') } catch (e) {}
+  try { await deleteIndex('vacancy') } catch (e) {}
+  try { await deleteIndex('location') } catch (e) {}
+  try { await deleteIndex('educationtype') } catch (e) {}
+  try { await deleteIndex('educationlevel') } catch (e) {}
+  try { await deleteIndex('formaleducationlevel') } catch (e) {}
+  try { await deleteIndex('skill') } catch (e) {}
+  try { await deleteIndex('desirablejob') } catch (e) {}
+  try { await deleteIndex('desirabletraining') } catch (e) {}
+  try { await deleteIndex('languages') } catch (e) {}
+}
+
+/*
+comment seedDada(s) if uncommenting this, because seeds don't wait for
+this to finish and will probably cause error.
+*/
+// deleteIndexesStatically()
+
+
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   try {
     let exists = await client.indices.exists({ index: index })
@@ -685,9 +709,9 @@ async function seedAllData(dropAll = false) {
   seedData(testUsers, 'user', indexDefaultOptions, 'user', dropAll || false)
   seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', dropAll || false)
   seedData(testLibs, 'location', indexDefaultOptions, 'location', dropAll || true)
-  seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', dropAll || true)
-  seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', dropAll || true)
-  seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', dropAll || true)
+  seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationtype', dropAll || true)
+  seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationlevel', dropAll || true)
+  seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formaleducationlevel', dropAll || true)
   seedData(testSkills, 'skill', indexDefaultOptions, 'skill', dropAll || false)
   seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false)
   seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false)
