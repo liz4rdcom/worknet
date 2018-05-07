@@ -658,40 +658,43 @@ const testDesirableTrainings = [
 ]
 
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
-  try {
-    let exists = await client.indices.exists({ index: index })
+  let exists = await client.indices.exists({ index: index })
 
-    if (exists) {
-      if (dropIndexIfExists) {
-        await deleteIndex(index)
+  if (exists) {
+    if (dropIndexIfExists) {
+      await deleteIndex(index)
 
-        await createIndex(index, indexOption)
-
-        await insertData(index, type, data)
-      }
-    } else {
       await createIndex(index, indexOption)
 
       await insertData(index, type, data)
     }
+  } else {
+    await createIndex(index, indexOption)
+
+    await insertData(index, type, data)
+  }
+}
+
+async function seedAllData(dropAll = false) {
+  try {
+    await Promise.all([
+      seedData(testUsers, 'user', indexDefaultOptions, 'user', dropAll || false),
+      seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', dropAll || false),
+      seedData(testLibs, 'location', indexDefaultOptions, 'location', dropAll || true),
+      seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationtype', dropAll || true),
+      seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationlevel', dropAll || true),
+      seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formaleducationlevel', dropAll || true),
+      seedData(testSkills, 'skill', indexDefaultOptions, 'skill', dropAll || false),
+      seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false),
+      seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false),
+      seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false),
+    ])
+
     process.exit(0)
   } catch (error) {
     console.error(error)
     process.exit(1)
   }
-}
-
-async function seedAllData(dropAll = false) {
-  seedData(testUsers, 'user', indexDefaultOptions, 'user', dropAll || false)
-  seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', dropAll || false)
-  seedData(testLibs, 'location', indexDefaultOptions, 'location', dropAll || true)
-  seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationtype', dropAll || true)
-  seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationlevel', dropAll || true)
-  seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formaleducationlevel', dropAll || true)
-  seedData(testSkills, 'skill', indexDefaultOptions, 'skill', dropAll || false)
-  seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false)
-  seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false)
-  seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false)
 }
 
 let dropOption = process.argv[2] === '--drop'
