@@ -26,7 +26,9 @@ import utils from '../../utils'
 export default {
   name: 'autocomplete',
   props: {
-    list: {required: true},
+    list: {
+      required: true,
+    },
     value: {},
     minimumChars: {
       type: Number,
@@ -107,7 +109,7 @@ export default {
   computed: {
     openSuggestion () {
       return this.inputValue.length >= this.minimumChars &&
-        this.list.length !== 0 &&
+        this.suggestions.length !== 0 &&
         this.open === true
     },
     suggestions () {
