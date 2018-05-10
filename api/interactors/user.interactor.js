@@ -419,6 +419,8 @@ async function addLanguage(userName, languageObject) {
     languageLevel: languageObject.languageLevel,
   }
 
+  if (!language.languageName) throw new RecordError('ენის სახელი არაა მითითებული')
+
   let languages = await userRepository.getLanguages(userName)
 
   let foundLanguage = languages.find(item => item.languageName === language.languageName)

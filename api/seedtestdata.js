@@ -1,6 +1,8 @@
-var elasticsearch = require('elasticsearch')
+const elasticsearch = require('elasticsearch')
+const config = require('config')
+
 var client = new elasticsearch.Client({
-  host: 'localhost:9200',
+  host: config.get('elastic.host'),
   log: 'error',
 })
 const shortid = require('shortid')
@@ -655,48 +657,39 @@ const testDesirableTrainings = [
   { name: ' კულინარია, მზარეული' },
 ]
 
-/*
-old one with bug, we delete this when time passes and new seedData method
-prooves to be correct
-*/
-/*
-async function seedData (data, index, indexOption, type, dropIndexIfExists = false) {
-  try {
-    let exists = await client.indices.exists({ index: index })
+async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
+  let exists = await client.indices.exists({ index: index })
 
-    if (dropIndexIfExists === true && exists === true) {
+  if (exists) {
+    if (dropIndexIfExists) {
       await deleteIndex(index)
-    }
 
-    if (dropIndexIfExists === true || !exists) {
       await createIndex(index, indexOption)
 
       await insertData(index, type, data)
     }
-  } catch (error) {
-    console.error(error)
-    process.exit()
+  } else {
+    await createIndex(index, indexOption)
+
+    await insertData(index, type, data)
   }
 }
-*/
 
-async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
+async function seedAllData(dropAll = false) {
   try {
-    let exists = await client.indices.exists({ index: index })
+    await Promise.all([
+      seedData(testUsers, 'user', indexDefaultOptions, 'user', dropAll || false),
+      seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', dropAll || false),
+      seedData(testLibs, 'location', indexDefaultOptions, 'location', dropAll || true),
+      seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationtype', dropAll || true),
+      seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationlevel', dropAll || true),
+      seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formaleducationlevel', dropAll || true),
+      seedData(testSkills, 'skill', indexDefaultOptions, 'skill', dropAll || false),
+      seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false),
+      seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false),
+      seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false),
+    ])
 
-    if (exists) {
-      if (dropIndexIfExists) {
-        await deleteIndex(index)
-
-        await createIndex(index, indexOption)
-
-        await insertData(index, type, data)
-      }
-    } else {
-      await createIndex(index, indexOption)
-
-      await insertData(index, type, data)
-    }
     process.exit(0)
   } catch (error) {
     console.error(error)
@@ -704,40 +697,6 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
   }
 }
 
-async function deleteIndexesStatically() {
-  try { await deleteIndex('job') } catch (e) {}
-  try { await deleteIndex('location') } catch (e) {}
-  try { await deleteIndex('lib') } catch (e) {}
+let dropOption = process.argv[2] === '--drop'
 
-  try { await deleteIndex('user') } catch (e) {}
-  try { await deleteIndex('vacancy') } catch (e) {}
-  try { await deleteIndex('location') } catch (e) {}
-  try { await deleteIndex('educationtype') } catch (e) {}
-  try { await deleteIndex('educationlevel') } catch (e) {}
-  try { await deleteIndex('formaleducationlevel') } catch (e) {}
-  try { await deleteIndex('skill') } catch (e) {}
-  try { await deleteIndex('desirablejob') } catch (e) {}
-  try { await deleteIndex('desirabletraining') } catch (e) {}
-  try { await deleteIndex('languages') } catch (e) {}
-}
-
-/*
-comment seedDada(s) if uncommenting this, because seeds don't wait for
-this to finish and will probably cause error.
-*/
-// deleteIndexesStatically()
-
-async function seedAllData(dropAll = false) {
-  seedData(testUsers, 'user', indexDefaultOptions, 'user', dropAll || false)
-  seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', dropAll || false)
-  seedData(testLibs, 'location', indexDefaultOptions, 'location', dropAll || true)
-  seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', dropAll || true)
-  seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', dropAll || true)
-  seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', dropAll || true)
-  seedData(testSkills, 'skill', indexDefaultOptions, 'skill', dropAll || false)
-  seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false)
-  seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false)
-  seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false)
-}
-
-seedAllData(false)
+seedAllData(dropOption)
