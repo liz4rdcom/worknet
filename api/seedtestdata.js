@@ -47,6 +47,7 @@ const testUsers = [{
   'personalId': '00000000000',
   'birthDate': '1991-01-11T00:00:00',
   'genderName': 'მამრობითი',
+  'registrationDate': '2005-01-11T00:00:00', // todo es miemata, backze movagvare yvelaferi, sheidzleba frontze ramea shesacvleli armis mixedvit tu arada washale comentari
   'registrationLocationName': 'აჭარა',
   'registrationLocationUnitName': 'ბათუმი',
   'registrationAddressDescription': 'საქართველო, ქალაქი ბათუმი, პეტრე მელიქიშვილის ქუჩა, N 91, ბინა 43',
@@ -194,6 +195,7 @@ const testUsers = [{
   'fullTime': true,
   'partTime': true,
   'shiftBased': true,
+  'interestedInTraining': true, // todo wina mxares chasamatebelia fwichka
   'interestedInInternship': true,
   'interestedToBeVolunteer': true,
   'interestedInTemporaryJob': true,
