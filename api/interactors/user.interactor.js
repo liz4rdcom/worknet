@@ -55,11 +55,7 @@ async function register({ userName, password, email, phone, birthDate }) {
       userObj.personalId = userName
     }
 
-    const aa = getRegisteringUser(userObj)
-
-    console.log(1111111111111111111, aa)
-
-    await userRepository.saveUser(aa)
+    await userRepository.saveUser(getRegisteringUser(userObj))
   } catch (e) {
     // todo signup reverse
     throw e
