@@ -80,6 +80,92 @@ async function deleteVacancy(id) {
   await client.delete(options)
 }
 
+async function getBySearch(params) {
+
+  let listFields = ['skills', 'locations']
+
+  let terms = Object.keys(params)
+    .filter(key => key !== 'filter' && !listFields.includes(key))
+    .map(key => {
+      let result = {
+        term: {},
+      }
+
+      result.term[key] = params[key]
+
+      return result
+    })
+
+  if (params.skills && params.skills.length > 0) {
+    let skillQueries = params.skills
+      .map(skill => {
+        return {
+          term: {
+            'skills.skillName': skill,
+          },
+        }
+      })
+
+    terms.push({
+      dis_max: {
+        queries: skillQueries,
+      },
+    })
+  }
+
+  if (params.locations && params.locations.length > 0) {
+    let locationQueries = params.locations
+      .map(location => {
+        return {
+          bool: {
+            must: [
+              {
+                term: {
+                  locationName: location.locationName,
+                },
+              },
+              {
+                term: {
+                  locationUnitName: location.locationUnitName,
+                },
+              },
+            ],
+          },
+        }
+      })
+
+    terms.push({
+      dis_max: {
+        queries: locationQueries,
+      },
+    })
+  }
+
+  terms.push(
+    {
+      query_string: {
+        query: params.filter || '*',
+      },
+    }
+  )
+
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        bool: {
+          must: terms,
+        },
+      },
+    },
+  }
+
+  let result = await client.search(options)
+
+  return result.hits.hits.map(utils.toObject)
+}
+
 module.exports = {
   getVacancies,
   addVacancy,
@@ -87,4 +173,5 @@ module.exports = {
   deleteVacancy,
   getById,
   getByAuthorUserName,
+  getBySearch,
 }
