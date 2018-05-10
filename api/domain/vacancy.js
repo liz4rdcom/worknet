@@ -30,41 +30,4 @@ class Vacancy {
   }
 }
 
-// const getRegisteringUser = ({
-//   userName,
-//   birthDate,
-//   personalId,
-//   phone,
-//   email,
-// }) => {
-//   const newUser = {
-//     'userName': userName,
-//     'birthDate': birthDate,
-//     'educations': [],
-//     'languages': [],
-//     'skills': [],
-//     'jobExperiences': [],
-//     'desirableJobs': [],
-//     'desirableJobLocations': [],
-//     'desirableTrainings': [],
-//     'desirableTrainingLocations': [],
-//   }
-
-//   if (personalId) {
-//     newUser.personalId = personalId
-//   }
-
-//   if (phone) {
-//     newUser.mobileNumber = phone
-//   }
-
-//   if (email) {
-//     newUser.email = email
-//   }
-
-//   return newUser
-// }
-
 module.exports = Vacancy
-
-// module.exports.getRegisteringUser = getRegisteringUser
