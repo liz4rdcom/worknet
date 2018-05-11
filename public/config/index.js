@@ -12,11 +12,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:3002',
+        target: 'http://localhost:3000',
         secure: false,
       },
       '/um': {
-        target: 'http://localhost:3002',
+        target: 'http://localhost:3000',
         secure: false,
       },
     },
