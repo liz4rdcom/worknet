@@ -202,7 +202,7 @@ async function setSalaryType(vacancy) {
   if (vacancy.salaryTypeId) {
     let salaryTypes = await libRepository.getSalaryTypes()
 
-    let salaryType = salaryTypes.find(type => type.typeId === vacancy.salaryTypeId).typeName
+    let salaryType = salaryTypes.find(type => type.typeId === vacancy.salaryTypeId)
 
     if (!salaryType) throw new PermissionError('invalid salaryTypeId', 400)
 
