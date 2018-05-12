@@ -135,15 +135,45 @@
       </b-form-textarea>
     </b-form-group>
 
-    <b-form-group label="ინფორმაცია ხელფასის შესახებ"> <!-- optional -->
-      <b-form-textarea
-        id="vacancy-add-salary-info"
-        v-model="vacancy.salaryInfoName"
-        :rows="3"
-        :max-rows="6"
-      >
-      </b-form-textarea>
-    </b-form-group>
+    <b-card class="mb-2" title="ხელფასი">
+      <b-form-checkbox class="mb-3" v-model="isSalaryRange">
+        გსურთ ხელფასის ინტერვალის მითითება?
+      </b-form-checkbox>
+
+      <b-container class="mb-4">
+        <b-row>
+          <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი დან</legend></b-col>
+          <b-col v-if="isSalaryRange" cols="0"></b-col>
+          <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი მდე</legend></b-col>
+          <b-col v-if="!isSalaryRange"><legend class="col-form-legend">ხელფასი</legend></b-col>
+          <b-col v-if="!isSalaryRange"></b-col>
+          <b-col cols="5"><legend class="col-form-legend">ანაზღაურების ტიპი</legend></b-col>
+        </b-row>
+        <b-row>
+          <b-col class="salary-from">
+            <b-form-input v-if="isSalaryRange" id="vacancy-add-salary-from" v-model="vacancy.minimalSalary"/>
+            <b-form-input v-else id="vacancy-add-salary" v-model="vacancy.minimalSalary"/>
+          </b-col>
+          <b-col cols="0" v-if="isSalaryRange">-</b-col>
+          <b-col class="salary-to">
+            <b-form-input v-if="isSalaryRange"  id="vacancy-add-salary-to" v-model="vacancy.maximalSalary"/>
+          </b-col>
+          <b-col cols="5">
+            <b-form-select id="vacancy-add-salary-type" v-model="vacancy.salaryTypeId" :options="salaryTypeOptions"/>
+          </b-col>
+        </b-row>
+      </b-container>
+
+      <b-form-group label="ინფორმაცია ხელფასის შესახებ"> <!-- optional -->
+        <b-form-textarea
+          id="vacancy-add-salary-info"
+          v-model="vacancy.additionalSalaryInfo"
+          :rows="3"
+          :max-rows="6"
+        >
+        </b-form-textarea>
+      </b-form-group>
+    </b-card>
 
     <b-card>
         <b-form-checkbox
@@ -339,7 +369,10 @@ export default {
       vacantPlacesQuantity: null,
       functionsDescription: null,
       additionalDescription: null,
-      salaryInfoName: null,
+      minimalSalary: null,
+      maximalSalary: null,
+      salaryTypeId: null,
+      additionalSalaryInfo: null,
       fullTime: null,
       partTime: null,
       shiftBased: null,
@@ -358,12 +391,17 @@ export default {
       skills: [],
     },
     formalEducationLevels: [],
+    salaryTypes: [],
     isOrganization: true,
     shouldHaveDrivingLicence: false,
+    isSalaryRange: false,
   }),
   async created() {
     try {
-      this.formalEducationLevels = await libs.fetchFormalEducationLevels()
+      [this.formalEducationLevels, this.salaryTypes] = await Promise.all([
+        libs.fetchFormalEducationLevels(),
+        libs.fetchSalaryTypes(),
+      ])
     } catch (error) {
       bus.$emit('error', error)
     }
@@ -440,8 +478,24 @@ export default {
             this.vacancy.additionalDescription = vacancyResult.additionalDescription
           }
 
-          if (vacancyResult.salaryInfoName) {
-            this.vacancy.salaryInfoName = vacancyResult.salaryInfoName
+          if (vacancyResult.minimalSalary && vacancyResult.maximalSalary) {
+            this.isSalaryRange = true
+          }
+
+          if (vacancyResult.minimalSalary) {
+            this.vacancy.minimalSalary = vacancyResult.minimalSalary
+          }
+
+          if (vacancyResult.maximalSalary) {
+            this.vacancy.maximalSalary = vacancyResult.maximalSalary
+          }
+
+          if (vacancyResult.salaryTypeId) {
+            this.vacancy.salaryTypeId = vacancyResult.salaryTypeId
+          }
+
+          if (vacancyResult.additionalSalaryInfo) {
+            this.vacancy.additionalSalaryInfo = vacancyResult.additionalSalaryInfo
           }
 
           if (!isNil(vacancyResult.fullTime)) {
@@ -601,12 +655,20 @@ export default {
         retVal.functionsDescription = this.vacancy.functionsDescription
       }
 
-      if (this.vacancy.additionalDescription) {
-        retVal.additionalDescription = this.vacancy.additionalDescription
+      if (this.vacancy.minimalSalary) {
+        retVal.minimalSalary = this.vacancy.minimalSalary
       }
 
-      if (this.vacancy.salaryInfoName) {
-        retVal.salaryInfoName = this.vacancy.salaryInfoName
+      if (this.vacancy.maximalSalary && this.isSalaryRange) {
+        retVal.maximalSalary = this.vacancy.maximalSalary
+      }
+
+      if (this.vacancy.salaryTypeId) {
+        retVal.salaryTypeId = this.vacancy.salaryTypeId
+      }
+
+      if (this.vacancy.additionalSalaryInfo) {
+        retVal.additionalSalaryInfo = this.vacancy.additionalSalaryInfo
       }
 
       if (this.vacancy.formalEducationLevelName) {
@@ -703,6 +765,13 @@ export default {
 
       return retVal
     },
+    salaryTypeOptions() {
+      let options = this.salaryTypes.map(type => ({value: type.typeId, text: type.typeName}))
+
+      options.unshift({value: null, text: '- აირჩიე ანაზღაურების ტიპი -'})
+
+      return options
+    },
   },
   components: {
     'georgia-locations': georgiaLocations,
@@ -741,5 +810,12 @@ export default {
 .end-date-year {
   padding-left: 2px;
   padding-right: 0px;
+}
+
+.salary-from {
+  padding-right: 4px;
+}
+.salary-to {
+  padding-left: 4px;
 }
 </style>
