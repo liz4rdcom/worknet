@@ -224,7 +224,7 @@ const testJobs = [
     'minimalSalary': 150, //
     'maximalSalary': 300, //
     'additionalSalaryInfo': 'ბონუსებით.', //
-    'salaryType': 1, //
+    'salaryTypeId': 1, //
     'salaryTypeName': 'საათში',
     'fullTime': true, //
     'partTime': true, //
@@ -350,7 +350,7 @@ const testJobs = [
     'minimalSalary': 1500, //
     'maximalSalary': null, //
     'additionalSalaryInfo': 'ბონუსებით.', //
-    'salaryType': 2, //
+    'salaryTypeId': 2, //
     'salaryTypeName': 'თვეში',
     'fullTime': true,
     'partTime': true,
@@ -389,6 +389,8 @@ const testJobs = [
     'minimalSalary': null, //
     'maximalSalary': null, //
     'additionalSalaryInfo': 'შეთანხმებით', //
+    'salaryTypeId': null, //
+    'salaryTypeName': null,
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -426,7 +428,7 @@ const testJobs = [
     'minimalSalary': 150000, //
     'maximalSalary': null, //
     'additionalSalaryInfo': '', //
-    'salaryType': 3, //
+    'salaryTypeId': 3, //
     'salaryTypeName': 'წელიწადში',
     'fullTime': true,
     'partTime': true,
