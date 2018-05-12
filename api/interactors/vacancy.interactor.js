@@ -1,5 +1,6 @@
-const skillInterctor = require('./skill.interactor')
+const skillInteractor = require('./skill.interactor')
 const vacancyRepository = require('../infrastructure/vacancy.repository')
+const libRepository = require('../infrastructure/lib.repository')
 const PermissionError = require('../exceptions/permission.error')
 const _ = require('lodash')
 
@@ -35,7 +36,11 @@ function validateVacancy(vacancy) {
     vacantPlacesQuantity,
     functionsDescription,
     additionalDescription,
-    salaryInfoName,
+    minimalSalary,
+    maximalSalary,
+    additionalSalaryInfo,
+    salaryTypeId,
+    salaryTypeName,
     fullTime,
     partTime,
     shiftBased,
@@ -111,8 +116,20 @@ function validateVacancy(vacancy) {
       throw new PermissionError('invalid additionalDescription', 400)
     }
 
-    if (salaryInfoName && !_.isString(salaryInfoName)) {
-      throw new PermissionError('invalid salaryInfoName', 400)
+    if (minimalSalary && !_.isNumber(minimalSalary)) {
+      throw new PermissionError('invalid minimalSalary', 400)
+    }
+
+    if (maximalSalary && !_.isNumber(maximalSalary)) {
+      throw new PermissionError('invalid maximalSalary', 400)
+    }
+
+    if ((salaryTypeId && !_.isInteger(salaryTypeId)) || ((minimalSalary || maximalSalary) && !salaryTypeId)) {
+      throw new PermissionError('invalid salaryTypeId', 400)
+    }
+
+    if (additionalSalaryInfo && !_.isString(additionalSalaryInfo)) {
+      throw new PermissionError('invalid additionalSalaryInfo', 400)
     }
 
     if (!_.isNil(fullTime) && !_.isBoolean(fullTime)) {
@@ -181,6 +198,18 @@ function validateVacancy(vacancy) {
   }
 }
 
+async function setSalaryType(vacancy) {
+  if (vacancy.salaryTypeId) {
+    let salaryTypes = await libRepository.getSalaryTypes()
+
+    let salaryType = salaryTypes.find(type => type.typeId === vacancy.salaryTypeId).typeName
+
+    if (!salaryType) throw new PermissionError('invalid salaryTypeId', 400)
+
+    vacancy.salaryTypeName = salaryType.typeName
+  }
+}
+
 async function addVacancy(userName, vacancy) {
   validateVacancy(vacancy)
 
@@ -193,8 +222,10 @@ async function addVacancy(userName, vacancy) {
   vacan.dateLastChanged = nowDate
 
   if (_.isArray(vacan.skills)) {
-    skillInterctor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
+    skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
   }
+
+  await setSalaryType(vacan)
 
   return await vacancyRepository.addVacancy(vacan)
 }
@@ -217,8 +248,10 @@ async function editVacancy(userName, id, vacancy) {
   vacan.dateLastChanged = nowDate
 
   if (_.isArray(vacan.skills)) {
-    skillInterctor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
+    skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
   }
+
+  await setSalaryType(vacan)
 
   return await vacancyRepository.editVacancy(id, vacan)
 }

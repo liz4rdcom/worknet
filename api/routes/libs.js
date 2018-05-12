@@ -54,6 +54,16 @@ router.get('/languages', isAuthorized, async (req, res, next) => {
   }
 })
 
+router.get('/salaryTypes', isAuthorized, async (req, res, next) => {
+  try {
+    let result = await libRepository.getSalaryTypes()
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 module.exports = {
   router,
   baseUrl,
