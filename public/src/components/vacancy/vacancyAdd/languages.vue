@@ -7,6 +7,7 @@
             <div slot="input" slot-scope="{onInput, inputValue}">
               <b-input-group>
                 <b-form-input type="text"
+                  id="vacancy-languages-autocomplete"
                   autocomplete="off"
                   :value="inputValue"
                   @input="onInput">
