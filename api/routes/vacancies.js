@@ -32,6 +32,15 @@ router.get('/own', isAuthorized, (req, res, next) => {
     .catch(next)
 })
 
+router.post('/search', async (req, res, next) => {
+  try {
+    let result = await vacancyInteractor.getBySearch(req.body)
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 router.get('/:id', async (req, res, next) => {
   try {
     let result = await vacancyInteractor.getById(req.params.id)

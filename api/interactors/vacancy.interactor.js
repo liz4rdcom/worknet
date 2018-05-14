@@ -16,6 +16,19 @@ async function getById(id) {
   return await vacancyRepository.getById(id)
 }
 
+async function getBySearch(body) {
+
+  let keyArray = Object.keys(body)
+  let filteredObject = {}
+  for (let i = 0; i < keyArray.length; i++) {
+    if (body[keyArray[i]]) {
+      filteredObject[keyArray[i]] = body[keyArray[i]]
+    }
+  }
+
+  return await vacancyRepository.getBySearch(filteredObject)
+}
+
 async function getUserVacancies(userName) {
   return await vacancyRepository.getByAuthorUserName(userName)
 }
@@ -274,4 +287,5 @@ module.exports = {
   deleteVacancy,
   getUserVacancies,
   getById,
+  getBySearch,
 }

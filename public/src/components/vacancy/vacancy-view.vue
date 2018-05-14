@@ -83,7 +83,10 @@ export default {
     this.getById()
   },
   methods: {
-    async getById () {
+    goBack() {
+      this.$router.back()
+    },
+    async getById() {
       let response = await this.$http.get(baseUrl + '/' + this.id)
 
       this.vacancy = response.data
@@ -107,12 +110,9 @@ export default {
 
       this.skillsArray = response.data.skills
     },
-    goBack() {
-      this.$router.back()
-    },
   },
   watch: {
-    id () {
+    id() {
       this.getById()
     },
   },
