@@ -345,6 +345,7 @@ import languages from './languages'
 import vacancySkills from './vacancy-skills'
 
 const baseUrl = '/api/vacancies'
+const MonthId = 2
 
 export default {
   name: 'vacancy-add',
@@ -372,7 +373,7 @@ export default {
       minimalSalary: null,
       maximalSalary: null,
       fixedSalary: null,
-      salaryTypeId: null,
+      salaryTypeId: MonthId,
       additionalSalaryInfo: null,
       fullTime: null,
       partTime: null,
