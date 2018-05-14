@@ -135,7 +135,7 @@ function validateVacancy(vacancy, salaryTypes) {
 
     const SALARY_TYPE_NOT_FOUND = !salaryType
     const SALARY_IS_SET = minimalSalary || maximalSalary || fixedSalary
-    const INVALID_SALARY_TYPE_ID = salaryTypeId && !_.isInteger(salaryTypeId) && SALARY_TYPE_NOT_FOUND
+    const INVALID_SALARY_TYPE_ID = salaryTypeId && (!_.isInteger(salaryTypeId) || SALARY_TYPE_NOT_FOUND)
     if (INVALID_SALARY_TYPE_ID || (SALARY_IS_SET && !salaryTypeId)) {
       throw new PermissionError('invalid salaryTypeId', 400)
     }
