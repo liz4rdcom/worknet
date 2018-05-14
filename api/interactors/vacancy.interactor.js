@@ -17,7 +17,6 @@ async function getById(id) {
 }
 
 async function getBySearch(body) {
-
   let keyArray = Object.keys(body)
   let filteredObject = {}
   for (let i = 0; i < keyArray.length; i++) {

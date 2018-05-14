@@ -94,7 +94,6 @@ async function deleteVacancy(id) {
 }
 
 async function getBySearch(params) {
-
   let listFields = ['skills', 'locations']
 
   let terms = Object.keys(params)
