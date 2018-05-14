@@ -76,13 +76,13 @@
   <b-card>
       <div class="chip" v-for="item in desirableJobLocations" :key="item.locationName + ' ' + item.locationUnitName">
           {{item.locationName}} - {{item.locationUnitName}}
-          <span class="closebtn" @click="removeElement(item)">&times;</span>
+          <span class="closebtn" @click="removeLocation(item)">&times;</span>
         </div>
   </b-card>
   <b-card>
-    <div class="chip" v-for="item in skillArray" :key="item.skill">
-        {{item.skill}}
-        <span class="closebtn" @click="removeElement(item)">&times;</span>
+    <div class="chip" v-for="item in skillArray" :key="item.skillName">
+        {{item.skillName}}
+        <span class="closebtn" @click="removeSkill(item)">&times;</span>
       </div>
 </b-card>
   <b-card class="mb-2 vacancy" v-for="vacancy in vacancies" :key="vacancy.id">
@@ -166,10 +166,18 @@ export default {
       this.skillArray.push({skillName: skill})
       this.filterObject.skills = this.skillArray
     },
-    removeElement: async function (item) {
+    removeLocation: async function (item) {
       try {
         let index = this.desirableJobLocations.findIndex((d) => d.locationName === item.locationName && d.locationUnitName === item.locationUnitName)
         this.desirableJobLocations.splice(index, 1)
+      } catch (error) {
+        bus.$emit('error', error)
+      }
+    },
+    async removeSkill (item) {
+      try {
+        let index = this.skillArray.findIndex((d) => d.skillName === item.skillName)
+        this.skillArray.splice(index, 1)
       } catch (error) {
         bus.$emit('error', error)
       }

@@ -88,10 +88,10 @@ async function getBySearch(params) {
     .filter(key => key !== 'filter' && !listFields.includes(key))
     .map(key => {
       let result = {
-        term: {},
+        match: {},
       }
 
-      result.term[key] = params[key]
+      result.match[key] = params[key]
 
       return result
     })
@@ -100,8 +100,8 @@ async function getBySearch(params) {
     let skillQueries = params.skills
       .map(skill => {
         return {
-          term: {
-            'skills.skillName': skill,
+          match: {
+            'skills.skillName': skill.skillName,
           },
         }
       })
@@ -120,12 +120,12 @@ async function getBySearch(params) {
           bool: {
             must: [
               {
-                term: {
+                match: {
                   locationName: location.locationName,
                 },
               },
               {
-                term: {
+                match: {
                   locationUnitName: location.locationUnitName,
                 },
               },
