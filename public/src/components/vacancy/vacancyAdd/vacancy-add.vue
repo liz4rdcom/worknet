@@ -480,19 +480,19 @@ export default {
             this.vacancy.additionalDescription = vacancyResult.additionalDescription
           }
 
-          if (vacancyResult.minimalSalary && vacancyResult.maximalSalary) {
+          if (!isNil(vacancyResult.minimalSalary) || !isNil(vacancyResult.maximalSalary)) {
             this.isSalaryRange = true
           }
 
-          if (vacancyResult.minimalSalary) {
+          if (!isNil(vacancyResult.minimalSalary)) {
             this.vacancy.minimalSalary = vacancyResult.minimalSalary
           }
 
-          if (vacancyResult.maximalSalary) {
+          if (!isNil(vacancyResult.maximalSalary)) {
             this.vacancy.maximalSalary = vacancyResult.maximalSalary
           }
 
-          if (vacancyResult.fixedSalary) {
+          if (!isNil(vacancyResult.fixedSalary)) {
             this.vacancy.fixedSalary = vacancyResult.fixedSalary
           }
 
@@ -661,15 +661,15 @@ export default {
         retVal.functionsDescription = this.vacancy.functionsDescription
       }
 
-      if (this.vacancy.fixedSalary && !this.isSalaryRange) {
+      if (!isNil(this.vacancy.fixedSalary) && !this.isSalaryRange) {
         retVal.fixedSalary = this.vacancy.fixedSalary
       }
 
-      if (this.vacancy.minimalSalary && this.isSalaryRange) {
+      if (!isNil(this.vacancy.minimalSalary) && this.isSalaryRange) {
         retVal.minimalSalary = this.vacancy.minimalSalary
       }
 
-      if (this.vacancy.maximalSalary && this.isSalaryRange) {
+      if (!isNil(this.vacancy.maximalSalary) && this.isSalaryRange) {
         retVal.maximalSalary = this.vacancy.maximalSalary
       }
 
