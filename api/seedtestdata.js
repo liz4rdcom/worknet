@@ -223,6 +223,7 @@ const testJobs = [
     'additionalDescription': 'damatebiti informacia TEST TEST',
     'minimalSalary': 150, //
     'maximalSalary': 300, //
+    'fixedSalary': null,
     'additionalSalaryInfo': 'ბონუსებით.', //
     'salaryTypeId': 1, //
     'salaryTypeName': 'საათში',
@@ -312,6 +313,7 @@ const testJobs = [
     'additionalDescription': 'damatebiti informacia TEST TEST',
     'minimalSalary': null, //
     'maximalSalary': null, //
+    'fixedSalary': null,
     'additionalSalaryInfo': 'გამომუშავებით', //
     'fullTime': true,
     'partTime': true,
@@ -347,8 +349,9 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'minimalSalary': 1500, //
+    'minimalSalary': null, //
     'maximalSalary': null, //
+    'fixedSalary': 1500,
     'additionalSalaryInfo': 'ბონუსებით.', //
     'salaryTypeId': 2, //
     'salaryTypeName': 'თვეში',
@@ -425,8 +428,9 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'minimalSalary': 150000, //
+    'minimalSalary': null, //
     'maximalSalary': null, //
+    'fixedSalary': 150000,
     'additionalSalaryInfo': '', //
     'salaryTypeId': 3, //
     'salaryTypeName': 'წელიწადში',
