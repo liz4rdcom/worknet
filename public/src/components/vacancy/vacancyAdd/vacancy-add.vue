@@ -152,7 +152,7 @@
         <b-row>
           <b-col class="salary-from">
             <b-form-input v-if="isSalaryRange" id="vacancy-add-salary-from" v-model="vacancy.minimalSalary"/>
-            <b-form-input v-else id="vacancy-add-salary" v-model="vacancy.minimalSalary"/>
+            <b-form-input v-else id="vacancy-add-salary" v-model="vacancy.fixedSalary"/>
           </b-col>
           <b-col cols="0" v-if="isSalaryRange">-</b-col>
           <b-col class="salary-to">
@@ -371,6 +371,7 @@ export default {
       additionalDescription: null,
       minimalSalary: null,
       maximalSalary: null,
+      fixedSalary: null,
       salaryTypeId: null,
       additionalSalaryInfo: null,
       fullTime: null,
@@ -488,6 +489,10 @@ export default {
 
           if (vacancyResult.maximalSalary) {
             this.vacancy.maximalSalary = vacancyResult.maximalSalary
+          }
+
+          if (vacancyResult.fixedSalary) {
+            this.vacancy.fixedSalary = vacancyResult.fixedSalary
           }
 
           if (vacancyResult.salaryTypeId) {
@@ -655,7 +660,11 @@ export default {
         retVal.functionsDescription = this.vacancy.functionsDescription
       }
 
-      if (this.vacancy.minimalSalary) {
+      if (this.vacancy.fixedSalary && !this.isSalaryRange) {
+        retVal.fixedSalary = this.vacancy.fixedSalary
+      }
+
+      if (this.vacancy.minimalSalary && this.isSalaryRange) {
         retVal.minimalSalary = this.vacancy.minimalSalary
       }
 
