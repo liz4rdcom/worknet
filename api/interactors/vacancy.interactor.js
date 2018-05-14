@@ -20,7 +20,7 @@ async function getUserVacancies(userName) {
   return await vacancyRepository.getByAuthorUserName(userName)
 }
 
-function validateVacancy(vacancy) {
+function validateVacancy(vacancy, salaryTypes) {
   const {
     positionName,
     organization,
@@ -133,7 +133,10 @@ function validateVacancy(vacancy) {
       throw new PermissionError('invalid salary input. should be range or one field only. not both', 400)
     }
 
-    if ((salaryTypeId && !_.isInteger(salaryTypeId)) || ((minimalSalary || maximalSalary) && !salaryTypeId)) {
+    const SALARY_TYPE_NOT_FOUND = !salaryType
+    const SALARY_IS_SET = minimalSalary || maximalSalary || fixedSalary
+    const INVALID_SALARY_TYPE_ID = salaryTypeId && !_.isInteger(salaryTypeId) && SALARY_TYPE_NOT_FOUND
+    if (INVALID_SALARY_TYPE_ID || (SALARY_IS_SET && !salaryTypeId)) {
       throw new PermissionError('invalid salaryTypeId', 400)
     }
 
@@ -207,22 +210,14 @@ function validateVacancy(vacancy) {
   }
 }
 
-async function setSalaryType(vacancy) {
-  if (vacancy.salaryTypeId) {
-    let salaryTypes = await libRepository.getSalaryTypes()
-
-    let salaryType = salaryTypes.find(type => type.typeId === vacancy.salaryTypeId)
-
-    if (!salaryType) throw new PermissionError('invalid salaryTypeId', 400)
-
-    vacancy.salaryTypeName = salaryType.typeName
-  }
-}
-
 async function addVacancy(userName, vacancy) {
-  validateVacancy(vacancy)
+  let salaryTypes = await libRepository.getSalaryTypes()
 
-  const vacan = { ...vacancy, authorUserName: userName }
+  let salaryType = salaryTypes.find(type => type.typeId === vacancy.salaryTypeId)
+
+  validateVacancy(vacancy, salaryType)
+
+  const vacan = { ...vacancy, authorUserName: userName, salaryTypeName: !!salaryType ? salaryType.typeName : null }
 
   const nowDate = new Date()
   if (vacan.published) {
@@ -233,8 +228,6 @@ async function addVacancy(userName, vacancy) {
   if (_.isArray(vacan.skills)) {
     skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
   }
-
-  await setSalaryType(vacan)
 
   return await vacancyRepository.addVacancy(vacan)
 }
