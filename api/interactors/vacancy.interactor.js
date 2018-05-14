@@ -20,7 +20,7 @@ async function getUserVacancies(userName) {
   return await vacancyRepository.getByAuthorUserName(userName)
 }
 
-function validateVacancy(vacancy, salaryTypes) {
+function validateVacancy(vacancy, salaryType) {
   const {
     positionName,
     organization,
@@ -217,7 +217,7 @@ async function addVacancy(userName, vacancy) {
 
   validateVacancy(vacancy, salaryType)
 
-  const vacan = { ...vacancy, authorUserName: userName, salaryTypeName: !!salaryType ? salaryType.typeName : null }
+  const vacan = { ...vacancy, authorUserName: userName, salaryTypeName: salaryType ? salaryType.typeName : null }
 
   const nowDate = new Date()
   if (vacan.published) {
