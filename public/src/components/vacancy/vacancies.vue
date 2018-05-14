@@ -29,14 +29,11 @@
         </div>
         <div>
           <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
-          <!-- <b-button  variant="primary" @click="addLocation">
-            დამატება
-          </b-button> -->
         </div>
       </b-col>
       <b-col lg="6">
         <b-form-checkbox id="drivingLicence"
-        v-model="filterObject.hasDrivingLicence"
+        v-model="filterObject.hasDrivingLicence">
         მართვის მოწმობა
       </b-form-checkbox>
       <b-form-checkbox id="militaryObligation"
@@ -94,7 +91,7 @@
       <h5 class="card-text">{{vacancy.organization}}</h5>
       <h5 class="card-text" v-if="vacancies.averageSalaryName !== ''">{{vacancy.averageSalaryName}}</h5>
       <h5 class="card-text">{{getFunctionDescription(vacancy)}}</h5>
-      <h5 class="card-text" v-for="skill in getSkills(vacancy)" :key="skill.skillName" @click="skillFilter(skill.skillName)">{{skill.skillName}}</h5>
+      <h5 class="card-text" v-for="skill in getSkills(vacancy)" :key="skill.skillName" @click="skillFilter(skill.skillName, $event)">{{skill.skillName}}</h5>
       <h5 class="card-text">{{vacancy.publishDate}}</h5>
       <h5 class="card-text">სრულად ნახვა...</h5>
     </div>
@@ -164,8 +161,10 @@ export default {
     },
   },
   methods: {
-    skillFilter (skill) {
-
+    skillFilter (skill, event) {
+      event.stopPropagation()
+      this.skillArray.push({skillName: skill})
+      this.filterObject.skills = this.skillArray
     },
     removeElement: async function (item) {
       try {
@@ -213,8 +212,8 @@ export default {
       return arr
     },
     viewVacancy(vacancyId) {
-      this.$refs.modalRef.sideModalOpen()
       this.vacancyId = vacancyId
+      this.$refs.modalRef.sideModalOpen()
     },
     async search() {
       try {

@@ -74,32 +74,40 @@ export default {
     skillsArray: [],
   }),
   async created() {
-    let response = await this.$http.get(baseUrl + '/' + this.id)
-
-    this.vacancy = response.data
-
-    this.jobDescription.fullTime = response.data.fullTime
-    this.jobDescription.partTime = response.data.partTime
-    this.jobDescription.shiftBased = response.data.shiftBased
-
-    this.drivingLicence.drivingLicenceA = response.data.drivingLicenceA
-    this.drivingLicence.drivingLicenceB = response.data.drivingLicenceB
-    this.drivingLicence.drivingLicenceC = response.data.drivingLicenceC
-    this.drivingLicence.drivingLicenceD = response.data.drivingLicenceD
-    this.drivingLicence.drivingLicenceE = response.data.drivingLicenceE
-    this.drivingLicence.drivingLicenceT1 = response.data.drivingLicenceT1
-    this.drivingLicence.drivingLicenceT2 = response.data.drivingLicenceT2
-    this.drivingLicence.airLicence = response.data.airLicence
-    this.drivingLicence.seaLicence = response.data.seaLicence
-    this.drivingLicence.railwayLicence = response.data.railwayLicence
-
-    this.languagesArray = response.data.languages
-
-    this.skillsArray = response.data.skills
+    this.getById()
   },
   methods: {
     goBack() {
       this.$router.back()
+    },
+    async getById() {
+      let response = await this.$http.get(baseUrl + '/' + this.id)
+
+      this.vacancy = response.data
+
+      this.jobDescription.fullTime = response.data.fullTime
+      this.jobDescription.partTime = response.data.partTime
+      this.jobDescription.shiftBased = response.data.shiftBased
+
+      this.drivingLicence.drivingLicenceA = response.data.drivingLicenceA
+      this.drivingLicence.drivingLicenceB = response.data.drivingLicenceB
+      this.drivingLicence.drivingLicenceC = response.data.drivingLicenceC
+      this.drivingLicence.drivingLicenceD = response.data.drivingLicenceD
+      this.drivingLicence.drivingLicenceE = response.data.drivingLicenceE
+      this.drivingLicence.drivingLicenceT1 = response.data.drivingLicenceT1
+      this.drivingLicence.drivingLicenceT2 = response.data.drivingLicenceT2
+      this.drivingLicence.airLicence = response.data.airLicence
+      this.drivingLicence.seaLicence = response.data.seaLicence
+      this.drivingLicence.railwayLicence = response.data.railwayLicence
+
+      this.languagesArray = response.data.languages
+
+      this.skillsArray = response.data.skills
+    },
+  },
+  watch: {
+    id() {
+      this.getById()
     },
   },
   computed: {
