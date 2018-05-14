@@ -136,7 +136,7 @@
     </b-form-group>
 
     <b-card class="mb-2" title="ხელფასი">
-      <b-form-checkbox class="mb-3" v-model="isSalaryRange">
+      <b-form-checkbox id="vacancy-add-is-salary-range" class="mb-3" v-model="isSalaryRange">
         გსურთ ხელფასის ინტერვალის მითითება?
       </b-form-checkbox>
 
