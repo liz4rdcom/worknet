@@ -253,8 +253,6 @@ async function editVacancy(userName, id, vacancy) {
     skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
   }
 
-  await setSalaryType(vacan)
-
   return await vacancyRepository.editVacancy(id, vacan)
 }
 
