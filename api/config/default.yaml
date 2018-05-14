@@ -23,6 +23,8 @@ elastic:
   formalEducationLevelType: 'formaleducationlevel'
   languagesIndex: 'languages'
   languagesType: 'languages'
+  salaryTypesIndex: 'salarytypes'
+  salaryTypesType: 'salarytypes'
 um:
   mongodbConnectionString: 'mongodb://localhost:27017/umpack'
   accessTokenSecret: 'myrandomstring'

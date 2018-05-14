@@ -12,7 +12,13 @@
   <b-card title="ვაკანსიის მოკლე აღწერილობა">
     <label>პოზიცია: <b>{{vacancy.positionName}}</b></label><br />
     <label>ვაკანტური ადგილების რაოდენობა: <b>{{vacancy.vacantPlacesQuantity}}</b></label><br />
-    <label>ანაზღაურება: <b>{{vacancy.averageSalaryName}}</b></label><br />
+    <label>ანაზღაურება:
+      <b v-if="vacancy.minimalSalary && vacancy.maximalSalary">
+        {{vacancy.minimalSalary}} ლარიდან {{vacancy.maximalSalary}} ლარამდე {{vacancy.salaryTypeName}}.
+      </b>
+      <b v-else-if="vacancy.fixedSalary">{{vacancy.fixedSalary}} ლარი {{vacancy.salaryTypeName}}.</b>
+      <b>{{vacancy.additionalSalaryInfo}}</b>
+    </label><br />
     <label v-if="jobDescription.fullTime"><div class="chip">სრული განაკვეთი</div></label>
     <label v-if="jobDescription.partTime"><div class="chip">არასრული განაკვეთი</div></label>
     <label v-if="jobDescription.shiftBased"><div class="chip">ცვლებში</div></label>

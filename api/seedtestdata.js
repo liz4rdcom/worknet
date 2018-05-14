@@ -221,7 +221,12 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300', //
+    'minimalSalary': 150, //
+    'maximalSalary': 300, //
+    'fixedSalary': null,
+    'additionalSalaryInfo': 'ბონუსებით.', //
+    'salaryTypeId': 1, //
+    'salaryTypeName': 'საათში',
     'fullTime': true, //
     'partTime': true, //
     'shiftBased': true, //
@@ -306,7 +311,10 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300',
+    'minimalSalary': null, //
+    'maximalSalary': null, //
+    'fixedSalary': null,
+    'additionalSalaryInfo': 'გამომუშავებით', //
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -341,7 +349,12 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300',
+    'minimalSalary': null, //
+    'maximalSalary': null, //
+    'fixedSalary': 1500,
+    'additionalSalaryInfo': 'ბონუსებით.', //
+    'salaryTypeId': 2, //
+    'salaryTypeName': 'თვეში',
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -376,7 +389,51 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300',
+    'minimalSalary': null, //
+    'maximalSalary': null, //
+    'additionalSalaryInfo': 'შეთანხმებით', //
+    'salaryTypeId': null, //
+    'salaryTypeName': null,
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [{ 'languageName': 'აფხაზური' }],
+    'skills': [{ 'skillName': 'Javascript' }],
+    'published': true,
+  },
+  {
+    'authorUserName': 'root',
+    'positionName': 'chef',
+    'organization': 'შპს organization 3',
+    'organizationTaxCode': '333333333',
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2006-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'minimalSalary': null, //
+    'maximalSalary': null, //
+    'fixedSalary': 150000,
+    'additionalSalaryInfo': '', //
+    'salaryTypeId': 3, //
+    'salaryTypeName': 'წელიწადში',
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -659,6 +716,12 @@ const testDesirableTrainings = [
   { name: ' კულინარია, მზარეული' },
 ]
 
+const salaryTypes = [
+  {typeId: 1, typeName: 'საათში'},
+  {typeId: 2, typeName: 'თვეში'},
+  {typeId: 3, typeName: 'წელიწადში'},
+]
+
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   let exists = await client.indices.exists({ index: index })
 
@@ -690,6 +753,7 @@ async function seedAllData(dropAll = false) {
       seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false),
       seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false),
       seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false),
+      seedData(salaryTypes, 'salarytypes', indexDefaultOptions, 'salarytypes', dropAll || true),
     ])
 
     process.exit(0)
