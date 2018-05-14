@@ -144,7 +144,7 @@
         ხელფასი გამომუშავებით
       </b-form-checkbox>
 
-      <b-container class="mb-4" v-if="vacancy.isSalaryByEarnings">
+      <b-container class="mb-4" v-if="!vacancy.isSalaryByEarnings">
         <b-row>
           <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი დან</legend></b-col>
           <b-col v-if="isSalaryRange" cols="0"></b-col>
