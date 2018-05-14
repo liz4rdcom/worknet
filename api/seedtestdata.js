@@ -1,6 +1,8 @@
-var elasticsearch = require('elasticsearch')
+const elasticsearch = require('elasticsearch')
+const config = require('config')
+
 var client = new elasticsearch.Client({
-  host: 'localhost:9200',
+  host: config.get('elastic.host'),
   log: 'error',
 })
 const shortid = require('shortid')
@@ -45,6 +47,7 @@ const testUsers = [{
   'personalId': '00000000000',
   'birthDate': '1991-01-11T00:00:00',
   'genderName': 'მამრობითი',
+  'registrationDate': '2005-01-11T00:00:00', // todo es miemata, backze movagvare yvelaferi, sheidzleba frontze ramea shesacvleli armis mixedvit tu arada washale comentari
   'registrationLocationName': 'აჭარა',
   'registrationLocationUnitName': 'ბათუმი',
   'registrationAddressDescription': 'საქართველო, ქალაქი ბათუმი, პეტრე მელიქიშვილის ქუჩა, N 91, ბინა 43',
@@ -192,6 +195,7 @@ const testUsers = [{
   'fullTime': true,
   'partTime': true,
   'shiftBased': true,
+  'interestedInTraining': true, // todo wina mxares chasamatebelia fwichka
   'interestedInInternship': true,
   'interestedToBeVolunteer': true,
   'interestedInTemporaryJob': true,
@@ -212,13 +216,17 @@ const testJobs = [
     'publishDate': '2017-12-03T00:00:00',
     'interviewSupposedStartDate': '2018-01-01T00:00:00',
     'endDate': '2018-01-07T00:00:00',
-    // todo kitxe es cvladi sajiroa saertod? cvlilebebi ar iqneba da, mashin draftis cvlilebebi avsaxo? is unda
     'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
     'useMediationService': true,
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300', //
+    'minimalSalary': 150, //
+    'maximalSalary': 300, //
+    'fixedSalary': null,
+    'additionalSalaryInfo': 'ბონუსებით.', //
+    'salaryTypeId': 1, //
+    'salaryTypeName': 'საათში',
     'fullTime': true, //
     'partTime': true, //
     'shiftBased': true, //
@@ -285,13 +293,13 @@ const testJobs = [
         'skillName': 'Javascript12',
       },
     ],
-    'status': 0, // 0 - draft, 1 - published, 2 - expired.
+    'published': false,
   },
   {
     'authorUserName': 'root',
     'positionName': 'butler',
-    'organization': 'შპს organization 1',
-    'organizationTaxCode': '111111111',
+    'authorFullName': 'იაგო მაისურაძე',
+    'authorPersonalId': '01234567890',
     'locationName': 'თბილისი',
     'locationUnitName': 'ისანი',
     'addressLine': 'დამატებითი მისამართი',
@@ -303,7 +311,10 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300',
+    'minimalSalary': null, //
+    'maximalSalary': null, //
+    'fixedSalary': null,
+    'additionalSalaryInfo': 'გამომუშავებით', //
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -320,7 +331,7 @@ const testJobs = [
     'railwayLicence': true,
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
-    'status': 0,
+    'published': false,
   },
   {
     'authorUserName': 'root',
@@ -338,7 +349,12 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300',
+    'minimalSalary': null, //
+    'maximalSalary': null, //
+    'fixedSalary': 1500,
+    'additionalSalaryInfo': 'ბონუსებით.', //
+    'salaryTypeId': 2, //
+    'salaryTypeName': 'თვეში',
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -355,7 +371,7 @@ const testJobs = [
     'railwayLicence': true,
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
-    'status': 1,
+    'published': true,
   },
   {
     'authorUserName': 'root',
@@ -367,13 +383,17 @@ const testJobs = [
     'addressLine': 'დამატებითი მისამართი',
     'publishDate': '2017-12-03T00:00:00',
     'interviewSupposedStartDate': '2018-01-01T00:00:00',
-    'endDate': '2018-01-07T00:00:00',
+    'endDate': '2006-01-07T00:00:00',
     'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
     'useMediationService': true,
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'salaryInfoName': '150-300',
+    'minimalSalary': null, //
+    'maximalSalary': null, //
+    'additionalSalaryInfo': 'შეთანხმებით', //
+    'salaryTypeId': null, //
+    'salaryTypeName': null,
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -390,7 +410,47 @@ const testJobs = [
     'railwayLicence': true,
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
-    'status': 2,
+    'published': true,
+  },
+  {
+    'authorUserName': 'root',
+    'positionName': 'chef',
+    'organization': 'შპს organization 3',
+    'organizationTaxCode': '333333333',
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
+    'addressLine': 'დამატებითი მისამართი',
+    'publishDate': '2017-12-03T00:00:00',
+    'interviewSupposedStartDate': '2018-01-01T00:00:00',
+    'endDate': '2006-01-07T00:00:00',
+    'dateLastChanged': '2017-12-03T19:32:24.0343829+04:00',
+    'useMediationService': true,
+    'vacantPlacesQuantity': 2,
+    'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
+    'additionalDescription': 'damatebiti informacia TEST TEST',
+    'minimalSalary': null, //
+    'maximalSalary': null, //
+    'fixedSalary': 150000,
+    'additionalSalaryInfo': '', //
+    'salaryTypeId': 3, //
+    'salaryTypeName': 'წელიწადში',
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [{ 'languageName': 'აფხაზური' }],
+    'skills': [{ 'skillName': 'Javascript' }],
+    'published': true,
   },
 ]
 
@@ -548,6 +608,7 @@ const testLanguages = [
   { name: 'გერმანული' },
   { name: 'ესპანური' },
   { name: 'არაბული' },
+  { name: 'აფხაზური' },
 ]
 
 const testEducationTypes = [
@@ -655,84 +716,53 @@ const testDesirableTrainings = [
   { name: ' კულინარია, მზარეული' },
 ]
 
-/*
-old one with bug, we delete this when time passes and new seedData method
-prooves to be correct
-*/
-/*
-async function seedData (data, index, indexOption, type, dropIndexIfExists = false) {
-  try {
-    let exists = await client.indices.exists({ index: index })
-
-    if (dropIndexIfExists === true && exists === true) {
-      await deleteIndex(index)
-    }
-
-    if (dropIndexIfExists === true || !exists) {
-      await createIndex(index, indexOption)
-
-      await insertData(index, type, data)
-    }
-  } catch (error) {
-    console.error(error)
-    process.exit()
-  }
-}
-*/
+const salaryTypes = [
+  {typeId: 1, typeName: 'საათში'},
+  {typeId: 2, typeName: 'თვეში'},
+  {typeId: 3, typeName: 'წელიწადში'},
+]
 
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
-  try {
-    let exists = await client.indices.exists({ index: index })
+  let exists = await client.indices.exists({ index: index })
 
-    if (exists) {
-      if (dropIndexIfExists) {
-        await deleteIndex(index)
+  if (exists) {
+    if (dropIndexIfExists) {
+      await deleteIndex(index)
 
-        await createIndex(index, indexOption)
-
-        await insertData(index, type, data)
-      }
-    } else {
       await createIndex(index, indexOption)
 
       await insertData(index, type, data)
     }
-  } catch (error) {
-    console.error(error)
-    process.exit()
+  } else {
+    await createIndex(index, indexOption)
+
+    await insertData(index, type, data)
   }
 }
 
-async function deleteIndexesStatically() {
-  try { await deleteIndex('job') } catch (e) {}
-  try { await deleteIndex('location') } catch (e) {}
-  try { await deleteIndex('lib') } catch (e) {}
+async function seedAllData(dropAll = false) {
+  try {
+    await Promise.all([
+      seedData(testUsers, 'user', indexDefaultOptions, 'user', dropAll || false),
+      seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', dropAll || false),
+      seedData(testLibs, 'location', indexDefaultOptions, 'location', dropAll || true),
+      seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationtype', dropAll || true),
+      seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationlevel', dropAll || true),
+      seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formaleducationlevel', dropAll || true),
+      seedData(testSkills, 'skill', indexDefaultOptions, 'skill', dropAll || false),
+      seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false),
+      seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false),
+      seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false),
+      seedData(salaryTypes, 'salarytypes', indexDefaultOptions, 'salarytypes', dropAll || true),
+    ])
 
-  try { await deleteIndex('user') } catch (e) {}
-  try { await deleteIndex('vacancy') } catch (e) {}
-  try { await deleteIndex('location') } catch (e) {}
-  try { await deleteIndex('educationtype') } catch (e) {}
-  try { await deleteIndex('educationlevel') } catch (e) {}
-  try { await deleteIndex('formaleducationlevel') } catch (e) {}
-  try { await deleteIndex('skill') } catch (e) {}
-  try { await deleteIndex('desirablejob') } catch (e) {}
-  try { await deleteIndex('desirabletraining') } catch (e) {}
-  try { await deleteIndex('languages') } catch (e) {}
+    process.exit(0)
+  } catch (error) {
+    console.error(error)
+    process.exit(1)
+  }
 }
 
-/*
-comment seedDada(s) if uncommenting this, because seeds don't wait for
-this to finish and will probably cause error.
-*/
-// deleteIndexesStatically()
+let dropOption = process.argv[2] === '--drop'
 
-seedData(testUsers, 'user', indexDefaultOptions, 'user', false)
-seedData(testJobs, 'vacancy', indexDefaultOptions, 'vacancy', false)
-seedData(testLibs, 'location', indexDefaultOptions, 'location', true)
-seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
-seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
-seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
-seedData(testSkills, 'skill', indexDefaultOptions, 'skill', false)
-seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', false)
-seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', false)
-seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', false)
+seedAllData(dropOption)

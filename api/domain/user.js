@@ -76,10 +76,12 @@ const getRegisteringUser = ({
   personalId,
   phone,
   email,
+  registrationDate = new Date().toString(),
 }) => {
   const newUser = {
     'userName': userName,
     'birthDate': birthDate,
+    'registrationDate': registrationDate,
     'educations': [],
     'languages': [],
     'skills': [],

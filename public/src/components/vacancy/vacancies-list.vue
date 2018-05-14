@@ -18,6 +18,7 @@
 
 <script>
 import find from 'lodash/find'
+import utils from '../../utils'
 
 export default {
   name: 'vacancies-list',
@@ -30,13 +31,13 @@ export default {
   },
   computed: {
     draftVacancies() {
-      return this.vacancies.filter(({ status }) => status === 0)
+      return this.vacancies.filter(({ published }) => !published)
     },
     publishedVacancies() {
-      return this.vacancies.filter(({ status }) => status === 1)
+      return this.vacancies.filter(({ published }) => published)
     },
     expiredVacancies() {
-      return this.vacancies.filter(({ status }) => status === 2)
+      return this.vacancies.filter(({ published, endDate }) => published && utils.compareDatesByMilliseconds(new Date(), new Date(endDate)))
     },
     currentStatusUrlName() {
       switch (this.vacanciesStatus) {
@@ -67,7 +68,7 @@ export default {
       }
     },
     currentVacancyIsDraft() {
-      return this.$route.params.id ? find(this.vacancies, vacan => vacan.id === this.$route.params.id).status === 0 : false
+      return this.$route.params.id ? !find(this.vacancies, vacan => vacan.id === this.$route.params.id).published : false
     },
   },
 }

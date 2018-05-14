@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set NODE_ENV=development&& nodemon app.js -e js,yaml",
-    "lint": "set NODE_ENV=development&& eslint ./"
+    "lint": "set NODE_ENV=development&& eslint ./",
+    "seed": "set NODE_ENV=development&& node seedtestdata.js",
+    "reseed": "set NODE_ENV=development&& node seedtestdata.js --drop"
   },
   "keywords": [
     "worknet",
@@ -25,7 +27,7 @@
     "jsonwebtoken": "^8.2.1",
     "lodash": "^4.17.4",
     "shortid": "^2.2.8",
-    "umpack-express": "^1.16.0"
+    "umpack-express": "^1.16.3"
   },
   "devDependencies": {
     "eslint": "4.13.1",

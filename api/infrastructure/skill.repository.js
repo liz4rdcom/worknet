@@ -9,12 +9,11 @@ const index = config.get('elastic.skillsIndex')
 const type = config.get('elastic.skillsType')
 
 async function search(queryString) {
-  queryString = queryString || '*'
-
   const options = {
     index,
     type,
-    q: '*' + queryString + '*',
+    q: !queryString ? '*' : '*' + queryString + '*',
+    size: 10000,
   }
 
   let result = await client.search(options)

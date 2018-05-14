@@ -110,7 +110,7 @@ import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
 import libs from '../../libs'
 
-const baseUrl = '/api/vacancies'
+const baseUrl = '/api/vacancies/published'
 
 export default {
   name: 'vacancies',

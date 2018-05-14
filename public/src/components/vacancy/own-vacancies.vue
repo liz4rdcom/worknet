@@ -52,13 +52,15 @@ export default {
       return this.vacancies ? this.vacancies.length : 0
     },
     draftCount() {
-      return this.vacancies ? this.vacancies.filter(({ status }) => status === 0).length : 0
+      return this.vacancies ? this.vacancies.filter(({ published }) => !published).length : 0
     },
     publishedCount() {
-      return this.vacancies ? this.vacancies.filter(({ status }) => status === 1).length : 0
+      return this.vacancies ? this.vacancies.filter(({ published }) => published).length : 0
     },
     expiredCount() {
-      return this.vacancies ? this.vacancies.filter(({ status }) => status === 2).length : 0
+      return this.vacancies ? this.vacancies.filter(({ published, endDate }) => (
+        published && utils.compareDatesByMilliseconds(new Date(), new Date(endDate)
+      )) > 0).length : 0
     },
   },
 }
