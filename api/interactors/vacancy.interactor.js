@@ -38,6 +38,7 @@ function validateVacancy(vacancy) {
     additionalDescription,
     minimalSalary,
     maximalSalary,
+    fixedSalary,
     additionalSalaryInfo,
     salaryTypeId,
     salaryTypeName,
@@ -116,12 +117,20 @@ function validateVacancy(vacancy) {
       throw new PermissionError('invalid additionalDescription', 400)
     }
 
+    if (fixedSalary && !_.isNumber(fixedSalary)) {
+      throw new PermissionError('invalid fixedSalary', 400)
+    }
+
     if (minimalSalary && !_.isNumber(minimalSalary)) {
       throw new PermissionError('invalid minimalSalary', 400)
     }
 
     if (maximalSalary && !_.isNumber(maximalSalary)) {
       throw new PermissionError('invalid maximalSalary', 400)
+    }
+
+    if (!_.isNil(fixedSalary) && (!_.isNil(minimalSalary) || !_.isNil(maximalSalary))) {
+      throw new PermissionError('invalid salary input. should be range or one field only. not both', 400)
     }
 
     if ((salaryTypeId && !_.isInteger(salaryTypeId)) || ((minimalSalary || maximalSalary) && !salaryTypeId)) {
