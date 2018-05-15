@@ -9,7 +9,7 @@
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
         <b-nav-item href="#/vacancies">ვაკანსიები</b-nav-item>
-        <b-nav-item-dropdown v-if="loggedIn" text="ვაკანსიების მენეჯმენტი" right>
+        <b-nav-item-dropdown id="nav-bar-vacancy-management-dropdown" v-if="loggedIn" text="ვაკანსიების მენეჯმენტი" right>
           <b-dropdown-item href="#/vacancies/add">ახლის დამატება</b-dropdown-item>
           <b-dropdown-item href="#/vacancies/own">ჩემი ვაკანსიები</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -21,7 +21,7 @@
           <b-nav-item v-if="!loggedIn" href="#/login">შესვლა</b-nav-item>
           <b-nav-item v-if="!loggedIn" href="#/register">რეგისტრაცია</b-nav-item>
         </b-navbar-nav>
-        <b-nav-item-dropdown v-if="loggedIn" text="" right>
+        <b-nav-item-dropdown id="nav-bar-user-operations-dropdown" v-if="loggedIn" text="" right>
           <b-dropdown-item id="show-modal" @click="modalTrue">პაროლის შეცვლა</b-dropdown-item>
           <b-dropdown-item @click="logout">გასვლა</b-dropdown-item>
         </b-nav-item-dropdown>
