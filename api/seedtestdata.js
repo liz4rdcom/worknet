@@ -315,12 +315,8 @@ const testJobs = [
     'minimalSalary': null,
     'maximalSalary': null,
     'fixedSalary': null,
-<<<<<<< HEAD
-    'additionalSalaryInfo': 'გამომუშავებით',
-=======
     'isSalaryByEarnings': true,
-    'additionalSalaryInfo': 'გამომუშავებით', //
->>>>>>> 993f49e5d3828aaa20a7709088ae7ff950f1d695
+    'additionalSalaryInfo': 'გამომუშავებით',
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
