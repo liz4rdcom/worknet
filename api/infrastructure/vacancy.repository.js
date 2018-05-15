@@ -178,6 +178,10 @@ async function getBySearch(params) {
   return result.hits.hits.map(utils.toObject)
 }
 
+async function matchVacanciesToUser(user) {
+
+}
+
 module.exports = {
   getVacancies,
   getPublishedVacancies,
@@ -187,4 +191,5 @@ module.exports = {
   getById,
   getByAuthorUserName,
   getBySearch,
+  matchVacanciesToUser,
 }

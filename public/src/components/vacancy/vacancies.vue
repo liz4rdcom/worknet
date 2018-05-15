@@ -14,7 +14,7 @@
     <b-row>
       <b-col lg="6">
         <div>
-            <form class="go-bottom">
+          <form class="go-bottom">
             <div>
               <input id="vacancies-filter-salary-from" name="name" type="text" required>
               <label for="name">ხელფასი ლარიდან</label>

@@ -1,5 +1,6 @@
 const skillInteractor = require('./skill.interactor')
 const vacancyRepository = require('../infrastructure/vacancy.repository')
+const userRepository = require('../infrastructure/user.repository')
 const libRepository = require('../infrastructure/lib.repository')
 const PermissionError = require('../exceptions/permission.error')
 const _ = require('lodash')
@@ -284,6 +285,12 @@ async function deleteVacancy(userName, id) {
   return await vacancyRepository.deleteVacancy(id)
 }
 
+async function searchUserMatchings(userName) {
+  let user = await userRepository.getUserByUserName(userName)
+
+  return await vacancyRepository.matchVacanciesToUser(user)
+}
+
 module.exports = {
   getList,
   getPublishedList,
@@ -293,4 +300,5 @@ module.exports = {
   getUserVacancies,
   getById,
   getBySearch,
+  searchUserMatchings,
 }

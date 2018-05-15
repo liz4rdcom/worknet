@@ -101,6 +101,17 @@ router.delete('/:id', isAuthorized, (req, res, next) => {
     .catch(next)
 })
 
+router.get('/profile/matchings', isAuthorized, async (req, res, next) => {
+  try {
+    let userName = utils.getUserNameFromRequest(req)
+
+    let result = await vacancyInteractor.searchUserMatchings(userName)
+    next({ result })
+  } catch (error) {
+    next({ error })
+  }
+})
+
 module.exports = {
   router,
   baseUrl,
