@@ -54,6 +54,7 @@ function validateVacancy(vacancy, salaryType) {
     additionalSalaryInfo,
     salaryTypeId,
     salaryTypeName,
+    isSalaryByEarnings,
     fullTime,
     partTime,
     shiftBased,
@@ -150,6 +151,11 @@ function validateVacancy(vacancy, salaryType) {
     const INVALID_SALARY_TYPE_ID = salaryTypeId && (!_.isInteger(salaryTypeId) || SALARY_TYPE_NOT_FOUND)
     if (INVALID_SALARY_TYPE_ID || (SALARY_IS_SET && !salaryTypeId)) {
       throw new PermissionError('invalid salaryTypeId', 400)
+    }
+
+    const BY_EARNINGS_NOT_VALID = !_.isNil(isSalaryByEarnings) && !_.isBoolean(isSalaryByEarnings)
+    if (BY_EARNINGS_NOT_VALID || (isSalaryByEarnings && SALARY_IS_SET)) {
+      throw new PermissionError('invalid isSalaryByEarnings', 400)
     }
 
     if (additionalSalaryInfo && !_.isString(additionalSalaryInfo)) {

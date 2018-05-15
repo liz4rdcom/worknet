@@ -16,13 +16,13 @@
         <div>
             <form class="go-bottom">
             <div>
-              <input id="name" name="name" type="text" required>
+              <input id="vacancies-filter-salary-from" name="name" type="text" required>
               <label for="name">ხელფასი ლარიდან</label>
             </div>
           </form>
           <form class="go-bottom">
             <div>
-              <input id="name1" name="name" type="text" required>
+              <input id="vacancies-filter-salary-to" name="name" type="text" required>
               <label for="name">ლარამდე</label>
             </div>
           </form>
