@@ -22,7 +22,7 @@ app.use(express.static('../public/dist'))
 app.use(umpackPlus.baseUrl, umpackPlus.router)
 
 app.use((req, res, next) => {
-  console.log('LOGGED', req)
+  console.log('LOGGED')
   next()
 })
 
