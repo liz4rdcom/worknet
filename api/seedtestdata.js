@@ -210,8 +210,8 @@ const testJobs = [
     'positionName': 'JavaScript Developer',
     'organization': 'შპს FX1',
     'organizationTaxCode': '123456789',
-    'locationName': 'თბილისი', //
-    'locationUnitName': 'ისანი', //
+    'locationName': 'თბილისი',
+    'locationUnitName': 'ისანი',
     'addressLine': 'დამატებითი მისამართი',
     'publishDate': '2017-12-03T00:00:00',
     'interviewSupposedStartDate': '2018-01-01T00:00:00',
@@ -221,27 +221,27 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'minimalSalary': 150, //
-    'maximalSalary': 300, //
+    'minimalSalary': 150,
+    'maximalSalary': 300,
     'fixedSalary': null,
-    'additionalSalaryInfo': 'ბონუსებით.', //
-    'salaryTypeId': 1, //
+    'additionalSalaryInfo': 'ბონუსებით.',
+    'salaryTypeId': 1,
     'salaryTypeName': 'საათში',
-    'fullTime': true, //
-    'partTime': true, //
-    'shiftBased': true, //
-    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი', //
-    'drivingLicenceA': true, //
-    'drivingLicenceB': true, //
-    'drivingLicenceC': true, //
-    'drivingLicenceD': true, //
-    'drivingLicenceE': true, //
-    'drivingLicenceT1': true, //
-    'drivingLicenceT2': true, //
-    'airLicence': true, //
-    'seaLicence': true, //
-    'railwayLicence': true, //
-    'languages': [ //
+    'fullTime': true,
+    'partTime': true,
+    'shiftBased': true,
+    'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'drivingLicenceA': true,
+    'drivingLicenceB': true,
+    'drivingLicenceC': true,
+    'drivingLicenceD': true,
+    'drivingLicenceE': true,
+    'drivingLicenceT1': true,
+    'drivingLicenceT2': true,
+    'airLicence': true,
+    'seaLicence': true,
+    'railwayLicence': true,
+    'languages': [
       {
         'languageName': 'აფხაზური',
       },
@@ -249,7 +249,7 @@ const testJobs = [
         'languageName': 'ქართული',
       },
     ],
-    'skills': [ //
+    'skills': [
       {
         'skillName': 'Javascript',
       },
@@ -311,10 +311,10 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'minimalSalary': null, //
-    'maximalSalary': null, //
+    'minimalSalary': null,
+    'maximalSalary': null,
     'fixedSalary': null,
-    'additionalSalaryInfo': 'გამომუშავებით', //
+    'additionalSalaryInfo': 'გამომუშავებით',
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -349,11 +349,11 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'minimalSalary': null, //
-    'maximalSalary': null, //
+    'minimalSalary': null,
+    'maximalSalary': null,
     'fixedSalary': 1500,
-    'additionalSalaryInfo': 'ბონუსებით.', //
-    'salaryTypeId': 2, //
+    'additionalSalaryInfo': 'ბონუსებით.',
+    'salaryTypeId': 2,
     'salaryTypeName': 'თვეში',
     'fullTime': true,
     'partTime': true,
@@ -389,10 +389,10 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'minimalSalary': null, //
-    'maximalSalary': null, //
-    'additionalSalaryInfo': 'შეთანხმებით', //
-    'salaryTypeId': null, //
+    'minimalSalary': null,
+    'maximalSalary': null,
+    'additionalSalaryInfo': 'შეთანხმებით',
+    'salaryTypeId': null,
     'salaryTypeName': null,
     'fullTime': true,
     'partTime': true,
@@ -428,11 +428,11 @@ const testJobs = [
     'vacantPlacesQuantity': 2,
     'functionsDescription': 'bl abl abl ab la wa wr rwq qw rw rwq r wq r',
     'additionalDescription': 'damatebiti informacia TEST TEST',
-    'minimalSalary': null, //
-    'maximalSalary': null, //
+    'minimalSalary': null,
+    'maximalSalary': null,
     'fixedSalary': 150000,
-    'additionalSalaryInfo': '', //
-    'salaryTypeId': 3, //
+    'additionalSalaryInfo': '',
+    'salaryTypeId': 3,
     'salaryTypeName': 'წელიწადში',
     'fullTime': true,
     'partTime': true,
