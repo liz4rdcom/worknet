@@ -8,12 +8,12 @@ import 'font-awesome/css/font-awesome.min.css'
 
 import App from './App'
 import router from './router'
-import callApi from './callApi'
+import webApi from './webApi'
 
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
-Vue.prototype.$http = callApi
+Vue.prototype.$http = webApi
 
 /* eslint-disable no-new */
 new Vue({

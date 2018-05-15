@@ -154,7 +154,7 @@ export default {
   watch: {
     filterObject: {
       async handler () {
-        let response = await this.$http.post('/api/vacancies/search', this.filterObject, {headers: utils.getHeaders()})
+        let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
         this.vacancies = response.data
       },
       deep: true,
