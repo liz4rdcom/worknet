@@ -20,8 +20,6 @@ function request ({ needsToken = true, ...restConfig }) {
 
   return axios.request(config)
     .catch(error => {
-      console.log('callApi, catch: ', error)
-
       bus.$emit('error', error)
 
       return Promise.reject(error)

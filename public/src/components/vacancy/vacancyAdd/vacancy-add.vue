@@ -723,29 +723,27 @@ export default {
 
         alert('saved as draft!')
       } catch (error) {
-        bus.$emit('error', error)
       }
     },
     async onSubmit(evt) {
       evt.preventDefault()
 
-      if (!this.validation()) {
-        return
-      }
+      // if (!this.validation()) {
+      //   return
+      // }
 
       try {
         if (!this.id) {
-          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(false), {headers: utils.getHeaders()})
+          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(true), {headers: utils.getHeaders()})
         } else {
           await this.$http.put(baseUrl + `/${this.id}`, this.getVacancyAddDataToSend(true), {headers: utils.getHeaders()})
         }
+
+        this.$router.push('/vacancies/own/all')
+
+        alert('submitted')
       } catch (error) {
-        bus.$emit('error', error)
       }
-
-      alert('submitted')
-
-      this.$router.push('/vacancies/own/all')
     },
     languagesOnChange(langs) {
       this.vacancy.languages = langs

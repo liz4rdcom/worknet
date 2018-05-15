@@ -21,7 +21,17 @@ app.use(express.static('../public/dist'))
 
 app.use(umpackPlus.baseUrl, umpackPlus.router)
 
+app.use((req, res, next) => {
+  console.log('LOGGED', req)
+  next()
+})
+
 app.use('/um', umpack.router)
+
+app.use((req, res, next) => {
+  console.log('LOGGED 2')
+  next()
+})
 
 app.use(vacancies.baseUrl, vacancies.router)
 app.use(users.baseUrl, users.router)
