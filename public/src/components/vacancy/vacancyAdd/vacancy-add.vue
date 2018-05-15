@@ -632,8 +632,8 @@ export default {
         ),
         useMediationService: this.vacancy.useMediationService,
         fullTime: this.vacancy.fullTime,
-        partTime: this.vacancy.fullTime,
-        shiftBased: this.vacancy.fullTime,
+        partTime: this.vacancy.partTime,
+        shiftBased: this.vacancy.shiftBased,
         languages: this.vacancy.languages,
         skills: this.vacancy.skills,
         published,
@@ -749,8 +749,6 @@ export default {
       this.vacancy.languages = langs
     },
     skillsOnChange(changedSkills) {
-      console.log('yyy', changedSkills)
-
       this.vacancy.skills = changedSkills
     },
   },

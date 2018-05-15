@@ -130,7 +130,7 @@ function validateVacancy(vacancy, salaryType) {
     }
 
     if (vacantPlacesQuantity !== 0 && (vacantPlacesQuantity && (!utils.stringIsNonNegativeInteger(vacantPlacesQuantity) || vacantPlacesQuantity < 0))) {
-      console.log(1111, vacantPlacesQuantity)
+      console.log(1111, typeof vacantPlacesQuantity)
       throw new PermissionError('invalid vacantPlacesQuantity', 400)
     }
 
@@ -258,6 +258,8 @@ async function addVacancy(userName, vacancy) {
   if (_.isArray(vacan.skills)) {
     skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
   }
+
+  console.log(444, vacan)
 
   return await vacancyRepository.addVacancy(vacan)
 }
