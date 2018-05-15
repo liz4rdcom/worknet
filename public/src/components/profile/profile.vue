@@ -43,7 +43,7 @@
       }
     },
     created() {
-      this.$http.get(baseUrl, {headers: utils.getHeaders()})
+      this.$http.get(baseUrl) // {headers: utils.getHeaders()}
         .then(response => {
           this.myProfile = response.data
         })

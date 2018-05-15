@@ -36,7 +36,9 @@ router.get('/profile', isAuthorized, (req, res, next) => {
 
   userInteractor.getUserProfile(userName)
     .then(res.send.bind(res))
-    .catch(next)
+    .catch((error) => {
+      next({error})
+    })
 })
 
 router.post('/profile', isAuthorized, (req, res, next) => {
