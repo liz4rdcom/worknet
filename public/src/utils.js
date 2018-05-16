@@ -51,8 +51,6 @@ function idWithPrefix(idPrefix, idPart) {
 }
 
 function compareDatesByMilliseconds(date1, date2) {
-  console.log(32323, date1, date2, date1.getTime(), date2.getTime(), date1.getTime() - date2.getTime())
-
   return date1.getTime() - date2.getTime()
 }
 

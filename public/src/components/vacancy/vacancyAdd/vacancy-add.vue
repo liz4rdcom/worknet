@@ -44,8 +44,8 @@
       <georgia-locations
         idPrefix="vacancy-add"
         :onLocationChanged="onLocationChanged"
-        :currentLocationName="'თბილისი'"
-        :currentLocationUnitName="'ისანი'"
+        :currentLocationName="vacancy.locationName"
+        :currentLocationUnitName="vacancy.locationUnitName"
       />
     </b-form-group>
 
@@ -707,7 +707,7 @@ export default {
         retVal.additionalSalaryInfo = this.vacancy.additionalSalaryInfo
       }
 
-      if (this.vacancy.formalEducationLevelName) {
+      if (this.vacancy.formalEducationLevelName && this.vacancy.formalEducationLevelName !== '- აირჩიე -') {
         retVal.formalEducationLevelName = this.vacancy.formalEducationLevelName
       }
 

@@ -40,7 +40,6 @@ export default {
 
       this.vacancies = response.data
     } catch (e) {
-      // TODO Notify
       this.vacancies = []
       console.error(e)
     }
