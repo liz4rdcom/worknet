@@ -16,13 +16,13 @@
         <div>
             <form class="go-bottom">
             <div>
-              <input id="name" name="name" type="text" required @click="minSalary($event.target.value)">
+              <input id="vacancies-filter-salary-from" name="name" type="text" required @click="minSalary($event.target.value)">
               <label for="name">ხელფასი ლარიდან</label>
             </div>
           </form>
           <form class="go-bottom">
             <div>
-              <input id="name1" name="name" type="text" required @click="maxSalary($event.target.value)">
+              <input id="vacancies-filter-salary-to" name="name" type="text" required @click="maxSalary($event.target.value)">
               <label for="name">ლარამდე</label>
             </div>
           </form>
@@ -173,7 +173,7 @@ export default {
   watch: {
     filterObject: {
       async handler () {
-        let response = await this.$http.post('/api/vacancies/search', this.filterObject, {headers: utils.getHeaders()})
+        let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
         this.vacancies = response.data
       },
       deep: true,
