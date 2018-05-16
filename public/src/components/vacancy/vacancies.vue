@@ -34,7 +34,7 @@
           <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
                      v-model="filterObject.salaryTypeName"
                      :value="null"
-                     :options="salaryType"
+                     :options="salaryTypes"
                      value-field="typeName" text-field="typeName"
                      id="inlineFormCustomSelectPref">
         <option slot="first" :value="null">-აირჩიეთ ხელფასის ტიპი-</option>
@@ -158,7 +158,7 @@ export default {
     skillArray: [],
     desirableJobLocations: [],
     locationsList: [],
-    salaryType: [],
+    salaryTypes: [],
   }),
   async created() {
     this.locationsList = await libs.fetchLocationsOfGeorgia()
@@ -183,26 +183,31 @@ export default {
     maxSalary (value) {
       if (isNaN(value)) {
         bus.$emit('warning', 'გთხოვთ შეიყვანოთ რიცხვი')
-      } else {
-        value = parseInt(value)
-        if (value <= this.filterObject.minimalSalary) {
-          bus.$emit('warning', 'მაქსიმალური რიცხვი უნდა აღემატებოდეს მინიმალურს')
-        } else {
-          this.filterObject.maximalSalary = value
-        }
+        return
       }
+
+      value = parseInt(value)
+
+      if (value <= this.filterObject.minimalSalary) {
+        bus.$emit('warning', 'მაქსიმალური რიცხვი უნდა აღემატებოდეს მინიმალურს')
+        return
+      }
+
+      this.filterObject.maximalSalary = value
     },
     minSalary (value) {
       if (isNaN(value)) {
         bus.$emit('warning', 'გთხოვთ შეიყვანოთ რიცხვი')
-      } else {
-        value = parseInt(value)
-        this.filterObject.minimalSalary = value
+        return
       }
+
+      value = parseInt(value)
+
+      this.filterObject.minimalSalary = value
     },
     async fillSalaryType () {
       try {
-        this.salaryType = await libs.fetchSalaryTypes()
+        this.salaryTypes = await libs.fetchSalaryTypes()
       } catch (error) {
         bus.$emit('error', error)
       }
