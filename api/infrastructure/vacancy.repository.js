@@ -96,9 +96,10 @@ async function deleteVacancy(id) {
 
 async function getBySearch(params) {
   let listFields = ['skills', 'locations']
+  let conditionFields = ['minimalSalary', 'maximalSalary']
 
   let terms = Object.keys(params)
-    .filter(key => key !== 'filter' && !listFields.includes(key))
+    .filter(key => key !== 'filter' && !listFields.includes(key) && !conditionFields.includes(key))
     .map(key => {
       let result = {
         match: {},
@@ -150,6 +151,61 @@ async function getBySearch(params) {
     terms.push({
       dis_max: {
         queries: locationQueries,
+      },
+    })
+  }
+
+  if (params.minimalSalary || params.maximalSalary) {
+    let mustNots = []
+
+    if (params.maximalSalary) {
+      mustNots.push({
+        range: {
+          minimalSalary: {
+            gt: params.maximalSalary,
+          },
+        },
+      })
+    }
+    if (params.minimalSalary) {
+      mustNots.push({
+        range: {
+          maximalSalary: {
+            lt: params.minimalSalary,
+          },
+        },
+      })
+    }
+
+    terms.push({
+      bool: {
+        should: [
+          {
+            range: {
+              fixedSalary: {
+                gte: params.minimalSalary,
+                lte: params.maximalSalary,
+              },
+            },
+          },
+          {
+            bool: {
+              must_not: mustNots,
+              should: [
+                {
+                  exists: {
+                    field: 'minimalSalary',
+                  },
+                },
+                {
+                  exists: {
+                    field: 'maximalSalary',
+                  },
+                },
+              ],
+            },
+          },
+        ],
       },
     })
   }

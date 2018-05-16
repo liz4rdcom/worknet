@@ -55,7 +55,7 @@ router.get('/languages', isAuthorized, async (req, res, next) => {
   }
 })
 
-router.get('/salaryTypes', isAuthorized, async (req, res, next) => {
+router.get('/salaryTypes', async (req, res, next) => {
   try {
     let result = await libRepository.getSalaryTypes()
 
