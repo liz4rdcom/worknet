@@ -201,7 +201,7 @@ async function getBySearch(params) {
                     field: 'maximalSalary',
                   },
                 },
-              ]
+              ],
             },
           },
         ],
