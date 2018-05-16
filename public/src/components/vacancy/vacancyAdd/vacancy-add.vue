@@ -358,8 +358,9 @@
         <br/>
       </b>
     </button>
+    <span class="cyrcle-span"></span>
 
-    <b-col v-if="!jobseekerSearchHidden">
+    <b-col v-if="!jobseekerSearchHidden" class="main-col">
       <h1>
         ვაკანსიის შესაბამისი სამსახურის მაძიებლები
       </h1>
@@ -858,6 +859,7 @@ export default {
 .vacancy-add {
   margin: auto;
   width: 100%;
+  /* max-width: 50%; */
   height: 100%;
   overflow-y: auto;
 }
@@ -899,5 +901,22 @@ export default {
   padding: 0px 0px 0px 3px;
   border: 0px;
   outline: none;
+}
+.hide-jobseeker-search-panel:hover {
+  opacity: 0.9;
+  color: #007bff;
+
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 </style>
