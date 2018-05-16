@@ -69,7 +69,7 @@ router.post('/', isAuthorized, async (req, res, next) => {
   //   .catch(next)
 })
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', isAuthorized, async (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 
   try {
