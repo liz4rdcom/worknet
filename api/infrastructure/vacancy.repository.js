@@ -209,13 +209,11 @@ async function getBySearch(params) {
     })
   }
 
-  terms.push(
-    {
-      query_string: {
-        query: params.filter || '*',
-      },
-    }
-  )
+  terms.push({
+    query_string: {
+      query: params.filter || '*',
+    },
+  })
 
   let options = {
     index,
@@ -234,8 +232,87 @@ async function getBySearch(params) {
   return result.hits.hits.map(utils.toObject)
 }
 
-async function matchVacanciesToUser(user) {
+function constantScoreQuery(key, value) {
+  return {
+    constant_score: {
+      query: {
+        term: {
+          key: value,
+        },
+      },
+    },
+  }
+}
 
+function commonShoulds(user) {
+  let booleanFields = [
+    'drivingLicenceA',
+    'drivingLicenceB',
+    'drivingLicenceC',
+    'drivingLicenceD',
+    'drivingLicenceE',
+    'drivingLicenceT1',
+    'drivingLicenceT2',
+    'airLicence',
+    'seaLicence',
+    'railwayLicence',
+    'fullTime',
+    'partTime',
+    'shiftBased',
+  ]
+
+  let shoulds = Object.keys(user)
+    .filter(key => booleanFields.includes(key) && user[key])
+    .map(key => constantScoreQuery(key, user[key]))
+    .reduce((arr, should) => {
+      arr.push(should)
+
+      return arr
+    }, [])
+
+  shoulds.push(
+    constantScoreQuery('formalEducationLevelName.keyword', user.formalEducationLevelName)
+  )
+
+  return shoulds
+}
+
+function skillsShoulds(user) {
+  let skills = user.skills
+
+  let shoulds = skills.map(skill => constantScoreQuery('skills.skillName.keyword', skill))
+
+  return shoulds
+}
+
+async function matchVacanciesToUser(user, percent) {
+  let shoulds = []
+
+  shoulds = shoulds.concat(commonShoulds(user))
+
+  if (user.skills) {
+    shoulds = shoulds.concat(skillsShoulds(user))
+  }
+
+  let searchOptions = {
+    index,
+    type,
+    body: {
+      query: {
+        bool: {
+          should: shoulds,
+          minimum_should_match: percentToString(percent),
+        },
+      },
+    },
+    searchType: 'dfs_query_then_fetch',
+  }
+
+  return await client.search(searchOptions)
+}
+
+function percentToString(percent) {
+  return Math.floor(percent * 100).toString() + '%'
 }
 
 module.exports = {
