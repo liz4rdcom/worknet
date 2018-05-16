@@ -5,12 +5,13 @@ const libRepository = require('../infrastructure/lib.repository')
 
 const baseUrl = '/api/libs'
 
-router.get('/locationsOfGeorgia', async (req, res) => {
+router.get('/locationsOfGeorgia', async (req, res, next) => {
   try {
     let result = await libRepository.getLocationsInGeorgia()
+
     res.send(result[0].locationsInGeorgia)
   } catch (error) {
-    res.send({ message: 'მონაცემების ჩატვირთვის დროს მოხდა შეცდომა', error })
+    res.status(500).send({ message: 'მონაცემების ჩატვირთვის დროს მოხდა შეცდომა', error })
   }
 })
 
@@ -54,7 +55,7 @@ router.get('/languages', isAuthorized, async (req, res, next) => {
   }
 })
 
-router.get('/salaryTypes', isAuthorized, async (req, res, next) => {
+router.get('/salaryTypes', async (req, res, next) => {
   try {
     let result = await libRepository.getSalaryTypes()
 

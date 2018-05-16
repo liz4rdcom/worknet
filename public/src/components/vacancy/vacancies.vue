@@ -8,7 +8,7 @@
     <b-button class="searchButton" variant="primary" size="" @click="search">
       <i class="fa fa-search fa-2x" aria-hidden="true"></i>
     </b-button>
-    <b-button @click="filter = !filter">Filter</b-button>
+    <b-button @click="filter = !filter, fillSalaryType()">Filter</b-button>
   </div>
   <b-card v-if="filter">
     <b-row>
@@ -16,13 +16,13 @@
         <div>
           <form class="go-bottom">
             <div>
-              <input id="vacancies-filter-salary-from" name="name" type="text" required>
+              <input id="vacancies-filter-salary-from" name="name" type="text" required @click="minSalary($event.target.value)">
               <label for="name">ხელფასი ლარიდან</label>
             </div>
           </form>
           <form class="go-bottom">
             <div>
-              <input id="vacancies-filter-salary-to" name="name" type="text" required>
+              <input id="vacancies-filter-salary-to" name="name" type="text" required @click="maxSalary($event.target.value)">
               <label for="name">ლარამდე</label>
             </div>
           </form>
@@ -30,6 +30,20 @@
         <div>
           <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
         </div>
+        <div>
+          <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
+                     v-model="filterObject.salaryTypeName"
+                     :value="null"
+                     :options="salaryTypes"
+                     value-field="typeName" text-field="typeName"
+                     id="inlineFormCustomSelectPref">
+        <option slot="first" :value="null">-აირჩიეთ ხელფასის ტიპი-</option>
+      </b-form-select>
+        </div>
+        <b-form-checkbox id="isSalaryByEarnings"
+        v-model="filterObject.isSalaryByEarnings">
+        გამომუშავება
+      </b-form-checkbox>
       </b-col>
       <b-col lg="6">
         <b-form-checkbox id="drivingLicence"
@@ -134,12 +148,17 @@ export default {
       interestedToBeVolunteer: false,
       interestedInTemporaryJob: false,
       interestedInDangerousJob: false,
+      minimalSalary: null,
+      maximalSalary: null,
+      salaryTypeName: null,
+      isSalaryByEarnings: false,
       locations: [],
       skills: [],
     },
     skillArray: [],
     desirableJobLocations: [],
     locationsList: [],
+    salaryTypes: [],
   }),
   async created() {
     this.locationsList = await libs.fetchLocationsOfGeorgia()
@@ -154,13 +173,45 @@ export default {
   watch: {
     filterObject: {
       async handler () {
-        let response = await this.$http.post('/api/vacancies/search', this.filterObject, {headers: utils.getHeaders()})
+        let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
         this.vacancies = response.data
       },
       deep: true,
     },
   },
   methods: {
+    maxSalary (value) {
+      if (isNaN(value)) {
+        bus.$emit('warning', 'გთხოვთ შეიყვანოთ რიცხვი')
+        return
+      }
+
+      value = parseInt(value)
+
+      if (value <= this.filterObject.minimalSalary) {
+        bus.$emit('warning', 'მაქსიმალური რიცხვი უნდა აღემატებოდეს მინიმალურს')
+        return
+      }
+
+      this.filterObject.maximalSalary = value
+    },
+    minSalary (value) {
+      if (isNaN(value)) {
+        bus.$emit('warning', 'გთხოვთ შეიყვანოთ რიცხვი')
+        return
+      }
+
+      value = parseInt(value)
+
+      this.filterObject.minimalSalary = value
+    },
+    async fillSalaryType () {
+      try {
+        this.salaryTypes = await libs.fetchSalaryTypes()
+      } catch (error) {
+        bus.$emit('error', error)
+      }
+    },
     skillFilter (skill, event) {
       event.stopPropagation()
       this.skillArray.push({skillName: skill})

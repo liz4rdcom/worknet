@@ -252,7 +252,11 @@ async function addVacancy(userName, vacancy) {
 }
 
 async function editVacancy(userName, id, vacancy) {
-  validateVacancy(vacancy)
+  let salaryTypes = await libRepository.getSalaryTypes()
+
+  let salaryType = salaryTypes.find(type => type.typeId === vacancy.salaryTypeId)
+
+  validateVacancy(vacancy, salaryType)
 
   let foundVacancy = await vacancyRepository.getById(id)
 
