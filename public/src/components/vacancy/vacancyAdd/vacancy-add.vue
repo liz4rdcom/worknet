@@ -338,6 +338,7 @@
 <script>
 import reverse from 'lodash/reverse'
 import isNil from 'lodash/isNil'
+import isNumber from 'lodash/isNumber'
 import georgiaLocations from '../../common/georgia-locations'
 import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../../constants'
 import utils from '../../../utils'
@@ -620,16 +621,6 @@ export default {
     getVacancyAddDataToSend(published) {
       const retVal = {
         positionName: this.vacancy.positionName,
-        interviewSupposedStartDate: new Date(
-          this.vacancy.interviewSupposedStartYear,
-          this.vacancy.interviewSupposedStartMonth,
-          this.vacancy.interviewSupposedStartDay,
-        ),
-        endDate: new Date(
-          this.vacancy.endDateYear,
-          this.vacancy.endDateMonth,
-          this.vacancy.endDateDay,
-        ),
         useMediationService: this.vacancy.useMediationService,
         fullTime: this.vacancy.fullTime,
         partTime: this.vacancy.partTime,
@@ -637,6 +628,28 @@ export default {
         languages: this.vacancy.languages,
         skills: this.vacancy.skills,
         published,
+      }
+
+      if (isNumber(this.vacancy.interviewSupposedStartYear) &&
+          isNumber(this.vacancy.interviewSupposedStartMonth) &&
+          isNumber(this.vacancy.interviewSupposedStartDay)
+      ) {
+        retVal.interviewSupposedStartDate = new Date(
+          this.vacancy.interviewSupposedStartYear,
+          this.vacancy.interviewSupposedStartMonth,
+          this.vacancy.interviewSupposedStartDay,
+        )
+      }
+
+      if (isNumber(this.vacancy.endDateYear) &&
+          isNumber(this.vacancy.endDateMonth) &&
+          isNumber(this.vacancy.endDateDay)
+      ) {
+        retVal.endDate = new Date(
+          this.vacancy.endDateYear,
+          this.vacancy.endDateMonth,
+          this.vacancy.endDateDay,
+        )
       }
 
       if (this.isOrganization) {

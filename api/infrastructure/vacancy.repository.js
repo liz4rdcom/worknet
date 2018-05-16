@@ -53,7 +53,7 @@ async function getByAuthorUserName(userName) {
     index,
     type,
     q: `authorUserName:${userName}`,
-    size: 30,
+    size: 300,
   }
 
   let result = await client.search(options)

@@ -55,12 +55,18 @@ export default {
       return this.vacancies ? this.vacancies.filter(({ published }) => !published).length : 0
     },
     publishedCount() {
-      return this.vacancies ? this.vacancies.filter(({ published }) => published).length : 0
+      return this.vacancies
+        ? this.vacancies.filter(({ published, endDate }) => (
+            published && utils.compareDatesByMilliseconds(new Date(), new Date(endDate)) <= 0
+          )).length
+        : 0
     },
     expiredCount() {
-      return this.vacancies ? this.vacancies.filter(({ published, endDate }) => (
-        published && utils.compareDatesByMilliseconds(new Date(), new Date(endDate)
-      )) > 0).length : 0
+      return this.vacancies
+        ? this.vacancies.filter(({ published, endDate }) => (
+            published && utils.compareDatesByMilliseconds(new Date(), new Date(endDate)) >= 0
+          )).length
+        : 0
     },
   },
 }
