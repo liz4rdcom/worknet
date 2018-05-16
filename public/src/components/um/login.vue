@@ -37,10 +37,7 @@ export default {
       }
 
       try {
-        console.log(11111111111)
         let response = await this.$http.post('/um/login', loginObj, { needsToken: false })
-
-        console.log(222222222)
 
         Cookies.set('token', response.data)
 

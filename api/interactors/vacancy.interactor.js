@@ -130,7 +130,6 @@ function validateVacancy(vacancy, salaryType) {
     }
 
     if (vacantPlacesQuantity !== 0 && (vacantPlacesQuantity && (!utils.stringIsNonNegativeInteger(vacantPlacesQuantity) || vacantPlacesQuantity < 0))) {
-      console.log(1111, typeof vacantPlacesQuantity)
       throw new PermissionError('invalid vacantPlacesQuantity', 400)
     }
 
