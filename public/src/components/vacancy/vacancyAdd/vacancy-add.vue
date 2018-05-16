@@ -334,7 +334,36 @@
 
       <b-button variant="primary" @click="onSubmit">დამატება</b-button>
     </b-col>
-    <b-col>dudu</b-col>
+
+    <button class="hide-jobseeker-search-panel" @click="toggleJobseekerSearch">
+      <b v-if="!jobseekerSearchHidden">
+        &gt;
+        <br/>
+
+        &gt;
+        <br/>
+
+        &gt;
+        <br/>
+      </b>
+
+      <b v-if="jobseekerSearchHidden">
+        &lt;
+        <br/>
+
+        &lt;
+        <br/>
+
+        &lt;
+        <br/>
+      </b>
+    </button>
+
+    <b-col v-if="!jobseekerSearchHidden">
+      <h1>
+        ვაკანსიის შესაბამისი სამსახურის მაძიებლები
+      </h1>
+    </b-col>
   </b-row>
 </template>
 
@@ -406,6 +435,7 @@ export default {
     isOrganization: true,
     shouldHaveDrivingLicence: false,
     isSalaryRange: false,
+    jobseekerSearchHidden: false,
   }),
   async created() {
     try {
@@ -744,9 +774,9 @@ export default {
     async onSubmit(evt) {
       evt.preventDefault()
 
-      // if (!this.validation()) {
-      //   return
-      // }
+      if (!this.validation()) {
+        return
+      }
 
       try {
         if (!this.id) {
@@ -766,6 +796,9 @@ export default {
     },
     skillsOnChange(changedSkills) {
       this.vacancy.skills = changedSkills
+    },
+    toggleJobseekerSearch() {
+      this.jobseekerSearchHidden = !this.jobseekerSearchHidden
     },
   },
   computed: {
@@ -858,5 +891,13 @@ export default {
 }
 .salary-to {
   padding-left: 4px;
+}
+.hide-jobseeker-search-panel {
+  background-color: #343a40;
+  opacity: 0.8;
+  color: white;
+  padding: 0px 0px 0px 3px;
+  border: 0px;
+  outline: none;
 }
 </style>
