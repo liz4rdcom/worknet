@@ -25,7 +25,6 @@
       try {
         this.locationList = await libs.fetchLocationsOfGeorgia()
       } catch (e) {
-        // TODO Notify
         this.locationList = []
         console.error(e)
       }

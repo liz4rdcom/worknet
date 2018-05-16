@@ -45,7 +45,6 @@ export default {
               t.unitName.toLowerCase() === this.chosenLocation.unitName.toLowerCase()
       )
       if (indexOfLocation !== -1) {
-        // TODO alert or notify
         console.error('this location already exists')
         return
       }
@@ -71,7 +70,6 @@ export default {
               t.unitName.toLowerCase() === location.unitName.toLowerCase()
       )
       if (indexOfLocation === -1) {
-        // TODO alert or notify
         console.error('can\'t find index of location')
         return
       }

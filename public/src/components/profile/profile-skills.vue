@@ -45,7 +45,6 @@ export default {
     async onAddNewSkill(skill) {
       let indexOfSkill = this.skills.findIndex(t => t.skillName.toLowerCase() === skill.toLowerCase())
       if (indexOfSkill !== -1) {
-        // TODO alert or notify
         console.error('this skill already exists')
         return
       }
@@ -68,7 +67,6 @@ export default {
     async onRemoveSkill(skill) {
       let indexOfSkill = this.skills.findIndex(t => t.skillName === skill)
       if (indexOfSkill === -1) {
-        // TODO alert or notify
         console.error('can\'t find index of skill')
         return
       }
