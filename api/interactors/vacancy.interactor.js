@@ -289,10 +289,20 @@ async function deleteVacancy(userName, id) {
   return await vacancyRepository.deleteVacancy(id)
 }
 
-async function searchUserMatchings(userName, percent) {
+async function searchUserMatchings(userName, percent = 100, excludeFields) {
+  if (!_.isNumber(percent)) {
+    throw new PermissionError('invalid percent', 400)
+  }
+
+  if (!_.isArray(excludeFields)) {
+    throw new PermissionError('invalid excludeFields', 400)
+  }
+
   let user = await userRepository.getUserByUserName(userName)
 
-  return await vacancyRepository.matchVacanciesToUser(user, percent)
+  let userToMatch = _.omit(user, excludeFields)
+
+  return await vacancyRepository.matchVacanciesToUser(userToMatch, percent)
 }
 
 module.exports = {

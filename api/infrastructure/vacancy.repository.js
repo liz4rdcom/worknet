@@ -346,7 +346,6 @@ async function matchVacanciesToUser(user, percent) {
       },
     },
     searchType: 'dfs_query_then_fetch',
-    explain: true,
   }
 
   let result = await client.search(searchOptions)

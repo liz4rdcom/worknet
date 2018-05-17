@@ -101,11 +101,14 @@ router.delete('/:id', isAuthorized, (req, res, next) => {
     .catch(next)
 })
 
-router.get('/profile/matchings', isAuthorized, async (req, res, next) => {
+router.post('/profile/matchings', isAuthorized, async (req, res, next) => {
   try {
     let userName = utils.getUserNameFromRequest(req)
+    let percent = req.body.percent
+    let excludeFields = req.body.excludeFields
 
-    let result = await vacancyInteractor.searchUserMatchings(userName)
+    let result = await vacancyInteractor.searchUserMatchings(userName, percent, excludeFields)
+
     next({ result })
   } catch (error) {
     next({ error })
