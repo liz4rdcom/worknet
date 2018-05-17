@@ -290,10 +290,14 @@ function desirableJobShoulds(user) {
 function desirableJobLocationShoulds(user) {
   let desirableJobLocations = user.desirableJobLocations
 
-  return desirableJobLocations.map(location => utils.constantMultiMustQuery([
+  let shoulds = desirableJobLocations.map(location => utils.constantMultiMustQuery([
     ['locationName.keyword', location.locationName],
     ['locationUnitName.keyword', location.locationUnitName],
   ]))
+
+  return utils.functionBoolScore({
+    should: shoulds,
+  })
 }
 
 function jobExperiencesShoulds(user) {
