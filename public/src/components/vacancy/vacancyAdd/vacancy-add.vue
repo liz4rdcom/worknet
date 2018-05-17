@@ -5,37 +5,55 @@
 
       <h1 class="hint-element">დაამატეთ ვაკანსია</h1>
 
-      <b-form-group label="თანამდებობა">
-        <b-form-input id="vacancy-add-position" autofocus type="text" v-model="vacancy.positionName"
-        ></b-form-input>
+      <b-form-group class="font-weight-bold" label="თანამდებობა">
+        <b-row>
+          <b-col>
+            <b-form-input id="vacancy-add-position" class="position-input" autofocus type="text" v-model="vacancy.positionName" />
+          </b-col>
+
+          <b-col cols="auto">
+            <b-form-radio-group
+              v-model="jobseekerFilterSwitches.position"
+              :button-variant="jobseekerFilterSwitches.position ? 'outline-info' : 'outline-secondary'"
+              :options="jobseekerFilterSwitchOptions"
+              buttons
+            />
+          </b-col>
+        </b-row>
       </b-form-group>
 
       <b-card>
-        <b-form-checkbox
-          v-model="isOrganization"
-          :value="false"
-          :unchecked-value="true"
-          id="vacancy-add-is-organization-checkbox"
-        >
-          არ ვაქვეყნებ ორგანიზაციის სახელით
-        </b-form-checkbox>
+        <b-row>
+          <b-col />
 
-        <b-form-group v-if="isOrganization" label="ორგანიზაცია">
+          <b-col cols="auto">
+            <b-form-checkbox
+              v-model="isOrganization"
+              :value="false"
+              :unchecked-value="true"
+              id="vacancy-add-is-organization-checkbox"
+            >
+              არ ვაქვეყნებ ორგანიზაციის სახელით
+            </b-form-checkbox>
+          </b-col>
+        </b-row>
+
+        <b-form-group v-if="isOrganization" class="font-weight-bold" label="ორგანიზაცია">
           <b-form-input id="vacancy-add-organization-name" type="text" v-model="vacancy.organization"
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group v-if="isOrganization" label="საგადასახადო კოდი">
+        <b-form-group v-if="isOrganization" class="font-weight-bold" label="საგადასახადო კოდი">
           <b-form-input id="vacancy-add-organization-taxcode" type="text" v-model="vacancy.organizationTaxCode"
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group v-if="!isOrganization" label="გამომქვეყნებლის სრული სახელი">
+        <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის სრული სახელი">
           <b-form-input id="vacancy-add-author-full-name" type="text" v-model="vacancy.authorFullName"
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group v-if="!isOrganization" label="გამომქვეყნებლის პირადი ნომერი">
+        <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის პირადი ნომერი">
           <b-form-input id="vacancy-add-author-personal-id" type="text" v-model="vacancy.authorPersonalId"
           ></b-form-input>
         </b-form-group>
@@ -437,6 +455,10 @@ export default {
     shouldHaveDrivingLicence: false,
     isSalaryRange: false,
     jobseekerSearchHidden: false,
+    jobseekerFilterSwitchOptions: [{text: 'On', value: true}, {text: 'Off', value: false}],
+    jobseekerFilterSwitches: {
+      position: true,
+    },
   }),
   async created() {
     try {
@@ -855,6 +877,8 @@ export default {
 .vacancy-add-container {
   height: calc(100% - 56px);
   margin: 0px;
+  overflow-x: hidden;
+  text-align: left;
 }
 .vacancy-add {
   margin: auto;
@@ -904,7 +928,7 @@ export default {
 }
 .hide-jobseeker-search-panel:hover {
   opacity: 0.9;
-  color: #007bff;
+  text-shadow: 1px 1px 2px white, 0 0 25px white, 0 0 5px white;
 
   animation: shake 0.5s;
   animation-iteration-count: infinite;
@@ -918,5 +942,9 @@ export default {
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+.position-input {
+  width: 100%;
 }
 </style>
