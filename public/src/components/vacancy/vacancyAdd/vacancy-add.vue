@@ -2,7 +2,7 @@
   <b-row class="vacancy-add-container">
     <b-col class="vacancy-add">
       <div class="vacancy-add-inner-container">
-        <!-- <data-shower :data="this.$data" /> -->
+        <data-shower :data="this.$data" />
 
         <h1 class="vacancy-add-hint-element">დაამატეთ ვაკანსია</h1>
 
@@ -392,7 +392,7 @@
         <b-container>
           <b-row align-v="center">
             <b-col>
-              <h1 class="jobseeker-filter-hint-element">ვაკანსიის შესაბამისი სამსახურის მაძიებლები</h1>
+              <h1 class="jobseeker-search-hint-element">ვაკანსიის შესაბამისი სამსახურის მაძიებლები</h1>
             </b-col>
 
             <b-col cols="auto">
@@ -415,32 +415,32 @@
             <b-row>
               <b-col>
                 <b-form-radio-group
-                  v-model="jobseekerFilterSwitches.position"
-                  :button-variant="jobseekerFilterSwitches.position ? 'outline-success' : 'outline-secondary'"
+                  v-model="jobseekerSearchSwitches.position"
+                  :button-variant="jobseekerSearchSwitches.position ? 'outline-success' : 'outline-secondary'"
                   :options="positionSwitchOptions"
                   buttons
                 />
               </b-col>
               <b-col>
                 <b-form-radio-group
-                  v-model="jobseekerFilterSwitches.location"
-                  :button-variant="jobseekerFilterSwitches.location ? 'outline-success' : 'outline-secondary'"
+                  v-model="jobseekerSearchSwitches.location"
+                  :button-variant="jobseekerSearchSwitches.location ? 'outline-success' : 'outline-secondary'"
                   :options="locationSwitchOptions"
                   buttons
                 />
               </b-col>
               <b-col>
                 <b-form-radio-group
-                  v-model="jobseekerFilterSwitches.salary"
-                  :button-variant="jobseekerFilterSwitches.salary ? 'outline-success' : 'outline-secondary'"
+                  v-model="jobseekerSearchSwitches.salary"
+                  :button-variant="jobseekerSearchSwitches.salary ? 'outline-success' : 'outline-secondary'"
                   :options="salarySwitchOptions"
                   buttons
                 />
               </b-col>
               <b-col>
                 <b-form-radio-group
-                  v-model="jobseekerFilterSwitches.workSchedule"
-                  :button-variant="jobseekerFilterSwitches.workSchedule ? 'outline-success' : 'outline-secondary'"
+                  v-model="jobseekerSearchSwitches.workSchedule"
+                  :button-variant="jobseekerSearchSwitches.workSchedule ? 'outline-success' : 'outline-secondary'"
                   :options="workScheduleSwitchOptions"
                   buttons
                 />
@@ -452,16 +452,16 @@
             <b-row>
               <b-col>
                 <b-form-radio-group
-                  v-model="jobseekerFilterSwitches.formalEducationLevel"
-                  :button-variant="jobseekerFilterSwitches.formalEducationLevel ? 'outline-success' : 'outline-secondary'"
+                  v-model="jobseekerSearchSwitches.formalEducationLevel"
+                  :button-variant="jobseekerSearchSwitches.formalEducationLevel ? 'outline-success' : 'outline-secondary'"
                   :options="formalEducationLevelSwitchOptions"
                   buttons
                 />
               </b-col>
               <b-col>
                 <b-form-radio-group
-                  v-model="jobseekerFilterSwitches.drivingLicence"
-                  :button-variant="jobseekerFilterSwitches.drivingLicence ? 'outline-success' : 'outline-secondary'"
+                  v-model="jobseekerSearchSwitches.drivingLicence"
+                  :button-variant="jobseekerSearchSwitches.drivingLicence ? 'outline-success' : 'outline-secondary'"
                   :options="drivingLicenceSwitchOptions"
                   buttons
                 />
@@ -469,16 +469,16 @@
               </b-col>
               <b-col>
                 <b-form-radio-group
-                  v-model="jobseekerFilterSwitches.languages"
-                  :button-variant="jobseekerFilterSwitches.languages ? 'outline-success' : 'outline-secondary'"
+                  v-model="jobseekerSearchSwitches.languages"
+                  :button-variant="jobseekerSearchSwitches.languages ? 'outline-success' : 'outline-secondary'"
                   :options="languagesSwitchOptions"
                   buttons
                 />
               </b-col>
               <b-col>
                 <b-form-radio-group
-                  v-model="jobseekerFilterSwitches.skills"
-                  :button-variant="jobseekerFilterSwitches.skills ? 'outline-success' : 'outline-secondary'"
+                  v-model="jobseekerSearchSwitches.skills"
+                  :button-variant="jobseekerSearchSwitches.skills ? 'outline-success' : 'outline-secondary'"
                   :options="skillsSwitchOptions"
                   buttons
                 />
@@ -487,7 +487,7 @@
           </b-form-group>
         </b-card>
 
-        <users-list style="padding-top: 20px;" :users="filteredUsersList"/>
+        <users-list style="padding-top: 20px;" :users="searchedJobseekers"/>
       </div>
     </b-col>
   </b-row>
@@ -497,6 +497,7 @@
 import reverse from 'lodash/reverse'
 import isNil from 'lodash/isNil'
 import isNumber from 'lodash/isNumber'
+import pick from 'lodash/pick'
 import georgiaLocations from '../../common/georgia-locations'
 import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../../constants'
 import utils from '../../../utils'
@@ -510,6 +511,189 @@ import vacancySkills from './vacancy-skills'
 
 const baseUrl = '/api/vacancies'
 const MonthId = 2
+
+const dummyUsersList = [
+  {
+    'id': '10TrOWMBziw5uPlEwOJN',
+    'startDate': '2014-09-19T00:00:00.000Z',
+    'firstName': 'ნონა',
+    'lastName': 'მუხაშვილი',
+    'personalId': '01030031567',
+    'birthDate': '1985-03-29T00:00:00.000Z',
+    'genderName': 'მდედრობითი',
+    'weight': null,
+    'height': null,
+    'registrationAddressDescription': 'თბილისი გ.ჩიტაიას ქ. N 21 ',
+    'factAddressDescription': 'ქ.თბილისი ჩიტაიას#21',
+    'phoneNumber': '',
+    'mobileNumber': '593988585',
+    'email': 'n.muxashvili@yahoo.com',
+    'contactDescription': '',
+    'userName': '01030031567',
+    'registrationLocationName': 'თბილისი',
+    'registrationLocationUnitName': 'ჩუღურეთი',
+    'factLocationName': null,
+    'factLocationUnitName': null,
+    'educations': [
+    ],
+    'jobExperiences': [
+    ],
+    'desirableJobs': [
+    ],
+    'desirableJobLocations': [
+    ],
+    'desirableTrainings': [
+    ],
+    'languages': [
+    ],
+    'skills': [
+    ],
+  },
+  {
+    'id': '2ETrOWMBziw5uPlEwOJN',
+    'startDate': '2014-09-19T00:00:00.000Z',
+    'firstName': 'ნანა',
+    'lastName': 'წიკლაური',
+    'personalId': '16001022742',
+    'birthDate': '1964-09-07T00:00:00.000Z',
+    'genderName': 'მდედრობითი',
+    'weight': null,
+    'height': null,
+    'registrationAddressDescription': 'თბილისი ზესტაფონის ქ. N 18 კორ. 5 ბ. 10 ',
+    'factAddressDescription': 'ზესტაფონის ქ.5 კორპუსი 18 ბ.10',
+    'phoneNumber': '',
+    'mobileNumber': '555212162',
+    'email': 'nazgaidzeirakli@yahoo.com',
+    'contactDescription': '',
+    'userName': '16001022742',
+    'registrationLocationName': 'თბილისი',
+    'registrationLocationUnitName': 'ნაძალადევი',
+    'factLocationName': null,
+    'factLocationUnitName': null,
+    'educations': [
+    ],
+    'jobExperiences': [
+    ],
+    'desirableJobs': [
+    ],
+    'desirableJobLocations': [
+    ],
+    'desirableTrainings': [
+    ],
+    'languages': [
+    ],
+    'skills': [
+    ],
+  },
+  {
+    'id': '2UTrOWMBziw5uPlEwOJN',
+    'startDate': '2014-09-19T00:00:00.000Z',
+    'firstName': 'ნინო',
+    'lastName': 'ექვთიმიშვილი',
+    'personalId': '35001024088',
+    'birthDate': '1981-01-26T00:00:00.000Z',
+    'genderName': 'მდედრობითი',
+    'weight': null,
+    'height': null,
+    'registrationAddressDescription': 'რუსთავი მშენებელთა ქ. კორ. 28 ბ. 7 ',
+    'factAddressDescription': 'ქ. რუსთავი, მე-19მკრნ.11/28',
+    'phoneNumber': '',
+    'mobileNumber': null,
+    'email': 'ninoekvtimishvili@yahoo.com',
+    'contactDescription': '',
+    'userName': '35001024088',
+    'registrationLocationName': 'ქვემო–ქართლი',
+    'registrationLocationUnitName': 'რუსთავი',
+    'factLocationName': null,
+    'factLocationUnitName': null,
+    'educations': [
+    ],
+    'jobExperiences': [
+    ],
+    'desirableJobs': [
+    ],
+    'desirableJobLocations': [
+    ],
+    'desirableTrainings': [
+    ],
+    'languages': [
+    ],
+    'skills': [
+    ],
+  },
+  {
+    'id': '2kTrOWMBziw5uPlEwOJN',
+    'startDate': '2014-09-19T00:00:00.000Z',
+    'firstName': 'რუსუდანი',
+    'lastName': 'ბახტაძე',
+    'personalId': '01007015105',
+    'birthDate': '1957-06-07T00:00:00.000Z',
+    'genderName': 'მდედრობითი',
+    'weight': null,
+    'height': null,
+    'registrationAddressDescription': 'თბილისი აკ.წერეთლის გამზ. N 11 ბ. 98 ',
+    'factAddressDescription': 'თბილისი,წერეთლის11კორ.,ბინა98',
+    'phoneNumber': '',
+    'mobileNumber': '571550778',
+    'email': 'rusudani1957@mail.ru',
+    'contactDescription': '',
+    'userName': '01007015105',
+    'registrationLocationName': 'თბილისი',
+    'registrationLocationUnitName': 'დიდუბე',
+    'factLocationName': null,
+    'factLocationUnitName': null,
+    'educations': [
+    ],
+    'jobExperiences': [
+    ],
+    'desirableJobs': [
+    ],
+    'desirableJobLocations': [
+    ],
+    'desirableTrainings': [
+    ],
+    'languages': [
+    ],
+    'skills': [
+    ],
+  },
+  {
+    'id': '20TrOWMBziw5uPlEwOJN',
+    'startDate': '2014-09-19T00:00:00.000Z',
+    'firstName': 'ელზა',
+    'lastName': 'ჩუთლაშვილი',
+    'personalId': '01027044697',
+    'birthDate': '1989-04-13T00:00:00.000Z',
+    'genderName': 'მდედრობითი',
+    'weight': null,
+    'height': null,
+    'registrationAddressDescription': 'თბილისი ვარკეთილი 3 II მ/რ კორ. 17 ბ. 14 ',
+    'factAddressDescription': 'ქ.თბილისი, ვარკეთილი 3, მე-2 მ/რ, კ/17, ბ/14',
+    'phoneNumber': '',
+    'mobileNumber': '593397840',
+    'email': 'elza.chutlashvili.1@iliauni.edu.ge',
+    'contactDescription': '',
+    'languages': [
+    ],
+    'userName': '01027044697',
+    'registrationLocationName': 'თბილისი',
+    'registrationLocationUnitName': 'სამგორი',
+    'factLocationName': null,
+    'factLocationUnitName': null,
+    'educations': [
+    ],
+    'jobExperiences': [
+    ],
+    'desirableJobs': [
+    ],
+    'desirableJobLocations': [
+    ],
+    'desirableTrainings': [
+    ],
+    'skills': [
+    ],
+  },
+]
 
 export default {
   name: 'vacancy-add',
@@ -563,15 +747,15 @@ export default {
     shouldHaveDrivingLicence: false,
     isSalaryRange: false,
     jobseekerSearchHidden: false,
-    positionSwitchOptions: [{text: 'პოზიცია', value: true}, {text: 'X', value: false}],
-    locationSwitchOptions: [{text: 'ადგილმდებარეობა', value: true}, {text: 'X', value: false}],
+    positionSwitchOptions: [{text: 'თანამდებობა', value: true}, {text: 'X', value: false}],
+    locationSwitchOptions: [{text: 'ადგილი', value: true}, {text: 'X', value: false}],
     salarySwitchOptions: [{text: 'ხელფასი', value: true}, {text: 'X', value: false}],
     workScheduleSwitchOptions: [{text: 'სამუშაო გრაფიკი', value: true}, {text: 'X', value: false}],
     formalEducationLevelSwitchOptions: [{text: 'განათლების დონე', value: true}, {text: 'X', value: false}],
     drivingLicenceSwitchOptions: [{text: 'მართვის მოწმობა', value: true}, {text: 'X', value: false}],
     languagesSwitchOptions: [{text: 'ენები', value: true}, {text: 'X', value: false}],
     skillsSwitchOptions: [{text: 'უნარები', value: true}, {text: 'X', value: false}],
-    jobseekerFilterSwitches: {
+    jobseekerSearchSwitches: {
       position: true,
       location: true,
       salary: true,
@@ -581,189 +765,8 @@ export default {
       languages: true,
       skills: true,
     },
-    jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად მოიძებნება და გამოჩნდება იმ სამსახურის მაძიებელთა სია, რომლებიც ყველაზე მეტაც შეესადაგებიან შევსებულ ვაკანსიას. ვაკანსიის შეცვლისას ავტომატურად განახლდება სია. თუ დროებით არ გსურთ სიის ხილვა დააჭირეთ მაუსი შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
-    filteredUsersList: [
-      {
-        "id": "10TrOWMBziw5uPlEwOJN",
-        "startDate": "2014-09-19T00:00:00.000Z",
-        "firstName": "ნონა",
-        "lastName": "მუხაშვილი",
-        "personalId": "01030031567",
-        "birthDate": "1985-03-29T00:00:00.000Z",
-        "genderName": "მდედრობითი",
-        "weight": null,
-        "height": null,
-        "registrationAddressDescription": "თბილისი გ.ჩიტაიას ქ. N 21 ",
-        "factAddressDescription": "ქ.თბილისი ჩიტაიას#21",
-        "phoneNumber": "",
-        "mobileNumber": "593988585",
-        "email": "n.muxashvili@yahoo.com",
-        "contactDescription": "",
-        "userName": "01030031567",
-        "registrationLocationName": "თბილისი",
-        "registrationLocationUnitName": "ჩუღურეთი",
-        "factLocationName": null,
-        "factLocationUnitName": null,
-        "educations": [
-        ],
-        "jobExperiences": [
-        ],
-        "desirableJobs": [
-        ],
-        "desirableJobLocations": [
-        ],
-        "desirableTrainings": [
-        ],
-        "languages": [
-        ],
-        "skills": [
-        ]
-      },
-      {
-    "id": "2ETrOWMBziw5uPlEwOJN",
-   "startDate": "2014-09-19T00:00:00.000Z",
-   "firstName": "ნანა",
-   "lastName": "წიკლაური",
-   "personalId": "16001022742",
-   "birthDate": "1964-09-07T00:00:00.000Z",
-   "genderName": "მდედრობითი",
-   "weight": null,
-   "height": null,
-   "registrationAddressDescription": "თბილისი ზესტაფონის ქ. N 18 კორ. 5 ბ. 10 ",
-   "factAddressDescription": "ზესტაფონის ქ.5 კორპუსი 18 ბ.10",
-   "phoneNumber": "",
-   "mobileNumber": "555212162",
-   "email": "nazgaidzeirakli@yahoo.com",
-   "contactDescription": "",
-   "userName": "16001022742",
-   "registrationLocationName": "თბილისი",
-   "registrationLocationUnitName": "ნაძალადევი",
-   "factLocationName": null,
-   "factLocationUnitName": null,
-   "educations": [
-   ],
-   "jobExperiences": [
-   ],
-   "desirableJobs": [
-   ],
-   "desirableJobLocations": [
-   ],
-   "desirableTrainings": [
-   ],
-   "languages": [
-   ],
-   "skills": [
-   ]
-  },
-  {
-    "id": "2UTrOWMBziw5uPlEwOJN",
-   "startDate": "2014-09-19T00:00:00.000Z",
-   "firstName": "ნინო",
-   "lastName": "ექვთიმიშვილი",
-   "personalId": "35001024088",
-   "birthDate": "1981-01-26T00:00:00.000Z",
-   "genderName": "მდედრობითი",
-   "weight": null,
-   "height": null,
-   "registrationAddressDescription": "რუსთავი მშენებელთა ქ. კორ. 28 ბ. 7 ",
-   "factAddressDescription": "ქ. რუსთავი, მე-19მკრნ.11/28",
-   "phoneNumber": "",
-   "mobileNumber": null,
-   "email": "ninoekvtimishvili@yahoo.com",
-   "contactDescription": "",
-   "userName": "35001024088",
-   "registrationLocationName": "ქვემო–ქართლი",
-   "registrationLocationUnitName": "რუსთავი",
-   "factLocationName": null,
-   "factLocationUnitName": null,
-   "educations": [
-   ],
-   "jobExperiences": [
-   ],
-   "desirableJobs": [
-   ],
-   "desirableJobLocations": [
-   ],
-   "desirableTrainings": [
-   ],
-   "languages": [
-   ],
-   "skills": [
-   ]
-  },
-  {
-    "id": "2kTrOWMBziw5uPlEwOJN",
-   "startDate": "2014-09-19T00:00:00.000Z",
-   "firstName": "რუსუდანი",
-   "lastName": "ბახტაძე",
-   "personalId": "01007015105",
-   "birthDate": "1957-06-07T00:00:00.000Z",
-   "genderName": "მდედრობითი",
-   "weight": null,
-   "height": null,
-   "registrationAddressDescription": "თბილისი აკ.წერეთლის გამზ. N 11 ბ. 98 ",
-   "factAddressDescription": "თბილისი,წერეთლის11კორ.,ბინა98",
-   "phoneNumber": "",
-   "mobileNumber": "571550778",
-   "email": "rusudani1957@mail.ru",
-   "contactDescription": "",
-   "userName": "01007015105",
-   "registrationLocationName": "თბილისი",
-   "registrationLocationUnitName": "დიდუბე",
-   "factLocationName": null,
-   "factLocationUnitName": null,
-   "educations": [
-   ],
-   "jobExperiences": [
-   ],
-   "desirableJobs": [
-   ],
-   "desirableJobLocations": [
-   ],
-   "desirableTrainings": [
-   ],
-   "languages": [
-   ],
-   "skills": [
-   ]
-  },
-  {
-      "id": "20TrOWMBziw5uPlEwOJN",
-    "startDate": "2014-09-19T00:00:00.000Z",
-    "firstName": "ელზა",
-    "lastName": "ჩუთლაშვილი",
-    "personalId": "01027044697",
-    "birthDate": "1989-04-13T00:00:00.000Z",
-    "genderName": "მდედრობითი",
-    "weight": null,
-    "height": null,
-    "registrationAddressDescription": "თბილისი ვარკეთილი 3 II მ/რ კორ. 17 ბ. 14 ",
-    "factAddressDescription": "ქ.თბილისი, ვარკეთილი 3, მე-2 მ/რ, კ/17, ბ/14",
-    "phoneNumber": "",
-    "mobileNumber": "593397840",
-    "email": "elza.chutlashvili.1@iliauni.edu.ge",
-    "contactDescription": "",
-    "languages": [
-    ],
-    "userName": "01027044697",
-    "registrationLocationName": "თბილისი",
-    "registrationLocationUnitName": "სამგორი",
-    "factLocationName": null,
-    "factLocationUnitName": null,
-    "educations": [
-    ],
-    "jobExperiences": [
-    ],
-    "desirableJobs": [
-    ],
-    "desirableJobLocations": [
-    ],
-    "desirableTrainings": [
-    ],
-    "skills": [
-    ]
-    },
-    ],
+    jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად მოიძებნება და გამოჩნდება იმ სამსახურის მაძიებელთა სია, რომლებიც ყველაზე მეტაც შეესადაგებიან შევსებულ ვაკანსიას. \n\n ვაკანსიის შეცვლისას ავტომატურად განახლდება სია. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
+    searchedJobseekers: null,
   }),
   async created() {
     try {
@@ -1127,6 +1130,94 @@ export default {
     },
     toggleJobseekerSearch() {
       this.jobseekerSearchHidden = !this.jobseekerSearchHidden
+
+      this.searchJobseekersIfNecessary()
+    },
+    searchJobseekersIfNecessary () {
+      if (!this.jobseekerSearchHidden) {
+        /*
+        vacancy: {
+          positionName: null,
+          organization: null,
+          organizationTaxCode: null,
+          authorFullName: null,
+          authorPersonalId: null,
+          locationName: null,
+          locationUnitName: null,
+          addressLine: null,
+          interviewSupposedStartDay: null,
+          interviewSupposedStartMonth: null,
+          interviewSupposedStartYear: new Date().getFullYear(),
+          endDateDay: null,
+          endDateMonth: null,
+          endDateYear: null,
+          useMediationService: false,
+          vacantPlacesQuantity: null,
+          functionsDescription: null,
+          additionalDescription: null,
+          minimalSalary: null,
+          maximalSalary: null,
+          fixedSalary: null,
+          salaryTypeId: MonthId,
+          additionalSalaryInfo: null,
+          isSalaryByEarnings: false,
+          fullTime: null,
+          partTime: null,
+          shiftBased: null,
+          formalEducationLevelName: '- აირჩიე -',
+          drivingLicenceA: false,
+          drivingLicenceB: false,
+          drivingLicenceC: false,
+          drivingLicenceD: false,
+          drivingLicenceE: false,
+          drivingLicenceT1: false,
+          drivingLicenceT2: false,
+          airLicence: false,
+          seaLicence: false,
+          railwayLicence: false,
+          languages: [],
+          skills: [],
+        },
+        */
+
+        const a = this.jobseekerSearchSwitches
+        const b = pick(this.vacancy, [
+          'position',
+
+          'locationName',
+          'locationUnitName',
+
+          'minimalSalary',
+          'maximalSalary',
+          'fixedSalary',
+
+          'fullTime',
+          'partTime',
+          'shiftBased',
+
+          'formalEducationLevelName',
+
+          'shouldHaveDrivingLicence',
+          'drivingLicenceA',
+          'drivingLicenceB',
+          'drivingLicenceC',
+          'drivingLicenceD',
+          'drivingLicenceE',
+          'drivingLicenceT1',
+          'drivingLicenceT2',
+          'airLicence',
+          'seaLicence',
+          'railwayLicence',
+
+          'languages',
+          'skills',
+        ])
+        const c = this.isSalaryRange
+
+        console.log(111111111, a, b, c)
+
+        this.searchedJobseekers = dummyUsersList
+      }
     },
   },
   computed: {
@@ -1191,6 +1282,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  background: #f0efdb;
 }
 .vacancy-add-inner-container {
   max-width: 70%;
@@ -1200,11 +1292,14 @@ export default {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+.main-col {
+  background: lavender;
+}
 .jobseeker-search-inner-container {
   max-width: 90%;
   margin: auto;
 }
-.jobseeker-filter-hint-element {
+.jobseeker-search-hint-element {
   margin-top: 20px;
   margin-bottom: 20px;
 }
