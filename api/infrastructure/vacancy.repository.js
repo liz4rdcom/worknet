@@ -235,13 +235,40 @@ async function getBySearch(params) {
 function constantScoreQuery(key, value) {
   return {
     constant_score: {
-      query: {
+      filter: {
         term: {
-          key: value,
+          [key]: value,
         },
       },
     },
   }
+}
+
+function functionBoolMaxScore(boolQuery) {
+  return {
+    function_score: {
+      query: {
+        bool: boolQuery,
+      },
+      script_score: {
+        script: {
+          source: '1',
+        },
+      },
+    },
+  }
+}
+
+function constantMultiMustQuery(pairs) {
+  return functionBoolMaxScore({
+    must: pairs.map(pair => constantScoreQuery(pair[0], pair[1])),
+  })
+}
+
+function constantMultiShouldQuery(pairs) {
+  return functionBoolMaxScore({
+    should: pairs.map(pair => constantScoreQuery(pair[0], pair[1])),
+  })
 }
 
 function commonShoulds(user) {
@@ -280,9 +307,40 @@ function commonShoulds(user) {
 function skillsShoulds(user) {
   let skills = user.skills
 
-  let shoulds = skills.map(skill => constantScoreQuery('skills.skillName.keyword', skill))
+  let shoulds = skills.map(skill => constantScoreQuery('skills.skillName.keyword', skill.skillName))
 
   return shoulds
+}
+
+function languageShoulds(user) {
+  let languages = user.languages
+
+  return languages.map(lang => constantScoreQuery('languages.languageName.keyword', lang.languageName))
+}
+
+function desirableJobShoulds(user) {
+  let desirableJobs = user.desirableJobs
+
+  let pairs = desirableJobs.map(job => ['positionName', job.name])
+
+  return constantMultiShouldQuery(pairs)
+}
+
+function desirableJobLocationShoulds(user) {
+  let desirableJobLocations = user.desirableJobLocations
+
+  return desirableJobLocations.map(location => constantMultiMustQuery([
+    ['locationName.keyword', location.locationName],
+    ['locationUnitName.keyword', location.locationUnitName],
+  ]))
+}
+
+function jobExperiencesShoulds(user) {
+  let jobExperiences = user.jobExperiences
+
+  let pairs = jobExperiences.map(experience => ['positionName', experience.jobTitle])
+
+  return constantMultiShouldQuery(pairs)
 }
 
 async function matchVacanciesToUser(user, percent) {
@@ -294,6 +352,22 @@ async function matchVacanciesToUser(user, percent) {
     shoulds = shoulds.concat(skillsShoulds(user))
   }
 
+  if (user.languages) {
+    shoulds = shoulds.concat(languageShoulds(user))
+  }
+
+  if (user.desirableJobs) {
+    shoulds = shoulds.concat(desirableJobShoulds(user))
+  }
+
+  if (user.desirableJobLocations) {
+    shoulds = shoulds.concat(desirableJobLocationShoulds(user))
+  }
+
+  if (user.jobExperiences) {
+    shoulds = shoulds.concat(jobExperiencesShoulds(user))
+  }
+
   let searchOptions = {
     index,
     type,
@@ -302,17 +376,25 @@ async function matchVacanciesToUser(user, percent) {
         bool: {
           should: shoulds,
           minimum_should_match: percentToString(percent),
+          filter: {
+            term: {
+              published: true,
+            },
+          },
         },
       },
     },
     searchType: 'dfs_query_then_fetch',
+    explain: true,
   }
 
-  return await client.search(searchOptions)
+  let result = await client.search(searchOptions)
+
+  return result.hits.hits.map(utils.toObject)
 }
 
 function percentToString(percent) {
-  return Math.floor(percent * 100).toString() + '%'
+  return percent.toString() + '%'
 }
 
 module.exports = {

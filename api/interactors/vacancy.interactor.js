@@ -289,10 +289,10 @@ async function deleteVacancy(userName, id) {
   return await vacancyRepository.deleteVacancy(id)
 }
 
-async function searchUserMatchings(userName) {
+async function searchUserMatchings(userName, percent) {
   let user = await userRepository.getUserByUserName(userName)
 
-  return await vacancyRepository.matchVacanciesToUser(user)
+  return await vacancyRepository.matchVacanciesToUser(user, percent)
 }
 
 module.exports = {
