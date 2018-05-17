@@ -13,8 +13,7 @@
     <label>პოზიცია: <b>{{vacancy.positionName}}</b></label><br />
     <label>ვაკანტური ადგილების რაოდენობა: <b>{{vacancy.vacantPlacesQuantity}}</b></label><br />
     <label>ანაზღაურება:
-      <b v-if="vacancy.isSalaryByEarnings">გამომუშავებით.</b>
-      <b v-else-if="vacancy.minimalSalary && vacancy.maximalSalary">
+      <b v-if="vacancy.minimalSalary && vacancy.maximalSalary">
         {{vacancy.minimalSalary}} ლარიდან {{vacancy.maximalSalary}} ლარამდე {{vacancy.salaryTypeName}}.
       </b>
       <b v-else-if="vacancy.fixedSalary">{{vacancy.fixedSalary}} ლარი {{vacancy.salaryTypeName}}.</b>

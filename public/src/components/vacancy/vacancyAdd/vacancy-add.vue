@@ -140,11 +140,7 @@
         გსურთ ხელფასის ინტერვალის მითითება?
       </b-form-checkbox>
 
-      <b-form-checkbox id="vacancy-add-is-salary-by-earnings" class="mb-3" v-model="vacancy.isSalaryByEarnings">
-        ხელფასი გამომუშავებით
-      </b-form-checkbox>
-
-      <b-container class="mb-4" v-if="!vacancy.isSalaryByEarnings">
+      <b-container class="mb-4">
         <b-row>
           <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი დან</legend></b-col>
           <b-col v-if="isSalaryRange" cols="0"></b-col>
@@ -379,7 +375,6 @@ export default {
       fixedSalary: null,
       salaryTypeId: MonthId,
       additionalSalaryInfo: null,
-      isSalaryByEarnings: false,
       fullTime: null,
       partTime: null,
       shiftBased: null,
@@ -487,10 +482,6 @@ export default {
 
           if (!isNil(vacancyResult.minimalSalary) || !isNil(vacancyResult.maximalSalary)) {
             this.isSalaryRange = true
-          }
-
-          if (!isNil(vacancyResult.isSalaryByEarnings)) {
-            this.vacancy.isSalaryByEarnings = vacancyResult.isSalaryByEarnings
           }
 
           if (!isNil(vacancyResult.minimalSalary)) {
@@ -670,23 +661,19 @@ export default {
         retVal.functionsDescription = this.vacancy.functionsDescription
       }
 
-      if (!isNil(this.vacancy.isSalaryByEarnings)) {
-        retVal.isSalaryByEarnings = this.vacancy.isSalaryByEarnings
-      }
-
-      if (!isNil(this.vacancy.fixedSalary) && !this.isSalaryRange && !this.vacancy.isSalaryByEarnings) {
+      if (!isNil(this.vacancy.fixedSalary) && !this.isSalaryRange) {
         retVal.fixedSalary = this.vacancy.fixedSalary
       }
 
-      if (!isNil(this.vacancy.minimalSalary) && this.isSalaryRange && !this.vacancy.isSalaryByEarnings) {
+      if (!isNil(this.vacancy.minimalSalary) && this.isSalaryRange) {
         retVal.minimalSalary = this.vacancy.minimalSalary
       }
 
-      if (!isNil(this.vacancy.maximalSalary) && this.isSalaryRange && !this.vacancy.isSalaryByEarnings) {
+      if (!isNil(this.vacancy.maximalSalary) && this.isSalaryRange) {
         retVal.maximalSalary = this.vacancy.maximalSalary
       }
 
-      if (this.vacancy.salaryTypeId && !this.vacancy.isSalaryByEarnings) {
+      if (this.vacancy.salaryTypeId) {
         retVal.salaryTypeId = this.vacancy.salaryTypeId
       }
 
