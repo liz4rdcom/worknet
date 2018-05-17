@@ -1,20 +1,23 @@
 <template>
-  <div class="container">
-    <div class="row">
+  <b-row>
+    <b-col class="first-col">
       <b-form-select :id="idWithPrefix(idPrefix, 'location-region')" :value="selectedLocationName" :options="locations" value-field="locationName" text-field="locationName" @change="locationChanged"
         class="mb-3 col-6">
         <template slot="first">
           <option :value="null">- აირჩიე რეგიონი -</option>
         </template>
       </b-form-select>
+    </b-col>
+
+    <b-col class="second-col">
       <b-form-select :id="idWithPrefix(idPrefix, 'location-district')" :value="selectedLocationUnitName" :options="selectedLocation.units" value-field="locationUnitName" text-field="locationUnitName"
         @change="locationUnitChanged" class="mb-3 col-6">
         <template slot="first">
           <option :value="null">- აირჩიე რაიონი -</option>
         </template>
       </b-form-select>
-    </div>
-  </div>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -95,4 +98,10 @@
 </script>
 
 <style scoped>
+.first-col {
+  padding-right: 5px;
+}
+.second-col {
+  padding-left: 5px;
+}
 </style>
