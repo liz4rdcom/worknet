@@ -1,365 +1,365 @@
 <template>
   <b-row class="vacancy-add-container">
     <b-col class="vacancy-add">
-      <data-shower :data="this.$data" />
+      <div class="vacancy-add-inner-container">
+        <!-- <data-shower :data="this.$data" /> -->
 
-      <h1 class="vacancy-add-hint-element">დაამატეთ ვაკანსია</h1>
+        <h1 class="vacancy-add-hint-element">დაამატეთ ვაკანსია</h1>
 
-      <b-form-group class="font-weight-bold" label="თანამდებობა">
-        <b-form-input id="vacancy-add-position" class="position-input" autofocus type="text" v-model="vacancy.positionName" />
-      </b-form-group>
+        <b-form-group class="font-weight-bold" label="თანამდებობა">
+          <b-form-input id="vacancy-add-position" class="position-input" autofocus type="text" v-model="vacancy.positionName" />
+        </b-form-group>
 
-      <b-form-group>
-        <b-card>
+        <b-form-group>
+          <b-card>
+            <b-row>
+              <b-col />
+
+              <b-col cols="auto">
+                <b-form-checkbox
+                  v-model="isOrganization"
+                  :value="false"
+                  :unchecked-value="true"
+                  id="vacancy-add-is-organization-checkbox"
+                >
+                  არ ვაქვეყნებ ორგანიზაციის სახელით
+                </b-form-checkbox>
+              </b-col>
+            </b-row>
+
+            <b-form-group v-if="isOrganization" class="font-weight-bold" label="ორგანიზაცია">
+              <b-form-input id="vacancy-add-organization-name" type="text" v-model="vacancy.organization"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group v-if="isOrganization" class="font-weight-bold" label="საგადასახადო კოდი">
+              <b-form-input id="vacancy-add-organization-taxcode" type="text" v-model="vacancy.organizationTaxCode"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის სრული სახელი">
+              <b-form-input id="vacancy-add-author-full-name" type="text" v-model="vacancy.authorFullName"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის პირადი ნომერი">
+              <b-form-input id="vacancy-add-author-personal-id" type="text" v-model="vacancy.authorPersonalId"
+              ></b-form-input>
+            </b-form-group>
+          </b-card>
+        </b-form-group>
+
+        <b-form-group label="ადგილდებარეობა" class="font-weight-bold">
+          <georgia-locations
+            idPrefix="vacancy-add"
+            :onLocationChanged="onLocationChanged"
+            :currentLocationName="vacancy.locationName"
+            :currentLocationUnitName="vacancy.locationUnitName"
+          />
+        </b-form-group>
+
+        <b-form-group label="დამატებითი მისამართი" class="font-weight-bold">
+          <b-form-textarea
+            id="vacancy-add-adress-line"
+            v-model="vacancy.addressLine"
+            :rows="3"
+            :max-rows="6"
+          >
+          </b-form-textarea>
+        </b-form-group>
+
+        <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
           <b-row>
-            <b-col />
+            <b-col class="interview-supposed-start-day">
+                <b-form-select id="vacancy-add-interview-supposed-start-day" v-model="vacancy.interviewSupposedStartDay" :options="daysOptions"/>
+            </b-col>
 
-            <b-col cols="auto">
-              <b-form-checkbox
-                v-model="isOrganization"
-                :value="false"
-                :unchecked-value="true"
-                id="vacancy-add-is-organization-checkbox"
+            <b-col class="interview-supposed-start-month">
+                <b-form-select id="vacancy-add-interview-supposed-start-month" v-model="vacancy.interviewSupposedStartMonth" :options="monthOptions"/>
+            </b-col>
+
+            <b-col class="interview-supposed-start-year" cols="auto">
+              <b-form-radio-group
+                v-model="vacancy.interviewSupposedStartYear"
+                name="radioSubComponent"
+                button-variant="outline-primary"
+                buttons
+                stacked
               >
-                არ ვაქვეყნებ ორგანიზაციის სახელით
-              </b-form-checkbox>
+                <b-form-radio id="vacancy-add-interview-supposed-start-year-current" :value="new Date().getFullYear()">{{new Date().getFullYear() + " წელი"}}</b-form-radio>
+                <b-form-radio id="vacancy-add-interview-supposed-start-year-next" :value="new Date().getFullYear() + 1">{{new Date().getFullYear() + 1 + " წელი"}}</b-form-radio>
+              </b-form-radio-group>
             </b-col>
           </b-row>
+        </b-form-group>
 
-          <b-form-group v-if="isOrganization" class="font-weight-bold" label="ორგანიზაცია">
-            <b-form-input id="vacancy-add-organization-name" type="text" v-model="vacancy.organization"
-            ></b-form-input>
-          </b-form-group>
+        <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
+          <b-row>
+            <b-col class="end-date-day">
+                <b-form-select id="vacancy-add-end-date-day" v-model="vacancy.endDateDay" :options="daysOptions"/>
+            </b-col>
 
-          <b-form-group v-if="isOrganization" class="font-weight-bold" label="საგადასახადო კოდი">
-            <b-form-input id="vacancy-add-organization-taxcode" type="text" v-model="vacancy.organizationTaxCode"
-            ></b-form-input>
-          </b-form-group>
+            <b-col class="end-date-month">
+                <b-form-select id="vacancy-add-end-date-month" v-model="vacancy.endDateMonth" :options="monthOptions"/>
+            </b-col>
 
-          <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის სრული სახელი">
-            <b-form-input id="vacancy-add-author-full-name" type="text" v-model="vacancy.authorFullName"
-            ></b-form-input>
-          </b-form-group>
+            <b-col class="end-date-year">
+                <b-form-select id="vacancy-add-end-date-year" v-model="vacancy.endDateYear" :options="endDateYearOptions"/>
+            </b-col>
+          </b-row>
+        </b-form-group>
 
-          <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის პირადი ნომერი">
-            <b-form-input id="vacancy-add-author-personal-id" type="text" v-model="vacancy.authorPersonalId"
-            ></b-form-input>
-          </b-form-group>
-        </b-card>
-      </b-form-group>
-
-      <b-form-group label="ადგილდებარეობა" class="font-weight-bold">
-        <georgia-locations
-          idPrefix="vacancy-add"
-          :onLocationChanged="onLocationChanged"
-          :currentLocationName="vacancy.locationName"
-          :currentLocationUnitName="vacancy.locationUnitName"
-        />
-      </b-form-group>
-
-      <b-form-group label="დამატებითი მისამართი" class="font-weight-bold">
-        <b-form-textarea
-          id="vacancy-add-adress-line"
-          v-model="vacancy.addressLine"
-          :rows="3"
-          :max-rows="6"
-        >
-        </b-form-textarea>
-      </b-form-group>
-
-      <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
-        <b-row>
-          <b-col class="interview-supposed-start-day">
-              <b-form-select id="vacancy-add-interview-supposed-start-day" v-model="vacancy.interviewSupposedStartDay" :options="daysOptions"/>
-          </b-col>
-
-          <b-col class="interview-supposed-start-month">
-              <b-form-select id="vacancy-add-interview-supposed-start-month" v-model="vacancy.interviewSupposedStartMonth" :options="monthOptions"/>
-          </b-col>
-
-          <b-col class="interview-supposed-start-year" cols="auto">
-            <b-form-radio-group
-              v-model="vacancy.interviewSupposedStartYear"
-              name="radioSubComponent"
-              button-variant="outline-primary"
-              buttons
-              stacked
-            >
-              <b-form-radio id="vacancy-add-interview-supposed-start-year-current" :value="new Date().getFullYear()">{{new Date().getFullYear() + " წელი"}}</b-form-radio>
-              <b-form-radio id="vacancy-add-interview-supposed-start-year-next" :value="new Date().getFullYear() + 1">{{new Date().getFullYear() + 1 + " წელი"}}</b-form-radio>
-            </b-form-radio-group>
-          </b-col>
-        </b-row>
-      </b-form-group>
-
-      <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
-        <b-row>
-          <b-col class="end-date-day">
-              <b-form-select id="vacancy-add-end-date-day" v-model="vacancy.endDateDay" :options="daysOptions"/>
-          </b-col>
-
-          <b-col class="end-date-month">
-              <b-form-select id="vacancy-add-end-date-month" v-model="vacancy.endDateMonth" :options="monthOptions"/>
-          </b-col>
-
-          <b-col class="end-date-year">
-              <b-form-select id="vacancy-add-end-date-year" v-model="vacancy.endDateYear" :options="endDateYearOptions"/>
-          </b-col>
-        </b-row>
-      </b-form-group>
-
-      <b-form-group class="font-weight-bold">
-        <b-form-checkbox
-          id="vacancy-add-use-mediation-service"
-          v-model="vacancy.useMediationService"
-          :value="true"
-          :unchecked-value="false"
-        >
-          გამოიყენეთ მედიაციის სერვისი
-        </b-form-checkbox>
-      </b-form-group>
-
-      <b-form-group label="ვაკანტური ადგილების რაოდენობა" class="font-weight-bold">
-        <b-form-input id="vacancy-add-vacant-places" type="number" v-model="vacancy.vacantPlacesQuantity" />
-      </b-form-group>
-
-      <b-form-group label="თანამდებობრივი მოვალეობის აღწერილობა" class="font-weight-bold">
-        <b-form-textarea
-          id="vacancy-add-functions-description"
-          v-model="vacancy.functionsDescription"
-          :rows="3"
-          :max-rows="6"
-        >
-        </b-form-textarea>
-      </b-form-group>
-
-      <b-form-group label="დამატებითი აღწერილობა" class="font-weight-bold">
-        <b-form-textarea
-          id="vacancy-add-additional-description"
-          v-model="vacancy.additionalDescription"
-          :rows="3"
-          :max-rows="6"
-        >
-        </b-form-textarea>
-      </b-form-group>
-
-      <b-form-group>
-        <b-card class="mb-2" title="ხელფასი">
-          <b-form-checkbox id="vacancy-add-is-salary-range" class="mb-3" v-model="isSalaryRange">
-            გსურთ ხელფასის ინტერვალის მითითება?
+        <b-form-group class="font-weight-bold">
+          <b-form-checkbox
+            id="vacancy-add-use-mediation-service"
+            v-model="vacancy.useMediationService"
+            :value="true"
+            :unchecked-value="false"
+          >
+            გამოიყენეთ მედიაციის სერვისი
           </b-form-checkbox>
+        </b-form-group>
 
-          <b-form-checkbox id="vacancy-add-is-salary-by-earnings" class="mb-3" v-model="vacancy.isSalaryByEarnings">
-            ხელფასი გამომუშავებით
-          </b-form-checkbox>
+        <b-form-group label="ვაკანტური ადგილების რაოდენობა" class="font-weight-bold">
+          <b-form-input id="vacancy-add-vacant-places" type="number" v-model="vacancy.vacantPlacesQuantity" />
+        </b-form-group>
 
-          <b-container class="mb-4" v-if="!vacancy.isSalaryByEarnings">
-            <b-row>
-              <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი დან</legend></b-col>
-              <b-col v-if="isSalaryRange" cols="0"></b-col>
-              <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი მდე</legend></b-col>
-              <b-col v-if="!isSalaryRange"><legend class="col-form-legend">ხელფასი</legend></b-col>
-              <b-col v-if="!isSalaryRange"></b-col>
-              <b-col cols="5"><legend class="col-form-legend">ანაზღაურების ტიპი</legend></b-col>
-            </b-row>
-            <b-row>
-              <b-col class="salary-from">
-                <b-form-input v-if="isSalaryRange" id="vacancy-add-salary-from" v-model="vacancy.minimalSalary"/>
-                <b-form-input v-else id="vacancy-add-salary" v-model="vacancy.fixedSalary"/>
-              </b-col>
-              <b-col cols="0" v-if="isSalaryRange">-</b-col>
-              <b-col class="salary-to">
-                <b-form-input v-if="isSalaryRange"  id="vacancy-add-salary-to" v-model="vacancy.maximalSalary"/>
-              </b-col>
-              <b-col cols="5">
-                <b-form-select id="vacancy-add-salary-type" v-model="vacancy.salaryTypeId" :options="salaryTypeOptions"/>
-              </b-col>
-            </b-row>
-          </b-container>
+        <b-form-group label="თანამდებობრივი მოვალეობის აღწერილობა" class="font-weight-bold">
+          <b-form-textarea
+            id="vacancy-add-functions-description"
+            v-model="vacancy.functionsDescription"
+            :rows="3"
+            :max-rows="6"
+          >
+          </b-form-textarea>
+        </b-form-group>
 
-          <b-form-group label="ინფორმაცია ხელფასის შესახებ">
-            <b-form-textarea
-              id="vacancy-add-salary-info"
-              v-model="vacancy.additionalSalaryInfo"
-              :rows="3"
-              :max-rows="6"
-            >
-            </b-form-textarea>
-          </b-form-group>
-        </b-card>
-      </b-form-group>
+        <b-form-group label="დამატებითი აღწერილობა" class="font-weight-bold">
+          <b-form-textarea
+            id="vacancy-add-additional-description"
+            v-model="vacancy.additionalDescription"
+            :rows="3"
+            :max-rows="6"
+          >
+          </b-form-textarea>
+        </b-form-group>
 
-      <b-form-group>
-        <b-card>
+        <b-form-group>
+          <b-card class="mb-2" title="ხელფასი">
+            <b-form-checkbox id="vacancy-add-is-salary-range" class="mb-3" v-model="isSalaryRange">
+              გსურთ ხელფასის ინტერვალის მითითება?
+            </b-form-checkbox>
+
+            <b-form-checkbox id="vacancy-add-is-salary-by-earnings" class="mb-3" v-model="vacancy.isSalaryByEarnings">
+              ხელფასი გამომუშავებით
+            </b-form-checkbox>
+
+            <b-container class="mb-4" v-if="!vacancy.isSalaryByEarnings">
+              <b-row>
+                <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი დან</legend></b-col>
+                <b-col v-if="isSalaryRange" cols="0"></b-col>
+                <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი მდე</legend></b-col>
+                <b-col v-if="!isSalaryRange"><legend class="col-form-legend">ხელფასი</legend></b-col>
+                <b-col v-if="!isSalaryRange"></b-col>
+                <b-col cols="5"><legend class="col-form-legend">ანაზღაურების ტიპი</legend></b-col>
+              </b-row>
+              <b-row>
+                <b-col class="salary-from">
+                  <b-form-input v-if="isSalaryRange" id="vacancy-add-salary-from" v-model="vacancy.minimalSalary"/>
+                  <b-form-input v-else id="vacancy-add-salary" v-model="vacancy.fixedSalary"/>
+                </b-col>
+                <b-col cols="0" v-if="isSalaryRange">-</b-col>
+                <b-col class="salary-to">
+                  <b-form-input v-if="isSalaryRange"  id="vacancy-add-salary-to" v-model="vacancy.maximalSalary"/>
+                </b-col>
+                <b-col cols="5">
+                  <b-form-select id="vacancy-add-salary-type" v-model="vacancy.salaryTypeId" :options="salaryTypeOptions"/>
+                </b-col>
+              </b-row>
+            </b-container>
+
+            <b-form-group label="ინფორმაცია ხელფასის შესახებ">
+              <b-form-textarea
+                id="vacancy-add-salary-info"
+                v-model="vacancy.additionalSalaryInfo"
+                :rows="3"
+                :max-rows="6"
+              >
+              </b-form-textarea>
+            </b-form-group>
+          </b-card>
+        </b-form-group>
+
+        <b-form-group>
+          <b-card>
+              <b-form-checkbox
+                id="vacancy-add-full-time"
+                v-model="vacancy.fullTime"
+                :value="true"
+                :unchecked-value="false"
+              >
+                სრული განაკვეთი
+              </b-form-checkbox>
+
+              <b-form-checkbox
+                id="vacancy-add-part-time"
+                v-model="vacancy.partTime"
+                :value="true"
+                :unchecked-value="false"
+              >
+                ნახევარი განაკვეთი
+              </b-form-checkbox>
+
+              <b-form-checkbox
+                id="vacancy-add-shift-based"
+                v-model="vacancy.shiftBased"
+                :value="true"
+                :unchecked-value="false"
+              >
+                ცვლები
+              </b-form-checkbox>
+          </b-card>
+        </b-form-group>
+
+        <b-form-group label="განათლების რეკომენდირებული მინიმალური დონე" class="font-weight-bold">
+          <b-form-select id="vacancy-add-formal-education-level-name" v-model="vacancy.formalEducationLevelName">
+            <option v-for="(level, index) in formalEducationLevelsOptions" :key="index">{{level}}</option>
+          </b-form-select>
+        </b-form-group>
+
+        <b-form-group>
+          <b-card>
             <b-form-checkbox
-              id="vacancy-add-full-time"
-              v-model="vacancy.fullTime"
+              id="vacancy-add-should-have-driving-licence"
+              v-model="shouldHaveDrivingLicence"
               :value="true"
               :unchecked-value="false"
             >
-              სრული განაკვეთი
+              საჭიროა მართვის მოწმობის ქონა
             </b-form-checkbox>
 
             <b-form-checkbox
-              id="vacancy-add-part-time"
-              v-model="vacancy.partTime"
+              id="vacancy-add-driving-licence-A"
+              v-model="vacancy.drivingLicenceA"
+              :disabled="!shouldHaveDrivingLicence"
               :value="true"
               :unchecked-value="false"
             >
-              ნახევარი განაკვეთი
+              კატეგორია "A"
             </b-form-checkbox>
 
             <b-form-checkbox
-              id="vacancy-add-shift-based"
-              v-model="vacancy.shiftBased"
+              id="vacancy-add-driving-licence-B"
+              v-model="vacancy.drivingLicenceB"
+              :disabled="!shouldHaveDrivingLicence"
               :value="true"
               :unchecked-value="false"
             >
-              ცვლები
+              კატეგორია "B"
             </b-form-checkbox>
-        </b-card>
-      </b-form-group>
 
-      <b-form-group label="განათლების რეკომენდირებული მინიმალური დონე" class="font-weight-bold">
-        <b-form-select id="vacancy-add-formal-education-level-name" v-model="vacancy.formalEducationLevelName">
-          <option v-for="(level, index) in formalEducationLevelsOptions" :key="index">{{level}}</option>
-        </b-form-select>
-      </b-form-group>
+            <b-form-checkbox
+              id="vacancy-add-driving-licence-C"
+              v-model="vacancy.drivingLicenceC"
+              :disabled="!shouldHaveDrivingLicence"
+              :value="true"
+              :unchecked-value="false"
+            >
+              კატეგორია "C"
+            </b-form-checkbox>
 
-      <b-form-group>
-        <b-card>
-          <b-form-checkbox
-            id="vacancy-add-should-have-driving-licence"
-            v-model="shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            საჭიროა მართვის მოწმობის ქონა
-          </b-form-checkbox>
+            <b-form-checkbox
+              id="vacancy-add-driving-licence-D"
+              v-model="vacancy.drivingLicenceD"
+              :disabled="!shouldHaveDrivingLicence"
+              :value="true"
+              :unchecked-value="false"
+            >
+              კატეგორია "D"
+            </b-form-checkbox>
 
-          <b-form-checkbox
-            id="vacancy-add-driving-licence-A"
-            v-model="vacancy.drivingLicenceA"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            კატეგორია "A"
-          </b-form-checkbox>
+            <b-form-checkbox
+              id="vacancy-add-driving-licence-E"
+              v-model="vacancy.drivingLicenceE"
+              :disabled="!shouldHaveDrivingLicence"
+              :value="true"
+              :unchecked-value="false"
+            >
+              კატეგორია "E"
+            </b-form-checkbox>
 
-          <b-form-checkbox
-            id="vacancy-add-driving-licence-B"
-            v-model="vacancy.drivingLicenceB"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            კატეგორია "B"
-          </b-form-checkbox>
+            <b-form-checkbox
+              id="vacancy-add-driving-licence-T1"
+              v-model="vacancy.drivingLicenceT1"
+              :disabled="!shouldHaveDrivingLicence"
+              :value="true"
+              :unchecked-value="false"
+            >
+              კატეგორია "T1"
+            </b-form-checkbox>
 
-          <b-form-checkbox
-            id="vacancy-add-driving-licence-C"
-            v-model="vacancy.drivingLicenceC"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            კატეგორია "C"
-          </b-form-checkbox>
+            <b-form-checkbox
+              id="vacancy-add-driving-licence-T2"
+              v-model="vacancy.drivingLicenceT2"
+              :disabled="!shouldHaveDrivingLicence"
+              :value="true"
+              :unchecked-value="false"
+            >
+              კატეგორია "T2"
+            </b-form-checkbox>
 
-          <b-form-checkbox
-            id="vacancy-add-driving-licence-D"
-            v-model="vacancy.drivingLicenceD"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            კატეგორია "D"
-          </b-form-checkbox>
+            <b-form-checkbox
+              id="vacancy-add-air-licence"
+              v-model="vacancy.airLicence"
+              :disabled="!shouldHaveDrivingLicence"
+              :value="true"
+              :unchecked-value="false"
+            >
+              ფრენის ლიცენზია
+            </b-form-checkbox>
 
-          <b-form-checkbox
-            id="vacancy-add-driving-licence-E"
-            v-model="vacancy.drivingLicenceE"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            კატეგორია "E"
-          </b-form-checkbox>
+            <b-form-checkbox
+              id="vacancy-add-sea-licence"
+              v-model="vacancy.seaLicence"
+              :disabled="!shouldHaveDrivingLicence"
+              :value="true"
+              :unchecked-value="false"
+            >
+              საზღვაო ტრანსპორტის ლიცენზია
+            </b-form-checkbox>
 
-          <b-form-checkbox
-            id="vacancy-add-driving-licence-T1"
-            v-model="vacancy.drivingLicenceT1"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            კატეგორია "T1"
-          </b-form-checkbox>
+            <b-form-checkbox
+              id="vacancy-add-railway-licence"
+              v-model="vacancy.railwayLicence"
+              :disabled="!shouldHaveDrivingLicence"
+              :value="true"
+              :unchecked-value="false"
+            >
+              სარკინიგზო ტრანსპორტის ლიცენზია
+            </b-form-checkbox>
+          </b-card>
+        </b-form-group>
 
-          <b-form-checkbox
-            id="vacancy-add-driving-licence-T2"
-            v-model="vacancy.drivingLicenceT2"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            კატეგორია "T2"
-          </b-form-checkbox>
+        <b-form-group>
+          <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
+        </b-form-group>
 
-          <b-form-checkbox
-            id="vacancy-add-air-licence"
-            v-model="vacancy.airLicence"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            ფრენის ლიცენზია
-          </b-form-checkbox>
+        <b-form-group>
+          <vacancy-skills :skills="vacancy.skills" :onChange="skillsOnChange"/>
+        </b-form-group>
 
-          <b-form-checkbox
-            id="vacancy-add-sea-licence"
-            v-model="vacancy.seaLicence"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            საზღვაო ტრანსპორტის ლიცენზია
-          </b-form-checkbox>
+        <b-form-group>
+          <b-row>
+            <b-col>
+              <b-button style="width: 100%;" variant="secondary" @click="saveAsDraft">მონახაზად შენახვა</b-button>
+            </b-col>
 
-          <b-form-checkbox
-            id="vacancy-add-railway-licence"
-            v-model="vacancy.railwayLicence"
-            :disabled="!shouldHaveDrivingLicence"
-            :value="true"
-            :unchecked-value="false"
-          >
-            სარკინიგზო ტრანსპორტის ლიცენზია
-          </b-form-checkbox>
-        </b-card>
-      </b-form-group>
-
-      <b-form-group>
-        <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
-      </b-form-group>
-
-      <b-form-group>
-        <vacancy-skills :skills="vacancy.skills" :onChange="skillsOnChange"/>
-      </b-form-group>
-
-      <b-form-group>
-        <b-row>
-          <b-col>
-            <b-button style="width: 100%;" variant="secondary" @click="saveAsDraft">მონახაზად შენახვა</b-button>
-          </b-col>
-
-          <b-col>
-            <b-button style="width: 100%;" variant="primary" @click="onSubmit">დამატება</b-button>
-          </b-col>
-        </b-row>
-      </b-form-group>
-
-
+            <b-col>
+              <b-button style="width: 100%;" variant="primary" @click="onSubmit">დამატება</b-button>
+            </b-col>
+          </b-row>
+        </b-form-group>
+      </div>
     </b-col>
 
     <button class="hide-jobseeker-search-panel" @click="toggleJobseekerSearch">
@@ -388,88 +388,107 @@
     <span class="cyrcle-span"></span>
 
     <b-col v-if="!jobseekerSearchHidden" class="main-col">
-      <h1 class="jobseeker-filter-hint-element">ვაკანსიის შესაბამისი სამსახურის მაძიებლები</h1>
+      <div class="jobseeker-search-inner-container">
+        <b-container>
+          <b-row align-v="center">
+            <b-col>
+              <h1 class="jobseeker-filter-hint-element">ვაკანსიის შესაბამისი სამსახურის მაძიებლები</h1>
+            </b-col>
 
-      <b-card>
-        <b-form-group label="გაიფილტროს შემდეგი მონაცემებით:" class="font-weight-bold"/>
-
-        <b-form-group>
-          <b-row>
-            <b-col>
-              <b-form-radio-group
-                v-model="jobseekerFilterSwitches.position"
-                :button-variant="jobseekerFilterSwitches.position ? 'outline-success' : 'outline-secondary'"
-                :options="positionSwitchOptions"
-                buttons
-              />
-            </b-col>
-            <b-col>
-              <b-form-radio-group
-                v-model="jobseekerFilterSwitches.location"
-                :button-variant="jobseekerFilterSwitches.location ? 'outline-success' : 'outline-secondary'"
-                :options="locationSwitchOptions"
-                buttons
-              />
-            </b-col>
-            <b-col>
-              <b-form-radio-group
-                v-model="jobseekerFilterSwitches.salary"
-                :button-variant="jobseekerFilterSwitches.salary ? 'outline-success' : 'outline-secondary'"
-                :options="salarySwitchOptions"
-                buttons
-              />
-            </b-col>
-            <b-col>
-              <b-form-radio-group
-                v-model="jobseekerFilterSwitches.workSchedule"
-                :button-variant="jobseekerFilterSwitches.workSchedule ? 'outline-success' : 'outline-secondary'"
-                :options="workScheduleSwitchOptions"
-                buttons
-              />
+            <b-col cols="auto">
+              <b-btn
+                v-b-popover.hover="jobseekerSearchHintText"
+                title=""
+                variant="outline-primary"
+              >
+                <b>მითითება</b>
+              </b-btn>
             </b-col>
           </b-row>
-        </b-form-group>
+        </b-container>
 
-        <b-form-group>
-          <b-row>
-            <b-col>
-              <b-form-radio-group
-                v-model="jobseekerFilterSwitches.formalEducationLevel"
-                :button-variant="jobseekerFilterSwitches.formalEducationLevel ? 'outline-success' : 'outline-secondary'"
-                :options="formalEducationLevelSwitchOptions"
-                buttons
-              />
-            </b-col>
-            <b-col>
-              <b-form-radio-group
-                v-model="jobseekerFilterSwitches.drivingLicence"
-                :button-variant="jobseekerFilterSwitches.drivingLicence ? 'outline-success' : 'outline-secondary'"
-                :options="drivingLicenceSwitchOptions"
-                buttons
-              />
 
-            </b-col>
-            <b-col>
-              <b-form-radio-group
-                v-model="jobseekerFilterSwitches.languages"
-                :button-variant="jobseekerFilterSwitches.languages ? 'outline-success' : 'outline-secondary'"
-                :options="languagesSwitchOptions"
-                buttons
-              />
-            </b-col>
-            <b-col>
-              <b-form-radio-group
-                v-model="jobseekerFilterSwitches.skills"
-                :button-variant="jobseekerFilterSwitches.skills ? 'outline-success' : 'outline-secondary'"
-                :options="skillsSwitchOptions"
-                buttons
-              />
-            </b-col>
-          </b-row>
-        </b-form-group>
-      </b-card>
+        <b-card>
+          <b-form-group label="გაიფილტროს შემდეგი მონაცემებით:" class="font-weight-bold"/>
 
-      <users-list :users="filteredUsersList"/>
+          <b-form-group>
+            <b-row>
+              <b-col>
+                <b-form-radio-group
+                  v-model="jobseekerFilterSwitches.position"
+                  :button-variant="jobseekerFilterSwitches.position ? 'outline-success' : 'outline-secondary'"
+                  :options="positionSwitchOptions"
+                  buttons
+                />
+              </b-col>
+              <b-col>
+                <b-form-radio-group
+                  v-model="jobseekerFilterSwitches.location"
+                  :button-variant="jobseekerFilterSwitches.location ? 'outline-success' : 'outline-secondary'"
+                  :options="locationSwitchOptions"
+                  buttons
+                />
+              </b-col>
+              <b-col>
+                <b-form-radio-group
+                  v-model="jobseekerFilterSwitches.salary"
+                  :button-variant="jobseekerFilterSwitches.salary ? 'outline-success' : 'outline-secondary'"
+                  :options="salarySwitchOptions"
+                  buttons
+                />
+              </b-col>
+              <b-col>
+                <b-form-radio-group
+                  v-model="jobseekerFilterSwitches.workSchedule"
+                  :button-variant="jobseekerFilterSwitches.workSchedule ? 'outline-success' : 'outline-secondary'"
+                  :options="workScheduleSwitchOptions"
+                  buttons
+                />
+              </b-col>
+            </b-row>
+          </b-form-group>
+
+          <b-form-group>
+            <b-row>
+              <b-col>
+                <b-form-radio-group
+                  v-model="jobseekerFilterSwitches.formalEducationLevel"
+                  :button-variant="jobseekerFilterSwitches.formalEducationLevel ? 'outline-success' : 'outline-secondary'"
+                  :options="formalEducationLevelSwitchOptions"
+                  buttons
+                />
+              </b-col>
+              <b-col>
+                <b-form-radio-group
+                  v-model="jobseekerFilterSwitches.drivingLicence"
+                  :button-variant="jobseekerFilterSwitches.drivingLicence ? 'outline-success' : 'outline-secondary'"
+                  :options="drivingLicenceSwitchOptions"
+                  buttons
+                />
+
+              </b-col>
+              <b-col>
+                <b-form-radio-group
+                  v-model="jobseekerFilterSwitches.languages"
+                  :button-variant="jobseekerFilterSwitches.languages ? 'outline-success' : 'outline-secondary'"
+                  :options="languagesSwitchOptions"
+                  buttons
+                />
+              </b-col>
+              <b-col>
+                <b-form-radio-group
+                  v-model="jobseekerFilterSwitches.skills"
+                  :button-variant="jobseekerFilterSwitches.skills ? 'outline-success' : 'outline-secondary'"
+                  :options="skillsSwitchOptions"
+                  buttons
+                />
+              </b-col>
+            </b-row>
+          </b-form-group>
+        </b-card>
+
+        <users-list style="padding-top: 20px;" :users="filteredUsersList"/>
+      </div>
     </b-col>
   </b-row>
 </template>
@@ -562,7 +581,189 @@ export default {
       languages: true,
       skills: true,
     },
-    filteredUsersList: null,
+    jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად მოიძებნება და გამოჩნდება იმ სამსახურის მაძიებელთა სია, რომლებიც ყველაზე მეტაც შეესადაგებიან შევსებულ ვაკანსიას. ვაკანსიის შეცვლისას ავტომატურად განახლდება სია. თუ დროებით არ გსურთ სიის ხილვა დააჭირეთ მაუსი შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
+    filteredUsersList: [
+      {
+        "id": "10TrOWMBziw5uPlEwOJN",
+        "startDate": "2014-09-19T00:00:00.000Z",
+        "firstName": "ნონა",
+        "lastName": "მუხაშვილი",
+        "personalId": "01030031567",
+        "birthDate": "1985-03-29T00:00:00.000Z",
+        "genderName": "მდედრობითი",
+        "weight": null,
+        "height": null,
+        "registrationAddressDescription": "თბილისი გ.ჩიტაიას ქ. N 21 ",
+        "factAddressDescription": "ქ.თბილისი ჩიტაიას#21",
+        "phoneNumber": "",
+        "mobileNumber": "593988585",
+        "email": "n.muxashvili@yahoo.com",
+        "contactDescription": "",
+        "userName": "01030031567",
+        "registrationLocationName": "თბილისი",
+        "registrationLocationUnitName": "ჩუღურეთი",
+        "factLocationName": null,
+        "factLocationUnitName": null,
+        "educations": [
+        ],
+        "jobExperiences": [
+        ],
+        "desirableJobs": [
+        ],
+        "desirableJobLocations": [
+        ],
+        "desirableTrainings": [
+        ],
+        "languages": [
+        ],
+        "skills": [
+        ]
+      },
+      {
+    "id": "2ETrOWMBziw5uPlEwOJN",
+   "startDate": "2014-09-19T00:00:00.000Z",
+   "firstName": "ნანა",
+   "lastName": "წიკლაური",
+   "personalId": "16001022742",
+   "birthDate": "1964-09-07T00:00:00.000Z",
+   "genderName": "მდედრობითი",
+   "weight": null,
+   "height": null,
+   "registrationAddressDescription": "თბილისი ზესტაფონის ქ. N 18 კორ. 5 ბ. 10 ",
+   "factAddressDescription": "ზესტაფონის ქ.5 კორპუსი 18 ბ.10",
+   "phoneNumber": "",
+   "mobileNumber": "555212162",
+   "email": "nazgaidzeirakli@yahoo.com",
+   "contactDescription": "",
+   "userName": "16001022742",
+   "registrationLocationName": "თბილისი",
+   "registrationLocationUnitName": "ნაძალადევი",
+   "factLocationName": null,
+   "factLocationUnitName": null,
+   "educations": [
+   ],
+   "jobExperiences": [
+   ],
+   "desirableJobs": [
+   ],
+   "desirableJobLocations": [
+   ],
+   "desirableTrainings": [
+   ],
+   "languages": [
+   ],
+   "skills": [
+   ]
+  },
+  {
+    "id": "2UTrOWMBziw5uPlEwOJN",
+   "startDate": "2014-09-19T00:00:00.000Z",
+   "firstName": "ნინო",
+   "lastName": "ექვთიმიშვილი",
+   "personalId": "35001024088",
+   "birthDate": "1981-01-26T00:00:00.000Z",
+   "genderName": "მდედრობითი",
+   "weight": null,
+   "height": null,
+   "registrationAddressDescription": "რუსთავი მშენებელთა ქ. კორ. 28 ბ. 7 ",
+   "factAddressDescription": "ქ. რუსთავი, მე-19მკრნ.11/28",
+   "phoneNumber": "",
+   "mobileNumber": null,
+   "email": "ninoekvtimishvili@yahoo.com",
+   "contactDescription": "",
+   "userName": "35001024088",
+   "registrationLocationName": "ქვემო–ქართლი",
+   "registrationLocationUnitName": "რუსთავი",
+   "factLocationName": null,
+   "factLocationUnitName": null,
+   "educations": [
+   ],
+   "jobExperiences": [
+   ],
+   "desirableJobs": [
+   ],
+   "desirableJobLocations": [
+   ],
+   "desirableTrainings": [
+   ],
+   "languages": [
+   ],
+   "skills": [
+   ]
+  },
+  {
+    "id": "2kTrOWMBziw5uPlEwOJN",
+   "startDate": "2014-09-19T00:00:00.000Z",
+   "firstName": "რუსუდანი",
+   "lastName": "ბახტაძე",
+   "personalId": "01007015105",
+   "birthDate": "1957-06-07T00:00:00.000Z",
+   "genderName": "მდედრობითი",
+   "weight": null,
+   "height": null,
+   "registrationAddressDescription": "თბილისი აკ.წერეთლის გამზ. N 11 ბ. 98 ",
+   "factAddressDescription": "თბილისი,წერეთლის11კორ.,ბინა98",
+   "phoneNumber": "",
+   "mobileNumber": "571550778",
+   "email": "rusudani1957@mail.ru",
+   "contactDescription": "",
+   "userName": "01007015105",
+   "registrationLocationName": "თბილისი",
+   "registrationLocationUnitName": "დიდუბე",
+   "factLocationName": null,
+   "factLocationUnitName": null,
+   "educations": [
+   ],
+   "jobExperiences": [
+   ],
+   "desirableJobs": [
+   ],
+   "desirableJobLocations": [
+   ],
+   "desirableTrainings": [
+   ],
+   "languages": [
+   ],
+   "skills": [
+   ]
+  },
+  {
+      "id": "20TrOWMBziw5uPlEwOJN",
+    "startDate": "2014-09-19T00:00:00.000Z",
+    "firstName": "ელზა",
+    "lastName": "ჩუთლაშვილი",
+    "personalId": "01027044697",
+    "birthDate": "1989-04-13T00:00:00.000Z",
+    "genderName": "მდედრობითი",
+    "weight": null,
+    "height": null,
+    "registrationAddressDescription": "თბილისი ვარკეთილი 3 II მ/რ კორ. 17 ბ. 14 ",
+    "factAddressDescription": "ქ.თბილისი, ვარკეთილი 3, მე-2 მ/რ, კ/17, ბ/14",
+    "phoneNumber": "",
+    "mobileNumber": "593397840",
+    "email": "elza.chutlashvili.1@iliauni.edu.ge",
+    "contactDescription": "",
+    "languages": [
+    ],
+    "userName": "01027044697",
+    "registrationLocationName": "თბილისი",
+    "registrationLocationUnitName": "სამგორი",
+    "factLocationName": null,
+    "factLocationUnitName": null,
+    "educations": [
+    ],
+    "jobExperiences": [
+    ],
+    "desirableJobs": [
+    ],
+    "desirableJobLocations": [
+    ],
+    "desirableTrainings": [
+    ],
+    "skills": [
+    ]
+    },
+    ],
   }),
   async created() {
     try {
@@ -988,13 +1189,20 @@ export default {
 .vacancy-add {
   margin: auto;
   width: 100%;
-  /* max-width: 50%; */
   height: 100%;
   overflow-y: auto;
+}
+.vacancy-add-inner-container {
+  max-width: 70%;
+  margin: auto;
 }
 .vacancy-add-hint-element {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+.jobseeker-search-inner-container {
+  max-width: 90%;
+  margin: auto;
 }
 .jobseeker-filter-hint-element {
   margin-top: 20px;
