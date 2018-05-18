@@ -17,6 +17,20 @@
           <h6><label>სასურველი ხელფასი: &nbsp; </label><b>{{user.desirableSalary}}</b></h6>
           <h6><label>სურს სააგენტოს დახმარება: &nbsp; </label><b>{{user.useMediationService | boolToText}}</b></h6>
           <h6><label>სურს პროფესიული მომზადება/გადამზადება: &nbsp; </label><b>{{user.interestedInInternship | boolToText}}</b></h6>
+          <h6>
+            <label>სასურველი საქმიანობები: &nbsp; </label>
+            <b v-for="desirableJob in user.desirableJobs">{{desirableJob.name + ', '}}</b>
+          </h6>
+          <h6>
+            <label>სამუშაო გამოცდილება: &nbsp; </label>
+            <b v-for="jobExperience in user.jobExperiences">{{jobExperience.jobTitle + ', '}}</b>
+          </h6>
+          <h6>
+            <label>სასურველი სამუშაო ადგილი: &nbsp; </label>
+            <b v-for="desirableJobLocation in user.desirableJobLocations">
+              {{desirableJobLocation.locationName + ' - ' + desirableJobLocation.locationUnitName + ', '}}
+            </b>
+          </h6>
         </b-card-body>
       </b-collapse>
     </b-card>

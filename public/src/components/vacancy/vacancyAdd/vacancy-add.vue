@@ -484,13 +484,23 @@
                   />
                 </b-col>
               </b-row>
+            </b-form-group>
 
-              <b-row>
+            <b-row>
                 <b-col>
-                  <div style="padding-top: 18px" v-if="searchedJobseekers !== null">{{'ნაპოვნია ' + searchedJobseekers.length + ' პროფილი'}}</div>
+                  <div
+                    style="padding-top: 18px"
+                    v-if="searchedJobseekers !== null"
+                    class="jobseeker-search-quantity-hint"
+                  >
+                    {{'ნაპოვნია ' + searchedJobseekers.length + ' პროფილი'}}
+                  </div>
+                </b-col>
+
+                <b-col>
+                  <b-button style="width: 60%; float: right;" variant="primary" @click="searchJobseekersIfNecessary">ძებნა</b-button>
                 </b-col>
               </b-row>
-            </b-form-group>
           </b-card>
         </b-form-group>
 
@@ -504,7 +514,6 @@
 import reverse from 'lodash/reverse'
 import isNil from 'lodash/isNil'
 import isNumber from 'lodash/isNumber'
-import pick from 'lodash/pick'
 import georgiaLocations from '../../common/georgia-locations'
 import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../../constants'
 import utils from '../../../utils'
@@ -518,189 +527,6 @@ import vacancySkills from './vacancy-skills'
 
 const baseUrl = '/api/vacancies'
 const MonthId = 2
-
-const dummyUsersList = [
-  {
-    'id': '10TrOWMBziw5uPlEwOJN',
-    'startDate': '2014-09-19T00:00:00.000Z',
-    'firstName': 'ნონა',
-    'lastName': 'მუხაშვილი',
-    'personalId': '01030031567',
-    'birthDate': '1985-03-29T00:00:00.000Z',
-    'genderName': 'მდედრობითი',
-    'weight': null,
-    'height': null,
-    'registrationAddressDescription': 'თბილისი გ.ჩიტაიას ქ. N 21 ',
-    'factAddressDescription': 'ქ.თბილისი ჩიტაიას#21',
-    'phoneNumber': '',
-    'mobileNumber': '593988585',
-    'email': 'n.muxashvili@yahoo.com',
-    'contactDescription': '',
-    'userName': '01030031567',
-    'registrationLocationName': 'თბილისი',
-    'registrationLocationUnitName': 'ჩუღურეთი',
-    'factLocationName': null,
-    'factLocationUnitName': null,
-    'educations': [
-    ],
-    'jobExperiences': [
-    ],
-    'desirableJobs': [
-    ],
-    'desirableJobLocations': [
-    ],
-    'desirableTrainings': [
-    ],
-    'languages': [
-    ],
-    'skills': [
-    ],
-  },
-  {
-    'id': '2ETrOWMBziw5uPlEwOJN',
-    'startDate': '2014-09-19T00:00:00.000Z',
-    'firstName': 'ნანა',
-    'lastName': 'წიკლაური',
-    'personalId': '16001022742',
-    'birthDate': '1964-09-07T00:00:00.000Z',
-    'genderName': 'მდედრობითი',
-    'weight': null,
-    'height': null,
-    'registrationAddressDescription': 'თბილისი ზესტაფონის ქ. N 18 კორ. 5 ბ. 10 ',
-    'factAddressDescription': 'ზესტაფონის ქ.5 კორპუსი 18 ბ.10',
-    'phoneNumber': '',
-    'mobileNumber': '555212162',
-    'email': 'nazgaidzeirakli@yahoo.com',
-    'contactDescription': '',
-    'userName': '16001022742',
-    'registrationLocationName': 'თბილისი',
-    'registrationLocationUnitName': 'ნაძალადევი',
-    'factLocationName': null,
-    'factLocationUnitName': null,
-    'educations': [
-    ],
-    'jobExperiences': [
-    ],
-    'desirableJobs': [
-    ],
-    'desirableJobLocations': [
-    ],
-    'desirableTrainings': [
-    ],
-    'languages': [
-    ],
-    'skills': [
-    ],
-  },
-  {
-    'id': '2UTrOWMBziw5uPlEwOJN',
-    'startDate': '2014-09-19T00:00:00.000Z',
-    'firstName': 'ნინო',
-    'lastName': 'ექვთიმიშვილი',
-    'personalId': '35001024088',
-    'birthDate': '1981-01-26T00:00:00.000Z',
-    'genderName': 'მდედრობითი',
-    'weight': null,
-    'height': null,
-    'registrationAddressDescription': 'რუსთავი მშენებელთა ქ. კორ. 28 ბ. 7 ',
-    'factAddressDescription': 'ქ. რუსთავი, მე-19მკრნ.11/28',
-    'phoneNumber': '',
-    'mobileNumber': null,
-    'email': 'ninoekvtimishvili@yahoo.com',
-    'contactDescription': '',
-    'userName': '35001024088',
-    'registrationLocationName': 'ქვემო–ქართლი',
-    'registrationLocationUnitName': 'რუსთავი',
-    'factLocationName': null,
-    'factLocationUnitName': null,
-    'educations': [
-    ],
-    'jobExperiences': [
-    ],
-    'desirableJobs': [
-    ],
-    'desirableJobLocations': [
-    ],
-    'desirableTrainings': [
-    ],
-    'languages': [
-    ],
-    'skills': [
-    ],
-  },
-  {
-    'id': '2kTrOWMBziw5uPlEwOJN',
-    'startDate': '2014-09-19T00:00:00.000Z',
-    'firstName': 'რუსუდანი',
-    'lastName': 'ბახტაძე',
-    'personalId': '01007015105',
-    'birthDate': '1957-06-07T00:00:00.000Z',
-    'genderName': 'მდედრობითი',
-    'weight': null,
-    'height': null,
-    'registrationAddressDescription': 'თბილისი აკ.წერეთლის გამზ. N 11 ბ. 98 ',
-    'factAddressDescription': 'თბილისი,წერეთლის11კორ.,ბინა98',
-    'phoneNumber': '',
-    'mobileNumber': '571550778',
-    'email': 'rusudani1957@mail.ru',
-    'contactDescription': '',
-    'userName': '01007015105',
-    'registrationLocationName': 'თბილისი',
-    'registrationLocationUnitName': 'დიდუბე',
-    'factLocationName': null,
-    'factLocationUnitName': null,
-    'educations': [
-    ],
-    'jobExperiences': [
-    ],
-    'desirableJobs': [
-    ],
-    'desirableJobLocations': [
-    ],
-    'desirableTrainings': [
-    ],
-    'languages': [
-    ],
-    'skills': [
-    ],
-  },
-  {
-    'id': '20TrOWMBziw5uPlEwOJN',
-    'startDate': '2014-09-19T00:00:00.000Z',
-    'firstName': 'ელზა',
-    'lastName': 'ჩუთლაშვილი',
-    'personalId': '01027044697',
-    'birthDate': '1989-04-13T00:00:00.000Z',
-    'genderName': 'მდედრობითი',
-    'weight': null,
-    'height': null,
-    'registrationAddressDescription': 'თბილისი ვარკეთილი 3 II მ/რ კორ. 17 ბ. 14 ',
-    'factAddressDescription': 'ქ.თბილისი, ვარკეთილი 3, მე-2 მ/რ, კ/17, ბ/14',
-    'phoneNumber': '',
-    'mobileNumber': '593397840',
-    'email': 'elza.chutlashvili.1@iliauni.edu.ge',
-    'contactDescription': '',
-    'languages': [
-    ],
-    'userName': '01027044697',
-    'registrationLocationName': 'თბილისი',
-    'registrationLocationUnitName': 'სამგორი',
-    'factLocationName': null,
-    'factLocationUnitName': null,
-    'educations': [
-    ],
-    'jobExperiences': [
-    ],
-    'desirableJobs': [
-    ],
-    'desirableJobLocations': [
-    ],
-    'desirableTrainings': [
-    ],
-    'skills': [
-    ],
-  },
-]
 
 export default {
   name: 'vacancy-add',
@@ -772,7 +598,7 @@ export default {
       languages: true,
       skills: true,
     },
-    jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად მოიძებნება და გამოჩნდება იმ სამსახურის მაძიებელთა სია, რომლებიც ყველაზე მეტაც შეესადაგებიან შევსებულ ვაკანსიას. \n\n ვაკანსიის შეცვლისას ავტომატურად განახლდება სია. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
+    jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად შეგიძლიათ მოძებნოთ სამსახურის მაძიებელთა სია, რომლებიც შეესადაგებიან შევსებულ ვაკანსიას. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
     searchedJobseekers: null,
   }),
   async created() {
@@ -1142,8 +968,9 @@ export default {
     },
     async searchJobseekersIfNecessary () {
       if (!this.jobseekerSearchHidden) {
-        const a = this.jobseekerSearchSwitches
-        const b = pick(this.vacancy, [
+        const { position, location, salary, workSchedule, formalEducationLevel, drivingLicence, languages, skills } = this.jobseekerSearchSwitches
+
+        /*
           'position',
 
           'locationName',
@@ -1173,14 +1000,96 @@ export default {
 
           'languages',
           'skills',
-        ])
-        const c = this.isSalaryRange
+        */
 
-        console.log(111111111, a, b, c)
+        const configFields = {}
 
-        const result = await this.$http.post('/api/users/vacancy/matchings')
+        if (position) {
+          if (this.vacancy.positionName) {
+            configFields.positionName = this.vacancy.positionName
+          }
+        }
 
-        console.log(5555555555, result)
+        if (location) {
+          if (this.vacancy.locationName && this.vacancy.locationUnitName) {
+            configFields.locationName = this.vacancy.locationName
+            configFields.locationUnitName = this.vacancy.locationUnitName
+          }
+        }
+
+        if (salary) {
+          if (this.vacancy.minimalSalary || this.vacancy.minimalSalary === 0) {
+            configFields.minimalSalary = this.vacancy.minimalSalary
+          }
+          if (this.vacancy.maximalSalary || this.vacancy.minimalSalary === 0) {
+            configFields.maximalSalary = this.vacancy.maximalSalary
+          }
+        }
+
+        if (workSchedule) {
+          if (this.vacancy.fullTime) {
+            configFields.fullTime = this.vacancy.fullTime
+          }
+          if (this.vacancy.partTime) {
+            configFields.partTime = this.vacancy.partTime
+          }
+          if (this.vacancy.shiftBased) {
+            configFields.shiftBased = this.vacancy.shiftBased
+          }
+        }
+
+        if (formalEducationLevel) {
+          if (this.vacancy.formalEducationLevelName && this.vacancy.formalEducationLevelName !== '- აირჩიე -') {
+            configFields.formalEducationLevelName = this.vacancy.formalEducationLevelName
+          }
+        }
+
+        if (drivingLicence) {
+          if (this.shouldHaveDrivingLicence) {
+            if (this.vacancy.drivingLicenceA) {
+              configFields.drivingLicenceA = this.vacancy.drivingLicenceA
+            }
+            if (this.vacancy.drivingLicenceB) {
+              configFields.drivingLicenceB = this.vacancy.drivingLicenceB
+            }
+            if (this.vacancy.drivingLicenceC) {
+              configFields.drivingLicenceC = this.vacancy.drivingLicenceC
+            }
+            if (this.vacancy.drivingLicenceD) {
+              configFields.drivingLicenceD = this.vacancy.drivingLicenceD
+            }
+            if (this.vacancy.drivingLicenceE) {
+              configFields.drivingLicenceE = this.vacancy.drivingLicenceE
+            }
+            if (this.vacancy.drivingLicenceT1) {
+              configFields.drivingLicenceT1 = this.vacancy.drivingLicenceT1
+            }
+            if (this.vacancy.drivingLicenceT2) {
+              configFields.drivingLicenceT2 = this.vacancy.drivingLicenceT2
+            }
+            if (this.vacancy.airLicence) {
+              configFields.airLicence = this.vacancy.airLicence
+            }
+            if (this.vacancy.seaLicence) {
+              configFields.seaLicence = this.vacancy.seaLicence
+            }
+            if (this.vacancy.railwayLicence) {
+              configFields.railwayLicence = this.vacancy.railwayLicence
+            }
+          }
+        }
+
+        if (languages) {
+          configFields.languages = this.vacancy.languages
+        }
+
+        if (skills) {
+          configFields.skills = this.vacancy.skills
+        }
+
+        const result = await this.$http.post('/api/users/vacancy/matchings', { configFields })
+
+        console.log(5555555555, result, configFields)
 
         this.searchedJobseekers = result.data
       }
@@ -1336,5 +1245,15 @@ export default {
 
 .card {
   background: whitesmoke;
+}
+
+.jobseeker-search-quantity-hint {
+  animation: blinker 3s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
 </style>

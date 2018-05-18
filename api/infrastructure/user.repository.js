@@ -1,5 +1,6 @@
 const elasticsearch = require('elasticsearch')
 const config = require('config')
+const _ = require('lodash')
 
 const client = new elasticsearch.Client({
   host: config.get('elastic.host'),
@@ -759,6 +760,74 @@ async function matchUsersToVacancy(configFields, percent) {
   //   shoulds = shoulds.concat(jobExperiencesShoulds(user))
   // }
 
+  const {
+    positionName,
+
+    locationName,
+    locationUnitName,
+
+    minimalSalary,
+    maximalSalary,
+
+    fullTime,
+    partTime,
+    shiftBased,
+
+    formalEducationLevelName,
+
+    drivingLicenceA,
+    drivingLicenceB,
+    drivingLicenceC,
+    drivingLicenceD,
+    drivingLicenceE,
+    drivingLicenceT1,
+    drivingLicenceT2,
+    airLicence,
+    seaLicence,
+    railwayLicence,
+
+    languages,
+
+    skills,
+  } = configFields
+
+  if (positionName) {
+    shoulds.push(
+      utils.constantScoreQuery('desirableJobs.name.keyword', positionName)
+    )
+    shoulds.push(
+      utils.constantScoreQuery('jobExperiences.jobTitle.keyword', positionName, 1.4)
+    )
+  }
+
+  if (locationName === 'თბილისი') {
+    shoulds.push(
+      utils.constantScoreQuery('factLocationName.keyword', locationName, 1.3)
+    )
+
+    shoulds.push(
+      utils.constantScoreQuery('desirableJobLocations.locationName.keyword', locationName)
+    )
+  } else if (locationName && locationUnitName) {
+    shoulds.push(
+      utils.constantMultiMustQuery([
+        ['factLocationName.keyword', locationName],
+        ['factLocationUnitName.keyword', locationUnitName],
+      ])
+    )
+
+    shoulds.push(
+      utils.constantMultiMustQuery([
+        ['desirableJobLocations.locationName.keyword', locationName],
+        ['desirableJobLocations.locationName.keyword', locationUnitName],
+      ])
+    )
+  }
+
+  // desirableSalary
+
+  if (_.isNumber(minimalSalary)) {}
+
   let searchOptions = {
     index,
     type,
@@ -779,7 +848,10 @@ async function matchUsersToVacancy(configFields, percent) {
 
   let result = await client.search(searchOptions)
 
+  console.clear()
+  console.log('-----------------------------------------------------------------------------------------------------------------------------')
   console.log(JSON.stringify(result, null, 4))
+  console.log(JSON.stringify(searchOptions, null, 4))
 
   return result.hits.hits.map(utils.toObject)
 }
