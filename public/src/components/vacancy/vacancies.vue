@@ -30,7 +30,6 @@
         <div>
           <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
         </div>
-        <div>
       </b-col>
       <b-col lg="6">
         <b-form-checkbox id="drivingLicence"
