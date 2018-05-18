@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const skillInteractor = require('./skill.interactor')
 const vacancyRepository = require('../infrastructure/vacancy.repository')
+const userRepository = require('../infrastructure/user.repository')
 const libRepository = require('../infrastructure/lib.repository')
 const PermissionError = require('../exceptions/permission.error')
 const utils = require('../utils')
@@ -299,6 +300,22 @@ async function deleteVacancy(userName, id) {
   return await vacancyRepository.deleteVacancy(id)
 }
 
+async function searchUserMatchings(userName, percent = 100, excludeFields) {
+  if (!_.isNumber(percent)) {
+    throw new PermissionError('invalid percent', 400)
+  }
+
+  if (!_.isArray(excludeFields)) {
+    throw new PermissionError('invalid excludeFields', 400)
+  }
+
+  let user = await userRepository.getUserByUserName(userName)
+
+  let userToMatch = _.omit(user, excludeFields)
+
+  return await vacancyRepository.matchVacanciesToUser(userToMatch, percent)
+}
+
 module.exports = {
   getList,
   getPublishedList,
@@ -308,4 +325,5 @@ module.exports = {
   getUserVacancies,
   getById,
   getBySearch,
+  searchUserMatchings,
 }
