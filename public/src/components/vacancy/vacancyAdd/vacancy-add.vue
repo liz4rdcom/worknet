@@ -44,8 +44,8 @@
       <georgia-locations
         idPrefix="vacancy-add"
         :onLocationChanged="onLocationChanged"
-        :currentLocationName="'თბილისი'"
-        :currentLocationUnitName="'ისანი'"
+        :currentLocationName="vacancy.locationName"
+        :currentLocationUnitName="vacancy.locationUnitName"
       />
     </b-form-group>
 
@@ -311,6 +311,7 @@
 <script>
 import reverse from 'lodash/reverse'
 import isNil from 'lodash/isNil'
+import isNumber from 'lodash/isNumber'
 import georgiaLocations from '../../common/georgia-locations'
 import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../../constants'
 import utils from '../../../utils'
@@ -563,23 +564,35 @@ export default {
     getVacancyAddDataToSend(published) {
       const retVal = {
         positionName: this.vacancy.positionName,
-        interviewSupposedStartDate: new Date(
-          this.vacancy.interviewSupposedStartYear,
-          this.vacancy.interviewSupposedStartMonth,
-          this.vacancy.interviewSupposedStartDay,
-        ),
-        endDate: new Date(
-          this.vacancy.endDateYear,
-          this.vacancy.endDateMonth,
-          this.vacancy.endDateDay,
-        ),
         useMediationService: this.vacancy.useMediationService,
         fullTime: this.vacancy.fullTime,
-        partTime: this.vacancy.fullTime,
-        shiftBased: this.vacancy.fullTime,
+        partTime: this.vacancy.partTime,
+        shiftBased: this.vacancy.shiftBased,
         languages: this.vacancy.languages,
         skills: this.vacancy.skills,
         published,
+      }
+
+      if (isNumber(this.vacancy.interviewSupposedStartYear) &&
+          isNumber(this.vacancy.interviewSupposedStartMonth) &&
+          isNumber(this.vacancy.interviewSupposedStartDay)
+      ) {
+        retVal.interviewSupposedStartDate = new Date(
+          this.vacancy.interviewSupposedStartYear,
+          this.vacancy.interviewSupposedStartMonth,
+          this.vacancy.interviewSupposedStartDay,
+        )
+      }
+
+      if (isNumber(this.vacancy.endDateYear) &&
+          isNumber(this.vacancy.endDateMonth) &&
+          isNumber(this.vacancy.endDateDay)
+      ) {
+        retVal.endDate = new Date(
+          this.vacancy.endDateYear,
+          this.vacancy.endDateMonth,
+          this.vacancy.endDateDay,
+        )
       }
 
       if (this.isOrganization) {
@@ -621,7 +634,7 @@ export default {
         retVal.maximalSalary = this.vacancy.maximalSalary
       }
 
-      if (this.vacancy.formalEducationLevelName) {
+      if (this.vacancy.formalEducationLevelName && this.vacancy.formalEducationLevelName !== '- აირჩიე -') {
         retVal.formalEducationLevelName = this.vacancy.formalEducationLevelName
       }
 
@@ -650,36 +663,32 @@ export default {
 
         alert('saved as draft!')
       } catch (error) {
-        bus.$emit('error', error)
       }
     },
     async onSubmit(evt) {
       evt.preventDefault()
 
-      if (!this.validation()) {
-        return
-      }
+      // if (!this.validation()) {
+      //   return
+      // }
 
       try {
         if (!this.id) {
-          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(false), {headers: utils.getHeaders()})
+          await this.$http.post(baseUrl, this.getVacancyAddDataToSend(true), {headers: utils.getHeaders()})
         } else {
           await this.$http.put(baseUrl + `/${this.id}`, this.getVacancyAddDataToSend(true), {headers: utils.getHeaders()})
         }
+
+        this.$router.push('/vacancies/own/all')
+
+        alert('submitted')
       } catch (error) {
-        bus.$emit('error', error)
       }
-
-      alert('submitted')
-
-      this.$router.push('/vacancies/own/all')
     },
     languagesOnChange(langs) {
       this.vacancy.languages = langs
     },
     skillsOnChange(changedSkills) {
-      console.log('yyy', changedSkills)
-
       this.vacancy.skills = changedSkills
     },
   },
