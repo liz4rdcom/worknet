@@ -2,7 +2,6 @@ const _ = require('lodash')
 const skillInteractor = require('./skill.interactor')
 const vacancyRepository = require('../infrastructure/vacancy.repository')
 const userRepository = require('../infrastructure/user.repository')
-const libRepository = require('../infrastructure/lib.repository')
 const PermissionError = require('../exceptions/permission.error')
 const utils = require('../utils')
 
@@ -34,7 +33,7 @@ async function getUserVacancies(userName) {
   return await vacancyRepository.getByAuthorUserName(userName)
 }
 
-function validateVacancy(vacancy, salaryType) {
+function validateVacancy(vacancy) {
   const {
     positionName,
     organization,
@@ -52,11 +51,6 @@ function validateVacancy(vacancy, salaryType) {
     additionalDescription,
     minimalSalary,
     maximalSalary,
-    fixedSalary,
-    additionalSalaryInfo,
-    salaryTypeId,
-    salaryTypeName,
-    isSalaryByEarnings,
     fullTime,
     partTime,
     shiftBased,
@@ -142,36 +136,12 @@ function validateVacancy(vacancy, salaryType) {
       throw new PermissionError('invalid additionalDescription', 400)
     }
 
-    if (fixedSalary && !_.isNumber(fixedSalary)) {
-      throw new PermissionError('invalid fixedSalary', 400)
-    }
-
     if (minimalSalary && !_.isNumber(minimalSalary)) {
       throw new PermissionError('invalid minimalSalary', 400)
     }
 
     if (maximalSalary && !_.isNumber(maximalSalary)) {
       throw new PermissionError('invalid maximalSalary', 400)
-    }
-
-    if (!_.isNil(fixedSalary) && (!_.isNil(minimalSalary) || !_.isNil(maximalSalary))) {
-      throw new PermissionError('invalid salary input. should be range or one field only. not both', 400)
-    }
-
-    const SALARY_TYPE_NOT_FOUND = !salaryType
-    const SALARY_IS_SET = minimalSalary || maximalSalary || fixedSalary
-    const INVALID_SALARY_TYPE_ID = salaryTypeId && (!_.isInteger(salaryTypeId) || SALARY_TYPE_NOT_FOUND)
-    if (INVALID_SALARY_TYPE_ID || (SALARY_IS_SET && !salaryTypeId)) {
-      throw new PermissionError('invalid salaryTypeId', 400)
-    }
-
-    const BY_EARNINGS_NOT_VALID = !_.isNil(isSalaryByEarnings) && !_.isBoolean(isSalaryByEarnings)
-    if (BY_EARNINGS_NOT_VALID || (isSalaryByEarnings && SALARY_IS_SET)) {
-      throw new PermissionError('invalid isSalaryByEarnings', 400)
-    }
-
-    if (additionalSalaryInfo && !_.isString(additionalSalaryInfo)) {
-      throw new PermissionError('invalid additionalSalaryInfo', 400)
     }
 
     if (!_.isNil(fullTime) && !_.isBoolean(fullTime)) {
@@ -241,13 +211,9 @@ function validateVacancy(vacancy, salaryType) {
 }
 
 async function addVacancy(userName, vacancy) {
-  let salaryTypes = await libRepository.getSalaryTypes()
+  validateVacancy(vacancy)
 
-  let salaryType = salaryTypes.find(type => type.typeId === vacancy.salaryTypeId)
-
-  validateVacancy(vacancy, salaryType)
-
-  const vacan = { ...vacancy, authorUserName: userName, salaryTypeName: salaryType ? salaryType.typeName : null }
+  const vacan = { ...vacancy, authorUserName: userName }
 
   const nowDate = new Date()
   if (vacan.published) {
@@ -263,11 +229,7 @@ async function addVacancy(userName, vacancy) {
 }
 
 async function editVacancy(userName, id, vacancy) {
-  let salaryTypes = await libRepository.getSalaryTypes()
-
-  let salaryType = salaryTypes.find(type => type.typeId === vacancy.salaryTypeId)
-
-  validateVacancy(vacancy, salaryType)
+  validateVacancy(vacancy)
 
   let foundVacancy = await vacancyRepository.getById(id)
 

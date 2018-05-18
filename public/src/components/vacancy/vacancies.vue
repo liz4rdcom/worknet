@@ -8,7 +8,7 @@
     <b-button class="searchButton" variant="primary" size="" @click="search">
       <i class="fa fa-search fa-2x" aria-hidden="true"></i>
     </b-button>
-    <b-button @click="filter = !filter, fillSalaryType()">Filter</b-button>
+    <b-button @click="filter = !filter">Filter</b-button>
   </div>
   <b-card v-if="filter">
     <b-row>
@@ -30,20 +30,6 @@
         <div>
           <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
         </div>
-        <div>
-          <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
-                     v-model="filterObject.salaryTypeName"
-                     :value="null"
-                     :options="salaryTypes"
-                     value-field="typeName" text-field="typeName"
-                     id="inlineFormCustomSelectPref">
-        <option slot="first" :value="null">-აირჩიეთ ხელფასის ტიპი-</option>
-      </b-form-select>
-        </div>
-        <b-form-checkbox id="isSalaryByEarnings"
-        v-model="filterObject.isSalaryByEarnings">
-        გამომუშავება
-      </b-form-checkbox>
       </b-col>
       <b-col lg="6">
         <b-form-checkbox id="drivingLicence"
@@ -103,7 +89,6 @@
     <div @click="viewVacancy(vacancy.id)">
       <h3 class="card-title">{{vacancy.positionName}}</h3>
       <h5 class="card-text">{{vacancy.organization}}</h5>
-      <h5 class="card-text" v-if="vacancies.averageSalaryName !== ''">{{vacancy.averageSalaryName}}</h5>
       <h5 class="card-text">{{getFunctionDescription(vacancy)}}</h5>
       <h5 class="card-text" v-for="skill in getSkills(vacancy)" :key="skill.skillName" @click="skillFilter(skill.skillName, $event)">{{skill.skillName}}</h5>
       <h5 class="card-text">{{vacancy.publishDate}}</h5>
@@ -150,15 +135,12 @@ export default {
       interestedInDangerousJob: false,
       minimalSalary: null,
       maximalSalary: null,
-      salaryTypeName: null,
-      isSalaryByEarnings: false,
       locations: [],
       skills: [],
     },
     skillArray: [],
     desirableJobLocations: [],
     locationsList: [],
-    salaryTypes: [],
   }),
   async created() {
     this.locationsList = await libs.fetchLocationsOfGeorgia()
@@ -204,13 +186,6 @@ export default {
       value = parseInt(value)
 
       this.filterObject.minimalSalary = value
-    },
-    async fillSalaryType () {
-      try {
-        this.salaryTypes = await libs.fetchSalaryTypes()
-      } catch (error) {
-        bus.$emit('error', error)
-      }
     },
     skillFilter (skill, event) {
       event.stopPropagation()

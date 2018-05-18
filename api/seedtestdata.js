@@ -223,11 +223,6 @@ const testJobs = [
     'additionalDescription': 'damatebiti informacia TEST TEST',
     'minimalSalary': 150,
     'maximalSalary': 300,
-    'fixedSalary': null,
-    'additionalSalaryInfo': 'ბონუსებით.',
-    'salaryTypeId': 1,
-    'salaryTypeName': 'საათში',
-    'isSalaryByEarnings': false,
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -314,9 +309,6 @@ const testJobs = [
     'additionalDescription': 'damatebiti informacia TEST TEST',
     'minimalSalary': null,
     'maximalSalary': null,
-    'fixedSalary': null,
-    'isSalaryByEarnings': true,
-    'additionalSalaryInfo': 'გამომუშავებით',
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -353,11 +345,6 @@ const testJobs = [
     'additionalDescription': 'damatebiti informacia TEST TEST',
     'minimalSalary': null,
     'maximalSalary': null,
-    'fixedSalary': 1500,
-    'additionalSalaryInfo': 'ბონუსებით.',
-    'salaryTypeId': 2,
-    'salaryTypeName': 'თვეში',
-    'isSalaryByEarnings': false,
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -394,10 +381,6 @@ const testJobs = [
     'additionalDescription': 'damatebiti informacia TEST TEST',
     'minimalSalary': null,
     'maximalSalary': null,
-    'additionalSalaryInfo': 'შეთანხმებით',
-    'salaryTypeId': null,
-    'salaryTypeName': null,
-    'isSalaryByEarnings': false,
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -434,11 +417,6 @@ const testJobs = [
     'additionalDescription': 'damatebiti informacia TEST TEST',
     'minimalSalary': null,
     'maximalSalary': null,
-    'fixedSalary': 150000,
-    'additionalSalaryInfo': '',
-    'salaryTypeId': 3,
-    'salaryTypeName': 'წელიწადში',
-    'isSalaryByEarnings': false,
     'fullTime': true,
     'partTime': true,
     'shiftBased': true,
@@ -721,12 +699,6 @@ const testDesirableTrainings = [
   { name: ' კულინარია, მზარეული' },
 ]
 
-const salaryTypes = [
-  {typeId: 1, typeName: 'საათში'},
-  {typeId: 2, typeName: 'თვეში'},
-  {typeId: 3, typeName: 'წელიწადში'},
-]
-
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   let exists = await client.indices.exists({ index: index })
 
@@ -758,7 +730,6 @@ async function seedAllData(dropAll = false) {
       seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false),
       seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false),
       seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false),
-      seedData(salaryTypes, 'salarytypes', indexDefaultOptions, 'salarytypes', dropAll || true),
     ])
 
     process.exit(0)
