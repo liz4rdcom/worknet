@@ -6,6 +6,7 @@ const client = new elasticsearch.Client({
 })
 
 const utils = require('./utils')
+const generalUtils = require('../utils')
 
 const index = config.get('elastic.usersIndex')
 const type = config.get('elastic.usersType')
@@ -733,6 +734,56 @@ async function saveUseMediationService(userName, useMediationService) {
   await client.updateByQuery(options)
 }
 
+async function matchUsersToVacancy(configFields, percent) {
+  let shoulds = []
+
+  // shoulds = shoulds.concat(commonShoulds(user))
+
+  // if (user.skills) {
+  //   shoulds = shoulds.concat(skillsShoulds(user))
+  // }
+
+  // if (user.languages) {
+  //   shoulds = shoulds.concat(languageShoulds(user))
+  // }
+
+  // if (user.desirableJobs) {
+  //   shoulds = shoulds.concat(desirableJobShoulds(user))
+  // }
+
+  // if (user.desirableJobLocations) {
+  //   shoulds = shoulds.concat(desirableJobLocationShoulds(user))
+  // }
+
+  // if (user.jobExperiences) {
+  //   shoulds = shoulds.concat(jobExperiencesShoulds(user))
+  // }
+
+  let searchOptions = {
+    index,
+    type,
+    body: {
+      query: {
+        bool: {
+          should: shoulds,
+        },
+      },
+    },
+    searchType: 'dfs_query_then_fetch',
+    size: 30,
+  }
+
+  if (percent) {
+    searchOptions.body.query.bool.minimum_should_match = generalUtils.percentToString(percent)
+  }
+
+  let result = await client.search(searchOptions)
+
+  console.log(JSON.stringify(result, null, 4))
+
+  return result.hits.hits.map(utils.toObject)
+}
+
 module.exports = {
   getUsers,
   getMainInfo,
@@ -765,4 +816,5 @@ module.exports = {
   saveJobDescription,
   getUseMediationService,
   saveUseMediationService,
+  matchUsersToVacancy,
 }

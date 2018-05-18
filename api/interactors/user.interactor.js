@@ -544,6 +544,18 @@ async function addUseMediationService(userName, useMediation) {
   await userRepository.saveUseMediationService(userName, useMediationService)
 }
 
+async function searchVacancyMatchings(configFields = {}, percent) {
+  if (_.isNumber(percent) && (percent < 0 || percent > 100)) {
+    throw new PermissionError('invalid percent', 400)
+  }
+
+  if (!_.isObject(configFields)) {
+    throw new PermissionError('invalid configFields', 400)
+  }
+
+  return await userRepository.matchUsersToVacancy(configFields, percent)
+}
+
 module.exports = {
   getList,
   getUserMainInfo,
@@ -594,4 +606,5 @@ module.exports = {
   getUseMediationService,
   addUseMediationService,
   register,
+  searchVacancyMatchings,
 }

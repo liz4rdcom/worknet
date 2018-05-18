@@ -387,7 +387,7 @@
     </button>
     <span class="cyrcle-span"></span>
 
-    <b-col v-if="!jobseekerSearchHidden" class="main-col">
+    <b-col v-if="!jobseekerSearchHidden" class="jobseeker-search">
       <div class="jobseeker-search-inner-container">
         <b-container>
           <b-row align-v="center">
@@ -407,85 +407,92 @@
           </b-row>
         </b-container>
 
+        <b-form-group>
+          <b-card>
+            <b-form-group label="გაიფილტროს შემდეგი მონაცემებით:" class="font-weight-bold"/>
 
-        <b-card>
-          <b-form-group label="გაიფილტროს შემდეგი მონაცემებით:" class="font-weight-bold"/>
+            <b-form-group>
+              <b-row>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.position"
+                    :button-variant="jobseekerSearchSwitches.position ? 'outline-success' : 'outline-secondary'"
+                    :options="positionSwitchOptions"
+                    buttons
+                  />
+                </b-col>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.location"
+                    :button-variant="jobseekerSearchSwitches.location ? 'outline-success' : 'outline-secondary'"
+                    :options="locationSwitchOptions"
+                    buttons
+                  />
+                </b-col>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.salary"
+                    :button-variant="jobseekerSearchSwitches.salary ? 'outline-success' : 'outline-secondary'"
+                    :options="salarySwitchOptions"
+                    buttons
+                  />
+                </b-col>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.workSchedule"
+                    :button-variant="jobseekerSearchSwitches.workSchedule ? 'outline-success' : 'outline-secondary'"
+                    :options="workScheduleSwitchOptions"
+                    buttons
+                  />
+                </b-col>
+              </b-row>
+            </b-form-group>
 
-          <b-form-group>
-            <b-row>
-              <b-col>
-                <b-form-radio-group
-                  v-model="jobseekerSearchSwitches.position"
-                  :button-variant="jobseekerSearchSwitches.position ? 'outline-success' : 'outline-secondary'"
-                  :options="positionSwitchOptions"
-                  buttons
-                />
-              </b-col>
-              <b-col>
-                <b-form-radio-group
-                  v-model="jobseekerSearchSwitches.location"
-                  :button-variant="jobseekerSearchSwitches.location ? 'outline-success' : 'outline-secondary'"
-                  :options="locationSwitchOptions"
-                  buttons
-                />
-              </b-col>
-              <b-col>
-                <b-form-radio-group
-                  v-model="jobseekerSearchSwitches.salary"
-                  :button-variant="jobseekerSearchSwitches.salary ? 'outline-success' : 'outline-secondary'"
-                  :options="salarySwitchOptions"
-                  buttons
-                />
-              </b-col>
-              <b-col>
-                <b-form-radio-group
-                  v-model="jobseekerSearchSwitches.workSchedule"
-                  :button-variant="jobseekerSearchSwitches.workSchedule ? 'outline-success' : 'outline-secondary'"
-                  :options="workScheduleSwitchOptions"
-                  buttons
-                />
-              </b-col>
-            </b-row>
-          </b-form-group>
+            <b-form-group>
+              <b-row>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.formalEducationLevel"
+                    :button-variant="jobseekerSearchSwitches.formalEducationLevel ? 'outline-success' : 'outline-secondary'"
+                    :options="formalEducationLevelSwitchOptions"
+                    buttons
+                  />
+                </b-col>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.drivingLicence"
+                    :button-variant="jobseekerSearchSwitches.drivingLicence ? 'outline-success' : 'outline-secondary'"
+                    :options="drivingLicenceSwitchOptions"
+                    buttons
+                  />
 
-          <b-form-group>
-            <b-row>
-              <b-col>
-                <b-form-radio-group
-                  v-model="jobseekerSearchSwitches.formalEducationLevel"
-                  :button-variant="jobseekerSearchSwitches.formalEducationLevel ? 'outline-success' : 'outline-secondary'"
-                  :options="formalEducationLevelSwitchOptions"
-                  buttons
-                />
-              </b-col>
-              <b-col>
-                <b-form-radio-group
-                  v-model="jobseekerSearchSwitches.drivingLicence"
-                  :button-variant="jobseekerSearchSwitches.drivingLicence ? 'outline-success' : 'outline-secondary'"
-                  :options="drivingLicenceSwitchOptions"
-                  buttons
-                />
+                </b-col>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.languages"
+                    :button-variant="jobseekerSearchSwitches.languages ? 'outline-success' : 'outline-secondary'"
+                    :options="languagesSwitchOptions"
+                    buttons
+                  />
+                </b-col>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.skills"
+                    :button-variant="jobseekerSearchSwitches.skills ? 'outline-success' : 'outline-secondary'"
+                    :options="skillsSwitchOptions"
+                    buttons
+                  />
+                </b-col>
+              </b-row>
 
-              </b-col>
-              <b-col>
-                <b-form-radio-group
-                  v-model="jobseekerSearchSwitches.languages"
-                  :button-variant="jobseekerSearchSwitches.languages ? 'outline-success' : 'outline-secondary'"
-                  :options="languagesSwitchOptions"
-                  buttons
-                />
-              </b-col>
-              <b-col>
-                <b-form-radio-group
-                  v-model="jobseekerSearchSwitches.skills"
-                  :button-variant="jobseekerSearchSwitches.skills ? 'outline-success' : 'outline-secondary'"
-                  :options="skillsSwitchOptions"
-                  buttons
-                />
-              </b-col>
-            </b-row>
-          </b-form-group>
-        </b-card>
+              <b-row>
+                <b-col>
+                  <div style="padding-top: 18px" v-if="searchedJobseekers !== null">{{'ნაპოვნია ' + searchedJobseekers.length + ' პროფილი'}}</div>
+                </b-col>
+              </b-row>
+            </b-form-group>
+          </b-card>
+        </b-form-group>
 
         <users-list style="padding-top: 20px;" :users="searchedJobseekers"/>
       </div>
@@ -1133,53 +1140,8 @@ export default {
 
       this.searchJobseekersIfNecessary()
     },
-    searchJobseekersIfNecessary () {
+    async searchJobseekersIfNecessary () {
       if (!this.jobseekerSearchHidden) {
-        /*
-        vacancy: {
-          positionName: null,
-          organization: null,
-          organizationTaxCode: null,
-          authorFullName: null,
-          authorPersonalId: null,
-          locationName: null,
-          locationUnitName: null,
-          addressLine: null,
-          interviewSupposedStartDay: null,
-          interviewSupposedStartMonth: null,
-          interviewSupposedStartYear: new Date().getFullYear(),
-          endDateDay: null,
-          endDateMonth: null,
-          endDateYear: null,
-          useMediationService: false,
-          vacantPlacesQuantity: null,
-          functionsDescription: null,
-          additionalDescription: null,
-          minimalSalary: null,
-          maximalSalary: null,
-          fixedSalary: null,
-          salaryTypeId: MonthId,
-          additionalSalaryInfo: null,
-          isSalaryByEarnings: false,
-          fullTime: null,
-          partTime: null,
-          shiftBased: null,
-          formalEducationLevelName: '- აირჩიე -',
-          drivingLicenceA: false,
-          drivingLicenceB: false,
-          drivingLicenceC: false,
-          drivingLicenceD: false,
-          drivingLicenceE: false,
-          drivingLicenceT1: false,
-          drivingLicenceT2: false,
-          airLicence: false,
-          seaLicence: false,
-          railwayLicence: false,
-          languages: [],
-          skills: [],
-        },
-        */
-
         const a = this.jobseekerSearchSwitches
         const b = pick(this.vacancy, [
           'position',
@@ -1216,7 +1178,11 @@ export default {
 
         console.log(111111111, a, b, c)
 
-        this.searchedJobseekers = dummyUsersList
+        const result = await this.$http.post('/api/users/vacancy/matchings')
+
+        console.log(5555555555, result)
+
+        this.searchedJobseekers = result.data
       }
     },
   },
@@ -1292,8 +1258,9 @@ export default {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.main-col {
+.jobseeker-search {
   background: lavender;
+  overflow-y: auto;
 }
 .jobseeker-search-inner-container {
   max-width: 90%;
