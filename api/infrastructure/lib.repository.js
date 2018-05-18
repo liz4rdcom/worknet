@@ -75,22 +75,10 @@ async function getLanguages() {
   return result.hits.hits.map(item => item._source.name)
 }
 
-async function getSalaryTypes() {
-  let options = {
-    index: salaryTypesIndex,
-    type: salaryTypesType,
-  }
-
-  let result = await client.search(options)
-
-  return result.hits.hits.map(utils.toObject)
-}
-
 module.exports = {
   getLocationsInGeorgia,
   getEducationTypes,
   getEducationLevels,
   getFormalEducationLevels,
   getLanguages,
-  getSalaryTypes,
 }
