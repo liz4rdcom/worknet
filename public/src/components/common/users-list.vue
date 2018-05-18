@@ -17,6 +17,9 @@
           <h6><label>სასურველი ხელფასი: &nbsp; </label><b>{{user.desirableSalary}}</b></h6>
           <h6><label>სურს სააგენტოს დახმარება: &nbsp; </label><b>{{user.useMediationService | boolToText}}</b></h6>
           <h6><label>სურს პროფესიული მომზადება/გადამზადება: &nbsp; </label><b>{{user.interestedInInternship | boolToText}}</b></h6>
+          <h6><label>სურს სრული განაკვეთი: &nbsp; </label><b>{{user.fullTime | boolToText}}</b></h6>
+          <h6><label>სურს ნახევარი განაკვეთი: &nbsp; </label><b>{{user.partTime | boolToText}}</b></h6>
+          <h6><label>სურს ცვლები: &nbsp; </label><b>{{user.shiftBased | boolToText}}</b></h6>
           <h6>
             <label>სასურველი საქმიანობები: &nbsp; </label>
             <b v-for="desirableJob in user.desirableJobs">{{desirableJob.name + ', '}}</b>
@@ -29,6 +32,18 @@
             <label>სასურველი სამუშაო ადგილი: &nbsp; </label>
             <b v-for="desirableJobLocation in user.desirableJobLocations">
               {{desirableJobLocation.locationName + ' - ' + desirableJobLocation.locationUnitName + ', '}}
+            </b>
+          </h6>
+          <h6>
+            <label>ენები: &nbsp; </label>
+            <b v-for="language in user.languages">
+              {{language.languageName + ', '}}
+            </b>
+          </h6>
+          <h6>
+            <label>უნარები: &nbsp; </label>
+            <b v-for="skill in user.skills">
+              {{skill.skillName + ', '}}
             </b>
           </h6>
         </b-card-body>

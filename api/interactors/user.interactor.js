@@ -586,7 +586,7 @@ const validateAndFixSearchVacancyMatchings = (configFields, percent) => {
     throw new PermissionError('invalid configFields: redundant fields found', 400)
   }
 
-  if (!minimalSalary || minimalSalary !== 0) {
+  if (!minimalSalary) {
     correctConfigFields.minimalSalary = 0
   }
 

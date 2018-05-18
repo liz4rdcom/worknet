@@ -7,6 +7,7 @@ const client = new elasticsearch.Client({
 })
 
 const utils = require('./utils')
+const libRepo = require('./lib.repository')
 const generalUtils = require('../utils')
 
 const index = config.get('elastic.usersIndex')
@@ -738,28 +739,6 @@ async function saveUseMediationService(userName, useMediationService) {
 async function matchUsersToVacancy(configFields, percent) {
   let shoulds = []
 
-  // shoulds = shoulds.concat(commonShoulds(user))
-
-  // if (user.skills) {
-  //   shoulds = shoulds.concat(skillsShoulds(user))
-  // }
-
-  // if (user.languages) {
-  //   shoulds = shoulds.concat(languageShoulds(user))
-  // }
-
-  // if (user.desirableJobs) {
-  //   shoulds = shoulds.concat(desirableJobShoulds(user))
-  // }
-
-  // if (user.desirableJobLocations) {
-  //   shoulds = shoulds.concat(desirableJobLocationShoulds(user))
-  // }
-
-  // if (user.jobExperiences) {
-  //   shoulds = shoulds.concat(jobExperiencesShoulds(user))
-  // }
-
   const {
     positionName,
 
@@ -796,13 +775,13 @@ async function matchUsersToVacancy(configFields, percent) {
       utils.constantScoreQuery('desirableJobs.name.keyword', positionName)
     )
     shoulds.push(
-      utils.constantScoreQuery('jobExperiences.jobTitle.keyword', positionName, 1.4)
+      utils.constantScoreQuery('jobExperiences.jobTitle.keyword', positionName)
     )
   }
 
   if (locationName === 'თბილისი') {
     shoulds.push(
-      utils.constantScoreQuery('factLocationName.keyword', locationName, 1.3)
+      utils.constantScoreQuery('factLocationName.keyword', locationName)
     )
 
     shoulds.push(
@@ -824,9 +803,111 @@ async function matchUsersToVacancy(configFields, percent) {
     )
   }
 
-  // desirableSalary
+  if (_.isNumber(minimalSalary)) {
+    shoulds.push(
+      utils.functionBoolScore({
+        must: {
+          range: {
+            desirableSalary: {
+              gte: minimalSalary,
+              lte: maximalSalary,
+            },
+          },
+        },
+      })
+    )
+  }
 
-  if (_.isNumber(minimalSalary)) {}
+  if (fullTime) {
+    shoulds.push(
+      utils.constantScoreQuery('fullTime', fullTime)
+    )
+  }
+  if (partTime) {
+    shoulds.push(
+      utils.constantScoreQuery('partTime', partTime)
+    )
+  }
+  if (shiftBased) {
+    shoulds.push(
+      utils.constantScoreQuery('shiftBased', shiftBased)
+    )
+  }
+
+  if (formalEducationLevelName) {
+    const formalEducationLevels = await libRepo.getFormalEducationLevels()
+
+    shoulds.push(
+      utils.constantMultiShouldQuery(
+        formalEducationLevels
+          .slice(formalEducationLevels.indexOf(formalEducationLevelName))
+          .map(nextVal => ['formalEducationLevelName.keyword', nextVal])
+      )
+    )
+  }
+
+  if (drivingLicenceA) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceA', drivingLicenceA)
+    )
+  }
+  if (drivingLicenceB) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceB', drivingLicenceB)
+    )
+  }
+  if (drivingLicenceC) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceC', drivingLicenceC)
+    )
+  }
+  if (drivingLicenceD) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceD', drivingLicenceD)
+    )
+  }
+  if (drivingLicenceE) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceE', drivingLicenceE)
+    )
+  }
+  if (drivingLicenceT1) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceT1', drivingLicenceT1)
+    )
+  }
+  if (drivingLicenceT2) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceT2', drivingLicenceT2)
+    )
+  }
+  if (airLicence) {
+    shoulds.push(
+      utils.constantScoreQuery('airLicence', airLicence)
+    )
+  }
+  if (seaLicence) {
+    shoulds.push(
+      utils.constantScoreQuery('seaLicence', seaLicence)
+    )
+  }
+  if (railwayLicence) {
+    shoulds.push(
+      utils.constantScoreQuery('railwayLicence', railwayLicence)
+    )
+  }
+
+  languages.forEach(({ languageName }) => {
+    shoulds.push(
+      utils.constantScoreQuery('languages.languageName.keyword', languageName)
+    )
+  })
+
+  skills.forEach(({ skillName }) => {
+    shoulds.push(
+      utils.constantScoreQuery('skills.skillName.keyword', skillName)
+    )
+  })
 
   let searchOptions = {
     index,

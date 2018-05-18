@@ -1,5 +1,6 @@
 const elasticsearch = require('elasticsearch')
 const config = require('config')
+const _ = require('lodash')
 
 const client = new elasticsearch.Client({
   host: config.get('elastic.host'),
@@ -59,7 +60,8 @@ async function getFormalEducationLevels() {
 
   let result = await client.search(options)
 
-  return result.hits.hits.map(item => item._source.name)
+  // return result.hits.hits.map(item => item._source.name)
+  return _.sortBy(result.hits.hits, nextVal => nextVal._source.priority).map(item => item._source.name)
 }
 
 async function getLanguages() {
