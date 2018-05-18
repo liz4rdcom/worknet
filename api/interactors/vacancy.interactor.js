@@ -229,8 +229,6 @@ async function addVacancy(userName, vacancy) {
     skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
   }
 
-  console.log(444, vacan)
-
   return await vacancyRepository.addVacancy(vacan)
 }
 
