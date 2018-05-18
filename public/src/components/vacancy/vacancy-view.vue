@@ -13,11 +13,12 @@
     <label>პოზიცია: <b>{{vacancy.positionName}}</b></label><br />
     <label>ვაკანტური ადგილების რაოდენობა: <b>{{vacancy.vacantPlacesQuantity}}</b></label><br />
     <label>ანაზღაურება:
-      <b v-if="vacancy.minimalSalary && vacancy.maximalSalary">
-        {{vacancy.minimalSalary}} ლარიდან {{vacancy.maximalSalary}} ლარამდე {{vacancy.salaryTypeName}}.
+      <b v-if="vacancy.minimalSalary">
+        {{vacancy.minimalSalary}} ლარიდან
       </b>
-      <b v-else-if="vacancy.fixedSalary">{{vacancy.fixedSalary}} ლარი {{vacancy.salaryTypeName}}.</b>
-      <b>{{vacancy.additionalSalaryInfo}}</b>
+      <b v-if="vacancy.maximalSalary">
+         {{vacancy.maximalSalary}} ლარამდე
+      </b>
     </label><br />
     <label v-if="jobDescription.fullTime"><div class="chip">სრული განაკვეთი</div></label>
     <label v-if="jobDescription.partTime"><div class="chip">არასრული განაკვეთი</div></label>
