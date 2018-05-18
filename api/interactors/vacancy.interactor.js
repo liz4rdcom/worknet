@@ -2,7 +2,6 @@ const _ = require('lodash')
 const skillInteractor = require('./skill.interactor')
 const vacancyRepository = require('../infrastructure/vacancy.repository')
 const userRepository = require('../infrastructure/user.repository')
-const libRepository = require('../infrastructure/lib.repository')
 const PermissionError = require('../exceptions/permission.error')
 const utils = require('../utils')
 
