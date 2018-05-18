@@ -69,7 +69,7 @@ router.post('/', isAuthorized, async (req, res, next) => {
   //   .catch(next)
 })
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', isAuthorized, async (req, res, next) => {
   const userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -99,6 +99,20 @@ router.delete('/:id', isAuthorized, (req, res, next) => {
       })
     })
     .catch(next)
+})
+
+router.post('/profile/matchings', isAuthorized, async (req, res, next) => {
+  try {
+    let userName = utils.getUserNameFromRequest(req)
+    let percent = req.body.percent
+    let excludeFields = req.body.excludeFields
+
+    let result = await vacancyInteractor.searchUserMatchings(userName, percent, excludeFields)
+
+    next({ result })
+  } catch (error) {
+    next({ error })
+  }
 })
 
 module.exports = {
