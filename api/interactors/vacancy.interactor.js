@@ -144,7 +144,7 @@ function validateVacancy(vacancy) {
       throw new PermissionError('invalid maximalSalary', 400)
     }
 
-    if (maximalSalary > minimalSalary) {
+    if (minimalSalary > maximalSalary) {
       throw new PermissionError('maximalSalary should be greater than minimalSalary', 400)
     }
 
