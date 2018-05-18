@@ -76,7 +76,6 @@
         this.profileData = response.data
         this.locationList = await libs.fetchLocationsOfGeorgia()
       } catch (error) {
-        // TODO Notify
         this.locationList = []
         console.log(error)
       }

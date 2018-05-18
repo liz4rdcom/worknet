@@ -32,7 +32,6 @@ export default {
     async onAddNewDesirableTraining(desirableTraining) {
       let indexOfDesirableTraining = this.desirableTrainingList.findIndex(t => t.name.toLowerCase() === desirableTraining.toLowerCase())
       if (indexOfDesirableTraining !== -1) {
-        // TODO alert or notify
         console.error('this desirable training already exists')
         return
       }
@@ -55,7 +54,6 @@ export default {
     async onRemoveDesirableTraining(desirableTraining) {
       let indexOfDesirableTraining = this.desirableTrainingList.findIndex(t => t.name === desirableTraining)
       if (indexOfDesirableTraining === -1) {
-        // TODO alert or notify
         console.error('can\'t find index of desirable training')
         return
       }

@@ -34,10 +34,10 @@ export default {
       return this.vacancies.filter(({ published }) => !published)
     },
     publishedVacancies() {
-      return this.vacancies.filter(({ published }) => published)
+      return this.vacancies.filter(({ published, endDate }) => published && utils.compareDatesByMilliseconds(new Date(), new Date(endDate)) <= 0)
     },
     expiredVacancies() {
-      return this.vacancies.filter(({ published, endDate }) => published && utils.compareDatesByMilliseconds(new Date(), new Date(endDate)))
+      return this.vacancies.filter(({ published, endDate }) => published && utils.compareDatesByMilliseconds(new Date(), new Date(endDate)) >= 0)
     },
     currentStatusUrlName() {
       switch (this.vacanciesStatus) {

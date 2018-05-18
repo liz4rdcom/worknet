@@ -45,7 +45,6 @@ export default {
     async onAddNewDesirableJob(desirableJob) {
       let indexOfDesirableJob = this.desirableJobs.findIndex(t => t.name.toLowerCase() === desirableJob.toLowerCase())
       if (indexOfDesirableJob !== -1) {
-        // TODO alert or notify
         console.error('this desirable job already exists')
         return
       }
@@ -68,7 +67,6 @@ export default {
     async onRemoveDesirableJob(desirableJob) {
       let indexOfDesirableJob = this.desirableJobs.findIndex(t => t.name === desirableJob)
       if (indexOfDesirableJob === -1) {
-        // TODO alert or notify
         console.error('can\'t find index of desirable job')
         return
       }

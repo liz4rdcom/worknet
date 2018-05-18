@@ -1,9 +1,10 @@
+const _ = require('lodash')
 const skillInteractor = require('./skill.interactor')
 const vacancyRepository = require('../infrastructure/vacancy.repository')
 const userRepository = require('../infrastructure/user.repository')
 const libRepository = require('../infrastructure/lib.repository')
 const PermissionError = require('../exceptions/permission.error')
-const _ = require('lodash')
+const utils = require('../utils')
 
 async function getList(queryString) {
   return await vacancyRepository.getVacancies(queryString)
@@ -98,7 +99,7 @@ function validateVacancy(vacancy, salaryType) {
         throw new PermissionError('invalid: authorFullName', 400)
       }
 
-      if (!_.isNil(authorPersonalId) && !_.isString(authorPersonalId)) {
+      if (!_.isNil(authorPersonalId) && (!_.isString(authorPersonalId) || authorPersonalId.length !== 11 || !utils.stringContainsOnlyNumbers(authorPersonalId))) {
         throw new PermissionError('invalid: authorPersonalId', 400)
       }
     }
@@ -111,15 +112,25 @@ function validateVacancy(vacancy, salaryType) {
       throw new PermissionError('addressLine must be string', 400)
     }
 
+    if (interviewSupposedStartDate && !_.isString(interviewSupposedStartDate)) {
+      throw new PermissionError('interviewSupposedStartDate must be string', 400)
+    }
+
     if (endDate && !_.isString(endDate)) {
       throw new PermissionError('endDate must be string', 400)
+    }
+
+    if (_.isString(interviewSupposedStartDate) && _.isString(endDate)) {
+      if (new Date(endDate) - new Date(interviewSupposedStartDate) < 0) {
+        throw new PermissionError('interviewSupposedStartDate must be lower than endDate', 400)
+      }
     }
 
     if (!_.isNil(useMediationService) && !_.isBoolean(useMediationService)) {
       throw new PermissionError('useMediationService boolean string', 400)
     }
 
-    if (vacantPlacesQuantity !== 0 && (vacantPlacesQuantity && (!_.isInteger(vacantPlacesQuantity) || vacantPlacesQuantity < 0))) {
+    if (vacantPlacesQuantity !== 0 && (vacantPlacesQuantity && (!utils.stringIsNonNegativeInteger(vacantPlacesQuantity) || vacantPlacesQuantity < 0))) {
       throw new PermissionError('invalid vacantPlacesQuantity', 400)
     }
 
@@ -247,6 +258,8 @@ async function addVacancy(userName, vacancy) {
   if (_.isArray(vacan.skills)) {
     skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
   }
+
+  console.log(444, vacan)
 
   return await vacancyRepository.addVacancy(vacan)
 }
