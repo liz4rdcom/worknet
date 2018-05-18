@@ -17,9 +17,14 @@ const stringIsNonNegativeInteger = str => str === '0' || stringIsPositiveInteger
 
 const couldBePersonalId = num => _.isString(num) && num.length === 11 && stringContainsOnlyNumbers(num)
 
+function percentToString(percent) {
+  return percent.toString() + '%'
+}
+
 module.exports = {
   getUserNameFromRequest,
   stringContainsOnlyNumbers,
   couldBePersonalId,
   stringIsNonNegativeInteger,
+  percentToString,
 }

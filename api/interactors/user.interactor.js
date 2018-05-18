@@ -544,6 +544,65 @@ async function addUseMediationService(userName, useMediation) {
   await userRepository.saveUseMediationService(userName, useMediationService)
 }
 
+const validateAndFixSearchVacancyMatchings = (configFields, percent) => {
+  if (_.isNumber(percent) && (percent < 0 || percent > 100)) {
+    throw new PermissionError('invalid percent', 400)
+  }
+
+  if (!_.isObject(configFields)) {
+    throw new PermissionError('invalid configFields', 400)
+  }
+
+  const correctConfigFields = {...configFields}
+
+  const {
+    positionName,
+    locationName,
+    locationUnitName,
+    minimalSalary,
+    maximalSalary,
+    fullTime,
+    partTime,
+    shiftBased,
+    formalEducationLevelName,
+    drivingLicenceA,
+    drivingLicenceB,
+    drivingLicenceC,
+    drivingLicenceD,
+    drivingLicenceE,
+    drivingLicenceT1,
+    drivingLicenceT2,
+    airLicence,
+    seaLicence,
+    railwayLicence,
+    languages,
+    skills,
+    ...restConfigFields
+  } = correctConfigFields
+
+  // todo validate
+
+  if (!_.isEmpty(restConfigFields)) {
+    throw new PermissionError('invalid configFields: redundant fields found', 400)
+  }
+
+  if (!minimalSalary) {
+    correctConfigFields.minimalSalary = 0
+  }
+
+  if (!maximalSalary) {
+    correctConfigFields.maximalSalary = Number.MAX_SAFE_INTEGER
+  }
+
+  return {configFields: correctConfigFields, percent}
+}
+
+async function searchVacancyMatchings(configFields = {}, percent) {
+  const result = validateAndFixSearchVacancyMatchings(configFields, percent)
+
+  return await userRepository.matchUsersToVacancy(result.configFields, result.percent)
+}
+
 module.exports = {
   getList,
   getUserMainInfo,
@@ -594,4 +653,5 @@ module.exports = {
   getUseMediationService,
   addUseMediationService,
   register,
+  searchVacancyMatchings,
 }

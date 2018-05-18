@@ -565,6 +565,19 @@ router.post('/profile/usemediationservice', isAuthorized, async (req, res, next)
   }
 })
 
+router.post('/vacancy/matchings', isAuthorized, async (req, res, next) => {
+  try {
+    let configFields = req.body.configFields
+    let percent = req.body.percent
+
+    let result = await userInteractor.searchVacancyMatchings(configFields, percent)
+
+    next({ result })
+  } catch (error) {
+    next({ error })
+  }
+})
+
 module.exports = {
   router,
   baseUrl,

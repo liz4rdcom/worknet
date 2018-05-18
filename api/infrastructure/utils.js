@@ -6,7 +6,7 @@ function toObject(elasticHit) {
   return object
 }
 
-function constantScoreQuery(key, value) {
+function constantScoreQuery(key, value, boost = 1) {
   return {
     constant_score: {
       filter: {
@@ -14,6 +14,7 @@ function constantScoreQuery(key, value) {
           [key]: value,
         },
       },
+      boost,
     },
   }
 }
@@ -45,15 +46,10 @@ function constantMultiShouldQuery(pairs) {
   })
 }
 
-function percentToString(percent) {
-  return percent.toString() + '%'
-}
-
 module.exports = {
   toObject,
   constantScoreQuery,
   functionBoolScore,
   constantMultiMustQuery,
   constantMultiShouldQuery,
-  percentToString,
 }

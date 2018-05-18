@@ -1,11 +1,14 @@
 const elasticsearch = require('elasticsearch')
 const config = require('config')
+const _ = require('lodash')
 
 const client = new elasticsearch.Client({
   host: config.get('elastic.host'),
 })
 
 const utils = require('./utils')
+const libRepo = require('./lib.repository')
+const generalUtils = require('../utils')
 
 const index = config.get('elastic.usersIndex')
 const type = config.get('elastic.usersType')
@@ -733,6 +736,207 @@ async function saveUseMediationService(userName, useMediationService) {
   await client.updateByQuery(options)
 }
 
+async function matchUsersToVacancy(configFields, percent) {
+  let shoulds = []
+
+  const {
+    positionName,
+
+    locationName,
+    locationUnitName,
+
+    minimalSalary,
+    maximalSalary,
+
+    fullTime,
+    partTime,
+    shiftBased,
+
+    formalEducationLevelName,
+
+    drivingLicenceA,
+    drivingLicenceB,
+    drivingLicenceC,
+    drivingLicenceD,
+    drivingLicenceE,
+    drivingLicenceT1,
+    drivingLicenceT2,
+    airLicence,
+    seaLicence,
+    railwayLicence,
+
+    languages,
+
+    skills,
+  } = configFields
+
+  if (positionName) {
+    shoulds.push(
+      utils.constantScoreQuery('desirableJobs.name.keyword', positionName)
+    )
+    shoulds.push(
+      utils.constantScoreQuery('jobExperiences.jobTitle.keyword', positionName)
+    )
+  }
+
+  if (locationName === 'თბილისი') {
+    shoulds.push(
+      utils.constantScoreQuery('factLocationName.keyword', locationName)
+    )
+
+    shoulds.push(
+      utils.constantScoreQuery('desirableJobLocations.locationName.keyword', locationName)
+    )
+  } else if (locationName && locationUnitName) {
+    shoulds.push(
+      utils.constantMultiMustQuery([
+        ['factLocationName.keyword', locationName],
+        ['factLocationUnitName.keyword', locationUnitName],
+      ])
+    )
+
+    shoulds.push(
+      utils.constantMultiMustQuery([
+        ['desirableJobLocations.locationName.keyword', locationName],
+        ['desirableJobLocations.locationName.keyword', locationUnitName],
+      ])
+    )
+  }
+
+  if (_.isNumber(minimalSalary)) {
+    shoulds.push(
+      utils.functionBoolScore({
+        must: {
+          range: {
+            desirableSalary: {
+              gte: minimalSalary,
+              lte: maximalSalary,
+            },
+          },
+        },
+      })
+    )
+  }
+
+  if (fullTime) {
+    shoulds.push(
+      utils.constantScoreQuery('fullTime', fullTime)
+    )
+  }
+  if (partTime) {
+    shoulds.push(
+      utils.constantScoreQuery('partTime', partTime)
+    )
+  }
+  if (shiftBased) {
+    shoulds.push(
+      utils.constantScoreQuery('shiftBased', shiftBased)
+    )
+  }
+
+  if (formalEducationLevelName) {
+    const formalEducationLevels = await libRepo.getFormalEducationLevels()
+
+    shoulds.push(
+      utils.constantMultiShouldQuery(
+        formalEducationLevels
+          .slice(formalEducationLevels.indexOf(formalEducationLevelName))
+          .map(nextVal => ['formalEducationLevelName.keyword', nextVal])
+      )
+    )
+  }
+
+  if (drivingLicenceA) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceA', drivingLicenceA)
+    )
+  }
+  if (drivingLicenceB) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceB', drivingLicenceB)
+    )
+  }
+  if (drivingLicenceC) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceC', drivingLicenceC)
+    )
+  }
+  if (drivingLicenceD) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceD', drivingLicenceD)
+    )
+  }
+  if (drivingLicenceE) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceE', drivingLicenceE)
+    )
+  }
+  if (drivingLicenceT1) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceT1', drivingLicenceT1)
+    )
+  }
+  if (drivingLicenceT2) {
+    shoulds.push(
+      utils.constantScoreQuery('drivingLicenceT2', drivingLicenceT2)
+    )
+  }
+  if (airLicence) {
+    shoulds.push(
+      utils.constantScoreQuery('airLicence', airLicence)
+    )
+  }
+  if (seaLicence) {
+    shoulds.push(
+      utils.constantScoreQuery('seaLicence', seaLicence)
+    )
+  }
+  if (railwayLicence) {
+    shoulds.push(
+      utils.constantScoreQuery('railwayLicence', railwayLicence)
+    )
+  }
+
+  languages.forEach(({ languageName }) => {
+    shoulds.push(
+      utils.constantScoreQuery('languages.languageName.keyword', languageName)
+    )
+  })
+
+  skills.forEach(({ skillName }) => {
+    shoulds.push(
+      utils.constantScoreQuery('skills.skillName.keyword', skillName)
+    )
+  })
+
+  let searchOptions = {
+    index,
+    type,
+    body: {
+      query: {
+        bool: {
+          should: shoulds,
+        },
+      },
+    },
+    searchType: 'dfs_query_then_fetch',
+    size: 30,
+  }
+
+  if (percent) {
+    searchOptions.body.query.bool.minimum_should_match = generalUtils.percentToString(percent)
+  }
+
+  let result = await client.search(searchOptions)
+
+  console.clear()
+  console.log('-----------------------------------------------------------------------------------------------------------------------------')
+  console.log(JSON.stringify(result, null, 4))
+  console.log(JSON.stringify(searchOptions, null, 4))
+
+  return result.hits.hits.map(utils.toObject)
+}
+
 module.exports = {
   getUsers,
   getMainInfo,
@@ -765,4 +969,5 @@ module.exports = {
   saveJobDescription,
   getUseMediationService,
   saveUseMediationService,
+  matchUsersToVacancy,
 }

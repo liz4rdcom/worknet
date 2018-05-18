@@ -6,6 +6,7 @@ const client = new elasticsearch.Client({
 })
 
 const utils = require('./utils')
+const generalUtils = require('..//utils')
 
 const index = config.get('elastic.vacanciesIndex')
 const type = config.get('elastic.vacanciesType')
@@ -341,7 +342,7 @@ async function matchVacanciesToUser(user, percent) {
       query: {
         bool: {
           should: shoulds,
-          minimum_should_match: utils.percentToString(percent),
+          minimum_should_match: generalUtils.percentToString(percent),
           filter: {
             term: {
               published: true,

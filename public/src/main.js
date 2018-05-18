@@ -15,6 +15,10 @@ Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.prototype.$http = webApi
 
+Vue.filter('boolToText', function (value) {
+  return value ? 'დიახ' : 'არა'
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
