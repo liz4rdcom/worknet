@@ -55,24 +55,15 @@ async function fetchLanguages() {
   return this.languagesSelect
 }
 
-async function fetchSalaryTypes() {
-  if (this.salaryTypes) return this.salaryTypes
-  let response = await webApi.get('api/libs/salaryTypes', {headers: utils.getHeaders()})
-  this.salaryTypes = response.data
-  return this.salaryTypes
-}
-
 export default {
   locationsOfGeorgia: undefined,
   educationTypes: undefined,
   educationLevels: undefined,
   formalEducationLevels: undefined,
   languagesSelect: undefined,
-  salaryTypes: undefined,
   fetchLocationsOfGeorgia,
   fetchEducationTypes,
   fetchEducationLevels,
   fetchFormalEducationLevels,
   fetchLanguages,
-  fetchSalaryTypes,
 }

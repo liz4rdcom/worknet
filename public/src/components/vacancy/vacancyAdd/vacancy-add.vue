@@ -135,49 +135,22 @@
       </b-form-textarea>
     </b-form-group>
 
-    <b-card class="mb-2" title="ხელფასი">
-      <b-form-checkbox id="vacancy-add-is-salary-range" class="mb-3" v-model="isSalaryRange">
-        გსურთ ხელფასის ინტერვალის მითითება?
-      </b-form-checkbox>
-
-      <b-form-checkbox id="vacancy-add-is-salary-by-earnings" class="mb-3" v-model="vacancy.isSalaryByEarnings">
-        ხელფასი გამომუშავებით
-      </b-form-checkbox>
-
-      <b-container class="mb-4" v-if="!vacancy.isSalaryByEarnings">
-        <b-row>
-          <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი დან</legend></b-col>
-          <b-col v-if="isSalaryRange" cols="0"></b-col>
-          <b-col v-if="isSalaryRange"><legend class="col-form-legend">ხელფასი მდე</legend></b-col>
-          <b-col v-if="!isSalaryRange"><legend class="col-form-legend">ხელფასი</legend></b-col>
-          <b-col v-if="!isSalaryRange"></b-col>
-          <b-col cols="5"><legend class="col-form-legend">ანაზღაურების ტიპი</legend></b-col>
-        </b-row>
-        <b-row>
-          <b-col class="salary-from">
-            <b-form-input v-if="isSalaryRange" id="vacancy-add-salary-from" v-model="vacancy.minimalSalary"/>
-            <b-form-input v-else id="vacancy-add-salary" v-model="vacancy.fixedSalary"/>
-          </b-col>
-          <b-col cols="0" v-if="isSalaryRange">-</b-col>
-          <b-col class="salary-to">
-            <b-form-input v-if="isSalaryRange"  id="vacancy-add-salary-to" v-model="vacancy.maximalSalary"/>
-          </b-col>
-          <b-col cols="5">
-            <b-form-select id="vacancy-add-salary-type" v-model="vacancy.salaryTypeId" :options="salaryTypeOptions"/>
-          </b-col>
-        </b-row>
-      </b-container>
-
-      <b-form-group label="ინფორმაცია ხელფასის შესახებ"> <!-- optional -->
-        <b-form-textarea
-          id="vacancy-add-salary-info"
-          v-model="vacancy.additionalSalaryInfo"
-          :rows="3"
-          :max-rows="6"
-        >
-        </b-form-textarea>
-      </b-form-group>
-    </b-card>
+    <b-container class="mb-4">
+      <b-row>
+        <b-col><legend class="col-form-legend">ხელფასი დან</legend></b-col>
+        <b-col cols="0"></b-col>
+        <b-col><legend class="col-form-legend">ხელფასი მდე</legend></b-col>
+      </b-row>
+      <b-row>
+        <b-col class="salary-from">
+          <b-form-input id="vacancy-add-salary-from" v-model="vacancy.minimalSalary"/>
+        </b-col>
+        <b-col cols="0">-</b-col>
+        <b-col class="salary-to">
+          <b-form-input id="vacancy-add-salary-to" v-model="vacancy.maximalSalary"/>
+        </b-col>
+      </b-row>
+    </b-container>
 
     <b-card>
         <b-form-checkbox
@@ -350,7 +323,6 @@ import languages from './languages'
 import vacancySkills from './vacancy-skills'
 
 const baseUrl = '/api/vacancies'
-const MonthId = 2
 
 export default {
   name: 'vacancy-add',
@@ -377,10 +349,6 @@ export default {
       additionalDescription: null,
       minimalSalary: null,
       maximalSalary: null,
-      fixedSalary: null,
-      salaryTypeId: MonthId,
-      additionalSalaryInfo: null,
-      isSalaryByEarnings: false,
       fullTime: null,
       partTime: null,
       shiftBased: null,
@@ -399,17 +367,12 @@ export default {
       skills: [],
     },
     formalEducationLevels: [],
-    salaryTypes: [],
     isOrganization: true,
     shouldHaveDrivingLicence: false,
-    isSalaryRange: false,
   }),
   async created() {
     try {
-      [this.formalEducationLevels, this.salaryTypes] = await Promise.all([
-        libs.fetchFormalEducationLevels(),
-        libs.fetchSalaryTypes(),
-      ])
+      this.formalEducationLevels = await libs.fetchFormalEducationLevels()
     } catch (error) {
       bus.$emit('error', error)
     }
@@ -486,32 +449,12 @@ export default {
             this.vacancy.additionalDescription = vacancyResult.additionalDescription
           }
 
-          if (!isNil(vacancyResult.minimalSalary) || !isNil(vacancyResult.maximalSalary)) {
-            this.isSalaryRange = true
-          }
-
-          if (!isNil(vacancyResult.isSalaryByEarnings)) {
-            this.vacancy.isSalaryByEarnings = vacancyResult.isSalaryByEarnings
-          }
-
           if (!isNil(vacancyResult.minimalSalary)) {
             this.vacancy.minimalSalary = vacancyResult.minimalSalary
           }
 
           if (!isNil(vacancyResult.maximalSalary)) {
             this.vacancy.maximalSalary = vacancyResult.maximalSalary
-          }
-
-          if (!isNil(vacancyResult.fixedSalary)) {
-            this.vacancy.fixedSalary = vacancyResult.fixedSalary
-          }
-
-          if (vacancyResult.salaryTypeId) {
-            this.vacancy.salaryTypeId = vacancyResult.salaryTypeId
-          }
-
-          if (vacancyResult.additionalSalaryInfo) {
-            this.vacancy.additionalSalaryInfo = vacancyResult.additionalSalaryInfo
           }
 
           if (!isNil(vacancyResult.fullTime)) {
@@ -683,28 +626,12 @@ export default {
         retVal.functionsDescription = this.vacancy.functionsDescription
       }
 
-      if (!isNil(this.vacancy.isSalaryByEarnings)) {
-        retVal.isSalaryByEarnings = this.vacancy.isSalaryByEarnings
-      }
-
-      if (!isNil(this.vacancy.fixedSalary) && !this.isSalaryRange && !this.vacancy.isSalaryByEarnings) {
-        retVal.fixedSalary = this.vacancy.fixedSalary
-      }
-
-      if (!isNil(this.vacancy.minimalSalary) && this.isSalaryRange && !this.vacancy.isSalaryByEarnings) {
+      if (!isNil(this.vacancy.minimalSalary)) {
         retVal.minimalSalary = this.vacancy.minimalSalary
       }
 
-      if (!isNil(this.vacancy.maximalSalary) && this.isSalaryRange && !this.vacancy.isSalaryByEarnings) {
+      if (!isNil(this.vacancy.maximalSalary)) {
         retVal.maximalSalary = this.vacancy.maximalSalary
-      }
-
-      if (this.vacancy.salaryTypeId && !this.vacancy.isSalaryByEarnings) {
-        retVal.salaryTypeId = this.vacancy.salaryTypeId
-      }
-
-      if (this.vacancy.additionalSalaryInfo) {
-        retVal.additionalSalaryInfo = this.vacancy.additionalSalaryInfo
       }
 
       if (this.vacancy.formalEducationLevelName && this.vacancy.formalEducationLevelName !== '- აირჩიე -') {
@@ -796,13 +723,6 @@ export default {
       retVal.splice(0, 0, '- აირჩიე -')
 
       return retVal
-    },
-    salaryTypeOptions() {
-      let options = this.salaryTypes.map(type => ({value: type.typeId, text: type.typeName}))
-
-      options.unshift({value: null, text: '- აირჩიე ანაზღაურების ტიპი -'})
-
-      return options
     },
   },
   components: {
