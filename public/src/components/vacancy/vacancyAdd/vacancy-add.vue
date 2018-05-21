@@ -545,7 +545,6 @@ export default {
     formalEducationLevels: [],
     isOrganization: true,
     shouldHaveDrivingLicence: false,
-    isSalaryRange: false,
     jobseekerSearchHidden: false,
     positionSwitchOptions: [{text: 'თანამდებობა', value: true}, {text: 'X', value: false}],
     locationSwitchOptions: [{text: 'ადგილი', value: true}, {text: 'X', value: false}],

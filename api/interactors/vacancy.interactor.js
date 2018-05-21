@@ -144,6 +144,10 @@ function validateVacancy(vacancy) {
       throw new PermissionError('invalid maximalSalary', 400)
     }
 
+    if (minimalSalary > maximalSalary) {
+      throw new PermissionError('maximalSalary should be greater than minimalSalary', 400)
+    }
+
     if (!_.isNil(fullTime) && !_.isBoolean(fullTime)) {
       throw new PermissionError('invalid fullTime', 400)
     }

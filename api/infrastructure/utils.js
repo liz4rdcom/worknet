@@ -19,7 +19,7 @@ function constantScoreQuery(key, value, boost = 1) {
   }
 }
 
-function functionBoolScore(boolQuery, source) {
+function functionBoolScore(boolQuery) {
   return {
     function_score: {
       query: {
