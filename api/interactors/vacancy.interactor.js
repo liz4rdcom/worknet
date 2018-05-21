@@ -278,7 +278,6 @@ const validateAndGenerateUserMatchingFields = (projectionConfigFields, percent) 
   const correctProjectionConfigFields = {...projectionConfigFields}
 
   const {
-    position,
     factLocation,
     salary,
     workSchedule,
@@ -299,10 +298,6 @@ const validateAndGenerateUserMatchingFields = (projectionConfigFields, percent) 
   }
 
   let includeFields = []
-
-  if (position) {
-    includeFields.push('positionName')
-  }
 
   if (factLocation) {
     includeFields.push('factLocationName')

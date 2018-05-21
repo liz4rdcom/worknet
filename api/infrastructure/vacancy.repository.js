@@ -354,7 +354,10 @@ async function matchVacanciesToUser(user, percent) {
 
   let result = await client.search(searchOptions)
 
-  return result.hits.hits.map(utils.toObject)
+  return {
+    total: result.hits.total,
+    list: result.hits.hits.map(utils.toObject),
+  }
 }
 
 module.exports = {
