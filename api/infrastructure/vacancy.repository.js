@@ -1,10 +1,12 @@
 const elasticsearch = require('elasticsearch')
 const config = require('config')
+const _ = require('lodash')
 
 const client = new elasticsearch.Client({
   host: config.get('elastic.host'),
 })
 
+const libRepo = require('./lib.repository')
 const utils = require('./utils')
 const generalUtils = require('..//utils')
 
@@ -255,12 +257,6 @@ function commonShoulds(user) {
     .filter(key => booleanFields.includes(key) && user[key] != null)
     .map(key => utils.constantScoreQuery(key, user[key]))
 
-  if (user.formalEducationLevelName) {
-    shoulds.push(
-      utils.constantScoreQuery('formalEducationLevelName.keyword', user.formalEducationLevelName)
-    )
-  }
-
   return shoulds
 }
 
@@ -289,10 +285,16 @@ function desirableJobShoulds(user) {
 function desirableJobLocationShoulds(user) {
   let desirableJobLocations = user.desirableJobLocations
 
-  let shoulds = desirableJobLocations.map(location => utils.constantMultiMustQuery([
-    ['locationName.keyword', location.locationName],
-    ['locationUnitName.keyword', location.locationUnitName],
-  ]))
+  let shoulds = desirableJobLocations.map(location => {
+    if (location.locationName === 'თბილისი') {
+      return utils.constantScoreQuery('locationName.keyword', location.locationName)
+    }
+
+    return utils.constantMultiMustQuery([
+      ['locationName.keyword', location.locationName],
+      ['locationUnitName.keyword', location.locationUnitName],
+    ])
+  })
 
   return utils.functionBoolScore({
     should: shoulds,
@@ -305,6 +307,96 @@ function jobExperiencesShoulds(user) {
   let pairs = jobExperiences.map(experience => ['positionName', experience.jobTitle])
 
   return utils.constantMultiShouldQuery(pairs)
+}
+
+function desirableSalaryShoulds(user) {
+  let desirableSalary = user.desirableSalary
+
+  let localShoulds = []
+
+  localShoulds.push(
+    {
+      bool: {
+        must: [
+          {
+            range: {
+              minimalSalary: {
+                lte: desirableSalary,
+              },
+            },
+          },
+          {
+            range: {
+              maximalSalary: {
+                gte: desirableSalary,
+              },
+            },
+          },
+        ],
+      },
+    }
+  )
+
+  localShoulds.push(
+    {
+      bool: {
+        must: {
+          range: {
+            minimalSalary: {
+              lte: desirableSalary,
+            },
+          },
+        },
+        must_not: {
+          exists: {
+            field: 'maximalSalary',
+          },
+        },
+      },
+    }
+  )
+
+  localShoulds.push(
+    {
+      bool: {
+        must: {
+          range: {
+            maximalSalary: {
+              gte: desirableSalary,
+            },
+          },
+        },
+        must_not: {
+          exists: {
+            field: 'minimalSalary',
+          },
+        },
+      },
+    }
+  )
+
+  localShoulds.push(
+    {
+      bool: {
+        must_not: [
+          {
+            exists: {
+              field: 'minimalSalary',
+            },
+          },
+          {
+            exists: {
+              field: 'maximalSalary',
+            },
+          },
+        ],
+      },
+    }
+  )
+
+  return utils.functionBoolScore({
+    should: localShoulds,
+  })
 }
 
 async function matchVacanciesToUser(user, percent) {
@@ -331,6 +423,31 @@ async function matchVacanciesToUser(user, percent) {
 
   if (user.jobExperiences && user.jobExperiences.length > 0) {
     shoulds = shoulds.concat(jobExperiencesShoulds(user))
+  }
+
+  if (user.formalEducationLevelName) {
+    const formalEducationLevels = await libRepo.getFormalEducationLevels()
+
+    shoulds.push(
+      utils.constantMultiShouldQuery(
+        formalEducationLevels
+          .slice(formalEducationLevels.indexOf(user.formalEducationLevelName))
+          .map(nextVal => ['formalEducationLevelName.keyword', nextVal])
+      )
+    )
+  }
+
+  if (_.isInteger(user.desirableSalary)) {
+    shoulds = shoulds.concat(desirableSalaryShoulds(user))
+  }
+
+  if (user.factLocationName === 'თბილისი') {
+    shoulds.push(utils.constantScoreQuery('locationName.keyword', user.factLocationName))
+  } else if (user.factLocationName && user.factLocationUnitName) {
+    shoulds.push(utils.constantMultiMustQuery([
+      ['locationName.keyword', user.factLocationName],
+      ['locationUnitName.keyword', user.factLocationUnitName],
+    ]))
   }
 
   let searchOptions = {
