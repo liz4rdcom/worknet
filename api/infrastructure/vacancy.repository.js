@@ -1,10 +1,12 @@
 const elasticsearch = require('elasticsearch')
 const config = require('config')
+const _ = require('lodash')
 
 const client = new elasticsearch.Client({
   host: config.get('elastic.host'),
 })
 
+const libRepo = require('./lib.repository')
 const utils = require('./utils')
 const generalUtils = require('..//utils')
 
@@ -252,17 +254,8 @@ function commonShoulds(user) {
   ]
 
   let shoulds = Object.keys(user)
-    .filter(key => booleanFields.includes(key) && user[key])
+    .filter(key => booleanFields.includes(key) && user[key] != null)
     .map(key => utils.constantScoreQuery(key, user[key]))
-    .reduce((arr, should) => {
-      arr.push(should)
-
-      return arr
-    }, [])
-
-  shoulds.push(
-    utils.constantScoreQuery('formalEducationLevelName.keyword', user.formalEducationLevelName)
-  )
 
   return shoulds
 }
@@ -292,10 +285,16 @@ function desirableJobShoulds(user) {
 function desirableJobLocationShoulds(user) {
   let desirableJobLocations = user.desirableJobLocations
 
-  let shoulds = desirableJobLocations.map(location => utils.constantMultiMustQuery([
-    ['locationName.keyword', location.locationName],
-    ['locationUnitName.keyword', location.locationUnitName],
-  ]))
+  let shoulds = desirableJobLocations.map(location => {
+    if (location.locationName === 'თბილისი') {
+      return utils.constantScoreQuery('locationName.keyword', location.locationName)
+    }
+
+    return utils.constantMultiMustQuery([
+      ['locationName.keyword', location.locationName],
+      ['locationUnitName.keyword', location.locationUnitName],
+    ])
+  })
 
   return utils.functionBoolScore({
     should: shoulds,
@@ -310,29 +309,126 @@ function jobExperiencesShoulds(user) {
   return utils.constantMultiShouldQuery(pairs)
 }
 
+function desirableSalaryShoulds(user) {
+  let desirableSalary = user.desirableSalary
+
+  let localShoulds = []
+
+  localShoulds.push(
+    {
+      bool: {
+        must: [
+          {
+            range: {
+              minimalSalary: {
+                lte: desirableSalary,
+              },
+            },
+          },
+          {
+            range: {
+              maximalSalary: {
+                gte: desirableSalary,
+              },
+            },
+          },
+        ],
+      },
+    }
+  )
+
+  localShoulds.push(
+    {
+      bool: {
+        must: {
+          range: {
+            minimalSalary: {
+              lte: desirableSalary,
+            },
+          },
+        },
+        must_not: {
+          exists: {
+            field: 'maximalSalary',
+          },
+        },
+      },
+    }
+  )
+
+  localShoulds.push(
+    {
+      bool: {
+        must: {
+          range: {
+            maximalSalary: {
+              gte: desirableSalary,
+            },
+          },
+        },
+        must_not: {
+          exists: {
+            field: 'minimalSalary',
+          },
+        },
+      },
+    }
+  )
+
+  return utils.functionBoolScore({
+    should: localShoulds,
+  })
+}
+
 async function matchVacanciesToUser(user, percent) {
   let shoulds = []
 
   shoulds = shoulds.concat(commonShoulds(user))
 
-  if (user.skills) {
+  if (user.skills && user.skills.length > 0) {
     shoulds = shoulds.concat(skillsShoulds(user))
   }
 
-  if (user.languages) {
+  if (user.languages && user.languages.length > 0) {
     shoulds = shoulds.concat(languageShoulds(user))
   }
 
-  if (user.desirableJobs) {
+  if (user.desirableJobs && user.desirableJobs.length > 0) {
     shoulds = shoulds.concat(desirableJobShoulds(user))
   }
 
-  if (user.desirableJobLocations) {
+  // TODO desirableJobs and jobExperiences on one should
+  if (user.desirableJobLocations && user.desirableJobLocations.length > 0) {
     shoulds = shoulds.concat(desirableJobLocationShoulds(user))
   }
 
-  if (user.jobExperiences) {
+  if (user.jobExperiences && user.jobExperiences.length > 0) {
     shoulds = shoulds.concat(jobExperiencesShoulds(user))
+  }
+
+  if (user.formalEducationLevelName) {
+    const formalEducationLevels = await libRepo.getFormalEducationLevels()
+
+    shoulds.push(
+      utils.constantMultiShouldQuery(
+        formalEducationLevels
+          .slice(formalEducationLevels.indexOf(user.formalEducationLevelName))
+          .map(nextVal => ['formalEducationLevelName.keyword', nextVal])
+      )
+    )
+  }
+
+  if (_.isInteger(user.desirableSalary)) {
+    shoulds = shoulds.concat(desirableSalaryShoulds(user))
+  }
+
+  if (user.factLocationName === 'თბილისი') {
+    shoulds.push(utils.constantScoreQuery('locationName.keyword', user.factLocationName))
+  } else if (user.factLocationName && user.factLocationUnitName) {
+    shoulds.push(utils.constantMultiMustQuery([
+      ['locationName.keyword', user.factLocationName],
+      ['locationUnitName.keyword', user.factLocationUnitName],
+    ]))
   }
 
   let searchOptions = {
@@ -356,7 +452,18 @@ async function matchVacanciesToUser(user, percent) {
 
   let result = await client.search(searchOptions)
 
-  return result.hits.hits.map(utils.toObject)
+  let resutlList = result.hits.hits.map(hit => {
+    let object = utils.toObject(hit)
+
+    object._percent = Math.floor((hit._score / shoulds.length) * 100).toString() + '%'
+
+    return object
+  })
+
+  return {
+    total: result.hits.total,
+    list: resutlList,
+  }
 }
 
 module.exports = {

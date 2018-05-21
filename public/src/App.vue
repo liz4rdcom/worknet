@@ -31,6 +31,17 @@
     overflow-y: auto;
   }
 
+  .card {
+    background: whitesmoke;
+  }
+
+  .card-title {
+    background-color: darkslategray;
+    color: whitesmoke;
+    border: solid darkslategray 10px;
+    border-radius: 15px;
+  }
+
   .flex {
     flex: 1;
   }

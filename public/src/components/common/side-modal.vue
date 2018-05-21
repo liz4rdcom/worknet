@@ -45,14 +45,14 @@
 	.custom-modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 5; /* Sit on top */
     right: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-	overflow: scroll;
+	  overflow: scroll;
 	}
 
 	.custom-modal-content {
@@ -81,4 +81,3 @@
     cursor: pointer;
 }
 </style>
-
