@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="vacancy-search-inner-container">
+    <div>
       <b-container>
         <b-row align-v="center">
           <b-col>
@@ -125,17 +125,21 @@
             </b-col>
 
             <b-col>
-              <b-button style="width: 60%; float: right;" variant="primary" @click="searchVacanciesIfNecessary">ძებნა</b-button>
+              <b-button style="width: 60%; float: right;" variant="primary" @click="search">ძებნა</b-button>
             </b-col>
           </b-row>
         </b-card>
       </b-form-group>
 
-      <!-- <vacancies-list style="padding-top: 20px;" :vacancies="searchedVacancies" vacanciesStatus="1"/> -->
     </div>
+
+    <vacancies-search-list style="padding-top: 20px;" :vacancies="searchedVacancies" />
   </div>
 </template>
+
 <script>
+import vacanciesSearchList from './vacancies-search-list'
+
 export default {
   name: 'vacancies-user-matching',
   data: () => ({
@@ -161,17 +165,26 @@ export default {
       desirableJobs: true,
       desirableJobLocations: true,
     },
-    vacancySearchHintText: 'პროფილის შევსების შემდეგ შეგიძლიათ მოძებნოთ ვაკანსიების სია, რომლებიც მიესადაგებიან თქვენ მიერ შევსებულ მონაცემებს. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
+    vacancySearchHintText: 'პროფილის შევსების შემდეგ შეგიძლიათ მოძებნოთ ვაკანსიების სია, რომლებიც მიესადაგებიან თქვენ მიერ შევსებულ მონაცემებს',
     searchedVacancies: null,
     searchedVacanciesTotal: 0,
   }),
-  created() {
-    let result = await this.$http.post('/api/vacancies/profile/matchings', {projectionConfigFields: this.vacancySearchSwitches})
+  async created() {
+    await this.search()
+  },
+  methods: {
+    async search() {
+      let result = await this.$http.post('/api/vacancies/profile/matchings', {projectionConfigFields: this.vacancySearchSwitches})
 
-    this.searchedVacanciesTotal = result.data.total
-    this.searchedVacancies = result.data.list
-  }
+      this.searchedVacanciesTotal = result.data.total
+      this.searchedVacancies = result.data.list
+    },
+  },
+  components: {
+    'vacancies-search-list': vacanciesSearchList,
+  },
 }
 </script>
-<style lang="scss" scoped>
+
+<style scoped>
 </style>

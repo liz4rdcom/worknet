@@ -7,6 +7,7 @@ import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancyAdd/vacancy-add'
 import ownVacancies from '../components/vacancy/own-vacancies'
 import vacanciesList from '../components/vacancy/vacancies-list'
+import vacancyMatchings from '../components/vacancy/vacancies-user-matching'
 import login from '../components/um/login'
 import register from '../components/um/register'
 import { bus } from '../components/common/bus'
@@ -117,6 +118,11 @@ let router = new Router({
       path: '/register',
       component: register,
       name: 'register',
+    },
+    {
+      path: '/vacancies-matching',
+      component: vacancyMatchings,
+      name: 'vacancies-user-matching',
     },
   ],
 })
