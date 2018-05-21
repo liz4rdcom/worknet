@@ -266,18 +266,105 @@ async function deleteVacancy(userName, id) {
   return await vacancyRepository.deleteVacancy(id)
 }
 
-async function searchUserMatchings(userName, percent = 100, excludeFields) {
-  if (!_.isNumber(percent)) {
+const validateAndGenerateUserMatchingFields = (projectionConfigFields, percent) => {
+  if (!_.isInteger(percent) && (percent < 0 || percent > 100)) {
     throw new PermissionError('invalid percent', 400)
   }
 
-  if (!_.isArray(excludeFields)) {
-    throw new PermissionError('invalid excludeFields', 400)
+  if (!_.isObject(projectionConfigFields)) {
+    throw new PermissionError('invalid projectionConfigFields', 400)
   }
+
+  const correctProjectionConfigFields = {...projectionConfigFields}
+
+  const {
+    position,
+    factLocation,
+    salary,
+    workSchedule,
+    formalEducationLevel,
+    drivingLicenses,
+    languages,
+    skills,
+    jobExperiences,
+    desirableJobs,
+    desirableJobLocations,
+    ...restConfigFields
+  } = correctProjectionConfigFields
+
+  // todo validate
+
+  if (!_.isEmpty(restConfigFields)) {
+    throw new PermissionError('invalid configFields: redundant fields found', 400)
+  }
+
+  let includeFields = []
+
+  if (position) {
+    includeFields.push('positionName')
+  }
+
+  if (factLocation) {
+    includeFields.push('factLocationName')
+    includeFields.push('factLocationUnitName')
+  }
+
+  if (salary) {
+    includeFields.push('desirableSalary')
+  }
+
+  if (workSchedule) {
+    includeFields.push('fullTime')
+    includeFields.push('partTime')
+    includeFields.push('shiftBased')
+  }
+
+  if (formalEducationLevel) {
+    includeFields.push('formalEducationLevelName')
+  }
+
+  if (drivingLicenses) {
+    includeFields.push('drivingLicenceA')
+    includeFields.push('drivingLicenceB')
+    includeFields.push('drivingLicenceC')
+    includeFields.push('drivingLicenceD')
+    includeFields.push('drivingLicenceE')
+    includeFields.push('drivingLicenceT1')
+    includeFields.push('drivingLicenceT2')
+    includeFields.push('airLicence')
+    includeFields.push('seaLicence')
+    includeFields.push('railwayLicence')
+  }
+
+  if (languages) {
+    includeFields.push('languages')
+  }
+
+  if (skills) {
+    includeFields.push('skills')
+  }
+
+  if (jobExperiences) {
+    includeFields.push('jobExperiences')
+  }
+
+  if (desirableJobs) {
+    includeFields.push('desirableJobs')
+  }
+
+  if (desirableJobLocations) {
+    includeFields.push('desirableJobLocations')
+  }
+
+  return includeFields
+}
+
+async function searchUserMatchings(userName, percent = 0, projectionConfigFields) {
+  let includeFields = validateAndGenerateUserMatchingFields(projectionConfigFields, percent)
 
   let user = await userRepository.getUserByUserName(userName)
 
-  let userToMatch = _.omit(user, excludeFields)
+  let userToMatch = _.pick(user, includeFields)
 
   return await vacancyRepository.matchVacanciesToUser(userToMatch, percent)
 }

@@ -252,17 +252,14 @@ function commonShoulds(user) {
   ]
 
   let shoulds = Object.keys(user)
-    .filter(key => booleanFields.includes(key) && user[key])
+    .filter(key => booleanFields.includes(key) && user[key] != null)
     .map(key => utils.constantScoreQuery(key, user[key]))
-    .reduce((arr, should) => {
-      arr.push(should)
 
-      return arr
-    }, [])
-
-  shoulds.push(
-    utils.constantScoreQuery('formalEducationLevelName.keyword', user.formalEducationLevelName)
-  )
+  if (user.formalEducationLevelName) {
+    shoulds.push(
+      utils.constantScoreQuery('formalEducationLevelName.keyword', user.formalEducationLevelName)
+    )
+  }
 
   return shoulds
 }
@@ -315,23 +312,24 @@ async function matchVacanciesToUser(user, percent) {
 
   shoulds = shoulds.concat(commonShoulds(user))
 
-  if (user.skills) {
+  if (user.skills && user.skills.length > 0) {
     shoulds = shoulds.concat(skillsShoulds(user))
   }
 
-  if (user.languages) {
+  if (user.languages && user.languages.length > 0) {
     shoulds = shoulds.concat(languageShoulds(user))
   }
 
-  if (user.desirableJobs) {
+  if (user.desirableJobs && user.desirableJobs.length > 0) {
     shoulds = shoulds.concat(desirableJobShoulds(user))
   }
 
-  if (user.desirableJobLocations) {
+  // TODO desirableJobs and jobExperiences on one should
+  if (user.desirableJobLocations && user.desirableJobLocations.length > 0) {
     shoulds = shoulds.concat(desirableJobLocationShoulds(user))
   }
 
-  if (user.jobExperiences) {
+  if (user.jobExperiences && user.jobExperiences.length > 0) {
     shoulds = shoulds.concat(jobExperiencesShoulds(user))
   }
 

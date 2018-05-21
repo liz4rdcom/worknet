@@ -105,9 +105,9 @@ router.post('/profile/matchings', isAuthorized, async (req, res, next) => {
   try {
     let userName = utils.getUserNameFromRequest(req)
     let percent = req.body.percent
-    let excludeFields = req.body.excludeFields
+    let projectionConfigFields = req.body.projectionConfigFields
 
-    let result = await vacancyInteractor.searchUserMatchings(userName, percent, excludeFields)
+    let result = await vacancyInteractor.searchUserMatchings(userName, percent, projectionConfigFields)
 
     next({ result })
   } catch (error) {
