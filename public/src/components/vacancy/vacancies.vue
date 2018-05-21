@@ -84,20 +84,8 @@
         {{item.skillName}}
         <span class="closebtn" @click="removeSkill(item)">&times;</span>
       </div>
-</b-card>
-  <b-card class="mb-2 vacancy" v-for="vacancy in vacancies" :key="vacancy.id">
-    <div @click="viewVacancy(vacancy.id)">
-      <h3 class="card-title">{{vacancy.positionName}}</h3>
-      <h5 class="card-text">{{vacancy.organization}}</h5>
-      <h5 class="card-text">{{getFunctionDescription(vacancy)}}</h5>
-      <h5 class="card-text" v-for="skill in getSkills(vacancy)" :key="skill.skillName" @click="skillFilter(skill.skillName, $event)">{{skill.skillName}}</h5>
-      <h5 class="card-text">{{vacancy.publishDate}}</h5>
-      <h5 class="card-text">სრულად ნახვა...</h5>
-    </div>
   </b-card>
-  <side-modal ref="modalRef">
-    <vacancy-view :id="vacancyId" v-if="vacancyId"></vacancy-view>
-  </side-modal>
+  <vacancies-search-list :vacancies="vacancies" @skillClick="skillFilter"></vacancies-search-list>
 </div>
 </template>
 
@@ -108,6 +96,7 @@ import { bus } from '../common/bus'
 import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
 import libs from '../../libs'
+import vacancySearchList from './vacancies-search-list'
 
 const baseUrl = '/api/vacancies/published'
 
@@ -117,6 +106,7 @@ export default {
     'side-modal': sideModal,
     'vacancy-view': vacancyView,
     locations,
+    'vacancies-search-list': vacancySearchList,
   },
   data: () => ({
     vacancies: [],
@@ -188,7 +178,6 @@ export default {
       this.filterObject.minimalSalary = value
     },
     skillFilter (skill, event) {
-      event.stopPropagation()
       this.skillArray.push({skillName: skill})
       this.filterObject.skills = this.skillArray
     },
@@ -262,10 +251,6 @@ export default {
 </script>
 
 <style scoped>
-.vacancy:hover {
-  box-shadow: 0 0 6px rgba(161, 161, 161, 0.89);
-}
-
 .searchArea {
   display: flex;
   flex-direction: row;
