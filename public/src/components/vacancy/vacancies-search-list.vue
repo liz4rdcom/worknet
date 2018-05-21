@@ -3,6 +3,7 @@
     <b-card class="mb-2 vacancy" v-for="vacancy in vacancies" :key="vacancy.id">
       <div @click="viewVacancy(vacancy.id)">
         <h3 class="card-title">{{vacancy.positionName}}</h3>
+        <h4 v-if="vacancy._percent" class="percent-view">პარამეტრების დამთხვევა: {{vacancy._percent}}</h4>
         <h5 class="card-text">{{vacancy.organization}}</h5>
         <h5 class="card-text">{{getFunctionDescription(vacancy)}}</h5>
         <h5 class="card-text" v-for="skill in getSkills(vacancy)" :key="skill.skillName" @click="skillFilter(skill.skillName, $event)">{{skill.skillName}}</h5>
@@ -79,5 +80,14 @@ export default {
 <style scoped>
 .vacancy:hover {
   box-shadow: 0 0 6px rgba(161, 161, 161, 0.89);
+}
+
+.percent-view {
+  /* background-color: #9ec4c4; */
+  border-radius: 9%;
+  padding: 2px;
+  /* color: white; */
+  font-size: 1.25rem;
+  text-align: left;
 }
 </style>
