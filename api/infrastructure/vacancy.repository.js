@@ -375,25 +375,6 @@ function desirableSalaryShoulds(user) {
     }
   )
 
-  localShoulds.push(
-    {
-      bool: {
-        must_not: [
-          {
-            exists: {
-              field: 'minimalSalary',
-            },
-          },
-          {
-            exists: {
-              field: 'maximalSalary',
-            },
-          },
-        ],
-      },
-    }
-  )
-
   return utils.functionBoolScore({
     should: localShoulds,
   })
