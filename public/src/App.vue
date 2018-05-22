@@ -19,20 +19,19 @@
   }
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    background: whitesmoke;
-    height: 100%;
-    overflow-y: auto;
-  }
+<style lang="scss">
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  background: red;
+  height: 100%;
+  overflow-y: auto;
+}
 
-  .flex {
-    flex: 1;
-  }
-
+.flex {
+  flex: 1;
+}
 </style>
