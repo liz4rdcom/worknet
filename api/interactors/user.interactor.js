@@ -73,7 +73,77 @@ async function getUserMainInfo(userName) {
   return user
 }
 
+function validateMainInfo(mainInfo) {
+  const {
+    firstName,
+    lastName,
+    genderName,
+    birthDate,
+    registrationLocationName,
+    registrationLocationUnitName,
+    registrationAddressDescription,
+    factLocationName,
+    factLocationUnitName,
+    factAddressDescription,
+    mobileNumber,
+    email,
+    contactDescription,
+    ...restProps
+  } = mainInfo
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found', 500)
+  }
+
+  if (firstName && !_.isString(firstName)) {
+    throw new PermissionError('firstName should be string', 400)
+  }
+
+  if (lastName && !_.isString(lastName)) {
+    throw new PermissionError('lastName should be string', 400)
+  }
+
+  if (genderName && !_.isString(genderName)) {
+    throw new PermissionError('genderName should be string', 400)
+  }
+
+  if (birthDate && (!_.isDate(birthDate) && !_.isString(birthDate))) {
+    throw new PermissionError('invalid birthDate', 400)
+  }
+
+  if ((registrationLocationName || registrationLocationUnitName) && (!_.isString(registrationLocationName) || !_.isString(registrationLocationUnitName))) {
+    throw new PermissionError('invalid: registrationLocationName, registrationLocationUnitName', 400)
+  }
+
+  if ((factLocationName || factLocationUnitName) && (!_.isString(factLocationName) || !_.isString(factLocationUnitName))) {
+    throw new PermissionError('invalid: factLocationName, factLocationUnitName', 400)
+  }
+
+  if (registrationAddressDescription && !_.isString(registrationAddressDescription)) {
+    throw new PermissionError('registrationAddressDescription must be string', 400)
+  }
+
+  if (factAddressDescription && !_.isString(factAddressDescription)) {
+    throw new PermissionError('factAddressDescription must be string', 400)
+  }
+
+  if (mobileNumber && (!_.isString(mobileNumber) || !utils.isValidPhone(mobileNumber))) {
+    throw new PermissionError('invalid mobileNumber', 400)
+  }
+
+  if (email && (!_.isString(email) || !utils.isValidEmail(email))) {
+    throw new PermissionError('invalid email', 400)
+  }
+
+  if (contactDescription && !_.isString(contactDescription)) {
+    throw new PermissionError('contactDescription must be string', 400)
+  }
+}
+
 async function updateMainInfo(userName, mainInfo) {
+  validateMainInfo(mainInfo)
+  console.log('not thrown')
+
   let foundUser = await userRepository.getUserByUserName(userName)
 
   let userToSave
