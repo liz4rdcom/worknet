@@ -57,6 +57,7 @@
 </template>
 <script>
   import locations from '../common/locations'
+  import omit from 'lodash/omit'
   import libs from '../../libs'
   import { bus } from '../common/bus'
   import utils from '../../utils'
@@ -98,10 +99,12 @@
       },
       async tryToSaveMainInfo() {
         try {
-          await this.$http.put(this.baseUrl, this.profileData, {headers: utils.getHeaders()})
+          let mainInfo = omit(this.profileData, ['id', 'personalId'])
+
+          await this.$http.put(this.baseUrl, mainInfo)
+
           bus.$emit('success', 'პროფილი წარმატებით შეინახა')
         } catch (error) {
-          bus.$emit('error', error)
         }
       },
     },
