@@ -20,11 +20,7 @@
 </script>
 
 <style lang="scss">
-$fresh: #4ABDAC;
-$vermillion: #FC4A1A;
-$sumshine: #F7B733;
-$clean: #DFDCE3;
-
+@import '@/colorPalette.scss';
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -32,7 +28,7 @@ $clean: #DFDCE3;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background: whitesmoke;
+  background: $clean;
   height: 100%;
   overflow-y: auto;
 
