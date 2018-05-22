@@ -20,7 +20,7 @@
 </script>
 
 <style lang="scss">
-@import '@/colorPalette.scss';
+@import '@/main.scss';
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

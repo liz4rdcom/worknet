@@ -1,6 +1,6 @@
 <template>
-<div class="nav-bar-container">
-  <b-navbar toggleable="md" type="dark" variant="dark">
+<div>
+  <b-navbar class="nav-bar-class" toggleable="md" type="dark" variant="dark">
 
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -71,6 +71,6 @@ export default {
 </script>
 
 <style scoped>
-.nav-bar-container {
+.nav-bar-class {
 }
 </style>
