@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-navbar class="nav-bar-class" toggleable="md" type="dark" variant="dark">
+  <b-navbar class="nav-bar-class" toggleable="md" type="dark">
 
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -8,7 +8,7 @@
 
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item href="#/vacancies">ვაკანსიები</b-nav-item>
+        <b-nav-item class="nav-item-class" href="#/vacancies">ვაკანსიები</b-nav-item>
         <b-nav-item-dropdown id="nav-bar-vacancy-management-dropdown" v-if="loggedIn" text="ვაკანსიების მენეჯმენტი" right>
           <b-dropdown-item href="#/vacancies/add">ახლის დამატება</b-dropdown-item>
           <b-dropdown-item href="#/vacancies/own">ჩემი ვაკანსიები</b-dropdown-item>
@@ -70,7 +70,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+@import '@/main.scss';
+
 .nav-bar-class {
+  background-color: $fresh;
+}
+.nav-link {
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.9) !important;
 }
 </style>
