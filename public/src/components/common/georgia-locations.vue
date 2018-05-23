@@ -15,7 +15,7 @@
 
   export default {
     name: 'georgia-locations',
-    props: ['currentLocationName', 'currentLocationUnitName', 'onLocationChanged', 'idPrefix'],
+    props: ['currentLocationName', 'currentLocationUnitName', 'idPrefix'],
     data() {
       return {
         locationList: [],
@@ -28,6 +28,11 @@
         this.locationList = []
         console.error(e)
       }
+    },
+    methods: {
+      onLocationChanged (...args) {
+        this.$emit('onLocationChanged', ...args)
+      },
     },
     components: { 'locations': locations },
   }

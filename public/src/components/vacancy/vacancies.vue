@@ -3,17 +3,22 @@
   <div class="vacancy-search-bar">
     <b-row class="upper-search-row vancay-add-row">
       <b-col class="vacancy-brand-column">
-        <b-navbar-brand href="#/login">JOIN WORKNET</b-navbar-brand>
+        <b-navbar-brand href="#/login">შეუერთდრი WorkNet-ს</b-navbar-brand>
       </b-col>
 
       <b-col>
         <div @keyup.enter="search">
-          <b-form-input type="text" v-model="query" />
+          <b-form-input type="text" v-model="query" placeholder="თანამდებობოა, დამსაქმებელი ან სხვა..." />
         </div>
       </b-col>
 
       <b-col>
-        <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
+        <georgia-locations
+          idPrefix="desirable-job"
+          @onLocationChanged="onLocationChanged"
+          :currentLocationName="null"
+          :currentLocationUnitName="null"
+        />
       </b-col>
 
       <b-col>
@@ -162,13 +167,13 @@
 
 <script>
 import find from 'lodash/find'
-import locations from '../common/locations'
+import georgiaLocations from '../common/georgia-locations'
 import utils from '../../utils'
 import { bus } from '../common/bus'
 import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
-import libs from '../../libs'
 import vacancySearchList from './vacancies-search-list'
+// import libs from '../../libs'
 // import dummyVacanciesList from './dummy-vacancies-list'
 
 const baseUrl = '/api/vacancies/published'
@@ -178,7 +183,7 @@ export default {
   components: {
     'side-modal': sideModal,
     'vacancy-view': vacancyView,
-    locations,
+    'georgia-locations': georgiaLocations,
     'vacancies-search-list': vacancySearchList,
   },
   data: () => ({
@@ -202,11 +207,8 @@ export default {
       locations: [],
       skills: [],
     },
-    locationsList: [],
   }),
   async created() {
-    this.locationsList = await libs.fetchLocationsOfGeorgia()
-
     try {
       let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
 

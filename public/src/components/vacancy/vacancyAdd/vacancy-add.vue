@@ -52,7 +52,7 @@
         <b-form-group label="ადგილდებარეობა" class="font-weight-bold">
           <georgia-locations
             idPrefix="vacancy-add"
-            :onLocationChanged="onLocationChanged"
+            @onLocationChanged="onLocationChanged"
             :currentLocationName="vacancy.locationName"
             :currentLocationUnitName="vacancy.locationUnitName"
           />

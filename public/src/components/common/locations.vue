@@ -65,8 +65,8 @@
       }
     },
     created() {
-      this.selectedLocationName = this.currentLocationName || ''
-      this.selectedLocationUnitName = this.currentLocationUnitName || ''
+      this.selectedLocationName = this.currentLocationName || this.currentLocationName === null ? this.currentLocationName : ''
+      this.selectedLocationUnitName = this.currentLocationUnitName || this.currentLocationUnitName === null ? this.currentLocationUnitName : ''
 
       this.selectedLocation = this.locationDefaultObject
 
