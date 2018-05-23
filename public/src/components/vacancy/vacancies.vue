@@ -1,161 +1,163 @@
 <template>
 <div id="vacancies" class="vacancies-container">
-  <div class="upper-search-row">
-    <b-row>
-      <b-col>
-        <b-navbar-brand href="#/login">შეუერთდით ვორქნეტს</b-navbar-brand>
-      </b-col>
+  <div class="vacancy-search-bar">
+    <div class="upper-search-row">
+      <b-row>
+        <b-col>
+          <b-navbar-brand href="#/login">JOIN WORKNET</b-navbar-brand>
+        </b-col>
 
-      <b-col>
-        <div @keyup.enter="search">
-          <b-form-input type="text" v-model="query" />
-        </div>
-      </b-col>
+        <b-col>
+          <div @keyup.enter="search">
+            <b-form-input type="text" v-model="query" />
+          </div>
+        </b-col>
 
-      <b-col>
-        <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
-      </b-col>
+        <b-col>
+          <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
+        </b-col>
 
-      <b-col>
-        <b-row>
-          <b-col>
-            <form>
-              <b-form-input
-                type="text"
-                id="vacancies-filter-salary-from"
-                required
-                @click="minSalary($event.target.value)"
-                placeholder="ხელფასი ლარიდან"
-              />
-            </form>
-          </b-col>
+        <b-col>
+          <b-row>
+            <b-col>
+              <form>
+                <b-form-input
+                  type="text"
+                  id="vacancies-filter-salary-from"
+                  required
+                  @click="minSalary($event.target.value)"
+                  placeholder="ხელფასი ლარიდან"
+                />
+              </form>
+            </b-col>
 
-          <b-col>
-            <form>
-              <b-form-input
-                type="text"
-                id="vacancies-filter-salary-to"
-                required
-                @click="maxSalary($event.target.value)"
-                placeholder="ლარამდე"
-              />
-            </form>
-          </b-col>
-        </b-row>
-      </b-col>
+            <b-col>
+              <form>
+                <b-form-input
+                  type="text"
+                  id="vacancies-filter-salary-to"
+                  required
+                  @click="maxSalary($event.target.value)"
+                  placeholder="ლარამდე"
+                />
+              </form>
+            </b-col>
+          </b-row>
+        </b-col>
 
-      <b-col>
-        <b-button @click="search" style="width: 100%;"> <!-- <i class="fa fa-search fa-2x" aria-hidden="true"></i> -->
-          ძებნა
-        </b-button>
-      </b-col>
-    </b-row>
+        <b-col>
+          <b-button @click="search" style="width: 100%;"> <!-- <i class="fa fa-search fa-2x" aria-hidden="true"></i> -->
+            ძებნა
+          </b-button>
+        </b-col>
+      </b-row>
+    </div>
 
+    <div class="lower-search-row">
+      <b-row>
+        <b-col>
+          <b-form-checkbox
+            class="full-width"
+            id="fullTime"
+            v-model="filterObject.fullTime">
+            სრული განაკვეთი
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            class="full-width"
+            id="partTime"
+            v-model="filterObject.partTime"
+          >
+            არასრული განაკვეთი
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            class="full-width"
+            id="shiftBased"
+            v-model="filterObject.shiftBased"
+          >
+            ცვლაში
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            class="full-width"
+            id="interestedInInternship"
+            v-model="filterObject.interestedInInternship"
+          >
+            სტაჟირება
+          </b-form-checkbox>
+        </b-col>
+
+        <b-col>
+          <b-form-checkbox
+            class="full-width"
+            id="interestedToBeVolunteer"
+            v-model="filterObject.interestedToBeVolunteer"
+          >
+            მოხალისე
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            class="full-width"
+            d="interestedInTemporaryJob"
+            v-model="filterObject.interestedInTemporaryJob"
+          >
+            დროებითი
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            class="full-width"
+            id="interestedInDangerousJob"
+            v-model="filterObject.interestedInDangerousJob"
+          >
+            სახიფათო
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            class="full-width"
+            id="drivingLicence"
+            v-model="filterObject.hasDrivingLicence"
+          >
+            მართვის მოწმობა
+          </b-form-checkbox>
+        </b-col>
+
+        <b-col>
+          <b-form-checkbox
+            class="full-width"
+            id="militaryObligation"
+            v-model="filterObject.militaryObligation"
+          >
+            სამხედრო ვალდებულება
+          </b-form-checkbox>
+        </b-col>
+      </b-row>
+    </div>
   </div>
 
-  <div class="lower-search-row">
-    <b-row>
-      <b-col>
-        <b-form-checkbox
-          class="full-width"
-          id="fullTime"
-          v-model="filterObject.fullTime">
-          სრული განაკვეთი
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          id="partTime"
-          v-model="filterObject.partTime"
-        >
-          არასრული განაკვეთი
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          id="shiftBased"
-          v-model="filterObject.shiftBased"
-        >
-          ცვლაში
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          id="interestedInInternship"
-          v-model="filterObject.interestedInInternship"
-        >
-          სტაჟირება
-        </b-form-checkbox>
-      </b-col>
-
-      <b-col>
-        <b-form-checkbox
-          class="full-width"
-          id="interestedToBeVolunteer"
-          v-model="filterObject.interestedToBeVolunteer"
-        >
-          მოხალისე
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          d="interestedInTemporaryJob"
-          v-model="filterObject.interestedInTemporaryJob"
-        >
-          დროებითი
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          id="interestedInDangerousJob"
-          v-model="filterObject.interestedInDangerousJob"
-        >
-          სახიფათო
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          id="drivingLicence"
-          v-model="filterObject.hasDrivingLicence"
-        >
-          მართვის მოწმობა
-        </b-form-checkbox>
-      </b-col>
-
-      <b-col>
-        <b-form-checkbox
-          class="full-width"
-          id="militaryObligation"
-          v-model="filterObject.militaryObligation"
-        >
-          სამხედრო ვალდებულება
-        </b-form-checkbox>
-      </b-col>
-    </b-row>
-  </div>
-
-  <div class="vacancies-search-content">
-    <div class="vacancy-list-container">
+  <b-row class="vacancies-search-content">
+    <b-col class="vacancy-list-container" cols="5">
       <b-list-group>
         <b-list-group-item
-          v-for="vacancy in vacancies"
+          v-for="vacancy in vacanciesOnCurrentPage"
           :key="vacancy.id"
+          @click="onVacancyClickInList(vacancy.id)"
         >
-          <h3>{{vacancy.positionName}}</h3>
-          <h5>{{vacancy.organization}}</h5>
-          <h5>{{vacancy.publishDate}}</h5>
+          <h5><b>{{vacancy.positionName + ' - ' + vacancy.organization}}</b></h5>
+          <h6>{{vacancy.publishDate}}</h6>
         </b-list-group-item>
       </b-list-group>
-    </div>
 
-    <div class="current-vacancy-container">
+      <b-pagination size="md" :total-rows="vacancies !== null ? vacancies.length : 0" v-model="vacancyListCurrentPageIndex" :per-page="vacancyMaxCountOnPage" />
+    </b-col>
+
+    <b-col class="current-vacancy-container" cols="7">
       <div class="current-vacancy-inner-container">
-        <pre>{{
-          JSON.stringify({currentVacancy}, null, 2)
-        }}</pre>
+        {{currentVacancy}}
+        {{vacancies.length}}
       </div>
-    </div>
-  </div>
+    </b-col>
+  </b-row>
 
   <!-- <vacancies-search-list :vacancies="vacancies"></vacancies-search-list> -->
 </div>
@@ -185,8 +187,9 @@ export default {
   data: () => ({
     vacancies: [],
     currentVacancyId: null,
+    vacancyListCurrentPageIndex: 1,
+    vacancyMaxCountOnPage: 5,
     query: '',
-    vacancyId: null,
     filterObject: {
       hasDrivingLicence: null,
       militaryObligation: false,
@@ -209,7 +212,10 @@ export default {
 
     try {
       let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
+
       this.vacancies = response.data
+
+      this.currentVacancyId = this.vacancies[0].id
     } catch (error) {
       bus.$emit('error', error)
     }
@@ -277,10 +283,6 @@ export default {
       }
       return arr
     },
-    viewVacancy(vacancyId) {
-      this.vacancyId = vacancyId
-      this.$refs.modalRef.sideModalOpen()
-    },
     async search() {
       try {
         let response = await this.$http.get(baseUrl, {params: {query: this.query}}, {headers: utils.getHeaders()}) // eslint-disable-line
@@ -293,11 +295,23 @@ export default {
         bus.$emit('error', error)
       }
     },
+    onVacancyClickInList (vacancyId, b) {
+      this.currentVacancyId = vacancyId
+    },
   },
   computed: {
     currentVacancy () {
       console.log(111, this.currentVacancyId, this.vacancies)
       return this.currentVacancyId !== null ? find(this.vacancies, nextVacan => nextVacan.id === this.currentVacancyId) : null
+    },
+    vacanciesOnCurrentPage () {
+      const startIndex = (this.vacancyListCurrentPageIndex - 1) * this.vacancyMaxCountOnPage
+
+      if (startIndex > this.vacancies.length - 1) {
+        return this.vacancies
+      }
+
+      return this.vacancies.slice(startIndex, this.vacancyListCurrentPageIndex * this.vacancyMaxCountOnPage)
     },
   },
 }
@@ -305,8 +319,12 @@ export default {
 
 <style scoped>
 .vacancies-container {
-  width: 100%;
+  display: flex;
+  flex-flow: column;
   height: 100%;
+}
+.vacancy-search-bar {
+  flex: 0 1 auto;
 }
 .upper-search-row {
   border-bottom: 1px solid #459e91;
@@ -340,15 +358,25 @@ export default {
   border-color: #bf4d2e;
 }
 .vacancies-search-content {
+  margin: 18px 340px 8px 340px;
 
+  height: 100%;
+
+  flex: 1 1 auto;
 }
 .vacancy-list-container {
-
+  overflow-y: scroll;
+  min-height: 100%;
+  padding-left: 0px;
+  padding-right: 0px;
+  background: white;
+  text-align: left;
 }
 .current-vacancy-container {
-
+  padding-right: 0px;
 }
-.current-vacancy-inner-container {
-
+.current-vacancy-inner-container {}
+.list-group-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125)
 }
 </style>
