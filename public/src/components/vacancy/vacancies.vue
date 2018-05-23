@@ -1,113 +1,175 @@
 <template>
-<div id="vacancies">
-  <div class="searchArea">
-    <div class="form-group flex" @keyup.enter="search">
-      <input type="text" class="form-control" v-model="query">
-    </div>
-    &nbsp;
-    <b-button class="searchButton" variant="primary" size="" @click="search">
-      <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-    </b-button>
-    <b-button @click="filter = !filter">Filter</b-button>
-  </div>
-  <b-card v-if="filter">
-    <b-row>
-      <b-col lg="6">
-        <div>
-          <form class="go-bottom">
-            <div>
-              <input id="vacancies-filter-salary-from" name="name" type="text" required @click="minSalary($event.target.value)">
-              <label for="name">ხელფასი ლარიდან</label>
-            </div>
-          </form>
-          <form class="go-bottom">
-            <div>
-              <input id="vacancies-filter-salary-to" name="name" type="text" required @click="maxSalary($event.target.value)">
-              <label for="name">ლარამდე</label>
-            </div>
-          </form>
-        </div>
-        <div>
-          <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
+<div id="vacancies" class="vacancies-container">
+  <div class="vacancy-search-bar">
+    <b-row class="upper-search-row vancay-add-row">
+      <b-col class="vacancy-brand-column">
+        <b-navbar-brand href="#/login">JOIN WORKNET</b-navbar-brand>
+      </b-col>
+
+      <b-col>
+        <div @keyup.enter="search">
+          <b-form-input type="text" v-model="query" />
         </div>
       </b-col>
-      <b-col lg="6">
-        <b-form-checkbox id="drivingLicence"
-        v-model="filterObject.hasDrivingLicence">
-        მართვის მოწმობა
-      </b-form-checkbox>
-      <b-form-checkbox id="militaryObligation"
-        v-model="filterObject.militaryObligation">
-        სამხედრო ვალდებულება
-      </b-form-checkbox>
-      <div>
-        <b-form-checkbox id="fullTime"
-        v-model="filterObject.fullTime">
-        სრული განაკვეთი
-      </b-form-checkbox>
-      <b-form-checkbox id="partTime"
-        v-model="filterObject.partTime">
-        არასრული განაკვეთი
-      </b-form-checkbox>
-      <b-form-checkbox id="shiftBased"
-        v-model="filterObject.shiftBased">
-        ცვლაში
-      </b-form-checkbox>
-      <b-form-checkbox id="interestedInInternship"
-        v-model="filterObject.interestedInInternship">
-        სტაჟირება
-      </b-form-checkbox>
-      <b-form-checkbox id="interestedToBeVolunteer"
-        v-model="filterObject.interestedToBeVolunteer">
-        მოხალისე
-      </b-form-checkbox>
-      <b-form-checkbox id="interestedInTemporaryJob"
-        v-model="filterObject.interestedInTemporaryJob">
-        დროებითი
-      </b-form-checkbox>
-      <b-form-checkbox id="interestedInDangerousJob"
-        v-model="filterObject.interestedInDangerousJob">
-        სახიფათო
-      </b-form-checkbox>
-      </div>
+
+      <b-col>
+        <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
+      </b-col>
+
+      <b-col>
+        <b-row class="vancay-add-row">
+          <b-col>
+            <form>
+              <b-form-input
+                type="text"
+                id="vacancies-filter-salary-from"
+                required
+                @click="minSalary($event.target.value)"
+                placeholder="ხელფასი ლარიდან"
+              />
+            </form>
+          </b-col>
+
+          <b-col>
+            <form>
+              <b-form-input
+                type="text"
+                id="vacancies-filter-salary-to"
+                required
+                @click="maxSalary($event.target.value)"
+                placeholder="ლარამდე"
+              />
+            </form>
+          </b-col>
+        </b-row>
+      </b-col>
+
+      <b-col>
+        <b-button @click="search" style="width: 100%;"> <!-- <i class="fa fa-search fa-2x" aria-hidden="true"></i> -->
+          ძებნა
+        </b-button>
       </b-col>
     </b-row>
-  </b-card>
-  <b-card>
-      <div class="chip" v-for="item in desirableJobLocations" :key="item.locationName + ' ' + item.locationUnitName">
-          {{item.locationName}} - {{item.locationUnitName}}
-          <span class="closebtn" @click="removeLocation(item)">&times;</span>
-        </div>
-  </b-card>
-  <b-card>
-    <div class="chip" v-for="item in skillArray" :key="item.skillName">
-        {{item.skillName}}
-        <span class="closebtn" @click="removeSkill(item)">&times;</span>
+
+    <b-row class="lower-search-row vancay-add-row">
+      <b-col>
+        <b-form-checkbox
+          class="full-width"
+          id="fullTime"
+          v-model="filterObject.fullTime">
+          სრული განაკვეთი
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="partTime"
+          v-model="filterObject.partTime"
+        >
+          არასრული განაკვეთი
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="shiftBased"
+          v-model="filterObject.shiftBased"
+        >
+          ცვლაში
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="interestedInInternship"
+          v-model="filterObject.interestedInInternship"
+        >
+          სტაჟირება
+        </b-form-checkbox>
+      </b-col>
+
+      <b-col>
+        <b-form-checkbox
+          class="full-width"
+          id="interestedToBeVolunteer"
+          v-model="filterObject.interestedToBeVolunteer"
+        >
+          მოხალისე
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          d="interestedInTemporaryJob"
+          v-model="filterObject.interestedInTemporaryJob"
+        >
+          დროებითი
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="interestedInDangerousJob"
+          v-model="filterObject.interestedInDangerousJob"
+        >
+          სახიფათო
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="drivingLicence"
+          v-model="filterObject.hasDrivingLicence"
+        >
+          მართვის მოწმობა
+        </b-form-checkbox>
+      </b-col>
+
+      <b-col>
+        <b-form-checkbox
+          class="full-width"
+          id="militaryObligation"
+          v-model="filterObject.militaryObligation"
+        >
+          სამხედრო ვალდებულება
+        </b-form-checkbox>
+      </b-col>
+    </b-row>
+  </div>
+
+  <b-row class="vacancies-search-content vancay-add-row">
+    <b-col class="vacancy-list-container" cols="5">
+      <b-list-group>
+        <b-list-group-item
+          v-for="vacancy in vacanciesOnCurrentPage"
+          :key="vacancy.id"
+          :active="currentVacancyId === vacancy.id"
+          @click="onVacancyClickInList(vacancy.id)"
+        >
+          <h5><b>{{vacancy.positionName + ' - ' + vacancy.organization}}</b></h5>
+          <h6>{{vacancy.publishDate}}</h6>
+        </b-list-group-item>
+      </b-list-group>
+
+      <b-pagination size="md" :total-rows="vacancies !== null ? vacancies.length : 0" v-model="vacancyListCurrentPageIndex" :per-page="vacancyMaxCountOnPage" />
+    </b-col>
+
+    <b-col class="current-vacancy-container" cols="7">
+      <div class="current-vacancy-inner-container">
+        <vacancy-view :id="currentVacancyId" v-if="currentVacancyId !== null"></vacancy-view>
+        <!-- {{currentVacancy}} -->
       </div>
-</b-card>
-  <b-card class="mb-2 vacancy" v-for="vacancy in vacancies" :key="vacancy.id">
-    <div @click="viewVacancy(vacancy.id)">
-      <h3 class="card-title">{{vacancy.positionName}}</h3>
-      <h5 class="card-text">{{vacancy.organization}}</h5>
-      <h5 class="card-text">{{getFunctionDescription(vacancy)}}</h5>
-      <h5 class="card-text" v-for="skill in getSkills(vacancy)" :key="skill.skillName" @click="skillFilter(skill.skillName, $event)">{{skill.skillName}}</h5>
-      <h5 class="card-text">{{vacancy.publishDate}}</h5>
-      <h5 class="card-text">სრულად ნახვა...</h5>
-    </div>
-  </b-card>
-  <side-modal ref="modalRef">
-    <vacancy-view :id="vacancyId" v-if="vacancyId"></vacancy-view>
-  </side-modal>
+    </b-col>
+  </b-row>
+
+  <!-- <vacancies-search-list :vacancies="vacancies"></vacancies-search-list> -->
 </div>
 </template>
 
 <script>
+import find from 'lodash/find'
 import locations from '../common/locations'
 import utils from '../../utils'
 import { bus } from '../common/bus'
 import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
 import libs from '../../libs'
+import vacancySearchList from './vacancies-search-list'
+import dummyVacanciesList from './dummy-vacancies-list'
 
 const baseUrl = '/api/vacancies/published'
 
@@ -117,12 +179,14 @@ export default {
     'side-modal': sideModal,
     'vacancy-view': vacancyView,
     locations,
+    'vacancies-search-list': vacancySearchList,
   },
   data: () => ({
     vacancies: [],
+    currentVacancyId: null,
+    vacancyListCurrentPageIndex: 1,
+    vacancyMaxCountOnPage: 15,
     query: '',
-    vacancyId: null,
-    filter: false,
     filterObject: {
       hasDrivingLicence: null,
       militaryObligation: false,
@@ -138,8 +202,6 @@ export default {
       locations: [],
       skills: [],
     },
-    skillArray: [],
-    desirableJobLocations: [],
     locationsList: [],
   }),
   async created() {
@@ -147,7 +209,10 @@ export default {
 
     try {
       let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
+
       this.vacancies = response.data
+
+      this.currentVacancyId = this.vacancies[0].id
     } catch (error) {
       bus.$emit('error', error)
     }
@@ -187,38 +252,8 @@ export default {
 
       this.filterObject.minimalSalary = value
     },
-    skillFilter (skill, event) {
-      event.stopPropagation()
-      this.skillArray.push({skillName: skill})
-      this.filterObject.skills = this.skillArray
-    },
-    removeLocation: async function (item) {
-      try {
-        let index = this.desirableJobLocations.findIndex((d) => d.locationName === item.locationName && d.locationUnitName === item.locationUnitName)
-        this.desirableJobLocations.splice(index, 1)
-      } catch (error) {
-        bus.$emit('error', error)
-      }
-    },
-    async removeSkill (item) {
-      try {
-        let index = this.skillArray.findIndex((d) => d.skillName === item.skillName)
-        this.skillArray.splice(index, 1)
-      } catch (error) {
-        bus.$emit('error', error)
-      }
-    },
     onLocationChanged(location) {
       this.filterObject.locations.push(location)
-      try {
-        if (this.filterObject.locations.locationName !== '' || this.filterObject.locations.locationUnitName !== '') {
-          this.desirableJobLocations = this.filterObject.locations
-        } else {
-          bus.$emit('warning', 'გთხოვთ შეავსოთ მონაცემები')
-        }
-      } catch (error) {
-        bus.$emit('error', error)
-      }
     },
     getFunctionDescription(vacancy) {
       if (!vacancy.functionsDescription) {
@@ -245,196 +280,121 @@ export default {
       }
       return arr
     },
-    viewVacancy(vacancyId) {
-      this.vacancyId = vacancyId
-      this.$refs.modalRef.sideModalOpen()
-    },
     async search() {
       try {
-        let response = await this.$http.get(baseUrl, {params: {query: this.query}}, {headers: utils.getHeaders()})
+        let response = await this.$http.get(baseUrl, {params: {query: this.query}}, {headers: utils.getHeaders()}) // eslint-disable-line
+
+        // this.vacancies = dummyVacanciesList
         this.vacancies = response.data
+
+        this.currentVacancyId = this.vacancies[0].id
       } catch (error) {
         bus.$emit('error', error)
       }
+    },
+    onVacancyClickInList (vacancyId) {
+      this.currentVacancyId = vacancyId
+    },
+  },
+  computed: {
+    currentVacancy () {
+      console.log('currentVacancy: ', this.currentVacancyId)
+
+      return this.currentVacancyId !== null ? find(this.vacancies, nextVacan => nextVacan.id === this.currentVacancyId) : null
+    },
+    vacanciesOnCurrentPage () {
+      const startIndex = (this.vacancyListCurrentPageIndex - 1) * this.vacancyMaxCountOnPage
+
+      if (startIndex > this.vacancies.length - 1) {
+        return this.vacancies
+      }
+
+      return this.vacancies.slice(startIndex, this.vacancyListCurrentPageIndex * this.vacancyMaxCountOnPage)
     },
   },
 }
 </script>
 
 <style scoped>
-.vacancy:hover {
-  box-shadow: 0 0 6px rgba(161, 161, 161, 0.89);
-}
-
-.searchArea {
+.vacancies-container {
   display: flex;
-  flex-direction: row;
-  width: 60%;
-  margin: auto;
-  padding: 20px;
-  vertical-align: center;
+  flex-flow: column;
+  height: 100%;
 }
-
-.form-group {
-  margin-top: 16px;
-}
-
-.searchButton {
-  border-radius: 50%;
-  margin: 16px;
-  margin-top: 9px;
-  margin-bottom: 9px;
-}
-* {
-  box-sizing: border-box;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-form {
-  width: 320px;
-  float: left;
-  margin: 20px;
-}
-
-form > div {
-  position: relative;
-  overflow: hidden;
-}
-
-form label {
-  transition:
-    background 0.2s,
-    color 0.2s,
-    top 0.2s,
-    bottom 0.2s,
-    right 0.2s,
-    left 0.2s;
+.vacancy-brand-column {
   position: absolute;
-  color: #999;
-  padding: 7px 6px;
+  left: 0px;
+  float: left;
+  width: 1px;
+  padding-top: 4px;
 }
-
-form textarea {
-  display: block;
-  resize: vertical;
+.vacancy-search-bar {
+  flex: 0 1 auto;
 }
-
-form input, textarea {
-  width: 100%;
-  border: 2px solid gray;
-  background: none;
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  padding: 8px 12px;
-  outline: 0;
+.upper-search-row {
+  border-bottom: 1px solid #459e91;
+  background-color: #4ABDAC;
+  padding-left: 340px;
+  padding-right: 340px;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
-
-form textarea:valid {
-  background: white;
+.lower-search-row {
+  border-bottom: 1px solid #46867c;
+  background-color: #4ABDAC;
+  padding-left: 340px;
+  padding-right: 340px;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
-
-form input:valid {
-  background: white;
-}
-
-form textarea:focus {
-  border-color: #3A9F02;
-}
-
-form input:focus {
-  border-color: #3A9F02;
-}
-
-form textarea:focus + label {
-  background: #3A9F02;
+.navbar-brand {
+  padding: 0px;
   color: white;
-  font-size: 70%;
-  padding: 1px 6px;
-  z-index: 2;
-  text-transform: uppercase;
-  margin-bottom: 0;
-}
-
-form input:focus + label {
-  background: #3A9F02;
-  color: white;
-  font-size: 70%;
-  padding: 1px 6px;
-  z-index: 2;
-  text-transform: uppercase;
-  margin-bottom: 0;
-}
-
-form.go-bottom input, textarea {
-  padding: 12px 12px 12px 12px;
-}
-
-form.go-bottom label {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
-
-form.go-bottom input:focus, textarea:focus {
-  padding: 4px 6px 20px 6px;
-}
-
-form.go-bottom input:focus + label {
-  top: 100%;
-  margin-top: -16px;
-}
-form.go-bottom textarea:focus + label {
-  top: 100%;
-  margin-top: -16px;
-}
-
-form.go-right label {
-  top: 2px;
-  right: 100%;
-  width: 100%;
-  margin-right: -100%;
-  bottom: 2px;
-}
-
-form.go-right input:focus + label {
-  right: 0;
-  margin-right: 0;
-  width: 30%;
-  padding-top: 5px;
-}
-form.go-right textarea:focus + label {
-  right: 0;
-  margin-right: 0;
-  width: 30%;
-  padding-top: 5px;
-}
-.chip {
-  display: inline-block;
-  padding: 0 25px;
-  height: 50px;
-  font-size: 16px;
-  line-height: 45px;
-  border-radius: 25px;
-  background-color: gold;
-  margin: 5px;
-}
-
-.closebtn {
-  padding-left: 10px;
-  color: #888;
   font-weight: bold;
-  float: right;
-  font-size: 20px;
-  cursor: pointer;
 }
+.full-width {
+  width: 100%;
+}
+.btn-secondary {
+  background-color: #FC4A1A;
+  border-color: #FC4A1A;
+}
+.btn-secondary:hover {
+  background-color: #bf4d2e;
+  border-color: #bf4d2e;
+}
+.vacancies-search-content {
+  padding: 18px 340px 8px 340px;
 
-.closebtn:hover {
-  color: #000;
+  height: 100%;
+
+  flex: 1 1 auto;
+}
+.vacancy-list-container {
+  overflow-y: scroll;
+  min-height: 100%;
+  padding-left: 0px;
+  padding-right: 0px;
+  background: white;
+  text-align: left;
+}
+.current-vacancy-container {
+  padding-left: 8px;
+  padding-right: 0px;
+  height: 100%;
+}
+.current-vacancy-inner-container {
+  height: 100%;
+}
+.list-group-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125)
+}
+.vancay-add-row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.vacancy-view {
+  height: 100%;
+  overflow-y: scroll;
 }
 </style>

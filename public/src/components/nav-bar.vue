@@ -1,10 +1,10 @@
 <template>
-<div>
-  <b-navbar class="nav-bar-class" toggleable="md" type="dark">
+<div v-if="this.$route.path !== '/vacancies'">
+  <b-navbar toggleable="md" type="dark" variant="dark">
 
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-    <b-navbar-brand href="#/vacancies">WORKNET</b-navbar-brand>
+    <b-navbar-brand :active="true" href="#/vacancies">WORKNET</b-navbar-brand>
 
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
@@ -14,6 +14,7 @@
           <b-dropdown-item href="#/vacancies/own">ჩემი ვაკანსიები</b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item v-if="loggedIn" href="#/profile">პროფილი</b-nav-item>
+        <b-nav-item v-if="loggedIn" href="#/vacancies-matching">შესაბამისი ვაკანსიები</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
@@ -72,10 +73,6 @@ export default {
 
 <style lang="scss">
 @import '@/main.scss';
-
-.nav-bar-class {
-  background-color: $fresh;
-}
 .nav-link {
   font-weight: bold;
   color: rgba(255, 255, 255, 0.9) !important;
