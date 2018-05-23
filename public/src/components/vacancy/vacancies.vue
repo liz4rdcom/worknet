@@ -284,10 +284,10 @@ export default {
       try {
         let response = await this.$http.get(baseUrl, {params: {query: this.query}}, {headers: utils.getHeaders()}) // eslint-disable-line
 
-        this.vacancies = dummyVacanciesList
+        // this.vacancies = dummyVacanciesList
+        this.vacancies = response.data
 
         this.currentVacancyId = this.vacancies[0].id
-        // this.vacancies = response.data
       } catch (error) {
         bus.$emit('error', error)
       }
@@ -379,6 +379,7 @@ export default {
   text-align: left;
 }
 .current-vacancy-container {
+  padding-left: 8px;
   padding-right: 0px;
   height: 100%;
 }
@@ -394,6 +395,6 @@ export default {
 }
 .vacancy-view {
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 </style>
