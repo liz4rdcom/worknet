@@ -2,7 +2,7 @@
   <b-row class="vacancy-add-container">
     <b-col class="vacancy-add">
       <div class="vacancy-add-inner-container">
-        <data-shower :data="this.$data" />
+        <!-- <data-shower :data="this.$data" /> -->
 
         <h1 class="vacancy-add-hint-element">დაამატეთ ვაკანსია</h1>
 
