@@ -26,7 +26,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    background: whitesmoke;
+    background: #DFDCE3;
     height: 100%;
     overflow-y: auto;
   }

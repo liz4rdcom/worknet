@@ -1,8 +1,14 @@
 <template>
   <b-row>
     <b-col class="first-col">
-      <b-form-select :id="idWithPrefix(idPrefix, 'location-region')" :value="selectedLocationName" :options="locations" value-field="locationName" text-field="locationName" @change="locationChanged"
-        class="mb-3 col-6">
+      <b-form-select
+        :id="idWithPrefix(idPrefix, 'location-region')"
+        :value="selectedLocationName"
+        :options="locations"
+        value-field="locationName"
+        text-field="locationName"
+        @change="locationChanged"
+      >
         <template slot="first">
           <option :value="null">- აირჩიე რეგიონი -</option>
         </template>
@@ -10,8 +16,14 @@
     </b-col>
 
     <b-col class="second-col">
-      <b-form-select :id="idWithPrefix(idPrefix, 'location-district')" :value="selectedLocationUnitName" :options="selectedLocation.units" value-field="locationUnitName" text-field="locationUnitName"
-        @change="locationUnitChanged" class="mb-3 col-6">
+      <b-form-select
+        :id="idWithPrefix(idPrefix, 'location-district')"
+        :value="selectedLocationUnitName"
+        :options="selectedLocation.units"
+        value-field="locationUnitName"
+        text-field="locationUnitName"
+        @change="locationUnitChanged"
+      >
         <template slot="first">
           <option :value="null">- აირჩიე რაიონი -</option>
         </template>
