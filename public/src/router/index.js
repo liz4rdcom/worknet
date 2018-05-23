@@ -150,7 +150,7 @@ router.beforeEach(async (to, from, next) => {
   // console.log('yes token') //
 
   if (to.path === '/login' || to.path === '/register') {
-    next('/vacancies')
+    next('/profile')
 
     // console.log('yes token: login, register') //
 
