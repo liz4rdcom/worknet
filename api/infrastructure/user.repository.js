@@ -930,9 +930,9 @@ async function matchUsersToVacancy(configFields, percent) {
   let result = await client.search(searchOptions)
 
   console.clear()
-  console.log('-----------------------------------------------------------------------------------------------------------------------------')
-  console.log(JSON.stringify(result, null, 4))
-  console.log(JSON.stringify(searchOptions, null, 4))
+  // console.log('-----------------------------------------------------------------------------------------------------------------------------')
+  // console.log(JSON.stringify(result, null, 4))
+  // console.log(JSON.stringify(searchOptions, null, 4))
 
   return result.hits.hits.map(utils.toObject)
 }
