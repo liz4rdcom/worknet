@@ -169,7 +169,7 @@ import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
 import libs from '../../libs'
 import vacancySearchList from './vacancies-search-list'
-import dummyVacanciesList from './dummy-vacancies-list'
+// import dummyVacanciesList from './dummy-vacancies-list'
 
 const baseUrl = '/api/vacancies/published'
 
