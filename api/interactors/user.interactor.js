@@ -142,7 +142,6 @@ function validateMainInfo(mainInfo) {
 
 async function updateMainInfo(userName, mainInfo) {
   validateMainInfo(mainInfo)
-  console.log('not thrown')
 
   let foundUser = await userRepository.getUserByUserName(userName)
 
@@ -184,7 +183,15 @@ async function getSkills(userName) {
   return await userRepository.getSkills(userName)
 }
 
+function validateSkillParam(skill) {
+  if (!_.isString(skill)) {
+    throw new PermissionError('skill parameter must be string', 400)
+  }
+}
+
 async function addSkill(userName, skill) {
+  validateSkillParam(skill)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -205,6 +212,8 @@ async function addSkill(userName, skill) {
 }
 
 async function removeSkill(userName, skill) {
+  validateSkillParam(skill)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -226,7 +235,15 @@ async function getDesirableJobs(userName) {
   return await userRepository.getDesirableJobs(userName)
 }
 
+function validateDesirableJobParam(desirableJob) {
+  if (!_.isString(desirableJob)) {
+    throw new PermissionError('desirableJob parameter must be string', 400)
+  }
+}
+
 async function addDesirableJob(userName, desirableJob) {
+  validateDesirableJobParam(desirableJob)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -247,6 +264,8 @@ async function addDesirableJob(userName, desirableJob) {
 }
 
 async function removeDesirableJob(userName, desirableJob) {
+  validateDesirableJobParam(desirableJob)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -268,7 +287,15 @@ async function getDesirableTrainings(userName) {
   return await userRepository.getDesirableTrainings(userName)
 }
 
+function validateDesirableTrainingParam(desirableTraining) {
+  if (!_.isString(desirableTraining)) {
+    throw new PermissionError('desirableTraining parameter must be string', 400)
+  }
+}
+
 async function addDesirableTraining(userName, desirableTraining) {
+  validateDesirableTrainingParam(desirableTraining)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -289,6 +316,8 @@ async function addDesirableTraining(userName, desirableTraining) {
 }
 
 async function removeDesirableTraining(userName, desirableTraining) {
+  validateDesirableTrainingParam(desirableTraining)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -310,7 +339,33 @@ async function getDesirableTrainingLocations(userName) {
   return await userRepository.getDesirableTrainingLocations(userName)
 }
 
+function validateDesirableTrainingLocationParam(desirableTrainingLocation) {
+  if (!_.isObject(desirableTrainingLocation)) {
+    throw new PermissionError('desirableTrainingLocation parameter must be object', 400)
+  }
+
+  const {
+    name,
+    unitName,
+    ...restProps
+  } = desirableTrainingLocation
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in desirableTrainingLocation', 400)
+  }
+
+  if (!_.isString(name)) {
+    throw new PermissionError('desirableTrainingLocation property name should be string', 400)
+  }
+
+  if (!_.isString(unitName)) {
+    throw new PermissionError('desirableTrainingLocation property unitName should be string', 400)
+  }
+}
+
 async function addDesirableTrainingLocation(userName, desirableTrainingLocation) {
+  validateDesirableTrainingLocationParam(desirableTrainingLocation)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -329,6 +384,8 @@ async function addDesirableTrainingLocation(userName, desirableTrainingLocation)
 }
 
 async function removeDesirableTrainingLocation(userName, desirableTrainingLocation) {
+  validateDesirableTrainingLocationParam(desirableTrainingLocation)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -371,13 +428,94 @@ async function activateUserProfile(userName) {
   await userRepository.saveUser(foundUser)
 }
 
-async function addJobExperience(userName, experience) {
+function validateExperienceParam(experience) {
+  if (!_.isObject(experience)) {
+    throw new PermissionError('jobExperience parameter must be object', 400)
+  }
+
+  const {
+    id,
+    jobTitle,
+    organization,
+    description,
+    locationIsInGeorgia,
+    locationName,
+    locationUnitName,
+    additionalAddressInfo,
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    hasDocument,
+    ...restProps
+  } = experience
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in jobExperience', 400)
+  }
+
+  if (id && !_.isString(id)) {
+    throw new PermissionError('invalid id', 400)
+  }
+
+  if (jobTitle && !_.isString(jobTitle)) {
+    throw new PermissionError('invalid jobTitle', 400)
+  }
+
+  if (organization && !_.isString(organization)) {
+    throw new PermissionError('invalid organization', 400)
+  }
+
+  if (description && !_.isString(description)) {
+    throw new PermissionError('invalid description', 400)
+  }
+
+  if (locationIsInGeorgia && !_.isBoolean(locationIsInGeorgia)) {
+    throw new PermissionError('invalid locationIsInGeorgia field', 400)
+  }
+
+  if (locationName && !_.isString(locationName)) {
+    throw new PermissionError('invalid locationName', 400)
+  }
+
+  if (locationUnitName && !_.isString(locationUnitName)) {
+    throw new PermissionError('invalid locationUnitName', 400)
+  }
+
+  if (additionalAddressInfo && !_.isString(additionalAddressInfo)) {
+    throw new PermissionError('invalid additionalAddressInfo', 400)
+  }
+
+  if (hasDocument && !_.isBoolean(hasDocument)) {
+    throw new PermissionError('invalid hasDocument field', 400)
+  }
+
+  if (startMonth && !_.isInteger(startMonth)) {
+    throw new PermissionError('invalid startMonth', 400)
+  }
+
+  if (startYear && !_.isInteger(startYear)) {
+    throw new PermissionError('invalid startYear', 400)
+  }
+
+  if (endMonth && !_.isInteger(endMonth)) {
+    throw new PermissionError('invalid endMonth', 400)
+  }
+
+  if (endYear && !_.isInteger(endYear)) {
+    throw new PermissionError('invalid endYear', 400)
+  }
+
   domainUtils.validatePeriod(
-    experience.startMonth,
-    experience.startYear,
-    experience.endMonth,
-    experience.endYear
+    startMonth,
+    startYear,
+    endMonth,
+    endYear
   )
+}
+
+async function addJobExperience(userName, experience) {
+  validateExperienceParam(experience)
 
   experience.id = shortid.generate()
 
@@ -393,12 +531,7 @@ async function addJobExperience(userName, experience) {
 async function replaceJobExperience(userName, id, experience) {
   if (!experience.id) experience.id = id
 
-  domainUtils.validatePeriod(
-    experience.startMonth,
-    experience.startYear,
-    experience.endMonth,
-    experience.endYear
-  )
+  validateExperienceParam(experience)
 
   let experiences = await userRepository.getJobExperiences(userName)
 
@@ -423,13 +556,94 @@ async function getEducations(userName) {
   return await userRepository.getEducations(userName)
 }
 
-async function addEducation(userName, education) {
+function validateEducationParam(education) {
+  if (!_.isObject(education)) {
+    throw new PermissionError('education parameter must be object', 400)
+  }
+
+  const {
+    id,
+    educationType,
+    educationLevel,
+    institution,
+    locationIsInGeorgia,
+    locationName,
+    locationUnitName,
+    additionalAddressInfo,
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    directionName,
+    ...restProps
+  } = education
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in jobExperience', 400)
+  }
+
+  if (id && !_.isString(id)) {
+    throw new PermissionError('invalid id', 400)
+  }
+
+  if (educationType && !_.isString(educationType)) {
+    throw new PermissionError('invalid educationType', 400)
+  }
+
+  if (educationLevel && !_.isString(educationLevel)) {
+    throw new PermissionError('invalid educationLevel', 400)
+  }
+
+  if (institution && !_.isString(institution)) {
+    throw new PermissionError('invalid institution', 400)
+  }
+
+  if (locationIsInGeorgia && !_.isBoolean(locationIsInGeorgia)) {
+    throw new PermissionError('invalid locationIsInGeorgia field', 400)
+  }
+
+  if (locationName && !_.isString(locationName)) {
+    throw new PermissionError('invalid locationName', 400)
+  }
+
+  if (locationUnitName && !_.isString(locationUnitName)) {
+    throw new PermissionError('invalid locationUnitName', 400)
+  }
+
+  if (additionalAddressInfo && !_.isString(additionalAddressInfo)) {
+    throw new PermissionError('invalid additionalAddressInfo', 400)
+  }
+
+  if (directionName && !_.isString(directionName)) {
+    throw new PermissionError('invalid directionName', 400)
+  }
+
+  if (startMonth && !_.isInteger(startMonth)) {
+    throw new PermissionError('invalid startMonth', 400)
+  }
+
+  if (startYear && !_.isInteger(startYear)) {
+    throw new PermissionError('invalid startYear', 400)
+  }
+
+  if (endMonth && !_.isInteger(endMonth)) {
+    throw new PermissionError('invalid endMonth', 400)
+  }
+
+  if (endYear && !_.isInteger(endYear)) {
+    throw new PermissionError('invalid endYear', 400)
+  }
+
   domainUtils.validatePeriod(
-    education.startMonth,
-    education.startYear,
-    education.endMonth,
-    education.endYear
+    startMonth,
+    startYear,
+    endMonth,
+    endYear
   )
+}
+
+async function addEducation(userName, education) {
+  validateEducationParam(education)
 
   education.id = shortid.generate()
 
@@ -445,12 +659,7 @@ async function addEducation(userName, education) {
 async function editEducation(userName, id, education) {
   if (!education.id) education.id = id
 
-  domainUtils.validatePeriod(
-    education.startMonth,
-    education.startYear,
-    education.endMonth,
-    education.endYear
-  )
+  validateEducationParam(education)
 
   let educations = await userRepository.getEducations(userName)
 
@@ -484,12 +693,24 @@ async function getLanguages(userName) {
 }
 
 async function addLanguage(userName, languageObject) {
+  if (!_.isObject(languageObject)) {
+    throw new PermissionError('language parameter must be object', 400)
+  }
+
   let language = {
     languageName: languageObject.languageName,
     languageLevel: languageObject.languageLevel,
   }
 
   if (!language.languageName) throw new RecordError('ენის სახელი არაა მითითებული')
+
+  if (!_.isString(language.languageName)) {
+    throw new PermissionError('languageName field must be string', 400)
+  }
+
+  if (language.languageLevel && !_.isString(language.languageLevel)) {
+    throw new PermissionError('languageLevel field must be string', 400)
+  }
 
   let languages = await userRepository.getLanguages(userName)
 
@@ -503,6 +724,17 @@ async function addLanguage(userName, languageObject) {
 }
 
 async function setLanguageLevel(userName, languageName, level) {
+  if (!languageName) throw new RecordError('ენის სახელი არაა მითითებული')
+  if (!level) throw new RecordError('ენის ცოდნის დონე არაა მითითებული')
+
+  if (!_.isString(languageName)) {
+    throw new PermissionError('languageName parameter must be string', 400)
+  }
+
+  if (!_.isString(level)) {
+    throw new PermissionError('languageLevel parameter must be string', 400)
+  }
+
   let languages = await userRepository.getLanguages(userName)
 
   let languageIndex = languages.findIndex(item => item.languageName === languageName)
@@ -515,6 +747,12 @@ async function setLanguageLevel(userName, languageName, level) {
 }
 
 async function removeLanguage(userName, languageName) {
+  if (!languageName) throw new RecordError('ენის სახელი არაა მითითებული')
+
+  if (!_.isString(languageName)) {
+    throw new PermissionError('languageName parameter must be string', 400)
+  }
+
   let languages = await userRepository.getLanguages(userName)
 
   let languageIndex = languages.findIndex(item => item.languageName === languageName)
