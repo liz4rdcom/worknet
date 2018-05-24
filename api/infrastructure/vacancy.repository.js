@@ -98,7 +98,7 @@ async function deleteVacancy(id) {
   await client.delete(options)
 }
 
-async function getBySearch(params) {
+async function getBySearch(params, all = false) {
   let listFields = ['skills', 'locations']
   let conditionFields = ['minimalSalary', 'maximalSalary']
 
@@ -185,14 +185,6 @@ async function getBySearch(params) {
       bool: {
         should: [
           {
-            range: {
-              fixedSalary: {
-                gte: params.minimalSalary,
-                lte: params.maximalSalary,
-              },
-            },
-          },
-          {
             bool: {
               must_not: mustNots,
               should: [
@@ -216,9 +208,32 @@ async function getBySearch(params) {
 
   terms.push({
     query_string: {
-      query: params.filter || '*',
+      query: params.filter ? '*' + params.filter + '*' : '*',
     },
   })
+
+  let notExpiredQuery = {
+    bool: {
+      should: [
+        {
+          range: {
+            endDate: {
+              gt: '2018-05-24',
+            },
+          },
+        },
+        {
+          bool: {
+            must_not: {
+              exists: {
+                field: 'endDate',
+              },
+            },
+          },
+        },
+      ],
+    },
+  }
 
   let options = {
     index,
@@ -227,9 +242,20 @@ async function getBySearch(params) {
       query: {
         bool: {
           must: terms,
+          filter: [
+            {
+              term: {
+                published: true,
+              },
+            },
+          ],
         },
       },
     },
+  }
+
+  if (!all) {
+    options.body.query.bool.filter.push(notExpiredQuery)
   }
 
   let result = await client.search(options)
