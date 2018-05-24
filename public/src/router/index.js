@@ -143,7 +143,7 @@ router.beforeEach(async (to, from, next) => {
       return
     }
 
-    next('/vacancies')
+    next('/login')
     return
   }
 

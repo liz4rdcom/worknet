@@ -34,36 +34,20 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import { bus } from './common/bus'
 import passwordChange from './um/password-change'
 export default {
   name: 'navbar',
+  props: ['loggedIn'],
   components: {
     'password-change': passwordChange,
-  },
-  data: () => ({
-    loggedIn: false,
-  }),
-  created() {
-    this.loggedIn = !!Cookies.get('token')
-
-    bus.$on('login', () => {
-      this.loggedIn = true
-    })
-
-    bus.$on('logout', () => {
-      this.loggedIn = false
-    })
   },
   methods: {
     modalTrue: function () {
       this.$refs.modalRef.openModal()
     },
     logout() {
-      Cookies.remove('token')
-
-      this.loggedIn = false
+      bus.$emit('logout')
 
       this.$router.push('/vacancies')
     },
