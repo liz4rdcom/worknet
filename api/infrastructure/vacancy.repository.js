@@ -134,22 +134,27 @@ async function getBySearch(params, all = false) {
   if (params.locations && params.locations.length > 0) {
     let locationQueries = params.locations
       .map(location => {
-        return {
+        let query = {
           bool: {
             must: [
               {
                 match: {
-                  locationName: location.locationName,
-                },
-              },
-              {
-                match: {
-                  locationUnitName: location.locationUnitName,
+                  'locationName.keyword': location.locationName,
                 },
               },
             ],
           },
         }
+
+        if (location.locationUnitName) {
+          query.bool.must.push({
+            match: {
+              'locationUnitName.keyword': location.locationUnitName,
+            },
+          })
+        }
+
+        return query
       })
 
     terms.push({
