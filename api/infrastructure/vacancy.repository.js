@@ -185,14 +185,6 @@ async function getBySearch(params) {
       bool: {
         should: [
           {
-            range: {
-              fixedSalary: {
-                gte: params.minimalSalary,
-                lte: params.maximalSalary,
-              },
-            },
-          },
-          {
             bool: {
               must_not: mustNots,
               should: [
@@ -216,7 +208,7 @@ async function getBySearch(params) {
 
   terms.push({
     query_string: {
-      query: params.filter || '*',
+      query: params.filter ? '*' + params.filter + '*' : '*',
     },
   })
 
