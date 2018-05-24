@@ -179,7 +179,6 @@ import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
 import vacancySearchList from './vacancies-search-list'
 // import libs from '../../libs'
-// import dummyVacanciesList from './dummy-vacancies-list'
 
 export default {
   name: 'vacancies',
@@ -259,17 +258,6 @@ export default {
     },
     onLocationChanged(location) {
       this.filterObject.locations.push(location)
-    },
-    getFunctionDescription(vacancy) {
-      if (!vacancy.functionsDescription) {
-        return ''
-      }
-      let arr = vacancy.functionsDescription.split(' ', 10)
-      let string = ''
-      for (let i = 0; i < arr.length; i++) {
-        string += arr[i] + ' '
-      }
-      return string
     },
     getSkills(vacancy) {
       if (!vacancy.skills) {

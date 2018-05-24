@@ -5,7 +5,6 @@
         <h3 class="card-title">{{vacancy.positionName}}</h3>
         <h4 v-if="vacancy._percent" class="percent-view">პარამეტრების დამთხვევა: {{vacancy._percent}}</h4>
         <h5 class="card-text">{{vacancy.organization}}</h5>
-        <h5 class="card-text">{{getFunctionDescription(vacancy)}}</h5>
         <h5 class="card-text" v-for="skill in getSkills(vacancy)" :key="skill.skillName" @click="skillFilter(skill.skillName, $event)">{{skill.skillName}}</h5>
         <h5 class="card-text">{{vacancy.publishDate}}</h5>
         <h5 class="card-text">სრულად ნახვა...</h5>
@@ -35,17 +34,6 @@ export default {
     vacancyId: null,
   }),
   methods: {
-    getFunctionDescription(vacancy) {
-      if (!vacancy.functionsDescription) {
-        return ''
-      }
-      let arr = vacancy.functionsDescription.split(' ', 10)
-      let string = ''
-      for (let i = 0; i < arr.length; i++) {
-        string += arr[i] + ' '
-      }
-      return string
-    },
     getSkills(vacancy) {
       if (!vacancy.skills) {
         return ''
