@@ -194,6 +194,7 @@ export default {
     currentVacancyId: null,
     vacancyListCurrentPageIndex: 1,
     vacancyMaxCountOnPage: 15,
+    queryExpiredToo: false,
     filterObject: {
       filter: null,
       hasDrivingLicence: null,
@@ -213,7 +214,7 @@ export default {
   }),
   async created() {
     try {
-      let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
+      let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: false}, { needsToken: false })
 
       this.vacancies = response.data
 
@@ -286,7 +287,7 @@ export default {
     },
     async search() {
       try {
-        let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
+        let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: this.queryExpiredToo}, { needsToken: false })
 
         this.vacancies = response.data
 

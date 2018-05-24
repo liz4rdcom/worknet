@@ -17,7 +17,7 @@ async function getById(id) {
   return await vacancyRepository.getById(id)
 }
 
-async function getBySearch(body) {
+async function getBySearch(body, queryAll = false) {
   let keyArray = Object.keys(body)
   let filteredObject = {}
   for (let i = 0; i < keyArray.length; i++) {
@@ -26,7 +26,7 @@ async function getBySearch(body) {
     }
   }
 
-  return await vacancyRepository.getBySearch(filteredObject)
+  return await vacancyRepository.getBySearch(filteredObject, queryAll)
 }
 
 async function getUserVacancies(userName) {
