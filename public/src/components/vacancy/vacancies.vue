@@ -257,7 +257,10 @@ export default {
       this.filterObject.minimalSalary = value
     },
     onLocationChanged(location) {
-      this.filterObject.locations.push(location)
+      // TODO at this time only one. but it should be multiple
+      if (location.locationName) {
+        this.filterObject.locations = [location]
+      }
     },
     getSkills(vacancy) {
       if (!vacancy.skills) {
