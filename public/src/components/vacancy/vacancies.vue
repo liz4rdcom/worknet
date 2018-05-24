@@ -8,7 +8,7 @@
 
       <b-col style="padding-left: 0px;" cols="3">
         <div @keyup.enter="search">
-          <b-form-input type="text" v-model="query" placeholder="თანამდებობოა, დამსაქმებელი ან სხვა..." />
+          <b-form-input type="text" v-model="filterObject.filter" placeholder="თანამდებობა, დამსაქმებელი ან სხვა..." />
         </div>
       </b-col>
 
@@ -174,15 +174,12 @@
 <script>
 import find from 'lodash/find'
 import georgiaLocations from '../common/georgia-locations'
-import utils from '../../utils'
 import { bus } from '../common/bus'
 import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
 import vacancySearchList from './vacancies-search-list'
 // import libs from '../../libs'
 // import dummyVacanciesList from './dummy-vacancies-list'
-
-const baseUrl = '/api/vacancies/published'
 
 export default {
   name: 'vacancies',
@@ -197,8 +194,8 @@ export default {
     currentVacancyId: null,
     vacancyListCurrentPageIndex: 1,
     vacancyMaxCountOnPage: 15,
-    query: '',
     filterObject: {
+      filter: null,
       hasDrivingLicence: null,
       militaryObligation: false,
       fullTime: false,
@@ -216,24 +213,23 @@ export default {
   }),
   async created() {
     try {
-      let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
+      let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
 
       this.vacancies = response.data
 
       this.currentVacancyId = this.vacancies[0].id
     } catch (error) {
-      bus.$emit('error', error)
     }
   },
-  watch: {
-    filterObject: {
-      async handler () {
-        let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
-        this.vacancies = response.data
-      },
-      deep: true,
-    },
-  },
+  // watch: {
+  //   filterObject: {
+  //     async handler () {
+  //       let response = await this.$http.post(baseUrl + '/search', this.filterObject, { needsToken: false })
+  //       this.vacancies = response.data
+  //     },
+  //     deep: true,
+  //   },
+  // },
   methods: {
     maxSalary (value) {
       if (isNaN(value)) {
@@ -290,14 +286,12 @@ export default {
     },
     async search() {
       try {
-        let response = await this.$http.get(baseUrl, {params: {query: this.query}}, {headers: utils.getHeaders()}) // eslint-disable-line
+        let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
 
-        // this.vacancies = dummyVacanciesList
         this.vacancies = response.data
 
         this.currentVacancyId = this.vacancies[0].id
       } catch (error) {
-        bus.$emit('error', error)
       }
     },
     onVacancyClickInList (vacancyId) {
