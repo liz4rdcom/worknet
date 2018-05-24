@@ -58,16 +58,6 @@
           />
         </b-form-group>
 
-        <b-form-group label="დამატებითი მისამართი" class="font-weight-bold">
-          <b-form-textarea
-            id="vacancy-add-adress-line"
-            v-model="vacancy.addressLine"
-            :rows="3"
-            :max-rows="6"
-          >
-          </b-form-textarea>
-        </b-form-group>
-
         <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
           <b-row>
             <b-col class="interview-supposed-start-day">
@@ -121,25 +111,20 @@
         </b-form-group>
 
         <b-form-group label="ვაკანტური ადგილების რაოდენობა" class="font-weight-bold">
-          <b-form-input id="vacancy-add-vacant-places" type="number" v-model="vacancy.vacantPlacesQuantity" />
-        </b-form-group>
-
-        <b-form-group label="თანამდებობრივი მოვალეობის აღწერილობა" class="font-weight-bold">
-          <b-form-textarea
-            id="vacancy-add-functions-description"
-            v-model="vacancy.functionsDescription"
-            :rows="3"
-            :max-rows="6"
-          >
-          </b-form-textarea>
+          <b-form-input id="vacancy-add-vacant-places" type="number" v-model.number="vacancy.vacantPlacesQuantity" />
         </b-form-group>
 
         <b-form-group label="დამატებითი აღწერილობა" class="font-weight-bold">
           <b-form-textarea
             id="vacancy-add-additional-description"
             v-model="vacancy.additionalDescription"
-            :rows="3"
-            :max-rows="6"
+            :rows="7"
+            :max-rows="10"
+            placeholder="თანამდებობრივი მოვალეობის(სამუშაოს) აღწერილობა,
+
+მისამართის დაზუსტება,
+
+ან სხვა ნებიესმიერი ინფორმაცია ვაკანსიის ან თქვენი, როგორც დამსაქმებლის, შესახებ."
           >
           </b-form-textarea>
         </b-form-group>
@@ -512,7 +497,6 @@ export default {
       authorPersonalId: null,
       locationName: null,
       locationUnitName: null,
-      addressLine: null,
       interviewSupposedStartDay: null,
       interviewSupposedStartMonth: null,
       interviewSupposedStartYear: new Date().getFullYear(),
@@ -521,7 +505,6 @@ export default {
       endDateYear: null,
       useMediationService: false,
       vacantPlacesQuantity: null,
-      functionsDescription: null,
       additionalDescription: null,
       minimalSalary: null,
       maximalSalary: null,
@@ -610,10 +593,6 @@ export default {
             this.vacancy.locationUnitName = vacancyResult.locationUnitName
           }
 
-          if (vacancyResult.addressLine) {
-            this.vacancy.addressLine = vacancyResult.addressLine
-          }
-
           if (vacancyResult.interviewSupposedStartDate) {
             const interviewSupposedStartDateConstructed = new Date(vacancyResult.interviewSupposedStartDate)
 
@@ -636,10 +615,6 @@ export default {
 
           if (vacancyResult.vacantPlacesQuantity || vacancyResult.vacantPlacesQuantity === 0) {
             this.vacancy.vacantPlacesQuantity = vacancyResult.vacantPlacesQuantity
-          }
-
-          if (vacancyResult.functionsDescription) {
-            this.vacancy.functionsDescription = vacancyResult.functionsDescription
           }
 
           if (vacancyResult.additionalDescription) {
@@ -811,18 +786,9 @@ export default {
         retVal.locationName = this.vacancy.locationName
       }
 
-      if (this.vacancy.addressLine) {
-        retVal.addressLine = this.vacancy.addressLine
-      }
-
       if (this.vacancy.vacantPlacesQuantity || this.vacancy.vacantPlacesQuantity === 0) {
         retVal.vacantPlacesQuantity = this.vacancy.vacantPlacesQuantity
       }
-
-      if (this.vacancy.functionsDescription) {
-        retVal.functionsDescription = this.vacancy.functionsDescription
-      }
-
       if (!isNil(this.vacancy.minimalSalary)) {
         retVal.minimalSalary = this.vacancy.minimalSalary
       }
