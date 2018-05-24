@@ -775,7 +775,33 @@ async function deleteDesirableJobLocations(userName, location) {
   return await userRepository.saveDesirableJobLocations(userName, desirableJobLocations)
 }
 
+function validateDesirableJobLocationParam(desirableJobLocation) {
+  if (!_.isObject(desirableJobLocation)) {
+    throw new PermissionError('desirableJobLocation parameter must be object', 400)
+  }
+
+  const {
+    locationName,
+    locationUnitName,
+    ...restProps
+  } = desirableJobLocation
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in desirableJobLocation', 400)
+  }
+
+  if (!_.isString(locationName)) {
+    throw new PermissionError('desirableJobLocation property name should be string', 400)
+  }
+
+  if (!_.isString(locationUnitName)) {
+    throw new PermissionError('desirableJobLocation property unitName should be string', 400)
+  }
+}
+
 async function addDesirableJobLocations(userName, location) {
+  validateDesirableJobLocationParam(location)
+
   let jobLocation = {
     locationName: location.locationName,
     locationUnitName: location.locationUnitName,
@@ -796,7 +822,63 @@ async function getDrivingLicence(userName) {
   return await userRepository.getDrivingLicence(userName)
 }
 
+function validateLicense(license) {
+  if (!_.isObject(license)) {
+    throw new PermissionError('license parameter must be object', 400)
+  }
+
+  const {
+    drivingLicenceA,
+    drivingLicenceB,
+    drivingLicenceC,
+    drivingLicenceD,
+    drivingLicenceE,
+    drivingLicenceT1,
+    drivingLicenceT2,
+    airLicence,
+    seaLicence,
+    railwayLicence,
+    ...restProps
+  } = license
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in licence', 400)
+  }
+
+  if (drivingLicenceA != null && !_.isBoolean(drivingLicenceA)) {
+    throw new PermissionError('drivingLicenceA parameter must be boolean', 400)
+  }
+  if (drivingLicenceB != null && !_.isBoolean(drivingLicenceB)) {
+    throw new PermissionError('drivingLicenceB parameter must be boolean', 400)
+  }
+  if (drivingLicenceC != null && !_.isBoolean(drivingLicenceC)) {
+    throw new PermissionError('drivingLicenceC parameter must be boolean', 400)
+  }
+  if (drivingLicenceD != null && !_.isBoolean(drivingLicenceD)) {
+    throw new PermissionError('drivingLicenceD parameter must be boolean', 400)
+  }
+  if (drivingLicenceE != null && !_.isBoolean(drivingLicenceE)) {
+    throw new PermissionError('drivingLicenceE parameter must be boolean', 400)
+  }
+  if (drivingLicenceT1 != null && !_.isBoolean(drivingLicenceT1)) {
+    throw new PermissionError('drivingLicenceT1 parameter must be boolean', 400)
+  }
+  if (drivingLicenceT2 != null && !_.isBoolean(drivingLicenceT2)) {
+    throw new PermissionError('drivingLicenceT2 parameter must be boolean', 400)
+  }
+  if (airLicence != null && !_.isBoolean(airLicence)) {
+    throw new PermissionError('airLicence parameter must be boolean', 400)
+  }
+  if (seaLicence != null && !_.isBoolean(seaLicence)) {
+    throw new PermissionError('seaLicence parameter must be boolean', 400)
+  }
+  if (railwayLicence != null && !_.isBoolean(railwayLicence)) {
+    throw new PermissionError('railwayLicence parameter must be boolean', 400)
+  }
+}
+
 async function addDrivingLicence(userName, licence) {
+  validateLicense(licence)
   let drivingLicence = await userRepository.getDrivingLicence(userName)
   drivingLicence = licence
   await userRepository.saveDrivingLicence(userName, drivingLicence)
@@ -807,6 +889,9 @@ async function getHasDrivingLicence(userName) {
 }
 
 async function addHasDrivingLicence(userName, licence) {
+  if (!_.isBoolean(licence)) {
+    throw new PermissionError('hasDrivingLicence parameter must be boolean', 400)
+  }
   let drivingLicence = await userRepository.getHasDrivingLicence(userName)
   drivingLicence = licence
   await userRepository.saveHasDrivingLicence(userName, drivingLicence)
