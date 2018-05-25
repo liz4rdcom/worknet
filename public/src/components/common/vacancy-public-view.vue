@@ -6,16 +6,16 @@
     </b-form-group>
 
     <div style="padding-left: 10px;">
-      <label><b>{{vacancy.minimalSalary + ' - ' + vacancy.maximalSalary}}</b><i> ₾ - ხელფასი</i></label><br/>
-      <label><b>{{vacancy.locationName}},&nbsp;{{vacancy.locationUnitName}}</b><i> - სამსახურის ადგილმდებარეობა</i></label><br/>
-      <label><b>{{vacancy.organization || vacancy.authorFullName}}</b><i> - დამსაქმებელი</i></label><br/>
-      <label><b>{{vacancy.interviewSupposedStartDate | stringDateToDateMonthYearForm}}</b><i> - გასაუბრების დაწყების თარიღი</i></label><br/>
-      <label><b>{{vacancy.endDate | stringDateToDateMonthYearForm}}</b><i> - ბოლო ვადა</i></label><br/>
+      <label><b>{{vacancy.minimalSalary}}&nbsp;{{'-'}}&nbsp;{{vacancy.maximalSalary}}</b><i>&nbsp;₾&nbsp;- ხელფასი</i></label><br/>
+      <label><b>{{vacancy.locationName}},&nbsp;{{vacancy.locationUnitName}}</b><i>&nbsp;- სამსახურის&nbsp;ადგილმდებარეობა</i></label><br/>
+      <label><b>{{vacancy.organization || vacancy.authorFullName}}</b><i>&nbsp;- დამსაქმებელი</i></label><br/>
+      <label><b>{{vacancy.interviewSupposedStartDate | stringDateToDateMonthYearForm}}</b><i>&nbsp;- გასაუბრების&nbsp;დაწყების&nbsp;თარიღი</i></label><br/>
+      <label><b>{{vacancy.endDate | stringDateToDateMonthYearForm}}</b><i>&nbsp;- ბოლო&nbsp;ვადა</i></label><br/>
       <label>
-        <b v-if="vacancy.fullTime">სრული განაკვეთი,</b>
-        <b v-if="vacancy.partTime">ნახევარი განაკვეთი,</b>
+        <b v-if="vacancy.fullTime">სრული&nbsp;განაკვეთი,</b>
+        <b v-if="vacancy.partTime">ნახევარი&nbsp;განაკვეთი,</b>
         <b v-if="vacancy.shiftBased">ცვლებში</b>
-        <i> - სამუშაო გრაფიკი</i>
+        <i>&nbsp;- სამუშაო&nbsp;გრაფიკი</i>
       </label><br/>
       <label>
         <b v-if="vacancy.drivingLicenceA">კატეგორია "A",</b>
@@ -28,10 +28,10 @@
         <b v-if="vacancy.airLicence">ფრენის ლიცენზია,</b>
         <b v-if="vacancy.seaLicence">საზღვაო ტრანსპორტის ლიცენზია,</b>
         <b v-if="vacancy.railwayLicence">სარკინიგზო ტრანსპორტის ლიცენზია</b>
-        <i> - მართვის მოწმობა</i>
+        <i>&nbsp;- მართვის&nbsp;მოწმობა</i>
       </label><br/>
       <!-- <label><b>{{vacancy.militaryObligation}}</b><i> - სამხედრო ვალდებულება</i></label><br/> -->
-      <label><b>{{vacancy.vacantPlacesQuantity}}</b><i> - ვაკანტური ადგილი</i></label><br/>
+      <label><b>{{vacancy.vacantPlacesQuantity}}</b><i>&nbsp;- ვაკანტური&nbsp;ადგილი</i></label><br/>
     </div>
     <b-form-group />
   </div>
@@ -43,7 +43,7 @@
       {{vacancy.additionalDescription}}
     </b-form-group>
 
-    <label><b>{{vacancy.publishDate | stringDateToDateMonthYearForm}}</b><i> - ვაკანსიის დადების თარიღი</i></label><br/>
+    <label><b>{{vacancy.publishDate | stringDateToDateMonthYearForm}}</b><i>&nbsp;- ვაკანსიის&nbsp;დადების&nbsp;თარიღი</i></label><br/>
   </div>
 
 
