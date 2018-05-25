@@ -32,6 +32,7 @@ async function getPublishedVacancies(query = '') {
     type,
     q: '*' + query + '* AND published:true',
     searchType: 'dfs_query_then_fetch',
+    size: 500,
   }
 
   let result = await client.search(options)

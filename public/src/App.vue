@@ -19,16 +19,21 @@
   }
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    background: whitesmoke;
-    height: 100%;
-    overflow-y: auto;
+<style lang="scss">
+@import '@/main.scss';
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  background: $clean;
+  height: 100%;
+  overflow-y: auto;
+
+  h4 {
+    color: $vermillion;
   }
 
   .card {
@@ -41,9 +46,9 @@
     border: solid darkslategray 10px;
     border-radius: 15px;
   }
+}
 
-  .flex {
-    flex: 1;
-  }
-
+.flex {
+  flex: 1;
+}
 </style>
