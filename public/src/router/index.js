@@ -8,6 +8,7 @@ import vacancyAdd from '../components/vacancy/vacancyAdd/vacancy-add'
 import ownVacancies from '../components/vacancy/ownVacancies/own-vacancies'
 import vacanciesList from '../components/vacancy/ownVacancies/vacancies-list'
 import vacancyMatchings from '../components/vacancy/vacancies-user-matching'
+import vacancyViewDummyUser from '../components/common/vacancy-view-dummy-user'
 import login from '../components/um/login'
 import register from '../components/um/register'
 import { bus } from '../components/common/bus'
@@ -123,6 +124,11 @@ let router = new Router({
       path: '/vacancies-matching',
       component: vacancyMatchings,
       name: 'vacancies-user-matching',
+    },
+    {
+      path: '/vacancy-view-dummy-user',
+      component: vacancyViewDummyUser,
+      name: 'vacancy-view-dummy-user',
     },
   ],
 })

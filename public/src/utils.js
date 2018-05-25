@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import isString from 'lodash/isString'
-import { PERSONAL_NUMBER_LENGTH } from './constants'
+import { PERSONAL_NUMBER_LENGTH, MONTH_NAMES } from './constants'
 
 /**
  * Java ს String.hashCode() მეთოდის იმპლემენტაცია Javascript ზე.
@@ -53,6 +53,15 @@ function idWithPrefix(idPrefix, idPart) {
 function compareDatesByMilliseconds(date1, date2) {
   return date1.getTime() - date2.getTime()
 }
+function stringDateToDateMonthYearForm(stringDate) {
+  const dateContructed = new Date(stringDate)
+
+  const date = dateContructed.getDate()
+  const month = dateContructed.getMonth()
+  const year = dateContructed.getFullYear()
+
+  return `${date}${date === 1 ? '-ლი' : ''} ${MONTH_NAMES[month]} ${year}`
+}
 
 export default {
   hashOfString: hashCode,
@@ -64,4 +73,5 @@ export default {
   couldBePersonalId,
   idWithPrefix,
   compareDatesByMilliseconds,
+  stringDateToDateMonthYearForm,
 }

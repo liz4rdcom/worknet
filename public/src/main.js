@@ -9,6 +9,7 @@ import '@/main.scss'
 
 import App from './App'
 import router from './router'
+import utils from './utils'
 import webApi from './webApi'
 
 Vue.config.productionTip = false
@@ -19,6 +20,8 @@ Vue.prototype.$http = webApi
 Vue.filter('boolToText', function (value) {
   return value ? 'დიახ' : 'არა'
 })
+
+Vue.filter('stringDateToDateMonthYearForm', utils.stringDateToDateMonthYearForm)
 
 /* eslint-disable no-new */
 new Vue({
