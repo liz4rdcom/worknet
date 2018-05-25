@@ -769,9 +769,13 @@ async function getDesirableJobLocations(userName) {
 }
 
 async function deleteDesirableJobLocations(userName, location) {
+  validateDesirableJobLocationParam(location)
+
   let desirableJobLocations = await getDesirableJobLocations(userName)
+
   let index = desirableJobLocations.findIndex((d) => d.locationName === location.locationName && d.locationUnitName === location.locationUnitName)
   desirableJobLocations.splice(index, 1)
+
   return await userRepository.saveDesirableJobLocations(userName, desirableJobLocations)
 }
 
@@ -902,6 +906,10 @@ async function getMilitaryObligation(userName) {
 }
 
 async function addMilitaryObligation(userName, obligation) {
+  if (!_.isBoolean(obligation)) {
+    throw new PermissionError('militaryObligation parameter must be boolean', 400)
+  }
+
   let militaryObligation = await userRepository.getMilitaryObligation(userName)
   militaryObligation = obligation
   await userRepository.saveMilitaryObligation(userName, militaryObligation)
@@ -912,6 +920,10 @@ async function getDesirableSalary(userName) {
 }
 
 async function addDesirableSalary(userName, salary) {
+  if (salary != null && !_.isNumber(salary)) {
+    throw new PermissionError('desirableSalary parameter must be number', 400)
+  }
+
   let desirableSalary = await userRepository.getDesirableSalary(userName)
   desirableSalary = salary
   await userRepository.saveDesirableSalary(userName, desirableSalary)
@@ -921,7 +933,63 @@ async function getJobDescription(userName) {
   return await userRepository.getJobDescription(userName)
 }
 
+function validateJobDescription(jobDescription) {
+  if (!_.isObject(jobDescription)) {
+    throw new PermissionError('jobDescription parameter must be object', 400)
+  }
+
+  const {
+    fullTime,
+    partTime,
+    shiftBased,
+    interestedInTraining,
+    interestedInInternship,
+    interestedToBeVolunteer,
+    interestedInTemporaryJob,
+    interestedInDangerousJob,
+    unemployed,
+  } = jobDescription
+
+  if (fullTime != null && !_.isBoolean(fullTime)) {
+    throw new PermissionError('fullTime parameter must be boolean', 400)
+  }
+
+  if (partTime != null && !_.isBoolean(partTime)) {
+    throw new PermissionError('partTime parameter must be boolean', 400)
+  }
+
+  if (shiftBased != null && !_.isBoolean(shiftBased)) {
+    throw new PermissionError('shiftBased parameter must be boolean', 400)
+  }
+
+  if (interestedInTraining != null && !_.isBoolean(interestedInTraining)) {
+    throw new PermissionError('interestedInTraining parameter must be boolean', 400)
+  }
+
+  if (interestedInInternship != null && !_.isBoolean(interestedInInternship)) {
+    throw new PermissionError('interestedInInternship parameter must be boolean', 400)
+  }
+
+  if (interestedToBeVolunteer != null && !_.isBoolean(interestedToBeVolunteer)) {
+    throw new PermissionError('interestedToBeVolunteer parameter must be boolean', 400)
+  }
+
+  if (interestedInTemporaryJob != null && !_.isBoolean(interestedInTemporaryJob)) {
+    throw new PermissionError('interestedInTemporaryJob parameter must be boolean', 400)
+  }
+
+  if (interestedInDangerousJob != null && !_.isBoolean(interestedInDangerousJob)) {
+    throw new PermissionError('interestedInDangerousJob parameter must be boolean', 400)
+  }
+
+  if (unemployed != null && !_.isBoolean(unemployed)) {
+    throw new PermissionError('unemployed parameter must be boolean', 400)
+  }
+}
+
 async function addJobDescription(userName, jobDesc) {
+  validateJobDescription(jobDesc)
+
   let jobDescription = await userRepository.getDrivingLicence(userName)
   jobDescription = jobDesc
   await userRepository.saveJobDescription(userName, jobDescription)
@@ -932,6 +1000,10 @@ async function getUseMediationService(userName) {
 }
 
 async function addUseMediationService(userName, useMediation) {
+  if (!_.isBoolean(useMediation)) {
+    throw new PermissionError('useMediationService parameter must be boolean', 400)
+  }
+
   let useMediationService = await userRepository.getUseMediationService(userName)
   useMediationService = useMediation
   await userRepository.saveUseMediationService(userName, useMediationService)
