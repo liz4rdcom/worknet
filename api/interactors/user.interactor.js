@@ -883,9 +883,8 @@ function validateLicense(license) {
 
 async function addDrivingLicence(userName, licence) {
   validateLicense(licence)
-  let drivingLicence = await userRepository.getDrivingLicence(userName)
-  drivingLicence = licence
-  await userRepository.saveDrivingLicence(userName, drivingLicence)
+
+  await userRepository.saveDrivingLicence(userName, licence)
 }
 
 async function getHasDrivingLicence(userName) {
@@ -896,9 +895,8 @@ async function addHasDrivingLicence(userName, licence) {
   if (!_.isBoolean(licence)) {
     throw new PermissionError('hasDrivingLicence parameter must be boolean', 400)
   }
-  let drivingLicence = await userRepository.getHasDrivingLicence(userName)
-  drivingLicence = licence
-  await userRepository.saveHasDrivingLicence(userName, drivingLicence)
+
+  await userRepository.saveHasDrivingLicence(userName, licence)
 }
 
 async function getMilitaryObligation(userName) {
@@ -910,9 +908,7 @@ async function addMilitaryObligation(userName, obligation) {
     throw new PermissionError('militaryObligation parameter must be boolean', 400)
   }
 
-  let militaryObligation = await userRepository.getMilitaryObligation(userName)
-  militaryObligation = obligation
-  await userRepository.saveMilitaryObligation(userName, militaryObligation)
+  await userRepository.saveMilitaryObligation(userName, obligation)
 }
 
 async function getDesirableSalary(userName) {
@@ -924,9 +920,7 @@ async function addDesirableSalary(userName, salary) {
     throw new PermissionError('desirableSalary parameter must be number', 400)
   }
 
-  let desirableSalary = await userRepository.getDesirableSalary(userName)
-  desirableSalary = salary
-  await userRepository.saveDesirableSalary(userName, desirableSalary)
+  await userRepository.saveDesirableSalary(userName, salary)
 }
 
 async function getJobDescription(userName) {
@@ -990,9 +984,7 @@ function validateJobDescription(jobDescription) {
 async function addJobDescription(userName, jobDesc) {
   validateJobDescription(jobDesc)
 
-  let jobDescription = await userRepository.getDrivingLicence(userName)
-  jobDescription = jobDesc
-  await userRepository.saveJobDescription(userName, jobDescription)
+  await userRepository.saveJobDescription(userName, jobDesc)
 }
 
 async function getUseMediationService(userName) {
@@ -1004,9 +996,7 @@ async function addUseMediationService(userName, useMediation) {
     throw new PermissionError('useMediationService parameter must be boolean', 400)
   }
 
-  let useMediationService = await userRepository.getUseMediationService(userName)
-  useMediationService = useMediation
-  await userRepository.saveUseMediationService(userName, useMediationService)
+  await userRepository.saveUseMediationService(userName, useMediation)
 }
 
 const validateAndFixSearchVacancyMatchings = (configFields, percent) => {
