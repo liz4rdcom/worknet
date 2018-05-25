@@ -18,7 +18,7 @@
 
 <script>
 import find from 'lodash/find'
-import utils from '../../utils'
+import utils from '../../../utils'
 
 export default {
   name: 'vacancies-list',

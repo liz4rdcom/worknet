@@ -166,8 +166,6 @@
       </div>
     </b-col>
   </b-row>
-
-  <!-- <vacancies-search-list :vacancies="vacancies"></vacancies-search-list> -->
 </div>
 </template>
 
@@ -177,7 +175,6 @@ import georgiaLocations from '../common/georgia-locations'
 import { bus } from '../common/bus'
 import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
-import vacancySearchList from './vacancies-search-list'
 // import libs from '../../libs'
 
 export default {
@@ -186,7 +183,6 @@ export default {
     'side-modal': sideModal,
     'vacancy-view': vacancyView,
     'georgia-locations': georgiaLocations,
-    'vacancies-search-list': vacancySearchList,
   },
   data: () => ({
     vacancies: [],
