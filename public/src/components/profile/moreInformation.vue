@@ -79,7 +79,7 @@
       <b-input-group v-if="desirableSalaryFilled === false">
         <b-form-input id="desirable-salary" type="text"
           placeholder="სასურველი ხელფასი"
-          v-model="desirableSalary">
+          v-model.number="desirableSalary">
         </b-form-input>
         <b-input-group-button slot="right">
           <b-btn @click="AddDesirableSalary">დამატება</b-btn>

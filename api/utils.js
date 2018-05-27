@@ -21,10 +21,20 @@ function percentToString(percent) {
   return percent.toString() + '%'
 }
 
+const isValidEmail = str => /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/i.test(str)
+
+function isValidPhone(phone) {
+  let trimmedPhone = phone.replace(/ /g, '')
+
+  return /[+0-9]{6,}/.test(trimmedPhone)
+}
+
 module.exports = {
   getUserNameFromRequest,
   stringContainsOnlyNumbers,
   couldBePersonalId,
   stringIsNonNegativeInteger,
   percentToString,
+  isValidEmail,
+  isValidPhone,
 }

@@ -98,6 +98,31 @@ async function deleteVacancy(id) {
   await client.delete(options)
 }
 
+function notExpiredQuery() {
+  return {
+    bool: {
+      should: [
+        {
+          range: {
+            endDate: {
+              gt: new Date(),
+            },
+          },
+        },
+        {
+          bool: {
+            must_not: {
+              exists: {
+                field: 'endDate',
+              },
+            },
+          },
+        },
+      ],
+    },
+  }
+}
+
 async function getBySearch(params, all = false) {
   let listFields = ['skills', 'locations']
   let conditionFields = ['minimalSalary', 'maximalSalary']
@@ -276,29 +301,6 @@ async function getBySearch(params, all = false) {
     },
   })
 
-  let notExpiredQuery = {
-    bool: {
-      should: [
-        {
-          range: {
-            endDate: {
-              gt: '2018-05-24',
-            },
-          },
-        },
-        {
-          bool: {
-            must_not: {
-              exists: {
-                field: 'endDate',
-              },
-            },
-          },
-        },
-      ],
-    },
-  }
-
   let options = {
     index,
     type,
@@ -319,7 +321,7 @@ async function getBySearch(params, all = false) {
   }
 
   if (!all) {
-    options.body.query.bool.filter.push(notExpiredQuery)
+    options.body.query.bool.filter.push(notExpiredQuery())
   }
 
   let result = await client.search(options)
@@ -530,11 +532,14 @@ async function matchVacanciesToUser(user, percent) {
         bool: {
           should: shoulds,
           minimum_should_match: generalUtils.percentToString(percent),
-          filter: {
-            term: {
-              published: true,
+          filter: [
+            {
+              term: {
+                published: true,
+              },
             },
-          },
+            notExpiredQuery(),
+          ],
         },
       },
     },

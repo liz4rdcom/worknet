@@ -73,7 +73,76 @@ async function getUserMainInfo(userName) {
   return user
 }
 
+function validateMainInfo(mainInfo) {
+  const {
+    firstName,
+    lastName,
+    genderName,
+    birthDate,
+    registrationLocationName,
+    registrationLocationUnitName,
+    registrationAddressDescription,
+    factLocationName,
+    factLocationUnitName,
+    factAddressDescription,
+    mobileNumber,
+    email,
+    contactDescription,
+    ...restProps
+  } = mainInfo
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found', 500)
+  }
+
+  if (firstName && !_.isString(firstName)) {
+    throw new PermissionError('firstName should be string', 400)
+  }
+
+  if (lastName && !_.isString(lastName)) {
+    throw new PermissionError('lastName should be string', 400)
+  }
+
+  if (genderName && !_.isString(genderName)) {
+    throw new PermissionError('genderName should be string', 400)
+  }
+
+  if (birthDate && (!_.isDate(birthDate) && !_.isString(birthDate))) {
+    throw new PermissionError('invalid birthDate', 400)
+  }
+
+  if ((registrationLocationName || registrationLocationUnitName) && (!_.isString(registrationLocationName) || !_.isString(registrationLocationUnitName))) {
+    throw new PermissionError('invalid: registrationLocationName, registrationLocationUnitName', 400)
+  }
+
+  if ((factLocationName || factLocationUnitName) && (!_.isString(factLocationName) || !_.isString(factLocationUnitName))) {
+    throw new PermissionError('invalid: factLocationName, factLocationUnitName', 400)
+  }
+
+  if (registrationAddressDescription && !_.isString(registrationAddressDescription)) {
+    throw new PermissionError('registrationAddressDescription must be string', 400)
+  }
+
+  if (factAddressDescription && !_.isString(factAddressDescription)) {
+    throw new PermissionError('factAddressDescription must be string', 400)
+  }
+
+  if (mobileNumber && (!_.isString(mobileNumber) || !utils.isValidPhone(mobileNumber))) {
+    throw new PermissionError('invalid mobileNumber', 400)
+  }
+
+  if (email && (!_.isString(email) || !utils.isValidEmail(email))) {
+    throw new PermissionError('invalid email', 400)
+  }
+
+  if (contactDescription && !_.isString(contactDescription)) {
+    throw new PermissionError('contactDescription must be string', 400)
+  }
+}
+
 async function updateMainInfo(userName, mainInfo) {
+  validateMainInfo(mainInfo)
+
   let foundUser = await userRepository.getUserByUserName(userName)
 
   let userToSave
@@ -114,7 +183,15 @@ async function getSkills(userName) {
   return await userRepository.getSkills(userName)
 }
 
+function validateSkillParam(skill) {
+  if (!_.isString(skill)) {
+    throw new PermissionError('skill parameter must be string', 400)
+  }
+}
+
 async function addSkill(userName, skill) {
+  validateSkillParam(skill)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -135,6 +212,8 @@ async function addSkill(userName, skill) {
 }
 
 async function removeSkill(userName, skill) {
+  validateSkillParam(skill)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -156,7 +235,15 @@ async function getDesirableJobs(userName) {
   return await userRepository.getDesirableJobs(userName)
 }
 
+function validateDesirableJobParam(desirableJob) {
+  if (!_.isString(desirableJob)) {
+    throw new PermissionError('desirableJob parameter must be string', 400)
+  }
+}
+
 async function addDesirableJob(userName, desirableJob) {
+  validateDesirableJobParam(desirableJob)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -177,6 +264,8 @@ async function addDesirableJob(userName, desirableJob) {
 }
 
 async function removeDesirableJob(userName, desirableJob) {
+  validateDesirableJobParam(desirableJob)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -198,7 +287,15 @@ async function getDesirableTrainings(userName) {
   return await userRepository.getDesirableTrainings(userName)
 }
 
+function validateDesirableTrainingParam(desirableTraining) {
+  if (!_.isString(desirableTraining)) {
+    throw new PermissionError('desirableTraining parameter must be string', 400)
+  }
+}
+
 async function addDesirableTraining(userName, desirableTraining) {
+  validateDesirableTrainingParam(desirableTraining)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -219,6 +316,8 @@ async function addDesirableTraining(userName, desirableTraining) {
 }
 
 async function removeDesirableTraining(userName, desirableTraining) {
+  validateDesirableTrainingParam(desirableTraining)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -240,7 +339,33 @@ async function getDesirableTrainingLocations(userName) {
   return await userRepository.getDesirableTrainingLocations(userName)
 }
 
+function validateDesirableTrainingLocationParam(desirableTrainingLocation) {
+  if (!_.isObject(desirableTrainingLocation)) {
+    throw new PermissionError('desirableTrainingLocation parameter must be object', 400)
+  }
+
+  const {
+    name,
+    unitName,
+    ...restProps
+  } = desirableTrainingLocation
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in desirableTrainingLocation', 400)
+  }
+
+  if (!_.isString(name)) {
+    throw new PermissionError('desirableTrainingLocation property name should be string', 400)
+  }
+
+  if (!_.isString(unitName)) {
+    throw new PermissionError('desirableTrainingLocation property unitName should be string', 400)
+  }
+}
+
 async function addDesirableTrainingLocation(userName, desirableTrainingLocation) {
+  validateDesirableTrainingLocationParam(desirableTrainingLocation)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -259,6 +384,8 @@ async function addDesirableTrainingLocation(userName, desirableTrainingLocation)
 }
 
 async function removeDesirableTrainingLocation(userName, desirableTrainingLocation) {
+  validateDesirableTrainingLocationParam(desirableTrainingLocation)
+
   let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
@@ -301,13 +428,94 @@ async function activateUserProfile(userName) {
   await userRepository.saveUser(foundUser)
 }
 
-async function addJobExperience(userName, experience) {
+function validateExperienceParam(experience) {
+  if (!_.isObject(experience)) {
+    throw new PermissionError('jobExperience parameter must be object', 400)
+  }
+
+  const {
+    id,
+    jobTitle,
+    organization,
+    description,
+    locationIsInGeorgia,
+    locationName,
+    locationUnitName,
+    additionalAddressInfo,
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    hasDocument,
+    ...restProps
+  } = experience
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in jobExperience', 400)
+  }
+
+  if (id && !_.isString(id)) {
+    throw new PermissionError('invalid id', 400)
+  }
+
+  if (jobTitle && !_.isString(jobTitle)) {
+    throw new PermissionError('invalid jobTitle', 400)
+  }
+
+  if (organization && !_.isString(organization)) {
+    throw new PermissionError('invalid organization', 400)
+  }
+
+  if (description && !_.isString(description)) {
+    throw new PermissionError('invalid description', 400)
+  }
+
+  if (locationIsInGeorgia && !_.isBoolean(locationIsInGeorgia)) {
+    throw new PermissionError('invalid locationIsInGeorgia field', 400)
+  }
+
+  if (locationName && !_.isString(locationName)) {
+    throw new PermissionError('invalid locationName', 400)
+  }
+
+  if (locationUnitName && !_.isString(locationUnitName)) {
+    throw new PermissionError('invalid locationUnitName', 400)
+  }
+
+  if (additionalAddressInfo && !_.isString(additionalAddressInfo)) {
+    throw new PermissionError('invalid additionalAddressInfo', 400)
+  }
+
+  if (hasDocument && !_.isBoolean(hasDocument)) {
+    throw new PermissionError('invalid hasDocument field', 400)
+  }
+
+  if (startMonth && !_.isInteger(startMonth)) {
+    throw new PermissionError('invalid startMonth', 400)
+  }
+
+  if (startYear && !_.isInteger(startYear)) {
+    throw new PermissionError('invalid startYear', 400)
+  }
+
+  if (endMonth && !_.isInteger(endMonth)) {
+    throw new PermissionError('invalid endMonth', 400)
+  }
+
+  if (endYear && !_.isInteger(endYear)) {
+    throw new PermissionError('invalid endYear', 400)
+  }
+
   domainUtils.validatePeriod(
-    experience.startMonth,
-    experience.startYear,
-    experience.endMonth,
-    experience.endYear
+    startMonth,
+    startYear,
+    endMonth,
+    endYear
   )
+}
+
+async function addJobExperience(userName, experience) {
+  validateExperienceParam(experience)
 
   experience.id = shortid.generate()
 
@@ -323,12 +531,7 @@ async function addJobExperience(userName, experience) {
 async function replaceJobExperience(userName, id, experience) {
   if (!experience.id) experience.id = id
 
-  domainUtils.validatePeriod(
-    experience.startMonth,
-    experience.startYear,
-    experience.endMonth,
-    experience.endYear
-  )
+  validateExperienceParam(experience)
 
   let experiences = await userRepository.getJobExperiences(userName)
 
@@ -353,13 +556,94 @@ async function getEducations(userName) {
   return await userRepository.getEducations(userName)
 }
 
-async function addEducation(userName, education) {
+function validateEducationParam(education) {
+  if (!_.isObject(education)) {
+    throw new PermissionError('education parameter must be object', 400)
+  }
+
+  const {
+    id,
+    educationType,
+    educationLevel,
+    institution,
+    locationIsInGeorgia,
+    locationName,
+    locationUnitName,
+    additionalAddressInfo,
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    directionName,
+    ...restProps
+  } = education
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in jobExperience', 400)
+  }
+
+  if (id && !_.isString(id)) {
+    throw new PermissionError('invalid id', 400)
+  }
+
+  if (educationType && !_.isString(educationType)) {
+    throw new PermissionError('invalid educationType', 400)
+  }
+
+  if (educationLevel && !_.isString(educationLevel)) {
+    throw new PermissionError('invalid educationLevel', 400)
+  }
+
+  if (institution && !_.isString(institution)) {
+    throw new PermissionError('invalid institution', 400)
+  }
+
+  if (locationIsInGeorgia && !_.isBoolean(locationIsInGeorgia)) {
+    throw new PermissionError('invalid locationIsInGeorgia field', 400)
+  }
+
+  if (locationName && !_.isString(locationName)) {
+    throw new PermissionError('invalid locationName', 400)
+  }
+
+  if (locationUnitName && !_.isString(locationUnitName)) {
+    throw new PermissionError('invalid locationUnitName', 400)
+  }
+
+  if (additionalAddressInfo && !_.isString(additionalAddressInfo)) {
+    throw new PermissionError('invalid additionalAddressInfo', 400)
+  }
+
+  if (directionName && !_.isString(directionName)) {
+    throw new PermissionError('invalid directionName', 400)
+  }
+
+  if (startMonth && !_.isInteger(startMonth)) {
+    throw new PermissionError('invalid startMonth', 400)
+  }
+
+  if (startYear && !_.isInteger(startYear)) {
+    throw new PermissionError('invalid startYear', 400)
+  }
+
+  if (endMonth && !_.isInteger(endMonth)) {
+    throw new PermissionError('invalid endMonth', 400)
+  }
+
+  if (endYear && !_.isInteger(endYear)) {
+    throw new PermissionError('invalid endYear', 400)
+  }
+
   domainUtils.validatePeriod(
-    education.startMonth,
-    education.startYear,
-    education.endMonth,
-    education.endYear
+    startMonth,
+    startYear,
+    endMonth,
+    endYear
   )
+}
+
+async function addEducation(userName, education) {
+  validateEducationParam(education)
 
   education.id = shortid.generate()
 
@@ -375,12 +659,7 @@ async function addEducation(userName, education) {
 async function editEducation(userName, id, education) {
   if (!education.id) education.id = id
 
-  domainUtils.validatePeriod(
-    education.startMonth,
-    education.startYear,
-    education.endMonth,
-    education.endYear
-  )
+  validateEducationParam(education)
 
   let educations = await userRepository.getEducations(userName)
 
@@ -414,12 +693,24 @@ async function getLanguages(userName) {
 }
 
 async function addLanguage(userName, languageObject) {
+  if (!_.isObject(languageObject)) {
+    throw new PermissionError('language parameter must be object', 400)
+  }
+
   let language = {
     languageName: languageObject.languageName,
     languageLevel: languageObject.languageLevel,
   }
 
   if (!language.languageName) throw new RecordError('ენის სახელი არაა მითითებული')
+
+  if (!_.isString(language.languageName)) {
+    throw new PermissionError('languageName field must be string', 400)
+  }
+
+  if (language.languageLevel && !_.isString(language.languageLevel)) {
+    throw new PermissionError('languageLevel field must be string', 400)
+  }
 
   let languages = await userRepository.getLanguages(userName)
 
@@ -433,6 +724,17 @@ async function addLanguage(userName, languageObject) {
 }
 
 async function setLanguageLevel(userName, languageName, level) {
+  if (!languageName) throw new RecordError('ენის სახელი არაა მითითებული')
+  if (!level) throw new RecordError('ენის ცოდნის დონე არაა მითითებული')
+
+  if (!_.isString(languageName)) {
+    throw new PermissionError('languageName parameter must be string', 400)
+  }
+
+  if (!_.isString(level)) {
+    throw new PermissionError('languageLevel parameter must be string', 400)
+  }
+
   let languages = await userRepository.getLanguages(userName)
 
   let languageIndex = languages.findIndex(item => item.languageName === languageName)
@@ -445,6 +747,12 @@ async function setLanguageLevel(userName, languageName, level) {
 }
 
 async function removeLanguage(userName, languageName) {
+  if (!languageName) throw new RecordError('ენის სახელი არაა მითითებული')
+
+  if (!_.isString(languageName)) {
+    throw new PermissionError('languageName parameter must be string', 400)
+  }
+
   let languages = await userRepository.getLanguages(userName)
 
   let languageIndex = languages.findIndex(item => item.languageName === languageName)
@@ -461,13 +769,43 @@ async function getDesirableJobLocations(userName) {
 }
 
 async function deleteDesirableJobLocations(userName, location) {
+  validateDesirableJobLocationParam(location)
+
   let desirableJobLocations = await getDesirableJobLocations(userName)
+
   let index = desirableJobLocations.findIndex((d) => d.locationName === location.locationName && d.locationUnitName === location.locationUnitName)
   desirableJobLocations.splice(index, 1)
+
   return await userRepository.saveDesirableJobLocations(userName, desirableJobLocations)
 }
 
+function validateDesirableJobLocationParam(desirableJobLocation) {
+  if (!_.isObject(desirableJobLocation)) {
+    throw new PermissionError('desirableJobLocation parameter must be object', 400)
+  }
+
+  const {
+    locationName,
+    locationUnitName,
+    ...restProps
+  } = desirableJobLocation
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in desirableJobLocation', 400)
+  }
+
+  if (!_.isString(locationName)) {
+    throw new PermissionError('desirableJobLocation property name should be string', 400)
+  }
+
+  if (!_.isString(locationUnitName)) {
+    throw new PermissionError('desirableJobLocation property unitName should be string', 400)
+  }
+}
+
 async function addDesirableJobLocations(userName, location) {
+  validateDesirableJobLocationParam(location)
+
   let jobLocation = {
     locationName: location.locationName,
     locationUnitName: location.locationUnitName,
@@ -488,10 +826,65 @@ async function getDrivingLicence(userName) {
   return await userRepository.getDrivingLicence(userName)
 }
 
+function validateLicense(license) {
+  if (!_.isObject(license)) {
+    throw new PermissionError('license parameter must be object', 400)
+  }
+
+  const {
+    drivingLicenceA,
+    drivingLicenceB,
+    drivingLicenceC,
+    drivingLicenceD,
+    drivingLicenceE,
+    drivingLicenceT1,
+    drivingLicenceT2,
+    airLicence,
+    seaLicence,
+    railwayLicence,
+    ...restProps
+  } = license
+
+  if (!_.isEmpty(restProps)) {
+    throw new PermissionError('extra properties found in licence', 400)
+  }
+
+  if (drivingLicenceA != null && !_.isBoolean(drivingLicenceA)) {
+    throw new PermissionError('drivingLicenceA parameter must be boolean', 400)
+  }
+  if (drivingLicenceB != null && !_.isBoolean(drivingLicenceB)) {
+    throw new PermissionError('drivingLicenceB parameter must be boolean', 400)
+  }
+  if (drivingLicenceC != null && !_.isBoolean(drivingLicenceC)) {
+    throw new PermissionError('drivingLicenceC parameter must be boolean', 400)
+  }
+  if (drivingLicenceD != null && !_.isBoolean(drivingLicenceD)) {
+    throw new PermissionError('drivingLicenceD parameter must be boolean', 400)
+  }
+  if (drivingLicenceE != null && !_.isBoolean(drivingLicenceE)) {
+    throw new PermissionError('drivingLicenceE parameter must be boolean', 400)
+  }
+  if (drivingLicenceT1 != null && !_.isBoolean(drivingLicenceT1)) {
+    throw new PermissionError('drivingLicenceT1 parameter must be boolean', 400)
+  }
+  if (drivingLicenceT2 != null && !_.isBoolean(drivingLicenceT2)) {
+    throw new PermissionError('drivingLicenceT2 parameter must be boolean', 400)
+  }
+  if (airLicence != null && !_.isBoolean(airLicence)) {
+    throw new PermissionError('airLicence parameter must be boolean', 400)
+  }
+  if (seaLicence != null && !_.isBoolean(seaLicence)) {
+    throw new PermissionError('seaLicence parameter must be boolean', 400)
+  }
+  if (railwayLicence != null && !_.isBoolean(railwayLicence)) {
+    throw new PermissionError('railwayLicence parameter must be boolean', 400)
+  }
+}
+
 async function addDrivingLicence(userName, licence) {
-  let drivingLicence = await userRepository.getDrivingLicence(userName)
-  drivingLicence = licence
-  await userRepository.saveDrivingLicence(userName, drivingLicence)
+  validateLicense(licence)
+
+  await userRepository.saveDrivingLicence(userName, licence)
 }
 
 async function getHasDrivingLicence(userName) {
@@ -499,9 +892,11 @@ async function getHasDrivingLicence(userName) {
 }
 
 async function addHasDrivingLicence(userName, licence) {
-  let drivingLicence = await userRepository.getHasDrivingLicence(userName)
-  drivingLicence = licence
-  await userRepository.saveHasDrivingLicence(userName, drivingLicence)
+  if (!_.isBoolean(licence)) {
+    throw new PermissionError('hasDrivingLicence parameter must be boolean', 400)
+  }
+
+  await userRepository.saveHasDrivingLicence(userName, licence)
 }
 
 async function getMilitaryObligation(userName) {
@@ -509,9 +904,11 @@ async function getMilitaryObligation(userName) {
 }
 
 async function addMilitaryObligation(userName, obligation) {
-  let militaryObligation = await userRepository.getMilitaryObligation(userName)
-  militaryObligation = obligation
-  await userRepository.saveMilitaryObligation(userName, militaryObligation)
+  if (!_.isBoolean(obligation)) {
+    throw new PermissionError('militaryObligation parameter must be boolean', 400)
+  }
+
+  await userRepository.saveMilitaryObligation(userName, obligation)
 }
 
 async function getDesirableSalary(userName) {
@@ -519,19 +916,75 @@ async function getDesirableSalary(userName) {
 }
 
 async function addDesirableSalary(userName, salary) {
-  let desirableSalary = await userRepository.getDesirableSalary(userName)
-  desirableSalary = salary
-  await userRepository.saveDesirableSalary(userName, desirableSalary)
+  if (salary != null && !_.isNumber(salary)) {
+    throw new PermissionError('desirableSalary parameter must be number', 400)
+  }
+
+  await userRepository.saveDesirableSalary(userName, salary)
 }
 
 async function getJobDescription(userName) {
   return await userRepository.getJobDescription(userName)
 }
 
+function validateJobDescription(jobDescription) {
+  if (!_.isObject(jobDescription)) {
+    throw new PermissionError('jobDescription parameter must be object', 400)
+  }
+
+  const {
+    fullTime,
+    partTime,
+    shiftBased,
+    interestedInTraining,
+    interestedInInternship,
+    interestedToBeVolunteer,
+    interestedInTemporaryJob,
+    interestedInDangerousJob,
+    unemployed,
+  } = jobDescription
+
+  if (fullTime != null && !_.isBoolean(fullTime)) {
+    throw new PermissionError('fullTime parameter must be boolean', 400)
+  }
+
+  if (partTime != null && !_.isBoolean(partTime)) {
+    throw new PermissionError('partTime parameter must be boolean', 400)
+  }
+
+  if (shiftBased != null && !_.isBoolean(shiftBased)) {
+    throw new PermissionError('shiftBased parameter must be boolean', 400)
+  }
+
+  if (interestedInTraining != null && !_.isBoolean(interestedInTraining)) {
+    throw new PermissionError('interestedInTraining parameter must be boolean', 400)
+  }
+
+  if (interestedInInternship != null && !_.isBoolean(interestedInInternship)) {
+    throw new PermissionError('interestedInInternship parameter must be boolean', 400)
+  }
+
+  if (interestedToBeVolunteer != null && !_.isBoolean(interestedToBeVolunteer)) {
+    throw new PermissionError('interestedToBeVolunteer parameter must be boolean', 400)
+  }
+
+  if (interestedInTemporaryJob != null && !_.isBoolean(interestedInTemporaryJob)) {
+    throw new PermissionError('interestedInTemporaryJob parameter must be boolean', 400)
+  }
+
+  if (interestedInDangerousJob != null && !_.isBoolean(interestedInDangerousJob)) {
+    throw new PermissionError('interestedInDangerousJob parameter must be boolean', 400)
+  }
+
+  if (unemployed != null && !_.isBoolean(unemployed)) {
+    throw new PermissionError('unemployed parameter must be boolean', 400)
+  }
+}
+
 async function addJobDescription(userName, jobDesc) {
-  let jobDescription = await userRepository.getDrivingLicence(userName)
-  jobDescription = jobDesc
-  await userRepository.saveJobDescription(userName, jobDescription)
+  validateJobDescription(jobDesc)
+
+  await userRepository.saveJobDescription(userName, jobDesc)
 }
 
 async function getUseMediationService(userName) {
@@ -539,9 +992,11 @@ async function getUseMediationService(userName) {
 }
 
 async function addUseMediationService(userName, useMediation) {
-  let useMediationService = await userRepository.getUseMediationService(userName)
-  useMediationService = useMediation
-  await userRepository.saveUseMediationService(userName, useMediationService)
+  if (!_.isBoolean(useMediation)) {
+    throw new PermissionError('useMediationService parameter must be boolean', 400)
+  }
+
+  await userRepository.saveUseMediationService(userName, useMediation)
 }
 
 const validateAndFixSearchVacancyMatchings = (configFields, percent) => {

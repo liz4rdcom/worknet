@@ -89,6 +89,10 @@
         let location = this.locations.find(t => t.locationName === locationName)
 
         this.selectedLocation = location || this.locationDefaultObject
+
+        if (!this.selectedLocationName) {
+          this.locationUnitChanged(null)
+        }
       },
       locationUnitChanged(unitName) {
         this.selectedLocationUnitName = unitName
