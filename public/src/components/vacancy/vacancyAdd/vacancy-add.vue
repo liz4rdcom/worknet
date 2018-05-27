@@ -52,59 +52,53 @@
         <b-form-group label="ადგილდებარეობა" class="font-weight-bold">
           <georgia-locations
             idPrefix="vacancy-add"
-            :onLocationChanged="onLocationChanged"
+            @onLocationChanged="onLocationChanged"
             :currentLocationName="vacancy.locationName"
             :currentLocationUnitName="vacancy.locationUnitName"
           />
         </b-form-group>
 
-        <b-form-group label="დამატებითი მისამართი" class="font-weight-bold">
-          <b-form-textarea
-            id="vacancy-add-adress-line"
-            v-model="vacancy.addressLine"
-            :rows="3"
-            :max-rows="6"
-          >
-          </b-form-textarea>
+        <!-- <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
         </b-form-group>
-
-        <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
-          <b-row>
-            <b-col class="interview-supposed-start-day">
-                <b-form-select id="vacancy-add-interview-supposed-start-day" v-model="vacancy.interviewSupposedStartDay" :options="daysOptions"/>
-            </b-col>
-
-            <b-col class="interview-supposed-start-month">
-                <b-form-select id="vacancy-add-interview-supposed-start-month" v-model="vacancy.interviewSupposedStartMonth" :options="monthOptions"/>
-            </b-col>
-
-            <b-col class="interview-supposed-start-year" cols="auto">
-              <b-form-radio-group
-                v-model="vacancy.interviewSupposedStartYear"
-                name="radioSubComponent"
-                button-variant="outline-primary"
-                buttons
-                stacked
-              >
-                <b-form-radio id="vacancy-add-interview-supposed-start-year-current" :value="new Date().getFullYear()">{{new Date().getFullYear() + " წელი"}}</b-form-radio>
-                <b-form-radio id="vacancy-add-interview-supposed-start-year-next" :value="new Date().getFullYear() + 1">{{new Date().getFullYear() + 1 + " წელი"}}</b-form-radio>
-              </b-form-radio-group>
-            </b-col>
-          </b-row>
-        </b-form-group>
-
         <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
+        </b-form-group> -->
+
+        <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი - ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
           <b-row>
-            <b-col class="end-date-day">
-                <b-form-select id="vacancy-add-end-date-day" v-model="vacancy.endDateDay" :options="daysOptions"/>
+            <b-col>
+              <b-row>
+                <b-col class="interview-supposed-start-day">
+                  <b-form-select id="vacancy-add-interview-supposed-start-day" v-model="vacancy.interviewSupposedStartDay" :options="daysOptions"/>
+                </b-col>
+
+                <b-col class="interview-supposed-start-month">
+                  <b-form-select id="vacancy-add-interview-supposed-start-month" v-model="vacancy.interviewSupposedStartMonth" :options="monthOptions"/>
+                </b-col>
+
+                <b-col class="interview-supposed-start-year">
+                  <b-form-select
+                    id="vacancy-add-interview-supposed-start-year"
+                    v-model="vacancy.interviewSupposedStartYear"
+                    :options="interviewSupposedStartYearOptions"
+                  />
+                </b-col>
+              </b-row>
             </b-col>
 
-            <b-col class="end-date-month">
-                <b-form-select id="vacancy-add-end-date-month" v-model="vacancy.endDateMonth" :options="monthOptions"/>
-            </b-col>
+            <b-col>
+              <b-row>
+                <b-col class="end-date-day">
+                  <b-form-select id="vacancy-add-end-date-day" v-model="vacancy.endDateDay" :options="daysOptions"/>
+                </b-col>
 
-            <b-col class="end-date-year">
-                <b-form-select id="vacancy-add-end-date-year" v-model="vacancy.endDateYear" :options="endDateYearOptions"/>
+                <b-col class="end-date-month">
+                  <b-form-select id="vacancy-add-end-date-month" v-model="vacancy.endDateMonth" :options="monthOptions"/>
+                </b-col>
+
+                <b-col class="end-date-year">
+                  <b-form-select id="vacancy-add-end-date-year" v-model="vacancy.endDateYear" :options="endDateYearOptions"/>
+                </b-col>
+             </b-row>
             </b-col>
           </b-row>
         </b-form-group>
@@ -121,46 +115,19 @@
         </b-form-group>
 
         <b-form-group label="ვაკანტური ადგილების რაოდენობა" class="font-weight-bold">
-          <b-form-input id="vacancy-add-vacant-places" type="number" v-model="vacancy.vacantPlacesQuantity" />
+          <b-form-input id="vacancy-add-vacant-places" type="number" v-model.number="vacancy.vacantPlacesQuantity" />
         </b-form-group>
 
-        <b-form-group label="თანამდებობრივი მოვალეობის აღწერილობა" class="font-weight-bold">
-          <b-form-textarea
-            id="vacancy-add-functions-description"
-            v-model="vacancy.functionsDescription"
-            :rows="3"
-            :max-rows="6"
-          >
-          </b-form-textarea>
-        </b-form-group>
-
-        <b-form-group label="დამატებითი აღწერილობა" class="font-weight-bold">
-          <b-form-textarea
-            id="vacancy-add-additional-description"
-            v-model="vacancy.additionalDescription"
-            :rows="3"
-            :max-rows="6"
-          >
-          </b-form-textarea>
-        </b-form-group>
-
-        <b-form-group>
-          <b-container>
-            <b-row>
-              <b-col><legend class="col-form-legend">ხელფასი დან</legend></b-col>
-              <b-col cols="0"></b-col>
-              <b-col><legend class="col-form-legend">ხელფასი მდე</legend></b-col>
-            </b-row>
-            <b-row>
-              <b-col class="salary-from">
-                <b-form-input id="vacancy-add-salary-from" v-model.number="vacancy.minimalSalary" type="number"/>
-              </b-col>
-              <b-col cols="0">-</b-col>
-              <b-col class="salary-to">
-                <b-form-input id="vacancy-add-salary-to" v-model.number="vacancy.maximalSalary" type="number"/>
-              </b-col>
-            </b-row>
-          </b-container>
+        <b-form-group label="ხელფასი" class="font-weight-bold">
+          <b-row>
+            <b-col class="salary-from">
+              <b-form-input id="vacancy-add-salary-from" v-model.number="vacancy.minimalSalary" type="number" placeholder="ლარიდან"/>
+            </b-col>
+            <b-col cols="0" class="font-weight-normal">-</b-col>
+            <b-col class="salary-to">
+              <b-form-input id="vacancy-add-salary-to" v-model.number="vacancy.maximalSalary" type="number" placeholder="ლარამდე"/>
+            </b-col>
+          </b-row>
         </b-form-group>
 
         <b-form-group>
@@ -192,6 +159,14 @@
                 ცვლები
               </b-form-checkbox>
           </b-card>
+        </b-form-group>
+
+        <b-form-group>
+          <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
+        </b-form-group>
+
+        <b-form-group>
+          <vacancy-skills :skills="vacancy.skills" :onChange="skillsOnChange"/>
         </b-form-group>
 
         <b-form-group label="განათლების რეკომენდირებული მინიმალური დონე" class="font-weight-bold">
@@ -313,12 +288,15 @@
           </b-card>
         </b-form-group>
 
-        <b-form-group>
-          <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
-        </b-form-group>
-
-        <b-form-group>
-          <vacancy-skills :skills="vacancy.skills" :onChange="skillsOnChange"/>
+        <b-form-group label="დამატებითი აღწერილობა" class="font-weight-bold">
+          <b-form-textarea
+            id="vacancy-add-additional-description"
+            v-model="vacancy.additionalDescription"
+            :rows="7"
+            :max-rows="10"
+            :placeholder="`თანამდებობრივი მოვალეობის(სამუშაოს) აღწერილობა,\n\nმისამართის დაზუსტება,\n\nან სხვა ნებიესმიერი ინფორმაცია ვაკანსიის ან თქვენი, როგორც დამსაქმებლის, შესახებ.`"
+          >
+          </b-form-textarea>
         </b-form-group>
 
         <b-form-group>
@@ -373,8 +351,9 @@
                 v-b-popover.hover="jobseekerSearchHintText"
                 title=""
                 variant="outline-primary"
+                class="hint-element-class"
               >
-                <b>მითითება</b>
+                <b>?</b>
               </b-btn>
             </b-col>
           </b-row>
@@ -512,7 +491,6 @@ export default {
       authorPersonalId: null,
       locationName: null,
       locationUnitName: null,
-      addressLine: null,
       interviewSupposedStartDay: null,
       interviewSupposedStartMonth: null,
       interviewSupposedStartYear: new Date().getFullYear(),
@@ -521,7 +499,6 @@ export default {
       endDateYear: null,
       useMediationService: false,
       vacantPlacesQuantity: null,
-      functionsDescription: null,
       additionalDescription: null,
       minimalSalary: null,
       maximalSalary: null,
@@ -610,10 +587,6 @@ export default {
             this.vacancy.locationUnitName = vacancyResult.locationUnitName
           }
 
-          if (vacancyResult.addressLine) {
-            this.vacancy.addressLine = vacancyResult.addressLine
-          }
-
           if (vacancyResult.interviewSupposedStartDate) {
             const interviewSupposedStartDateConstructed = new Date(vacancyResult.interviewSupposedStartDate)
 
@@ -636,10 +609,6 @@ export default {
 
           if (vacancyResult.vacantPlacesQuantity || vacancyResult.vacantPlacesQuantity === 0) {
             this.vacancy.vacantPlacesQuantity = vacancyResult.vacantPlacesQuantity
-          }
-
-          if (vacancyResult.functionsDescription) {
-            this.vacancy.functionsDescription = vacancyResult.functionsDescription
           }
 
           if (vacancyResult.additionalDescription) {
@@ -811,18 +780,9 @@ export default {
         retVal.locationName = this.vacancy.locationName
       }
 
-      if (this.vacancy.addressLine) {
-        retVal.addressLine = this.vacancy.addressLine
-      }
-
       if (this.vacancy.vacantPlacesQuantity || this.vacancy.vacantPlacesQuantity === 0) {
         retVal.vacantPlacesQuantity = this.vacancy.vacantPlacesQuantity
       }
-
-      if (this.vacancy.functionsDescription) {
-        retVal.functionsDescription = this.vacancy.functionsDescription
-      }
-
       if (!isNil(this.vacancy.minimalSalary)) {
         retVal.minimalSalary = this.vacancy.minimalSalary
       }
@@ -1016,8 +976,6 @@ export default {
 
         const result = await this.$http.post('/api/users/vacancy/matchings', { configFields })
 
-        console.log(5555555555, result, configFields)
-
         this.searchedJobseekers = result.data
       }
     },
@@ -1038,6 +996,14 @@ export default {
       retVal.splice(0, 0, { value: null, text: '- თვე -' })
 
       return retVal
+    },
+    interviewSupposedStartYearOptions() {
+      const currentYear = new Date().getFullYear()
+
+      return [
+         { value: currentYear + 1, text: (currentYear + 1).toString() },
+         { value: currentYear, text: currentYear.toString() },
+      ]
     },
     endDateYearOptions() {
       const retVal = reverse(utils.getRangeNumberArray(new Date().getFullYear(), new Date().getFullYear() + VACANCY_END_MAX_YEAR_COUNT))
@@ -1175,5 +1141,10 @@ export default {
   50% {
     opacity: 0;
   }
+}
+
+.hint-element-class {
+  border-radius: 50%;
+  box-shadow: none !important;
 }
 </style>

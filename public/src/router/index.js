@@ -5,9 +5,10 @@ import profile from '../components/profile/profile'
 import vacancies from '../components/vacancy/vacancies'
 import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancyAdd/vacancy-add'
-import ownVacancies from '../components/vacancy/own-vacancies'
-import vacanciesList from '../components/vacancy/vacancies-list'
+import ownVacancies from '../components/vacancy/ownVacancies/own-vacancies'
+import vacanciesList from '../components/vacancy/ownVacancies/vacancies-list'
 import vacancyMatchings from '../components/vacancy/vacancies-user-matching'
+import vacancyViewDummyUser from '../components/common/vacancy-view-dummy-user'
 import login from '../components/um/login'
 import register from '../components/um/register'
 import { bus } from '../components/common/bus'
@@ -124,6 +125,11 @@ let router = new Router({
       component: vacancyMatchings,
       name: 'vacancies-user-matching',
     },
+    {
+      path: '/vacancy-view-dummy-user',
+      component: vacancyViewDummyUser,
+      name: 'vacancy-view-dummy-user',
+    },
   ],
 })
 
@@ -143,14 +149,14 @@ router.beforeEach(async (to, from, next) => {
       return
     }
 
-    next('/vacancies')
+    next('/login')
     return
   }
 
   // console.log('yes token') //
 
   if (to.path === '/login' || to.path === '/register') {
-    next('/vacancies')
+    next('/profile')
 
     // console.log('yes token: login, register') //
 

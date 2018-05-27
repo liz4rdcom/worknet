@@ -17,7 +17,7 @@ async function getById(id) {
   return await vacancyRepository.getById(id)
 }
 
-async function getBySearch(body) {
+async function getBySearch(body, queryAll = false) {
   let keyArray = Object.keys(body)
   let filteredObject = {}
   for (let i = 0; i < keyArray.length; i++) {
@@ -26,7 +26,7 @@ async function getBySearch(body) {
     }
   }
 
-  return await vacancyRepository.getBySearch(filteredObject)
+  return await vacancyRepository.getBySearch(filteredObject, queryAll)
 }
 
 async function getUserVacancies(userName) {
@@ -42,12 +42,10 @@ function validateVacancy(vacancy) {
     authorPersonalId,
     locationName,
     locationUnitName,
-    addressLine,
     interviewSupposedStartDate,
     endDate,
     useMediationService,
     vacantPlacesQuantity,
-    functionsDescription,
     additionalDescription,
     minimalSalary,
     maximalSalary,
@@ -102,10 +100,6 @@ function validateVacancy(vacancy) {
       throw new PermissionError('invalid: locationName, locationUnitName', 400)
     }
 
-    if (addressLine && !_.isString(addressLine)) {
-      throw new PermissionError('addressLine must be string', 400)
-    }
-
     if (interviewSupposedStartDate && !_.isString(interviewSupposedStartDate)) {
       throw new PermissionError('interviewSupposedStartDate must be string', 400)
     }
@@ -124,12 +118,8 @@ function validateVacancy(vacancy) {
       throw new PermissionError('useMediationService boolean string', 400)
     }
 
-    if (vacantPlacesQuantity !== 0 && (vacantPlacesQuantity && (!utils.stringIsNonNegativeInteger(vacantPlacesQuantity) || vacantPlacesQuantity < 0))) {
+    if (!_.isNil(vacantPlacesQuantity) && (!_.isNumber(vacantPlacesQuantity) || vacantPlacesQuantity < 0)) {
       throw new PermissionError('invalid vacantPlacesQuantity', 400)
-    }
-
-    if (functionsDescription && !_.isString(functionsDescription)) {
-      throw new PermissionError('invalid functionsDescription', 400)
     }
 
     if (additionalDescription && !_.isString(additionalDescription)) {

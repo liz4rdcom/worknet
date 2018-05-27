@@ -1,22 +1,41 @@
 <template>
   <div id="app">
-    <nav-bar></nav-bar>
-    <router-view/>
+    <nav-bar :loggedIn="loggedIn"></nav-bar>
+    <router-view :loggedIn="loggedIn"/>
     <notify></notify>
   </div>
 </template>
 
 <script>
-  import notify from './components/common/notify'
-  import navBar from './components/nav-bar'
+import Cookies from 'js-cookie'
+import { bus } from './components/common/bus'
+import notify from './components/common/notify'
+import navBar from './components/nav-bar'
 
-  export default {
-    name: 'app',
-    components: {
-      notify,
-      'nav-bar': navBar,
-    },
-  }
+export default {
+  name: 'app',
+  data () {
+    return {
+      loggedIn: false,
+    }
+  },
+  created() {
+    this.loggedIn = !!Cookies.get('token')
+
+    bus.$on('login', () => {
+      this.loggedIn = true
+    })
+
+    bus.$on('logout', () => {
+      this.loggedIn = false
+      Cookies.remove('token')
+    })
+  },
+  components: {
+    notify,
+    'nav-bar': navBar,
+  },
+}
 </script>
 
 <style lang="scss">

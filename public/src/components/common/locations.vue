@@ -65,8 +65,8 @@
       }
     },
     created() {
-      this.selectedLocationName = this.currentLocationName || ''
-      this.selectedLocationUnitName = this.currentLocationUnitName || ''
+      this.selectedLocationName = this.currentLocationName || this.currentLocationName === null ? this.currentLocationName : ''
+      this.selectedLocationUnitName = this.currentLocationUnitName || this.currentLocationUnitName === null ? this.currentLocationUnitName : ''
 
       this.selectedLocation = this.locationDefaultObject
 
@@ -89,6 +89,10 @@
         let location = this.locations.find(t => t.locationName === locationName)
 
         this.selectedLocation = location || this.locationDefaultObject
+
+        if (!this.selectedLocationName) {
+          this.locationUnitChanged(null)
+        }
       },
       locationUnitChanged(unitName) {
         this.selectedLocationUnitName = unitName

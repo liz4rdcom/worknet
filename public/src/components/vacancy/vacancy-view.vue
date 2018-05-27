@@ -2,7 +2,7 @@
 <div class="vacancy-view">
   <b-card title="ორგანიზაციის შესახებ">
     <label>ორგანიზაცია: <b>{{vacancy.organization}}</b></label><br />
-    <label>მისამართი: <b>{{vacancy.locationName}} &nbsp; {{vacancy.locationUnitName}} &nbsp; {{vacancy.addressLine}}</b></label><br />
+    <label>მისამართი: <b>{{vacancy.locationName}} &nbsp; {{vacancy.locationUnitName}}</b></label><br />
   </b-card>
   <b-card title="თარიღები">
     <label>ვაკანსიის დადების თარიღი: <b>{{vacancy.publishDate}}</b></label><br />

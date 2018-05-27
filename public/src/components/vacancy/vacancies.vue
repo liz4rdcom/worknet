@@ -3,40 +3,43 @@
   <div class="vacancy-search-bar">
     <b-row class="upper-search-row vancay-add-row">
       <b-col class="vacancy-brand-column">
-        <b-navbar-brand href="#/login">JOIN WORKNET</b-navbar-brand>
+        <b-navbar-brand href="#/login">შემოგვიერთდი</b-navbar-brand>
       </b-col>
 
-      <b-col>
+      <b-col style="padding-left: 0px;" cols="3">
         <div @keyup.enter="search">
-          <b-form-input type="text" v-model="query" />
+          <b-form-input type="text" v-model="filterObject.filter" placeholder="თანამდებობა, დამსაქმებელი ან სხვა..." />
         </div>
       </b-col>
 
       <b-col>
-        <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
+        <georgia-locations
+          idPrefix="desirable-job"
+          @onLocationChanged="onLocationChanged"
+          :currentLocationName="null"
+          :currentLocationUnitName="null"
+        />
       </b-col>
 
-      <b-col>
+      <b-col cols="4">
         <b-row class="vancay-add-row">
-          <b-col>
+          <b-col style="padding-left: 0px; padding-right: 4px;">
             <form>
               <b-form-input
                 type="text"
                 id="vacancies-filter-salary-from"
-                required
-                @click="minSalary($event.target.value)"
+                v-model.number="filterObject.minimalSalary"
                 placeholder="ხელფასი ლარიდან"
               />
             </form>
           </b-col>
 
-          <b-col>
+          <b-col style="padding-left: 4px; padding-right: 0px;">
             <form>
               <b-form-input
                 type="text"
                 id="vacancies-filter-salary-to"
-                required
-                @click="maxSalary($event.target.value)"
+                v-model.number="filterObject.maximalSalary"
                 placeholder="ლარამდე"
               />
             </form>
@@ -44,15 +47,21 @@
         </b-row>
       </b-col>
 
-      <b-col>
-        <b-button @click="search" style="width: 100%;"> <!-- <i class="fa fa-search fa-2x" aria-hidden="true"></i> -->
+      <b-col style="padding-right: 0px;" cols="auto">
+        <b-button @click="search" style="width: 100%;">
           ძებნა
         </b-button>
+      </b-col>
+
+      <b-col class="profile-link-container">
+        <a href="#/profile">
+          <i class="fa fa-user-circle fa-2x"></i>
+        </a>
       </b-col>
     </b-row>
 
     <b-row class="lower-search-row vancay-add-row">
-      <b-col>
+      <b-col style="padding-left: 0px; padding-right: 10px;">
         <b-form-checkbox
           class="full-width"
           id="fullTime"
@@ -85,7 +94,7 @@
         </b-form-checkbox>
       </b-col>
 
-      <b-col>
+      <b-col style="padding-left: 10px; padding-right: 10px;">
         <b-form-checkbox
           class="full-width"
           id="interestedToBeVolunteer"
@@ -119,7 +128,7 @@
         </b-form-checkbox>
       </b-col>
 
-      <b-col>
+      <b-col style="padding-left: 10px; padding-right: 0px;">
         <b-form-checkbox
           class="full-width"
           id="militaryObligation"
@@ -155,39 +164,33 @@
       </div>
     </b-col>
   </b-row>
-
-  <!-- <vacancies-search-list :vacancies="vacancies"></vacancies-search-list> -->
 </div>
 </template>
 
 <script>
 import find from 'lodash/find'
-import locations from '../common/locations'
-import utils from '../../utils'
+import georgiaLocations from '../common/georgia-locations'
 import { bus } from '../common/bus'
 import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
-import libs from '../../libs'
-import vacancySearchList from './vacancies-search-list'
-// import dummyVacanciesList from './dummy-vacancies-list'
-
-const baseUrl = '/api/vacancies/published'
+import isNumber from 'lodash/isNumber'
+// import libs from '../../libs'
 
 export default {
   name: 'vacancies',
   components: {
     'side-modal': sideModal,
     'vacancy-view': vacancyView,
-    locations,
-    'vacancies-search-list': vacancySearchList,
+    'georgia-locations': georgiaLocations,
   },
   data: () => ({
     vacancies: [],
     currentVacancyId: null,
     vacancyListCurrentPageIndex: 1,
     vacancyMaxCountOnPage: 15,
-    query: '',
+    queryExpiredToo: false,
     filterObject: {
+      filter: null,
       hasDrivingLicence: null,
       militaryObligation: false,
       fullTime: false,
@@ -202,69 +205,34 @@ export default {
       locations: [],
       skills: [],
     },
-    locationsList: [],
   }),
   async created() {
-    this.locationsList = await libs.fetchLocationsOfGeorgia()
-
     try {
-      let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
+      let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: false}, { needsToken: false })
 
       this.vacancies = response.data
 
       this.currentVacancyId = this.vacancies[0].id
     } catch (error) {
-      bus.$emit('error', error)
     }
   },
-  watch: {
-    filterObject: {
-      async handler () {
-        let response = await this.$http.post('/api/vacancies/search', this.filterObject, { needsToken: false })
-        this.vacancies = response.data
-      },
-      deep: true,
-    },
-  },
+  // watch: {
+  //   filterObject: {
+  //     async handler () {
+  //       let response = await this.$http.post(baseUrl + '/search', this.filterObject, { needsToken: false })
+  //       this.vacancies = response.data
+  //     },
+  //     deep: true,
+  //   },
+  // },
   methods: {
-    maxSalary (value) {
-      if (isNaN(value)) {
-        bus.$emit('warning', 'გთხოვთ შეიყვანოთ რიცხვი')
-        return
-      }
-
-      value = parseInt(value)
-
-      if (value <= this.filterObject.minimalSalary) {
-        bus.$emit('warning', 'მაქსიმალური რიცხვი უნდა აღემატებოდეს მინიმალურს')
-        return
-      }
-
-      this.filterObject.maximalSalary = value
-    },
-    minSalary (value) {
-      if (isNaN(value)) {
-        bus.$emit('warning', 'გთხოვთ შეიყვანოთ რიცხვი')
-        return
-      }
-
-      value = parseInt(value)
-
-      this.filterObject.minimalSalary = value
-    },
     onLocationChanged(location) {
-      this.filterObject.locations.push(location)
-    },
-    getFunctionDescription(vacancy) {
-      if (!vacancy.functionsDescription) {
-        return ''
+      // TODO at this time only one. but it should be multiple
+      if (location.locationName) {
+        this.filterObject.locations = [location]
+      } else {
+        this.filterObject.locations = []
       }
-      let arr = vacancy.functionsDescription.split(' ', 10)
-      let string = ''
-      for (let i = 0; i < arr.length; i++) {
-        string += arr[i] + ' '
-      }
-      return string
     },
     getSkills(vacancy) {
       if (!vacancy.skills) {
@@ -281,15 +249,29 @@ export default {
       return arr
     },
     async search() {
-      try {
-        let response = await this.$http.get(baseUrl, {params: {query: this.query}}, {headers: utils.getHeaders()}) // eslint-disable-line
+      if (
+        (this.filterObject.minimalSalary && !isNumber(this.filterObject.minimalSalary)) ||
+        (this.filterObject.maximalSalary && !isNumber(this.filterObject.maximalSalary))
+      ) {
+        bus.$emit('warning', 'ხელფასის ველებში გთხოვთ შეიყვანოთ რიცხვი')
+        return
+      }
 
-        // this.vacancies = dummyVacanciesList
+      if (this.filterObject.minimalSalary &&
+          this.filterObject.maximalSalary &&
+          this.filterObject.maximalSalary < this.filterObject.minimalSalary
+      ) {
+        bus.$emit('warning', 'მაქსიმალური ხელფასი უნდა აღემატებოდეს მინიმალურს')
+        return
+      }
+
+      try {
+        let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: this.queryExpiredToo}, { needsToken: false })
+
         this.vacancies = response.data
 
         this.currentVacancyId = this.vacancies[0].id
       } catch (error) {
-        bus.$emit('error', error)
       }
     },
     onVacancyClickInList (vacancyId) {
@@ -315,7 +297,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$horizontal-shrink-size: 15%;
+
 .vacancies-container {
   display: flex;
   flex-flow: column;
@@ -324,26 +308,32 @@ export default {
 .vacancy-brand-column {
   position: absolute;
   left: 0px;
-  float: left;
+  width: 1px;
+  padding-top: 4px;
+}
+.profile-link-container{
+  position: absolute;
+  right: 28px;
   width: 1px;
   padding-top: 4px;
 }
 .vacancy-search-bar {
   flex: 0 1 auto;
+  padding: 0px;
 }
 .upper-search-row {
   border-bottom: 1px solid #459e91;
   background-color: #4ABDAC;
-  padding-left: 340px;
-  padding-right: 340px;
+  padding-left: $horizontal-shrink-size;
+  padding-right: $horizontal-shrink-size;
   padding-top: 7px;
   padding-bottom: 7px;
 }
 .lower-search-row {
   border-bottom: 1px solid #46867c;
   background-color: #4ABDAC;
-  padding-left: 340px;
-  padding-right: 340px;
+  padding-left: $horizontal-shrink-size;
+  padding-right: $horizontal-shrink-size;
   padding-top: 7px;
   padding-bottom: 7px;
 }
@@ -364,7 +354,7 @@ export default {
   border-color: #bf4d2e;
 }
 .vacancies-search-content {
-  padding: 18px 340px 8px 340px;
+  padding: 18px $horizontal-shrink-size 8px $horizontal-shrink-size;
 
   height: 100%;
 

@@ -98,12 +98,12 @@ async function deleteVacancy(id) {
   await client.delete(options)
 }
 
-async function getBySearch(params) {
+async function getBySearch(params, all = false) {
   let listFields = ['skills', 'locations']
   let conditionFields = ['minimalSalary', 'maximalSalary']
 
   let terms = Object.keys(params)
-    .filter(key => key !== 'filter' && !listFields.includes(key) && !conditionFields.includes(key))
+    .filter(key => key !== 'filter' && key !== 'hasDrivingLicence' && !listFields.includes(key) && !conditionFields.includes(key))
     .map(key => {
       let result = {
         match: {},
@@ -134,22 +134,27 @@ async function getBySearch(params) {
   if (params.locations && params.locations.length > 0) {
     let locationQueries = params.locations
       .map(location => {
-        return {
+        let query = {
           bool: {
             must: [
               {
                 match: {
-                  locationName: location.locationName,
-                },
-              },
-              {
-                match: {
-                  locationUnitName: location.locationUnitName,
+                  'locationName.keyword': location.locationName,
                 },
               },
             ],
           },
         }
+
+        if (location.locationUnitName) {
+          query.bool.must.push({
+            match: {
+              'locationUnitName.keyword': location.locationUnitName,
+            },
+          })
+        }
+
+        return query
       })
 
     terms.push({
@@ -185,14 +190,6 @@ async function getBySearch(params) {
       bool: {
         should: [
           {
-            range: {
-              fixedSalary: {
-                gte: params.minimalSalary,
-                lte: params.maximalSalary,
-              },
-            },
-          },
-          {
             bool: {
               must_not: mustNots,
               should: [
@@ -214,11 +211,93 @@ async function getBySearch(params) {
     })
   }
 
+  if (params.hasDrivingLicence) {
+    terms.push({
+      bool: {
+        should: [
+          {
+            match: {
+              drivingLicenceA: true,
+            },
+          },
+          {
+            match: {
+              drivingLicenceB: true,
+            },
+          },
+          {
+            match: {
+              drivingLicenceC: true,
+            },
+          },
+          {
+            match: {
+              drivingLicenceD: true,
+            },
+          },
+          {
+            match: {
+              drivingLicenceE: true,
+            },
+          },
+          {
+            match: {
+              drivingLicenceT1: true,
+            },
+          },
+          {
+            match: {
+              drivingLicenceT2: true,
+            },
+          },
+          {
+            match: {
+              airLicence: true,
+            },
+          },
+          {
+            match: {
+              seaLicence: true,
+            },
+          },
+          {
+            match: {
+              railwayLicence: true,
+            },
+          },
+        ],
+      },
+    })
+  }
+
   terms.push({
     query_string: {
-      query: params.filter || '*',
+      query: params.filter ? '*' + params.filter + '*' : '*',
     },
   })
+
+  let notExpiredQuery = {
+    bool: {
+      should: [
+        {
+          range: {
+            endDate: {
+              gt: '2018-05-24',
+            },
+          },
+        },
+        {
+          bool: {
+            must_not: {
+              exists: {
+                field: 'endDate',
+              },
+            },
+          },
+        },
+      ],
+    },
+  }
 
   let options = {
     index,
@@ -227,9 +306,20 @@ async function getBySearch(params) {
       query: {
         bool: {
           must: terms,
+          filter: [
+            {
+              term: {
+                published: true,
+              },
+            },
+          ],
         },
       },
     },
+  }
+
+  if (!all) {
+    options.body.query.bool.filter.push(notExpiredQuery)
   }
 
   let result = await client.search(options)
