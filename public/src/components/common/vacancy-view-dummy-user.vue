@@ -12,52 +12,6 @@ export default {
   name: 'vacancy-view-dummy-user',
   data () {
     return {
-      /*
-        'positionName': 'JavaScript Developer',
-
-        'organization': 'შპს FX1',
-        'organizationTaxCode': '123456789',
-
-        'authorFullName': 'იაგო მაისურაძე',
-        'authorPersonalId': '01234567890',
-
-        'locationName': 'თბილისი',
-        'locationUnitName': 'ისანი',
-
-        'publishDate': '2017-12-03T00:00:00',
-        'interviewSupposedStartDate': '2018-01-01T00:00:00',
-        'endDate': '2018-01-07T00:00:00',
-
-        'vacantPlacesQuantity': 2,
-
-        'additionalDescription': 'damatebiti informacia TEST TEST',
-
-        'minimalSalary': 150,
-        'maximalSalary': 300,
-
-        'fullTime': true,
-        'partTime': true,
-        'shiftBased': true,
-
-        'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
-
-        'drivingLicenceA': true,
-        'drivingLicenceB': true,
-        'drivingLicenceC': true,
-        'drivingLicenceD': true,
-        'drivingLicenceE': true,
-        'drivingLicenceT1': true,
-        'drivingLicenceT2': true,
-        'airLicence': true,
-        'seaLicence': true,
-        'railwayLicence': true,
-
-        'languages': [{ 'languageName': 'აფხაზური' }],
-        'skills': [{ 'skillName': 'Javascript' }],
-
-        'published': false,
-      */
-
       vacancy: {
         'authorUserName': 'root',
         'positionName': 'JavaScript Developer',
@@ -79,15 +33,16 @@ export default {
         'shiftBased': true,
         'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
         'drivingLicenceA': true,
-        'drivingLicenceB': false,
-        'drivingLicenceC': false,
-        'drivingLicenceD': false,
-        'drivingLicenceE': false,
-        'drivingLicenceT1': false,
-        'drivingLicenceT2': false,
-        'airLicence': false,
-        'seaLicence': false,
-        'railwayLicence': false,
+        'drivingLicenceB': true,
+        'drivingLicenceC': true,
+        'drivingLicenceD': true,
+        'drivingLicenceE': true,
+        'drivingLicenceT1': true,
+        'drivingLicenceT2': true,
+        'airLicence': true,
+        'seaLicence': true,
+        'railwayLicence': true,
+        'militaryObligation': true,
         'languages': [
           {
             'languageName': 'აფხაზური',

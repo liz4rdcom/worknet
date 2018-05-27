@@ -141,26 +141,53 @@
   </div>
 
   <b-row class="vacancies-search-content vancay-add-row">
-    <b-col class="vacancy-list-container" cols="5">
+    <b-col class="vacancy-list-container" cols="4">
       <b-list-group>
         <b-list-group-item
-          v-for="vacancy in vacanciesOnCurrentPage"
+          class="vacancy-list-item"
+          v-for="(vacancy, clickedIndexOnCurrentPage) in vacanciesOnCurrentPage"
           :key="vacancy.id"
-          :active="currentVacancyId === vacancy.id"
-          @click="onVacancyClickInList(vacancy.id)"
+          :active="currentVacancy !== null && currentVacancy.id === vacancy.id"
+          @click="onVacancyClickInList(clickedIndexOnCurrentPage)"
+          button
         >
-          <h5><b>{{vacancy.positionName + ' - ' + vacancy.organization}}</b></h5>
-          <h6>{{vacancy.publishDate}}</h6>
+          <h5><b>{{vacancy.positionName}}</b></h5>
+          <h6>{{vacancy.endDate | stringDateToDateMonthYearForm}}<i style="opacity: 0.6;">{{' - ბოლო ვადა'}}</i></h6>
+          <h6>{{vacancy.organization}}</h6>
+          <h6>{{vacancy.locationName}}{{', '}}{{vacancy.locationUnitName}}</h6>
         </b-list-group-item>
       </b-list-group>
 
-      <b-pagination size="md" :total-rows="vacancies !== null ? vacancies.length : 0" v-model="vacancyListCurrentPageIndex" :per-page="vacancyMaxCountOnPage" />
+      <b-pagination
+        v-if="vacancies.length !== 0"
+        :limit="4"
+        size="md"
+        :total-rows="vacancies !== null ? vacancies.length : 0"
+        v-model="vacancyListCurrentPageIndex"
+        :per-page="vacancyMaxCountOnPage"
+        style="display: sticky;"
+      />
+
+      <b-container v-if="vacancies.length === 0">
+        <b-form-group />
+
+        თქვენი არჩეული პარამეტრებით ვაკანსიები ვერ მოიძებნა:
+
+        <b-form-group />
+
+        <ul>
+          <li>დარწმუნდით რომ სიტყვების ან რიცხვების აკრეფისას შეცდომა არ დაგიშვიათ</li>
+          <li>სცადეთ შედარებით ზოგადი, ყოვლისმომცველი პარამეტრებით ძიება</li>
+        </ul>
+      </b-container>
     </b-col>
 
-    <b-col class="current-vacancy-container" cols="7">
+    <b-col class="current-vacancy-container" cols="8">
       <div class="current-vacancy-inner-container">
-        <vacancy-view :id="currentVacancyId" v-if="currentVacancyId !== null"></vacancy-view>
+        <vacancy-public-view v-if="currentVacancy !== null" :vacancy="currentVacancy" />
+        <!-- {{'bb'}} -->
         <!-- {{currentVacancy}} -->
+        <!-- {{currentVacancyIndex}} -->
       </div>
     </b-col>
   </b-row>
@@ -168,24 +195,20 @@
 </template>
 
 <script>
-import find from 'lodash/find'
+// import find from 'lodash/find'
 import georgiaLocations from '../common/georgia-locations'
 import { bus } from '../common/bus'
+import vacancyPublicView from '../common/vacancy-public-view'
 import sideModal from '../common/side-modal'
-import vacancyView from './vacancy-view'
+import dummyVacanciesList from './dummy-vacancies-list'
 import isNumber from 'lodash/isNumber'
 // import libs from '../../libs'
 
 export default {
   name: 'vacancies',
-  components: {
-    'side-modal': sideModal,
-    'vacancy-view': vacancyView,
-    'georgia-locations': georgiaLocations,
-  },
   data: () => ({
     vacancies: [],
-    currentVacancyId: null,
+    currentVacancyIndex: null,
     vacancyListCurrentPageIndex: 1,
     vacancyMaxCountOnPage: 15,
     queryExpiredToo: false,
@@ -207,14 +230,7 @@ export default {
     },
   }),
   async created() {
-    try {
-      let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: false}, { needsToken: false })
-
-      this.vacancies = response.data
-
-      this.currentVacancyId = this.vacancies[0].id
-    } catch (error) {
-    }
+    await this.search()
   },
   // watch: {
   //   filterObject: {
@@ -268,21 +284,23 @@ export default {
       try {
         let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: this.queryExpiredToo}, { needsToken: false })
 
-        this.vacancies = response.data
+        this.vacancies = dummyVacanciesList
+        // this.vacancies = []
+        // this.vacancies = response.data
 
-        this.currentVacancyId = this.vacancies[0].id
+        if (response.data.length !== 0) {
+          this.currentVacancyIndex = 0
+        }
       } catch (error) {
       }
     },
-    onVacancyClickInList (vacancyId) {
-      this.currentVacancyId = vacancyId
+    onVacancyClickInList (clickedIndexOnCurrentPage) {
+      this.currentVacancyIndex = (this.vacancyListCurrentPageIndex - 1) * this.vacancyMaxCountOnPage + clickedIndexOnCurrentPage
     },
   },
   computed: {
     currentVacancy () {
-      console.log('currentVacancy: ', this.currentVacancyId)
-
-      return this.currentVacancyId !== null ? find(this.vacancies, nextVacan => nextVacan.id === this.currentVacancyId) : null
+      return this.currentVacancyIndex !== null ? this.vacancies[this.currentVacancyIndex] : null
     },
     vacanciesOnCurrentPage () {
       const startIndex = (this.vacancyListCurrentPageIndex - 1) * this.vacancyMaxCountOnPage
@@ -294,10 +312,17 @@ export default {
       return this.vacancies.slice(startIndex, this.vacancyListCurrentPageIndex * this.vacancyMaxCountOnPage)
     },
   },
+  components: {
+    'side-modal': sideModal,
+    'vacancy-public-view': vacancyPublicView,
+    'georgia-locations': georgiaLocations,
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/main.scss';
+
 $horizontal-shrink-size: 15%;
 
 .vacancies-container {
@@ -375,6 +400,9 @@ $horizontal-shrink-size: 15%;
 }
 .current-vacancy-inner-container {
   height: 100%;
+  border-top: 8px solid $fresh;
+  background: white;
+  overflow-y: scroll;
 }
 .list-group-item {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125)
@@ -386,5 +414,14 @@ $horizontal-shrink-size: 15%;
 .vacancy-view {
   height: 100%;
   overflow-y: scroll;
+}
+.list-group-item:first-child {
+  border-radius: 0px;
+}
+.list-group-item:last-child {
+  border-radius: 0px;
+}
+.vacancy-list-item:hover {
+  cursor: pointer;
 }
 </style>
