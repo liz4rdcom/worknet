@@ -28,8 +28,7 @@
               <b-form-input
                 type="text"
                 id="vacancies-filter-salary-from"
-                required
-                @click="minSalary($event.target.value)"
+                v-model.number="filterObject.minimalSalary"
                 placeholder="ხელფასი ლარიდან"
               />
             </form>
@@ -40,8 +39,7 @@
               <b-form-input
                 type="text"
                 id="vacancies-filter-salary-to"
-                required
-                @click="maxSalary($event.target.value)"
+                v-model.number="filterObject.maximalSalary"
                 placeholder="ლარამდე"
               />
             </form>
@@ -175,6 +173,7 @@ import georgiaLocations from '../common/georgia-locations'
 import { bus } from '../common/bus'
 import sideModal from '../common/side-modal'
 import vacancyView from './vacancy-view'
+import isNumber from 'lodash/isNumber'
 // import libs from '../../libs'
 
 export default {
@@ -227,35 +226,12 @@ export default {
   //   },
   // },
   methods: {
-    maxSalary (value) {
-      if (isNaN(value)) {
-        bus.$emit('warning', 'გთხოვთ შეიყვანოთ რიცხვი')
-        return
-      }
-
-      value = parseInt(value)
-
-      if (value <= this.filterObject.minimalSalary) {
-        bus.$emit('warning', 'მაქსიმალური რიცხვი უნდა აღემატებოდეს მინიმალურს')
-        return
-      }
-
-      this.filterObject.maximalSalary = value
-    },
-    minSalary (value) {
-      if (isNaN(value)) {
-        bus.$emit('warning', 'გთხოვთ შეიყვანოთ რიცხვი')
-        return
-      }
-
-      value = parseInt(value)
-
-      this.filterObject.minimalSalary = value
-    },
     onLocationChanged(location) {
       // TODO at this time only one. but it should be multiple
       if (location.locationName) {
         this.filterObject.locations = [location]
+      } else {
+        this.filterObject.locations = []
       }
     },
     getSkills(vacancy) {
@@ -273,6 +249,22 @@ export default {
       return arr
     },
     async search() {
+      if (
+        (this.filterObject.minimalSalary && !isNumber(this.filterObject.minimalSalary)) ||
+        (this.filterObject.maximalSalary && !isNumber(this.filterObject.maximalSalary))
+      ) {
+        bus.$emit('warning', 'ხელფასის ველებში გთხოვთ შეიყვანოთ რიცხვი')
+        return
+      }
+
+      if (this.filterObject.minimalSalary &&
+          this.filterObject.maximalSalary &&
+          this.filterObject.maximalSalary < this.filterObject.minimalSalary
+      ) {
+        bus.$emit('warning', 'მაქსიმალური ხელფასი უნდა აღემატებოდეს მინიმალურს')
+        return
+      }
+
       try {
         let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: this.queryExpiredToo}, { needsToken: false })
 
