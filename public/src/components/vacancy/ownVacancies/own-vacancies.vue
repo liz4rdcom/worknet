@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <pre>{{
-      JSON.stringify(vacancies, null, 2)
-    }}</pre> -->
-
     <b-container class="bv-example-row">
         <b-row>
             <b-col cols="3">

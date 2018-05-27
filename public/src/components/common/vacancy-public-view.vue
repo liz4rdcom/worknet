@@ -278,102 +278,9 @@ export default {
   name: 'vacancy-public-view',
   props: {
     vacancy: {
-      positionName: {
-        type: String,
-      },
-
-      organization: {
-        type: String,
-      },
-      authorFullName: {
-        type: String,
-      },
-
-      locationName: {
-        type: String,
-      },
-      locationUnitName: {
-        type: String,
-      },
-
-      publishDate: {
-        type: String,
-      },
-      interviewSupposedStartDate: {
-        type: String,
-      },
-      endDate: {
-        type: String,
-      },
-
-      vacantPlacesQuantity: {
-        type: Number,
-      },
-      additionalDescription: {
-        type: String,
-      },
-
-      minimalSalary: {
-        type: Number,
-      },
-      maximalSalary: {
-        type: Number,
-      },
-
-      fullTime: {
-        type: Boolean,
-      },
-      partTime: {
-        type: Boolean,
-      },
-      shiftBased: {
-        type: Boolean,
-      },
-
-      formalEducationLevelName: {
-        type: String,
-      },
-
-      drivingLicenceA: {
-        type: Boolean,
-      },
-      drivingLicenceB: {
-        type: Boolean,
-      },
-      drivingLicenceC: {
-        type: Boolean,
-      },
-      drivingLicenceD: {
-        type: Boolean,
-      },
-      drivingLicenceE: {
-        type: Boolean,
-      },
-      drivingLicenceT1: {
-        type: Boolean,
-      },
-      drivingLicenceT2: {
-        type: Boolean,
-      },
-      airLicence: {
-        type: Boolean,
-      },
-      seaLicence: {
-        type: Boolean,
-      },
-      railwayLicence: {
-        type: Boolean,
-      },
-
-      militaryObligation: {
-        type: Boolean,
-      },
-
-      languages: {
-        type: Array,
-      },
-      skills: {
-        type: Array,
+      type: Object,
+      default: function () {
+        return {}
       },
     },
   },
@@ -391,7 +298,6 @@ export default {
 
 .vacancy-public-view-container {
   text-align: left;
-  border-top: 8px solid $fresh;
   border-left: 0px;
   border-right: 0px;
   border-bottom: 0px;
@@ -399,5 +305,19 @@ export default {
 }
 .vacancy-public-view-partition {
   border-bottom: 2px solid $fresh;
+}
+.ribbon-element-h {
+  position: relative;
+	width: 350px;
+	font-size: 1.5em;
+	font-weight: bold;
+	padding: 6px 20px 6px 70px;
+	margin: 30px 10px 10px -1.25rem;
+	color: #555;
+	background-color: #999;
+	text-shadow: 0px 1px 2px #bbb;
+	-webkit-box-shadow: 0px 2px 4px #888;
+	-moz-box-shadow: 0px 2px 4px #888;
+	box-shadow: 0px 2px 4px #888;
 }
 </style>

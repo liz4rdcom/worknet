@@ -7,6 +7,7 @@ import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancyAdd/vacancy-add'
 import ownVacancies from '../components/vacancy/ownVacancies/own-vacancies'
 import vacanciesList from '../components/vacancy/ownVacancies/vacancies-list'
+import ownVacancyView from '../components/vacancy/ownVacancies/own-vacancy-view'
 import vacancyMatchings from '../components/vacancy/vacancies-user-matching'
 import vacancyViewDummyUser from '../components/common/vacancy-view-dummy-user'
 import login from '../components/um/login'
@@ -64,7 +65,7 @@ let router = new Router({
             {
               path: ':id',
               name: 'all-vacancies-own',
-              component: vacancyView,
+              component: ownVacancyView,
               props: true,
             },
           ],
@@ -77,7 +78,7 @@ let router = new Router({
             {
               path: ':id',
               name: 'draft-vacancies-own',
-              component: vacancyView,
+              component: ownVacancyView,
               props: true,
             },
           ],
@@ -90,7 +91,7 @@ let router = new Router({
             {
               path: ':id',
               name: 'published-vacancies-own',
-              component: vacancyView,
+              component: ownVacancyView,
               props: true,
             },
           ],
@@ -103,7 +104,7 @@ let router = new Router({
             {
               path: ':id',
               name: 'expired-vacancies-own',
-              component: vacancyView,
+              component: ownVacancyView,
               props: true,
             },
           ],

@@ -1,18 +1,10 @@
 <template>
   <div>
-    <!-- <pre>{{
-      JSON.stringify(currentVacancies, null, 2)
-    }}</pre> -->
-
     <b-list-group v-if="!$route.params.id" v-for="nextCurVac in currentVacancies" :key="nextCurVac.id" flush>
       <b-list-group-item :href="getVacancyViewUrl(nextCurVac.id)">{{nextCurVac.positionName}}</b-list-group-item>
     </b-list-group>
 
-    <b-card v-if="currentVacancyIsDraft">
-        <b-button variant="primary" :href="`#/vacancies/add/${$route.params.id}`">მონახაზის გაგრძელება</b-button>
-    </b-card>
-
-    <router-view></router-view>
+    <router-view v-if="$route.params.id" :vacancy="currentVacancy"></router-view>
   </div>
 </template>
 
@@ -67,8 +59,8 @@ export default {
           return this.vacancies
       }
     },
-    currentVacancyIsDraft() {
-      return this.$route.params.id ? !find(this.vacancies, vacan => vacan.id === this.$route.params.id).published : false
+    currentVacancy() {
+      return this.$route.params.id ? find(this.vacancies, vacan => vacan.id === this.$route.params.id) : null
     },
   },
 }
