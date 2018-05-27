@@ -55,10 +55,5 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import '@/main.scss';
-.nav-link {
-  font-weight: bold;
-  color: rgba(255, 255, 255, 0.9) !important;
-}
+<style scoped>
 </style>

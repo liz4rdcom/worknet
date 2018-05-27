@@ -6,298 +6,309 @@
 
         <h1 class="vacancy-add-hint-element">დაამატეთ ვაკანსია</h1>
 
-        <b-form-group class="font-weight-bold" label="თანამდებობა">
-          <b-form-input id="vacancy-add-position" class="position-input" autofocus type="text" v-model="vacancy.positionName" />
-        </b-form-group>
+        <b-tabs>
+          <b-tab title="შევსება">
+            <b-form-group />
 
-        <b-form-group>
-          <b-card>
-            <b-row>
-              <b-col />
-
-              <b-col cols="auto">
-                <b-form-checkbox
-                  v-model="isOrganization"
-                  :value="false"
-                  :unchecked-value="true"
-                  id="vacancy-add-is-organization-checkbox"
-                >
-                  არ ვაქვეყნებ ორგანიზაციის სახელით
-                </b-form-checkbox>
-              </b-col>
-            </b-row>
-
-            <b-form-group v-if="isOrganization" class="font-weight-bold" label="ორგანიზაცია">
-              <b-form-input id="vacancy-add-organization-name" type="text" v-model="vacancy.organization"
-              ></b-form-input>
+            <b-form-group class="font-weight-bold" label="თანამდებობა">
+              <b-form-input id="vacancy-add-position" class="position-input" autofocus type="text" v-model="vacancy.positionName" />
             </b-form-group>
 
-            <b-form-group v-if="isOrganization" class="font-weight-bold" label="საგადასახადო კოდი">
-              <b-form-input id="vacancy-add-organization-taxcode" type="text" v-model="vacancy.organizationTaxCode"
-              ></b-form-input>
+            <b-form-group>
+              <b-card>
+                <b-row>
+                  <b-col />
+
+                  <b-col cols="auto">
+                    <b-form-checkbox
+                      v-model="isOrganization"
+                      :value="false"
+                      :unchecked-value="true"
+                      id="vacancy-add-is-organization-checkbox"
+                    >
+                      არ ვაქვეყნებ ორგანიზაციის სახელით
+                    </b-form-checkbox>
+                  </b-col>
+                </b-row>
+
+                <b-form-group v-if="isOrganization" class="font-weight-bold" label="ორგანიზაცია">
+                  <b-form-input id="vacancy-add-organization-name" type="text" v-model="vacancy.organization"
+                  ></b-form-input>
+                </b-form-group>
+
+                <b-form-group v-if="isOrganization" class="font-weight-bold" label="საგადასახადო კოდი">
+                  <b-form-input id="vacancy-add-organization-taxcode" type="text" v-model="vacancy.organizationTaxCode"
+                  ></b-form-input>
+                </b-form-group>
+
+                <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის სრული სახელი">
+                  <b-form-input id="vacancy-add-author-full-name" type="text" v-model="vacancy.authorFullName"
+                  ></b-form-input>
+                </b-form-group>
+
+                <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის პირადი ნომერი">
+                  <b-form-input id="vacancy-add-author-personal-id" type="text" v-model="vacancy.authorPersonalId"
+                  ></b-form-input>
+                </b-form-group>
+              </b-card>
             </b-form-group>
 
-            <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის სრული სახელი">
-              <b-form-input id="vacancy-add-author-full-name" type="text" v-model="vacancy.authorFullName"
-              ></b-form-input>
+            <b-form-group label="ადგილდებარეობა" class="font-weight-bold">
+              <georgia-locations
+                idPrefix="vacancy-add"
+                @onLocationChanged="onLocationChanged"
+                :currentLocationName="vacancy.locationName"
+                :currentLocationUnitName="vacancy.locationUnitName"
+              />
             </b-form-group>
 
-            <b-form-group v-if="!isOrganization" class="font-weight-bold" label="გამომქვეყნებლის პირადი ნომერი">
-              <b-form-input id="vacancy-add-author-personal-id" type="text" v-model="vacancy.authorPersonalId"
-              ></b-form-input>
+            <!-- <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
             </b-form-group>
-          </b-card>
-        </b-form-group>
+            <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
+            </b-form-group> -->
 
-        <b-form-group label="ადგილდებარეობა" class="font-weight-bold">
-          <georgia-locations
-            idPrefix="vacancy-add"
-            @onLocationChanged="onLocationChanged"
-            :currentLocationName="vacancy.locationName"
-            :currentLocationUnitName="vacancy.locationUnitName"
-          />
-        </b-form-group>
-
-        <!-- <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
-        </b-form-group>
-        <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
-        </b-form-group> -->
-
-        <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი - ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
-          <b-row>
-            <b-col>
+            <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი - ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
               <b-row>
-                <b-col class="interview-supposed-start-day">
-                  <b-form-select id="vacancy-add-interview-supposed-start-day" v-model="vacancy.interviewSupposedStartDay" :options="daysOptions"/>
+                <b-col>
+                  <b-row>
+                    <b-col class="interview-supposed-start-day">
+                      <b-form-select id="vacancy-add-interview-supposed-start-day" v-model="vacancy.interviewSupposedStartDay" :options="daysOptions"/>
+                    </b-col>
+
+                    <b-col class="interview-supposed-start-month">
+                      <b-form-select id="vacancy-add-interview-supposed-start-month" v-model="vacancy.interviewSupposedStartMonth" :options="monthOptions"/>
+                    </b-col>
+
+                    <b-col class="interview-supposed-start-year">
+                      <b-form-select
+                        id="vacancy-add-interview-supposed-start-year"
+                        v-model="vacancy.interviewSupposedStartYear"
+                        :options="interviewSupposedStartYearOptions"
+                      />
+                    </b-col>
+                  </b-row>
                 </b-col>
 
-                <b-col class="interview-supposed-start-month">
-                  <b-form-select id="vacancy-add-interview-supposed-start-month" v-model="vacancy.interviewSupposedStartMonth" :options="monthOptions"/>
-                </b-col>
+                <b-col>
+                  <b-row>
+                    <b-col class="end-date-day">
+                      <b-form-select id="vacancy-add-end-date-day" v-model="vacancy.endDateDay" :options="daysOptions"/>
+                    </b-col>
 
-                <b-col class="interview-supposed-start-year">
-                  <b-form-select
-                    id="vacancy-add-interview-supposed-start-year"
-                    v-model="vacancy.interviewSupposedStartYear"
-                    :options="interviewSupposedStartYearOptions"
-                  />
+                    <b-col class="end-date-month">
+                      <b-form-select id="vacancy-add-end-date-month" v-model="vacancy.endDateMonth" :options="monthOptions"/>
+                    </b-col>
+
+                    <b-col class="end-date-year">
+                      <b-form-select id="vacancy-add-end-date-year" v-model="vacancy.endDateYear" :options="endDateYearOptions"/>
+                    </b-col>
+                </b-row>
                 </b-col>
               </b-row>
-            </b-col>
+            </b-form-group>
 
-            <b-col>
+            <b-form-group class="font-weight-bold">
+              <b-form-checkbox
+                id="vacancy-add-use-mediation-service"
+                v-model="vacancy.useMediationService"
+                :value="true"
+                :unchecked-value="false"
+              >
+                გამოიყენეთ მედიაციის სერვისი
+              </b-form-checkbox>
+            </b-form-group>
+
+            <b-form-group label="ვაკანტური ადგილების რაოდენობა" class="font-weight-bold">
+              <b-form-input id="vacancy-add-vacant-places" type="number" v-model.number="vacancy.vacantPlacesQuantity" />
+            </b-form-group>
+
+            <b-form-group label="ხელფასი" class="font-weight-bold">
               <b-row>
-                <b-col class="end-date-day">
-                  <b-form-select id="vacancy-add-end-date-day" v-model="vacancy.endDateDay" :options="daysOptions"/>
+                <b-col class="salary-from">
+                  <b-form-input id="vacancy-add-salary-from" v-model.number="vacancy.minimalSalary" type="number" placeholder="ლარიდან"/>
                 </b-col>
-
-                <b-col class="end-date-month">
-                  <b-form-select id="vacancy-add-end-date-month" v-model="vacancy.endDateMonth" :options="monthOptions"/>
+                <b-col cols="0" class="font-weight-normal">-</b-col>
+                <b-col class="salary-to">
+                  <b-form-input id="vacancy-add-salary-to" v-model.number="vacancy.maximalSalary" type="number" placeholder="ლარამდე"/>
                 </b-col>
+              </b-row>
+            </b-form-group>
 
-                <b-col class="end-date-year">
-                  <b-form-select id="vacancy-add-end-date-year" v-model="vacancy.endDateYear" :options="endDateYearOptions"/>
-                </b-col>
-             </b-row>
-            </b-col>
-          </b-row>
-        </b-form-group>
+            <b-form-group>
+              <b-card>
+                  <b-form-checkbox
+                    id="vacancy-add-full-time"
+                    v-model="vacancy.fullTime"
+                    :value="true"
+                    :unchecked-value="false"
+                  >
+                    სრული განაკვეთი
+                  </b-form-checkbox>
 
-        <b-form-group class="font-weight-bold">
-          <b-form-checkbox
-            id="vacancy-add-use-mediation-service"
-            v-model="vacancy.useMediationService"
-            :value="true"
-            :unchecked-value="false"
-          >
-            გამოიყენეთ მედიაციის სერვისი
-          </b-form-checkbox>
-        </b-form-group>
+                  <b-form-checkbox
+                    id="vacancy-add-part-time"
+                    v-model="vacancy.partTime"
+                    :value="true"
+                    :unchecked-value="false"
+                  >
+                    ნახევარი განაკვეთი
+                  </b-form-checkbox>
 
-        <b-form-group label="ვაკანტური ადგილების რაოდენობა" class="font-weight-bold">
-          <b-form-input id="vacancy-add-vacant-places" type="number" v-model.number="vacancy.vacantPlacesQuantity" />
-        </b-form-group>
+                  <b-form-checkbox
+                    id="vacancy-add-shift-based"
+                    v-model="vacancy.shiftBased"
+                    :value="true"
+                    :unchecked-value="false"
+                  >
+                    ცვლები
+                  </b-form-checkbox>
+              </b-card>
+            </b-form-group>
 
-        <b-form-group label="ხელფასი" class="font-weight-bold">
-          <b-row>
-            <b-col class="salary-from">
-              <b-form-input id="vacancy-add-salary-from" v-model.number="vacancy.minimalSalary" type="number" placeholder="ლარიდან"/>
-            </b-col>
-            <b-col cols="0" class="font-weight-normal">-</b-col>
-            <b-col class="salary-to">
-              <b-form-input id="vacancy-add-salary-to" v-model.number="vacancy.maximalSalary" type="number" placeholder="ლარამდე"/>
-            </b-col>
-          </b-row>
-        </b-form-group>
+            <b-form-group>
+              <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
+            </b-form-group>
 
-        <b-form-group>
-          <b-card>
-              <b-form-checkbox
-                id="vacancy-add-full-time"
-                v-model="vacancy.fullTime"
-                :value="true"
-                :unchecked-value="false"
+            <b-form-group>
+              <vacancy-skills :skills="vacancy.skills" :onChange="skillsOnChange"/>
+            </b-form-group>
+
+            <b-form-group label="განათლების რეკომენდირებული მინიმალური დონე" class="font-weight-bold">
+              <b-form-select id="vacancy-add-formal-education-level-name" v-model="vacancy.formalEducationLevelName">
+                <option v-for="(level, index) in formalEducationLevelsOptions" :key="index">{{level}}</option>
+              </b-form-select>
+            </b-form-group>
+
+            <b-form-group>
+              <b-card>
+                <b-form-checkbox
+                  id="vacancy-add-should-have-driving-licence"
+                  v-model="shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  საჭიროა მართვის მოწმობის ქონა
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-driving-licence-A"
+                  v-model="vacancy.drivingLicenceA"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  კატეგორია "A"
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-driving-licence-B"
+                  v-model="vacancy.drivingLicenceB"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  კატეგორია "B"
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-driving-licence-C"
+                  v-model="vacancy.drivingLicenceC"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  კატეგორია "C"
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-driving-licence-D"
+                  v-model="vacancy.drivingLicenceD"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  კატეგორია "D"
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-driving-licence-E"
+                  v-model="vacancy.drivingLicenceE"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  კატეგორია "E"
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-driving-licence-T1"
+                  v-model="vacancy.drivingLicenceT1"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  კატეგორია "T1"
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-driving-licence-T2"
+                  v-model="vacancy.drivingLicenceT2"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  კატეგორია "T2"
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-air-licence"
+                  v-model="vacancy.airLicence"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  ფრენის ლიცენზია
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-sea-licence"
+                  v-model="vacancy.seaLicence"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  საზღვაო ტრანსპორტის ლიცენზია
+                </b-form-checkbox>
+
+                <b-form-checkbox
+                  id="vacancy-add-railway-licence"
+                  v-model="vacancy.railwayLicence"
+                  :disabled="!shouldHaveDrivingLicence"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  სარკინიგზო ტრანსპორტის ლიცენზია
+                </b-form-checkbox>
+              </b-card>
+            </b-form-group>
+
+            <b-form-group label="დამატებითი აღწერილობა" class="font-weight-bold">
+              <b-form-textarea
+                id="vacancy-add-additional-description"
+                v-model="vacancy.additionalDescription"
+                :rows="7"
+                :max-rows="10"
+                :placeholder="`თანამდებობრივი მოვალეობის(სამუშაოს) აღწერილობა,\n\nმისამართის დაზუსტება,\n\nან სხვა ნებიესმიერი ინფორმაცია ვაკანსიის ან თქვენი, როგორც დამსაქმებლის, შესახებ.`"
               >
-                სრული განაკვეთი
-              </b-form-checkbox>
-
-              <b-form-checkbox
-                id="vacancy-add-part-time"
-                v-model="vacancy.partTime"
-                :value="true"
-                :unchecked-value="false"
-              >
-                ნახევარი განაკვეთი
-              </b-form-checkbox>
-
-              <b-form-checkbox
-                id="vacancy-add-shift-based"
-                v-model="vacancy.shiftBased"
-                :value="true"
-                :unchecked-value="false"
-              >
-                ცვლები
-              </b-form-checkbox>
-          </b-card>
-        </b-form-group>
-
-        <b-form-group>
-          <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
-        </b-form-group>
-
-        <b-form-group>
-          <vacancy-skills :skills="vacancy.skills" :onChange="skillsOnChange"/>
-        </b-form-group>
-
-        <b-form-group label="განათლების რეკომენდირებული მინიმალური დონე" class="font-weight-bold">
-          <b-form-select id="vacancy-add-formal-education-level-name" v-model="vacancy.formalEducationLevelName">
-            <option v-for="(level, index) in formalEducationLevelsOptions" :key="index">{{level}}</option>
-          </b-form-select>
-        </b-form-group>
-
-        <b-form-group>
-          <b-card>
-            <b-form-checkbox
-              id="vacancy-add-should-have-driving-licence"
-              v-model="shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              საჭიროა მართვის მოწმობის ქონა
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-driving-licence-A"
-              v-model="vacancy.drivingLicenceA"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              კატეგორია "A"
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-driving-licence-B"
-              v-model="vacancy.drivingLicenceB"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              კატეგორია "B"
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-driving-licence-C"
-              v-model="vacancy.drivingLicenceC"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              კატეგორია "C"
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-driving-licence-D"
-              v-model="vacancy.drivingLicenceD"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              კატეგორია "D"
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-driving-licence-E"
-              v-model="vacancy.drivingLicenceE"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              კატეგორია "E"
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-driving-licence-T1"
-              v-model="vacancy.drivingLicenceT1"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              კატეგორია "T1"
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-driving-licence-T2"
-              v-model="vacancy.drivingLicenceT2"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              კატეგორია "T2"
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-air-licence"
-              v-model="vacancy.airLicence"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              ფრენის ლიცენზია
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-sea-licence"
-              v-model="vacancy.seaLicence"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              საზღვაო ტრანსპორტის ლიცენზია
-            </b-form-checkbox>
-
-            <b-form-checkbox
-              id="vacancy-add-railway-licence"
-              v-model="vacancy.railwayLicence"
-              :disabled="!shouldHaveDrivingLicence"
-              :value="true"
-              :unchecked-value="false"
-            >
-              სარკინიგზო ტრანსპორტის ლიცენზია
-            </b-form-checkbox>
-          </b-card>
-        </b-form-group>
-
-        <b-form-group label="დამატებითი აღწერილობა" class="font-weight-bold">
-          <b-form-textarea
-            id="vacancy-add-additional-description"
-            v-model="vacancy.additionalDescription"
-            :rows="7"
-            :max-rows="10"
-            :placeholder="`თანამდებობრივი მოვალეობის(სამუშაოს) აღწერილობა,\n\nმისამართის დაზუსტება,\n\nან სხვა ნებიესმიერი ინფორმაცია ვაკანსიის ან თქვენი, როგორც დამსაქმებლის, შესახებ.`"
-          >
-          </b-form-textarea>
-        </b-form-group>
+              </b-form-textarea>
+            </b-form-group>
+          </b-tab>
+          <b-tab title="ვაკანსია გამოქვეყნებულ ფორმატში">
+            <b-form-group>
+              <vacancy-public-view :vacancy="getVacancyAddDataToSend(true)" />
+            </b-form-group>
+          </b-tab>
+        </b-tabs>
 
         <b-form-group>
           <b-row>
@@ -467,6 +478,7 @@ import reverse from 'lodash/reverse'
 import isNil from 'lodash/isNil'
 import isNumber from 'lodash/isNumber'
 import georgiaLocations from '../../common/georgia-locations'
+import vacancyPublicView from '../../common/vacancy-public-view'
 import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../../../constants'
 import utils from '../../../utils'
 import { bus } from '../../common/bus'
@@ -808,6 +820,10 @@ export default {
         retVal.railwayLicence = this.vacancy.railwayLicence
       }
 
+      if (this.vacancy.additionalDescription) {
+        retVal.additionalDescription = this.vacancy.additionalDescription
+      }
+
       return retVal
     },
     async saveAsDraft() {
@@ -1028,6 +1044,7 @@ export default {
     'vacancy-skills': vacancySkills,
     'data-shower': dataShower,
     'users-list': usersList,
+    'vacancy-public-view': vacancyPublicView,
   },
 }
 </script>
