@@ -294,7 +294,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/main.scss';
+@import '@/color-palette.scss';
 
 .vacancy-public-view-container {
   text-align: left;
@@ -304,7 +304,7 @@ export default {
   border-radius: 0%;
 }
 .vacancy-public-view-partition {
-  border-bottom: 2px solid $fresh;
+  border-bottom: 2px solid $palette-color-1;
 }
 .ribbon-element-h {
   position: relative;
