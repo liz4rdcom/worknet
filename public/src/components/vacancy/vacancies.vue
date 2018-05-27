@@ -144,10 +144,12 @@
     <b-col class="vacancy-list-container" cols="4">
       <b-list-group>
         <b-list-group-item
+          class="vacancy-list-item"
           v-for="(vacancy, clickedIndexOnCurrentPage) in vacanciesOnCurrentPage"
           :key="vacancy.id"
           :active="currentVacancy !== null && currentVacancy.id === vacancy.id"
           @click="onVacancyClickInList(clickedIndexOnCurrentPage)"
+          button
         >
           <h5><b>{{vacancy.positionName}}</b></h5>
           <h6>{{vacancy.endDate | stringDateToDateMonthYearForm}}<i style="opacity: 0.6;">{{' - ბოლო ვადა'}}</i></h6>
@@ -417,5 +419,8 @@ $horizontal-shrink-size: 15%;
 }
 .list-group-item:last-child {
   border-radius: 0px;
+}
+.vacancy-list-item:hover {
+  cursor: pointer;
 }
 </style>

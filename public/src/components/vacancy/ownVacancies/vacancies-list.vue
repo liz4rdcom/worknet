@@ -1,7 +1,12 @@
 <template>
   <div>
-    <b-list-group v-if="!$route.params.id" v-for="nextCurVac in currentVacancies" :key="nextCurVac.id" flush>
-      <b-list-group-item :href="getVacancyViewUrl(nextCurVac.id)">{{nextCurVac.positionName}}</b-list-group-item>
+    <b-list-group v-if="!$route.params.id" flush>
+      <b-list-group-item :href="getVacancyViewUrl(nextCurVac.id)" v-for="nextCurVac in currentVacancies" :key="nextCurVac.id">
+        <h5 v-if="nextCurVac.positionName">{{nextCurVac.positionName}}</h5>
+        <i v-if="!nextCurVac.positionName">თანამდებობა</i>
+        <h6 v-if="nextCurVac.endDate">{{nextCurVac.endDate | stringDateToDateMonthYearForm}}<i style="opacity: 0.6;">{{' - ბოლო ვადა'}}</i></h6>
+        <h6 v-if="nextCurVac.locationName && nextCurVac.locationUnitName">{{nextCurVac.locationName}}{{', '}}{{nextCurVac.locationUnitName}}</h6>
+      </b-list-group-item>
     </b-list-group>
 
     <router-view v-if="$route.params.id" :vacancy="currentVacancy"></router-view>

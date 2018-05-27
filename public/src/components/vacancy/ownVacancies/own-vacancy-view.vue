@@ -10,7 +10,7 @@
       <b-container>
         <b-form-group>
           <b-row>
-            <h5>ვაკანსიის დაფარული ნაწილი:&nbsp;&nbsp;</h5>
+            <h5>ვაკანსიის მხოლოდ თქვენთვის ხილვადი ნაწილი:&nbsp;&nbsp;</h5>
           </b-row>
         </b-form-group>
 
