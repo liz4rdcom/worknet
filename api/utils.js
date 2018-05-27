@@ -36,5 +36,5 @@ module.exports = {
   stringIsNonNegativeInteger,
   percentToString,
   isValidEmail,
-  isValidPhone
+  isValidPhone,
 }
