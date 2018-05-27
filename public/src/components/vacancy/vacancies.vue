@@ -160,6 +160,7 @@
 
       <b-pagination
         v-if="vacancies.length !== 0"
+        :limit="4"
         size="md"
         :total-rows="vacancies !== null ? vacancies.length : 0"
         v-model="vacancyListCurrentPageIndex"

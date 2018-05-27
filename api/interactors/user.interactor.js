@@ -88,6 +88,7 @@ function validateMainInfo(mainInfo) {
     mobileNumber,
     email,
     contactDescription,
+    // personalId,
     ...restProps
   } = mainInfo
 

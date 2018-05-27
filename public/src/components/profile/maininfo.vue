@@ -6,6 +6,9 @@
       </div>
       <div>
         <p>
+          <b>სახელი და გვარი:</b> {{profileData.firstName + " " + profileData.lastName}}</p>
+        <p>
+        <p>
           <b>დაბადების თარიღი:</b> {{profileData.birthDate}}</p>
         <p>
           <b>რეგისტრაციის მისამართი:</b> {{registrationAddress}}</p>
@@ -20,6 +23,20 @@
         <b-btn v-b-modal.mainInfoModal>პირადი ინფორმაციის რედაქტირება</b-btn>
       </div>
       <b-modal id="mainInfoModal" title="პირადი ინფორმაცია" ok-title="შენახვა" cancel-title="დახურვა" @ok="tryToSaveMainInfo">
+        <label>
+          <b>სახელი & გვარი</b>
+        </label>
+        <b-row>
+          <b-col style="padding-right: 5px">
+            <b-form-input id="maininfo-first-name" v-model="profileData.firstName" type="text" placeholder="სახელი" />
+          </b-col>
+
+          <b-col style="padding-left: 5px">
+            <b-form-input id="maininfo-last-name" v-model="profileData.lastName" type="text" placeholder="გვარი" />
+          </b-col>
+        </b-row>
+
+
         <label>
           <b>რეგიონი & რაიონი</b>
         </label>
@@ -100,6 +117,8 @@
       async tryToSaveMainInfo() {
         try {
           let mainInfo = omit(this.profileData, ['id', 'personalId'])
+
+          console.log(222, mainInfo)
 
           await this.$http.put(this.baseUrl, mainInfo)
 
