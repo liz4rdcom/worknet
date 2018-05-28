@@ -62,12 +62,7 @@
               />
             </b-form-group>
 
-            <!-- <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
-            </b-form-group>
-            <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
-            </b-form-group> -->
-
-            <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი - ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
+            <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
               <b-row>
                 <b-col>
                   <b-row>
@@ -88,7 +83,11 @@
                     </b-col>
                   </b-row>
                 </b-col>
+              </b-row>
+            </b-form-group>
 
+            <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
+              <b-row>
                 <b-col>
                   <b-row>
                     <b-col class="end-date-day">

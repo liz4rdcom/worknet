@@ -200,7 +200,7 @@ import georgiaLocations from '../common/georgia-locations'
 import { bus } from '../common/bus'
 import vacancyPublicView from '../common/vacancy-public-view'
 import sideModal from '../common/side-modal'
-import dummyVacanciesList from './dummy-vacancies-list'
+// import dummyVacanciesList from './dummy-vacancies-list'
 import isNumber from 'lodash/isNumber'
 // import libs from '../../libs'
 
@@ -211,7 +211,7 @@ export default {
     currentVacancyIndex: null,
     vacancyListCurrentPageIndex: 1,
     vacancyMaxCountOnPage: 15,
-    queryExpiredToo: false,
+    queryExpiredToo: true, // temporarily searches expired too
     filterObject: {
       filter: null,
       hasDrivingLicence: null,
@@ -284,9 +284,8 @@ export default {
       try {
         let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: this.queryExpiredToo}, { needsToken: false })
 
-        this.vacancies = dummyVacanciesList
-        // this.vacancies = []
-        // this.vacancies = response.data
+        // this.vacancies = dummyVacanciesList
+        this.vacancies = response.data
 
         if (response.data.length !== 0) {
           this.currentVacancyIndex = 0
