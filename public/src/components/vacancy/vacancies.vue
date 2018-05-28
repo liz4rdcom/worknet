@@ -184,7 +184,7 @@
 
     <b-col class="current-vacancy-container" cols="8">
       <div class="current-vacancy-inner-container">
-        <vacancy-public-view v-if="currentVacancy !== null" :vacancy="currentVacancy" />
+        <vacancy-public-view v-if="currentVacancy !== null" :vacancy="currentVacancy" style="min-height: 100%;"/>
         <!-- {{'bb'}} -->
         <!-- {{currentVacancy}} -->
         <!-- {{currentVacancyIndex}} -->
@@ -434,6 +434,5 @@ $horizontal-shrink-size: 15%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   background-color: #e9ecef;
   color: inherit;
-
 }
 </style>
