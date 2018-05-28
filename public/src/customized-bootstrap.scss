@@ -5,4 +5,6 @@ $pagination-active-bg: $palette-color-1;
 $pagination-active-border-color: $palette-color-1;
 $pagination-hover-color: darken($palette-color-1, 15%);
 
+$navbar-dark-color: white;
+
 @import 'bootstrap/scss/bootstrap.scss';

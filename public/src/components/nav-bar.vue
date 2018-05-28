@@ -1,6 +1,6 @@
 <template>
 <div v-if="this.$route.path !== '/vacancies'">
-  <b-navbar toggleable="md" type="dark" variant="dark">
+  <b-navbar toggleable="md" type="dark" variant="dark" class="nav-bar-class">
 
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -55,5 +55,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss"scoped>
+@import '@/color-palette.scss';
+
+.nav-bar-class {
+  background-color: $palette-color-1 !important;
+}
 </style>
