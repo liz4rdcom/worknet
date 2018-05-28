@@ -48,7 +48,7 @@
       </b-col>
 
       <b-col style="padding-right: 0px;" cols="auto">
-        <b-button @click="search" style="width: 100%;">
+        <b-button @click="search" style="width: 100%;" class="vacancy-search-button">
           ძებნა
         </b-button>
       </b-col>
@@ -200,7 +200,7 @@ import georgiaLocations from '../common/georgia-locations'
 import { bus } from '../common/bus'
 import vacancyPublicView from '../common/vacancy-public-view'
 import sideModal from '../common/side-modal'
-import dummyVacanciesList from './dummy-vacancies-list'
+// import dummyVacanciesList from './dummy-vacancies-list'
 import isNumber from 'lodash/isNumber'
 // import libs from '../../libs'
 
@@ -211,7 +211,7 @@ export default {
     currentVacancyIndex: null,
     vacancyListCurrentPageIndex: 1,
     vacancyMaxCountOnPage: 15,
-    queryExpiredToo: false,
+    queryExpiredToo: true, // temporarily searches expired too
     filterObject: {
       filter: null,
       hasDrivingLicence: null,
@@ -284,9 +284,8 @@ export default {
       try {
         let response = await this.$http.post('/api/vacancies/search', {params: this.filterObject, queryAll: this.queryExpiredToo}, { needsToken: false })
 
-        this.vacancies = dummyVacanciesList
-        // this.vacancies = []
-        // this.vacancies = response.data
+        // this.vacancies = dummyVacanciesList
+        this.vacancies = response.data
 
         if (response.data.length !== 0) {
           this.currentVacancyIndex = 0
@@ -321,7 +320,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/main.scss';
+@import '@/color-palette.scss';
 
 $horizontal-shrink-size: 15%;
 
@@ -347,16 +346,16 @@ $horizontal-shrink-size: 15%;
   padding: 0px;
 }
 .upper-search-row {
-  border-bottom: 1px solid #459e91;
-  background-color: #4ABDAC;
+  border-bottom: 1px solid darken($palette-color-1, 7%);
+  background-color: $palette-color-1;
   padding-left: $horizontal-shrink-size;
   padding-right: $horizontal-shrink-size;
   padding-top: 7px;
   padding-bottom: 7px;
 }
 .lower-search-row {
-  border-bottom: 1px solid #46867c;
-  background-color: #4ABDAC;
+  border-bottom: 1px solid darken($palette-color-1, 10%);
+  background-color: $palette-color-1;
   padding-left: $horizontal-shrink-size;
   padding-right: $horizontal-shrink-size;
   padding-top: 7px;
@@ -370,13 +369,13 @@ $horizontal-shrink-size: 15%;
 .full-width {
   width: 100%;
 }
-.btn-secondary {
-  background-color: #FC4A1A;
-  border-color: #FC4A1A;
+.vacancy-search-button {
+  background-color: $palette-color-2;
+  border-color: $palette-color-2;
 }
-.btn-secondary:hover {
-  background-color: #bf4d2e;
-  border-color: #bf4d2e;
+.vacancy-search-button:hover {
+  background-color: darken($palette-color-2, 12%);
+  border-color: darken($palette-color-2, 12%);
 }
 .vacancies-search-content {
   padding: 18px $horizontal-shrink-size 8px $horizontal-shrink-size;
@@ -400,7 +399,7 @@ $horizontal-shrink-size: 15%;
 }
 .current-vacancy-inner-container {
   height: 100%;
-  border-top: 8px solid $fresh;
+  border-top: 8px solid $palette-color-1;
   background: white;
   overflow-y: scroll;
 }
@@ -421,7 +420,20 @@ $horizontal-shrink-size: 15%;
 .list-group-item:last-child {
   border-radius: 0px;
 }
+.vacancy-list-item {
+  outline: none;
+  border-left: 5px solid transparent
+}
 .vacancy-list-item:hover {
   cursor: pointer;
+}
+.vacancy-list-item.active {
+  border-left: 5px solid $palette-color-1;
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #e9ecef;
+  color: inherit;
+
 }
 </style>

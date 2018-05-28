@@ -318,6 +318,7 @@ async function getBySearch(params, all = false) {
         },
       },
     },
+    size: 1000,
   }
 
   if (!all) {
