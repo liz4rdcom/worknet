@@ -3,7 +3,15 @@
     <b-card no-body class="mb-1 user-card" v-for="user in users" :key="user.id">
       <b-card-header class="p-1" role="tab">
         <b-btn block v-b-toggle="user.id" variant="outline-secondary">
-          <h3><b>{{user.firstName}} {{user.lastName}} ({{user.personalId}})</b></h3>
+          <h3>
+            <b>{{user.firstName}} {{user.lastName}} ({{user.personalId}})</b>
+          </h3>
+
+          <h3>
+            <i v-if="user.approvedByMediationService" class="fa fa-check" style="color: green;">&nbsp;გადამოწმებულია</i>
+
+            <i v-if="!user.approvedByMediationService" class="fa fa-times" style="color: red;">&nbsp;გადაუმოწმებელია</i>
+          </h3>
         </b-btn>
       </b-card-header>
       <b-collapse :id="user.id" accordion="my-accordion" role="tabpanel">

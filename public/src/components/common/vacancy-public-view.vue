@@ -1,8 +1,17 @@
 <template>
   <b-card class="vacancy-public-view-container">
+    <b-form-group v-if="vacancy.approvedByMediationService">
+      <i class="fa fa-check" style="color: green;">&nbsp;გადამოწმებულია</i>
+    </b-form-group>
+
+    <b-form-group v-if="!vacancy.approvedByMediationService">
+      <i class="fa fa-times" style="color: red;">&nbsp;გადაუმოწმებელია</i>
+    </b-form-group>
+
     <b-form-group v-if="vacancy.positionName">
       <h1>{{vacancy.positionName}}</h1>
     </b-form-group>
+
 
     <b-container class="vacancy-public-view-partition" fluid>
       <b-form-group v-if="vacancy.minimalSalary && vacancy.maximalSalary">
