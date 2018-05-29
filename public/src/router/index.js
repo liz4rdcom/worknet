@@ -3,12 +3,10 @@ import Router from 'vue-router'
 import Cookies from 'js-cookie'
 import profile from '../components/profile/profile'
 import vacancies from '../components/vacancy/vacancies'
-import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancyAdd/vacancy-add'
 import ownVacancies from '../components/vacancy/ownVacancies/own-vacancies'
 import vacanciesList from '../components/vacancy/ownVacancies/vacancies-list'
 import ownVacancyView from '../components/vacancy/ownVacancies/own-vacancy-view'
-import vacancyMatchings from '../components/vacancy/vacancies-user-matching'
 import vacancyViewDummyUser from '../components/common/vacancy-view-dummy-user'
 import login from '../components/um/login'
 import register from '../components/um/register'
@@ -31,12 +29,6 @@ let router = new Router({
       path: '/vacancies',
       name: 'vacancies',
       component: vacancies,
-    },
-    {
-      path: '/vacancies/:id/view',
-      name: 'vacancy-view',
-      component: vacancyView,
-      props: true,
     },
     {
       path: '/vacancies/add',
@@ -120,11 +112,6 @@ let router = new Router({
       path: '/register',
       component: register,
       name: 'register',
-    },
-    {
-      path: '/vacancies-matching',
-      component: vacancyMatchings,
-      name: 'vacancies-user-matching',
     },
     {
       path: '/vacancy-view-dummy-user',

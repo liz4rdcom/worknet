@@ -585,10 +585,6 @@ $horizontal-shrink-size: 15%;
   margin-left: 0px;
   margin-right: 0px;
 }
-.vacancy-view {
-  height: 100%;
-  overflow-y: scroll;
-}
 .list-group-item:first-child {
   border-radius: 0px;
 }
