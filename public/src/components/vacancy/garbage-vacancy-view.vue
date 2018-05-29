@@ -53,9 +53,9 @@
 </template>
 
 <script>
-const baseUrl = '/api/vacancies'
+// const baseUrl = '/api/vacancies'
 
-export default {
+// export default {
 //   name: 'vacancy-view',
 //   props: ['id'],
 //   data: () => ({
