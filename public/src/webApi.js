@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { bus } from './components/common/bus'
 import utils from './utils'
+import router from './router'
 
 // axios#request(config)
 // axios#get(url[, config])
@@ -20,7 +21,13 @@ function request ({ needsToken = true, ...restConfig }) {
 
   return axios.request(config)
     .catch(error => {
-      bus.$emit('error', error)
+      if (error.response.status === 401) {
+        bus.$emit('logout')
+
+        router.push('/login')
+      } else {
+        bus.$emit('error', error)
+      }
 
       return Promise.reject(error)
     })
