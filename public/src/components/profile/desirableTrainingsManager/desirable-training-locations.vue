@@ -1,6 +1,10 @@
 <template>
 <div class="desirable-training-locations">
-  <georgia-locations idPrefix="desirable-trainings" @onLocationChanged="onLocationChanged" />
+  <georgia-locations
+    idPrefix="desirable-trainings"
+    @onLocationChanged="onLocationChanged"
+    :currentLocationName="chosenLocation.name"
+    :currentLocationUnitName="chosenLocation.unitName"/>
   <div class="add-button-container">
     <b-btn @click="addLocation">დამატება</b-btn>
   </div>
@@ -60,6 +64,11 @@ export default {
         })
 
         this.desirableTrainingLocationList.push(locationObject)
+
+        this.chosenLocation = {
+          name: null,
+          unitName: null,
+        }
       } catch (error) {
         bus.$emit('error', error)
       }
