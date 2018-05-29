@@ -8,6 +8,7 @@
         value-field="locationName"
         text-field="locationName"
         @change="locationChanged"
+        :disabled="disabled"
       >
         <template slot="first">
           <option :value="null">- აირჩიე რეგიონი -</option>
@@ -23,6 +24,7 @@
         value-field="locationUnitName"
         text-field="locationUnitName"
         @change="locationUnitChanged"
+        :disabled="disabled"
       >
         <template slot="first">
           <option :value="null">- აირჩიე რაიონი -</option>
@@ -51,7 +53,7 @@
 
   export default {
     name: 'locations',
-    props: ['locations', 'currentLocationName', 'currentLocationUnitName', 'idPrefix'],
+    props: ['locations', 'currentLocationName', 'currentLocationUnitName', 'idPrefix', 'disabled'],
     data() {
       return {
         locationDefaultObject: Object.freeze({

@@ -6,6 +6,7 @@
     :currentLocationName="currentLocationName"
     :currentLocationUnitName="currentLocationUnitName"
     @onLocationChanged="onLocationChanged"
+    :disabled="disabled"
   />
 </template>
 
@@ -15,7 +16,7 @@
 
   export default {
     name: 'georgia-locations',
-    props: ['currentLocationName', 'currentLocationUnitName', 'idPrefix'],
+    props: ['currentLocationName', 'currentLocationUnitName', 'idPrefix', 'disabled'],
     data() {
       return {
         locationList: [],

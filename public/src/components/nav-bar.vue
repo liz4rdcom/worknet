@@ -14,7 +14,6 @@
           <b-dropdown-item href="#/vacancies/own">ჩემი ვაკანსიები</b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item v-if="loggedIn" href="#/profile">პროფილი</b-nav-item>
-        <b-nav-item v-if="loggedIn" href="#/vacancies-matching">შესაბამისი ვაკანსიები</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <!-- <div>
       <b-container>
         <b-row align-v="center">
           <b-col>
@@ -133,57 +133,57 @@
 
     </div>
 
-    <vacancies-search-list style="padding-top: 20px;" :vacancies="searchedVacancies" />
+    <vacancies-search-list style="padding-top: 20px;" :vacancies="searchedVacancies" /> -->
   </div>
 </template>
 
 <script>
-import vacanciesSearchList from './vacancies-search-list'
+// import vacanciesSearchList from './vacancies-search-list'
 
-export default {
-  name: 'vacancies-user-matching',
-  data: () => ({
-    locationSwitchOptions: [{text: 'ფაქტიური მისამართი', value: true}, {text: 'X', value: false}],
-    salarySwitchOptions: [{text: 'ხელფასი', value: true}, {text: 'X', value: false}],
-    workScheduleSwitchOptions: [{text: 'სამუშაო გრაფიკი', value: true}, {text: 'X', value: false}],
-    formalEducationLevelSwitchOptions: [{text: 'განათლების დონე', value: true}, {text: 'X', value: false}],
-    drivingLicenceSwitchOptions: [{text: 'მართვის მოწმობა', value: true}, {text: 'X', value: false}],
-    languagesSwitchOptions: [{text: 'ენები', value: true}, {text: 'X', value: false}],
-    skillsSwitchOptions: [{text: 'უნარები', value: true}, {text: 'X', value: false}],
-    jobExperiencesSwitchOptions: [{text: 'გამოცდილება', value: true}, {text: 'X', value: false}],
-    desirableJobsSwitchOptions: [{text: 'სასურველი სამსახური', value: true}, {text: 'X', value: false}],
-    desirableJobLocationsSwitchOptions: [{text: 'სასურველი სამსახურის ადგილი', value: true}, {text: 'X', value: false}],
-    vacancySearchSwitches: {
-      salary: true,
-      workSchedule: true,
-      formalEducationLevel: true,
-      factLocation: true,
-      drivingLicenses: true,
-      languages: true,
-      skills: true,
-      jobExperiences: true,
-      desirableJobs: true,
-      desirableJobLocations: true,
-    },
-    vacancySearchHintText: 'პროფილის შევსების შემდეგ შეგიძლიათ მოძებნოთ ვაკანსიების სია, რომლებიც მიესადაგებიან თქვენ მიერ შევსებულ მონაცემებს',
-    searchedVacancies: null,
-    searchedVacanciesTotal: 0,
-  }),
-  async created() {
-    await this.search()
-  },
-  methods: {
-    async search() {
-      let result = await this.$http.post('/api/vacancies/profile/matchings', {projectionConfigFields: this.vacancySearchSwitches})
+// export default {
+//   name: 'vacancies-user-matching',
+//   data: () => ({
+//     locationSwitchOptions: [{text: 'ფაქტიური მისამართი', value: true}, {text: 'X', value: false}],
+//     salarySwitchOptions: [{text: 'ხელფასი', value: true}, {text: 'X', value: false}],
+//     workScheduleSwitchOptions: [{text: 'სამუშაო გრაფიკი', value: true}, {text: 'X', value: false}],
+//     formalEducationLevelSwitchOptions: [{text: 'განათლების დონე', value: true}, {text: 'X', value: false}],
+//     drivingLicenceSwitchOptions: [{text: 'მართვის მოწმობა', value: true}, {text: 'X', value: false}],
+//     languagesSwitchOptions: [{text: 'ენები', value: true}, {text: 'X', value: false}],
+//     skillsSwitchOptions: [{text: 'უნარები', value: true}, {text: 'X', value: false}],
+//     jobExperiencesSwitchOptions: [{text: 'გამოცდილება', value: true}, {text: 'X', value: false}],
+//     desirableJobsSwitchOptions: [{text: 'სასურველი სამსახური', value: true}, {text: 'X', value: false}],
+//     desirableJobLocationsSwitchOptions: [{text: 'სასურველი სამსახურის ადგილი', value: true}, {text: 'X', value: false}],
+//     vacancySearchSwitches: {
+//       salary: true,
+//       workSchedule: true,
+//       formalEducationLevel: true,
+//       factLocation: true,
+//       drivingLicenses: true,
+//       languages: true,
+//       skills: true,
+//       jobExperiences: true,
+//       desirableJobs: true,
+//       desirableJobLocations: true,
+//     },
+//     vacancySearchHintText: 'პროფილის შევსების შემდეგ შეგიძლიათ მოძებნოთ ვაკანსიების სია, რომლებიც მიესადაგებიან თქვენ მიერ შევსებულ მონაცემებს',
+//     searchedVacancies: null,
+//     searchedVacanciesTotal: 0,
+//   }),
+//   async created() {
+//     await this.search()
+//   },
+//   methods: {
+//     async search() {
+//       let result = await this.$http.post('/api/vacancies/profile/matchings', {projectionConfigFields: this.vacancySearchSwitches})
 
-      this.searchedVacanciesTotal = result.data.total
-      this.searchedVacancies = result.data.list
-    },
-  },
-  components: {
-    'vacancies-search-list': vacanciesSearchList,
-  },
-}
+//       this.searchedVacanciesTotal = result.data.total
+//       this.searchedVacancies = result.data.list
+//     },
+//   },
+//   components: {
+//     'vacancies-search-list': vacanciesSearchList,
+//   },
+// }
 </script>
 
 <style scoped>
