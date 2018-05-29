@@ -276,6 +276,12 @@
             </i>
           </h5>
 
+          <h6>
+            <i v-if="vacancy.approvedByMediationService" class="fa fa-check" style="color: green;">&nbsp;გადამოწმებულია</i>
+
+            <i v-if="!vacancy.approvedByMediationService" class="fa fa-times" style="color: red;">&nbsp;გადაუმოწმებელია</i>
+          </h6>
+
           <h6 v-if="vacancy.endDate">
             {{vacancy.endDate | stringDateToDateMonthYearForm}}<i style="opacity: 0.6;">{{' - ბოლო ვადა'}}</i>
           </h6>
