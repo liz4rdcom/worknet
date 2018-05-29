@@ -1,11 +1,11 @@
 <template>
   <b-card class="vacancy-public-view-container">
     <b-form-group v-if="vacancy.approvedByMediationService">
-      <i class="fa fa-check" style="color: green;">&nbsp;გადამოწმებულია</i>
+      <i class="fas fa-check" style="color: green;">&nbsp;გადამოწმებულია</i>
     </b-form-group>
 
     <b-form-group v-if="!vacancy.approvedByMediationService">
-      <i class="fa fa-times" style="color: red;">&nbsp;გადაუმოწმებელია</i>
+      <i class="fas fa-times" style="color: red;">&nbsp;გადაუმოწმებელია</i>
     </b-form-group>
 
     <b-form-group v-if="vacancy.positionName">
