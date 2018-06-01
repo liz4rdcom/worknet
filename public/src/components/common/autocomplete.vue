@@ -28,8 +28,12 @@ export default {
   props: {
     list: {
       required: true,
+      default: [],
     },
-    value: {},
+    value: {
+      type: String,
+      default: '',
+    },
     minimumChars: {
       type: Number,
       default: 2,
@@ -99,6 +103,9 @@ export default {
       this.inputValue = this.suggestions[this.current]
 
       this.$emit('input', this.inputValue)
+    },
+    closeSuggestions() {
+      this.open = false
     },
   },
   watch: {

@@ -30,8 +30,9 @@
 <script>
   import autocomplete from './autocomplete'
   import utils from '../../utils'
+  import {AUTOCOMPLETE_MINIMAL_CHARS} from '../../constants'
 
-  const minimumChars = 2
+  const minimumChars = AUTOCOMPLETE_MINIMAL_CHARS
 
   export default {
     name: 'subset-selector',

@@ -18,7 +18,6 @@
 <script>
 import subsetSelector from '../common/subset-selector'
 import { bus } from '../common/bus'
-import utils from '../../utils'
 
 const baseUrl = '/api/users/profile/desirableJobs'
 const searchUrl = '/api/occupations/search'
