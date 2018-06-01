@@ -8,7 +8,17 @@
 
         <b-tabs>
           <b-tab title="შევსება">
-            <b-form-group />
+            <b-form-group class="font-weight-bold" label="თანამდებობა">
+              <autocomplete
+                idPrefix="vacancy-add-position"
+                :list="occupationsList"
+                :value="currentExperience.jobTitle"
+                @input="onAutocompleteInput"
+                class="position-input"
+                autofocus
+                ref="positionAutocomplete">
+              </autocomplete>
+            </b-form-group>
 
             <b-form-group class="font-weight-bold" label="თანამდებობა">
               <b-form-input id="vacancy-add-position" class="position-input" autofocus type="text" v-model="vacancy.positionName" />
@@ -488,6 +498,7 @@ import usersList from '../../common/users-list'
 import dataShower from '../../common/data-shower'
 import languages from './languages'
 import vacancySkills from './vacancy-skills'
+import {AUTOCOMPLETE_MINIMAL_CHARS} from '../../../constants'
 
 const baseUrl = '/api/vacancies'
 
@@ -555,12 +566,18 @@ export default {
     },
     jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად შეგიძლიათ მოძებნოთ სამსახურის მაძიებელთა სია, რომლებიც შეესადაგებიან შევსებულ ვაკანსიას. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ ეკრანის შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
     searchedJobseekers: null,
+    occupationsList: [],
   }),
   async created() {
     try {
-      this.formalEducationLevels = await libs.fetchFormalEducationLevels()
+      [
+        this.formalEducationLevels,
+        this.occupationsList,
+      ] = await Promise.all([
+        libs.fetchFormalEducationLevels(),
+        libs.searchOcupations(),
+      ])
     } catch (error) {
-      bus.$emit('error', error)
     }
 
     this.loadVacancy()
@@ -994,6 +1011,20 @@ export default {
 
         this.searchedJobseekers = result.data
       }
+    },
+    async onAutocompleteInput(value) {
+      if (this.vacancy.positionName === value) return
+
+      this.vacancy.positionName = value
+
+      if (value.length < AUTOCOMPLETE_MINIMAL_CHARS) return
+
+      this.occupationsList = await libs.searchOcupations(value)
+    },
+    onClickOutside(event) {
+      event.stopPropagation()
+
+      this.$refs.positionAutocomplete.closeSuggestions()
     },
   },
   computed: {
