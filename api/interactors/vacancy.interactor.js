@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const skillInteractor = require('./skill.interactor')
+const occupationInterctor = require('./occupation.interactor')
 const vacancyRepository = require('../infrastructure/vacancy.repository')
 const userRepository = require('../infrastructure/user.repository')
 const PermissionError = require('../exceptions/permission.error')
@@ -215,11 +216,25 @@ async function addVacancy(userName, vacancy) {
   }
   vacan.dateLastChanged = nowDate
 
+  let promises = [
+    await vacancyRepository.addVacancy(vacan),
+  ]
+
   if (_.isArray(vacan.skills)) {
-    skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
+    promises.push(
+      skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
+    )
   }
 
-  return await vacancyRepository.addVacancy(vacan)
+  if (vacan.positionName) {
+    promises.push(
+      occupationInterctor.addIfNotExists(vacan.positionName)
+    )
+  }
+
+  let [vacancyId] = Promise.all(promises)
+
+  return vacancyId
 }
 
 async function editVacancy(userName, id, vacancy) {

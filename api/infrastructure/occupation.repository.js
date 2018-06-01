@@ -5,8 +5,8 @@ const client = new elasticsearch.Client({
   host: config.get('elastic.host'),
 })
 
-const index = config.get('elastic.desirableJobsIndex')
-const type = config.get('elastic.desirableJobsType')
+const index = config.get('elastic.occupationIndex')
+const type = config.get('elastic.occupationType')
 
 async function search(queryString) {
   queryString = queryString || '*'
@@ -22,14 +22,14 @@ async function search(queryString) {
   return result.hits.hits.map(item => item._source.name)
 }
 
-async function exists(desirableJob) {
+async function exists(occupation) {
   const options = {
     index,
     type,
     body: {
       query: {
         term: {
-          'name.keyword': desirableJob,
+          'name.keyword': occupation,
         },
       },
     },
@@ -40,12 +40,12 @@ async function exists(desirableJob) {
   return result.hits.total > 0
 }
 
-async function add(desirableJob) {
+async function add(occupation) {
   const options = {
     index,
     type,
     body: {
-      name: desirableJob,
+      name: occupation,
     },
   }
 

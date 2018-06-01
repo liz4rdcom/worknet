@@ -2,7 +2,7 @@ const _ = require('lodash')
 const shortid = require('shortid')
 const userRepository = require('../infrastructure/user.repository')
 const skillInterctor = require('./skill.interactor')
-const desirableJobInterctor = require('./desirable.job.interactor')
+const occupationInterctor = require('./occupation.interactor')
 const desirableTrainingInterctor = require('./desirable.training.interactor')
 const factory = require('../domain/factory')
 const RecordError = require('../exceptions/record.error')
@@ -252,7 +252,7 @@ async function addDesirableJob(userName, desirableJob) {
   try {
     user.addDesirableJob(desirableJob)
 
-    await desirableJobInterctor.addIfNotExists(desirableJob)
+    await occupationInterctor.addIfNotExists(desirableJob)
   } catch (e) {
     if (!(e instanceof RecordError)) {
       throw e
@@ -524,7 +524,17 @@ async function addJobExperience(userName, experience) {
 
   experiences.push(experience)
 
-  await userRepository.saveJobExperiences(userName, experiences)
+  let promises = [
+    userRepository.saveJobExperiences(userName, experiences),
+  ] // pseudo paralel execution
+
+  if (experience.jobTitle) {
+    promises.push(
+      occupationInterctor.addIfNotExists(experience.jobTitle)
+    )
+  }
+
+  await Promise.all(promises)
 
   return experience.id
 }
@@ -540,7 +550,17 @@ async function replaceJobExperience(userName, id, experience) {
 
   experiences[index] = experience
 
-  await userRepository.saveJobExperiences(userName, experiences)
+  let promises = [
+    userRepository.saveJobExperiences(userName, experiences),
+  ] // pseudo paralel execution
+
+  if (experience.jobTitle) {
+    promises.push(
+      occupationInterctor.addIfNotExists(experience.jobTitle)
+    )
+  }
+
+  await Promise.all(promises)
 }
 
 async function deleteJobExperience(userName, id) {
