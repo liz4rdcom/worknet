@@ -261,7 +261,11 @@ async function editVacancy(userName, id, vacancy) {
   vacan.dateLastChanged = nowDate
 
   if (_.isArray(vacan.skills)) {
-    skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
+    await skillInteractor.addIfNotExists(vacan.skills.map(nxtSkill => nxtSkill.skillName))
+  }
+
+  if (vacan.positionName) {
+    await occupationInterctor.addIfNotExists(vacan.positionName)
   }
 
   return await vacancyRepository.editVacancy(id, vacan)
