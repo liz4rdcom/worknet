@@ -4,10 +4,12 @@
     @keydown.down='down'
     @keydown.up='up'>
     <slot name="input" :onInput="onInput" :inputValue="inputValue">
-      <b-form-input type="text" autocomplete="off"
+      <b-form-input :autofocus="autofocus" type="text" autocomplete="off"
         :id="idWithPrefix(idPrefix, 'autocomplete-input')"
         :value="inputValue"
-        @input="onInput">
+        @input="onInput"
+        @blur.native="closeSuggestions"
+      >
       </b-form-input>
     </slot>
     <b-list-group v-if="openSuggestion" class="autocomplete-list">
@@ -44,6 +46,10 @@ export default {
     },
     idPrefix: {
       type: String,
+    },
+    autofocus: {
+      type: Boolean,
+      default: false,
     },
   },
   data: () => ({
