@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="languages">
     <b-card title="ენების ცოდნა">
       <div class="mb-4">
         <div style="position:relative">

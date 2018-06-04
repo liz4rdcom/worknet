@@ -1,5 +1,5 @@
 <template>
-  <div class="educations">
+  <div class="educations" id="educations">
     <b-card title="განათლება">
       <p>
         <b>ფორმალური განათლების დონე: </b>
