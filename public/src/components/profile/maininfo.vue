@@ -6,6 +6,13 @@
       </div>
       <div>
         <p>
+          {{profileData.approvedByMediationService}}
+          <i v-if="profileData.approvedByMediationService" class="fa fa-check" style="color: green;">&nbsp;გადამოწმებულია</i>
+
+          <i v-if="!profileData.approvedByMediationService" class="fa fa-times" style="color: red;">&nbsp;გადაუმოწმებელია</i>
+        <p>
+
+        <p>
           <b>სახელი და გვარი:</b> {{profileData.firstName + " " + profileData.lastName}}</p>
         <p>
         <p>

@@ -2,7 +2,13 @@
   <div>
     <b-card title="სასურველი სამსახურის ადგილმდებარეობა">
       <div>
-        <locations idPrefix="desirable-job" :locations="locationsList" @onLocationChanged="onLocationChanged"></locations>
+        <locations
+          idPrefix="desirable-job"
+          :locations="locationsList"
+          @onLocationChanged="onLocationChanged"
+          :currentLocationName="location.locationName"
+          :currentLocationUnitName="location.locationUnitName">
+        </locations>
         <b-button  variant="primary" @click="addLocation">
           დამატება
         </b-button>
@@ -29,8 +35,8 @@ export default {
     locationsList: [],
     desirableJobLocations: [],
     location: {
-      locationName: '',
-      locationUnitName: '',
+      locationName: null,
+      locationUnitName: null,
     },
   }),
   async created() {
@@ -57,13 +63,19 @@ export default {
       }
     },
     onLocationChanged(location) {
-      this.location = location
+      Object.assign(this.location, location)
     },
     addLocation: async function () {
       try {
-        if (this.location.locationName !== '' || this.location.locationUnitName !== '') {
+        if (this.location.locationName || this.location.locationUnitName) {
           await this.$http.post(baseUrl, this.location, {headers: utils.getHeaders()})
+
           this.desirableJobLocations.push(this.location)
+
+          this.location = {
+            locationName: null,
+            locationUnitName: null,
+          }
         } else {
           bus.$emit('warning', 'გთხოვთ შეავსოთ მონაცემები')
         }

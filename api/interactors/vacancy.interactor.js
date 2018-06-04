@@ -109,9 +109,15 @@ function validateVacancy(vacancy) {
       throw new PermissionError('endDate must be string', 400)
     }
 
-    if (_.isString(interviewSupposedStartDate) && _.isString(endDate)) {
-      if (new Date(endDate) - new Date(interviewSupposedStartDate) < 0) {
-        throw new PermissionError('interviewSupposedStartDate must be lower than endDate', 400)
+    if (_.isString(interviewSupposedStartDate)) {
+      if (new Date(interviewSupposedStartDate) - new Date() < 0) {
+        throw new PermissionError('interviewSupposedStartDate must not be in the past', 400)
+      }
+    }
+
+    if (_.isString(endDate)) {
+      if (new Date(endDate) - new Date() < 0) {
+        throw new PermissionError('endDate must not be in the past', 400)
       }
     }
 

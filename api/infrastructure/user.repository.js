@@ -50,6 +50,7 @@ async function getMainInfo(userName) {
       'mobileNumber',
       'email',
       'contactDescription',
+      'approvedByMediationService',
     ],
   }
 

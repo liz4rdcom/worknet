@@ -65,12 +65,7 @@
               />
             </b-form-group>
 
-            <!-- <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
-            </b-form-group>
-            <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
-            </b-form-group> -->
-
-            <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი - ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
+            <b-form-group label="გასაუბრებების დაწყების სავარაუდო თარიღი" class="font-weight-bold">
               <b-row>
                 <b-col>
                   <b-row>
@@ -91,7 +86,11 @@
                     </b-col>
                   </b-row>
                 </b-col>
+              </b-row>
+            </b-form-group>
 
+            <b-form-group label="ვაკანსიის დახურვის თარიღი" class="font-weight-bold">
+              <b-row>
                 <b-col>
                   <b-row>
                     <b-col class="end-date-day">
@@ -556,7 +555,7 @@ export default {
       languages: true,
       skills: true,
     },
-    jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად შეგიძლიათ მოძებნოთ სამსახურის მაძიებელთა სია, რომლებიც შეესადაგებიან შევსებულ ვაკანსიას. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ ეკრანის შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
+    jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად შეგიძლიათ მოძებნოთ სამსახურის მაძიებელთა სია, რომლებიც შეესადაგებიან შევსებულ ვაკანსიას. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ ეკრანის შუაში არსებულ გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
     searchedJobseekers: null,
   }),
   async created() {
@@ -1050,7 +1049,9 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '@/color-palette.scss';
+
 .vacancy-add-container {
   height: calc(100% - 56px);
   margin: 0px;
@@ -1112,7 +1113,7 @@ export default {
   padding-left: 4px;
 }
 .hide-jobseeker-search-panel {
-  background-color: #343a40;
+  background-color: lighten($palette-color-1, 10%);
   opacity: 0.8;
   color: white;
   padding: 0px 0px 0px 3px;

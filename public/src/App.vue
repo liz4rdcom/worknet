@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/main.scss';
+@import '@/color-palette.scss';
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -47,13 +47,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background: $clean;
+  background: $palette-color-4;
   height: 100%;
   overflow-y: auto;
-
-  h4 {
-    color: $vermillion;
-  }
 
   .card {
     background: whitesmoke;

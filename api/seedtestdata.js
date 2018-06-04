@@ -202,6 +202,7 @@ const testUsers = [{
   'interestedInDangerousJob': true,
   'unemployed': false,
   'useMediationService': true,
+  'approvedByMediationService': true,
 }]
 
 const testJobs = [
@@ -356,6 +357,7 @@ const testJobs = [
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
     'published': true,
+    'approvedByMediationService': true,
   },
   {
     'authorUserName': 'root',
@@ -390,6 +392,7 @@ const testJobs = [
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
     'published': true,
+    'approvedByMediationService': true,
   },
   {
     'authorUserName': 'root',
@@ -424,6 +427,7 @@ const testJobs = [
     'languages': [{ 'languageName': 'აფხაზური' }],
     'skills': [{ 'skillName': 'Javascript' }],
     'published': true,
+    'approvedByMediationService': false,
   },
 ]
 

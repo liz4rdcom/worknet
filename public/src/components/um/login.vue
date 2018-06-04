@@ -8,7 +8,7 @@
       <b-form-group label="პაროლი">
         <b-form-input id="login-password" v-model="password" type="password"></b-form-input>
       </b-form-group>
-      <b-button variant="primary" @click="login">
+      <b-button variant="primary" @click="login" class="login-button-class">
         შესვლა
       </b-button>
     </b-card>
@@ -52,7 +52,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/color-palette.scss';
+
 .login {
   max-width: 30%;
   margin: auto;
@@ -60,5 +62,13 @@ export default {
 }
 .welcome-element {
   margin-top: 20px;
+}
+.login-button-class {
+  background-color: $palette-color-1;
+  border-color: $palette-color-1;
+}
+.login-button-class:hover {
+  background-color: darken($palette-color-1, 10%);
+  border-color: darken($palette-color-1, 10%);
 }
 </style>

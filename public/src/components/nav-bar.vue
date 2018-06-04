@@ -1,6 +1,6 @@
 <template>
 <div v-if="this.$route.path !== '/vacancies'">
-  <b-navbar toggleable="md" type="dark" variant="dark">
+  <b-navbar toggleable="md" type="dark" variant="dark" class="nav-bar-class">
 
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -14,7 +14,6 @@
           <b-dropdown-item href="#/vacancies/own">ჩემი ვაკანსიები</b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item v-if="loggedIn" href="#/profile">პროფილი</b-nav-item>
-        <b-nav-item v-if="loggedIn" href="#/vacancies-matching">შესაბამისი ვაკანსიები</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
@@ -55,5 +54,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss"scoped>
+@import '@/color-palette.scss';
+
+.nav-bar-class {
+  background-color: $palette-color-1 !important;
+}
 </style>

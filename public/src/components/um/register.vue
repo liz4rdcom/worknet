@@ -47,7 +47,7 @@
           </b-row>
         </b-container>
       </b-form-group>
-      <b-button variant="primary" @click="register">
+      <b-button variant="primary" @click="register" class="register-button-class">
         რეგისტრაციის დასრულება
       </b-button>
     </b-card>
@@ -181,7 +181,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/color-palette.scss';
+
 .register {
   max-width: 35%;
   margin: auto;
@@ -209,5 +211,13 @@ export default {
 .birth-year-col {
   padding-left: 2px;
   padding-right: 0px;
+}
+.register-button-class {
+  background-color: $palette-color-1;
+  border-color: $palette-color-1;
+}
+.register-button-class:hover {
+  background-color: darken($palette-color-1, 10%);
+  border-color: darken($palette-color-1, 10%);
 }
 </style>
