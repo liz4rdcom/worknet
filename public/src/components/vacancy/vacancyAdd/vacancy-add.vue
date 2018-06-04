@@ -9,19 +9,12 @@
         <b-tabs>
           <b-tab title="შევსება">
             <b-form-group class="font-weight-bold" label="თანამდებობა">
-              <autocomplete
+              <occupations-autocomplete
                 idPrefix="vacancy-add-position"
-                :list="occupationsList"
-                :value="currentExperience.jobTitle"
-                @input="onAutocompleteInput"
+                v-model="vacancy.positionName"
                 class="position-input"
-                autofocus
-                ref="positionAutocomplete">
-              </autocomplete>
-            </b-form-group>
-
-            <b-form-group class="font-weight-bold" label="თანამდებობა">
-              <b-form-input id="vacancy-add-position" class="position-input" autofocus type="text" v-model="vacancy.positionName" />
+                autofocus>
+              </occupations-autocomplete>
             </b-form-group>
 
             <b-form-group>
@@ -493,12 +486,11 @@ import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../.
 import utils from '../../../utils'
 import { bus } from '../../common/bus'
 import libs from '../../../libs'
-import autocomplete from '../../common/autocomplete'
 import usersList from '../../common/users-list'
 import dataShower from '../../common/data-shower'
 import languages from './languages'
 import vacancySkills from './vacancy-skills'
-import {AUTOCOMPLETE_MINIMAL_CHARS} from '../../../constants'
+import occupationsAutocomplete from '../../common/occupations-autocomplete'
 
 const baseUrl = '/api/vacancies'
 
@@ -566,17 +558,10 @@ export default {
     },
     jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად შეგიძლიათ მოძებნოთ სამსახურის მაძიებელთა სია, რომლებიც შეესადაგებიან შევსებულ ვაკანსიას. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ ეკრანის შუაში არსებულ, მოშავო, გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
     searchedJobseekers: null,
-    occupationsList: [],
   }),
   async created() {
     try {
-      [
-        this.formalEducationLevels,
-        this.occupationsList,
-      ] = await Promise.all([
-        libs.fetchFormalEducationLevels(),
-        libs.searchOcupations(),
-      ])
+      this.formalEducationLevels = await libs.fetchFormalEducationLevels()
     } catch (error) {
     }
 
@@ -1012,20 +997,6 @@ export default {
         this.searchedJobseekers = result.data
       }
     },
-    async onAutocompleteInput(value) {
-      if (this.vacancy.positionName === value) return
-
-      this.vacancy.positionName = value
-
-      if (value.length < AUTOCOMPLETE_MINIMAL_CHARS) return
-
-      this.occupationsList = await libs.searchOcupations(value)
-    },
-    onClickOutside(event) {
-      event.stopPropagation()
-
-      this.$refs.positionAutocomplete.closeSuggestions()
-    },
   },
   computed: {
     daysOptions() {
@@ -1070,7 +1041,7 @@ export default {
   },
   components: {
     'georgia-locations': georgiaLocations,
-    autocomplete,
+    'occupations-autocomplete': occupationsAutocomplete,
     languages,
     'vacancy-skills': vacancySkills,
     'data-shower': dataShower,
