@@ -8,10 +8,13 @@
 
         <b-tabs>
           <b-tab title="შევსება">
-            <b-form-group />
-
             <b-form-group class="font-weight-bold" label="თანამდებობა">
-              <b-form-input id="vacancy-add-position" class="position-input" autofocus type="text" v-model="vacancy.positionName" />
+              <occupations-autocomplete
+                idPrefix="vacancy-add-position"
+                v-model="vacancy.positionName"
+                class="position-input"
+                autofocus>
+              </occupations-autocomplete>
             </b-form-group>
 
             <b-form-group>
@@ -482,11 +485,11 @@ import { MAX_DAYS_IN_MONTH, MONTH_NAMES, VACANCY_END_MAX_YEAR_COUNT } from '../.
 import utils from '../../../utils'
 import { bus } from '../../common/bus'
 import libs from '../../../libs'
-import autocomplete from '../../common/autocomplete'
 import usersList from '../../common/users-list'
 import dataShower from '../../common/data-shower'
 import languages from './languages'
 import vacancySkills from './vacancy-skills'
+import occupationsAutocomplete from '../../common/occupations-autocomplete'
 
 const baseUrl = '/api/vacancies'
 
@@ -559,7 +562,6 @@ export default {
     try {
       this.formalEducationLevels = await libs.fetchFormalEducationLevels()
     } catch (error) {
-      bus.$emit('error', error)
     }
 
     this.loadVacancy()
@@ -1038,7 +1040,7 @@ export default {
   },
   components: {
     'georgia-locations': georgiaLocations,
-    autocomplete,
+    'occupations-autocomplete': occupationsAutocomplete,
     languages,
     'vacancy-skills': vacancySkills,
     'data-shower': dataShower,

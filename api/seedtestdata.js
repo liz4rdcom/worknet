@@ -672,7 +672,7 @@ const testSkills = [
   { name: 'oop' },
 ]
 
-const testDesirableJobs = [
+const testOccupations = [
   { name: 'Plumber' },
   { name: 'Electrical Engineer' },
   { name: 'Merchant' },
@@ -721,7 +721,7 @@ async function seedAllData(dropAll = false) {
       seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationlevel', dropAll || true),
       seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formaleducationlevel', dropAll || true),
       seedData(testSkills, 'skill', indexDefaultOptions, 'skill', dropAll || false),
-      seedData(testDesirableJobs, 'desirablejob', indexDefaultOptions, 'desirablejob', dropAll || false),
+      seedData(testOccupations, 'occupation', indexDefaultOptions, 'occupation', dropAll || false),
       seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false),
       seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false),
     ])

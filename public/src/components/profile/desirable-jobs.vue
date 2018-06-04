@@ -18,10 +18,9 @@
 <script>
 import subsetSelector from '../common/subset-selector'
 import { bus } from '../common/bus'
-import utils from '../../utils'
 
 const baseUrl = '/api/users/profile/desirableJobs'
-const searchUrl = '/api/desirableJobs/search'
+const searchUrl = '/api/occupations/search'
 
 export default {
   name: 'profile-desirable-jobs',
@@ -30,7 +29,7 @@ export default {
   }),
   async created() {
     try {
-      let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
+      let response = await this.$http.get(baseUrl)
 
       this.desirableJobs = response.data
     } catch (error) {
@@ -39,7 +38,7 @@ export default {
   },
   methods: {
     async searchDesirableJobs(desirableJob) {
-      return await this.$http.get(searchUrl, {params: {query: desirableJob}, headers: utils.getHeaders()})
+      return await this.$http.get(searchUrl, {params: {query: desirableJob}})
     },
 
     async onAddNewDesirableJob(desirableJob) {
@@ -54,9 +53,7 @@ export default {
       }
 
       try {
-        await this.$http.post(baseUrl, desirableJobObject, {
-          headers: utils.getHeaders(),
-        })
+        await this.$http.post(baseUrl, desirableJobObject)
 
         this.desirableJobs.push(desirableJobObject)
         this.$refs.desirableJobInput.clear()
@@ -74,9 +71,7 @@ export default {
       try {
         const url = baseUrl + `/${desirableJob}`
 
-        await this.$http.delete(url, {
-          headers: utils.getHeaders(),
-        })
+        await this.$http.delete(url)
 
         this.desirableJobs.splice(indexOfDesirableJob, 1)
       } catch (error) {

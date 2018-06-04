@@ -55,6 +55,12 @@ async function fetchLanguages() {
   return this.languagesSelect
 }
 
+async function searchOcupations(occupation = '') {
+  let response = await webApi.get('/api/occupations/search', {params: {query: occupation}})
+
+  return response.data
+}
+
 export default {
   locationsOfGeorgia: undefined,
   educationTypes: undefined,
@@ -66,4 +72,5 @@ export default {
   fetchEducationLevels,
   fetchFormalEducationLevels,
   fetchLanguages,
+  searchOcupations,
 }

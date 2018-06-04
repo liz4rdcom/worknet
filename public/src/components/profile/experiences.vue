@@ -33,7 +33,10 @@
   <div class="experience-modal">
     <b-modal ref="experienceModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="onHide">
       <b-form-group label="პოზიცია">
-        <b-form-input id="experience-job-title" v-model="currentExperience.jobTitle" type="text"></b-form-input>
+        <occupations-autocomplete
+          idPrefix="experience-job-title"
+          v-model="currentExperience.jobTitle">
+        </occupations-autocomplete>
       </b-form-group>
       <b-form-group label="ორგანიზაცია">
         <b-form-input id="experience-organization" v-model="currentExperience.organization" type="text"></b-form-input>
@@ -91,7 +94,6 @@
       <b-form-checkbox id="experience-still-working" v-model="workNow">
         ახლაც აქ ვმუშაობ
       </b-form-checkbox>
-
     </b-modal>
   </div>
 </div>
@@ -103,6 +105,7 @@ import monthPeriod from '../common/month-period'
 import utils from '../../utils'
 import libs from '../../libs'
 import { bus } from '../common/bus'
+import occupationsAutocomplete from '../common/occupations-autocomplete'
 
 const baseUrl = '/api/users/profile/experiences'
 
@@ -110,21 +113,25 @@ export default {
   name: 'experiences',
   data: () => ({
     experiences: [],
-    currentExperience: {},
+    currentExperience: {
+      jobTitle: '',
+    },
     workNow: true,
     locationList: [],
     experienceToSubmit: {},
   }),
   async created() {
     this.currentExperience = this.experienceStartState()
-
-    let response = await this.$http.get(baseUrl, {
-      headers: utils.getHeaders(),
-    })
-
-    this.experiences = response.data
-
-    this.locationList = await libs.fetchLocationsOfGeorgia()
+    try {
+      [
+        {data: this.experiences},
+        this.locationList,
+      ] = await Promise.all([
+        this.$http.get(baseUrl),
+        libs.fetchLocationsOfGeorgia(),
+      ])
+    } catch (error) {
+    }
   },
   methods: {
     experienceStartState() {
@@ -235,6 +242,7 @@ export default {
   components: {
     'locations': locations,
     'month-period': monthPeriod,
+    'occupations-autocomplete': occupationsAutocomplete,
   },
 }
 </script>

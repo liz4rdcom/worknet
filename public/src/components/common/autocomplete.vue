@@ -4,10 +4,12 @@
     @keydown.down='down'
     @keydown.up='up'>
     <slot name="input" :onInput="onInput" :inputValue="inputValue">
-      <b-form-input type="text" autocomplete="off"
+      <b-form-input :autofocus="autofocus" type="text" autocomplete="off"
         :id="idWithPrefix(idPrefix, 'autocomplete-input')"
         :value="inputValue"
-        @input="onInput">
+        @input="onInput"
+        @blur.native="closeSuggestions"
+      >
       </b-form-input>
     </slot>
     <b-list-group v-if="openSuggestion" class="autocomplete-list">
@@ -28,8 +30,12 @@ export default {
   props: {
     list: {
       required: true,
+      default: [],
     },
-    value: {},
+    value: {
+      type: String,
+      default: '',
+    },
     minimumChars: {
       type: Number,
       default: 2,
@@ -40,6 +46,10 @@ export default {
     },
     idPrefix: {
       type: String,
+    },
+    autofocus: {
+      type: Boolean,
+      default: false,
     },
   },
   data: () => ({
@@ -99,6 +109,9 @@ export default {
       this.inputValue = this.suggestions[this.current]
 
       this.$emit('input', this.inputValue)
+    },
+    closeSuggestions() {
+      this.open = false
     },
   },
   watch: {
