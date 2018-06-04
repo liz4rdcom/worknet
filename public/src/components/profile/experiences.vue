@@ -32,73 +32,68 @@
 
   <div class="experience-modal">
     <b-modal ref="experienceModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="onHide">
-      <div @click="onClickOutside">
-        <b-form-group label="პოზიცია">
-          <autocomplete
-            idPrefix="experience-job-title"
-            :list="occupationsList"
-            :value="currentExperience.jobTitle"
-            @input="onAutocompleteInput"
-            ref="jobTitleAutocomplete">
-          </autocomplete>
-        </b-form-group>
-        <b-form-group label="ორგანიზაცია">
-          <b-form-input id="experience-organization" v-model="currentExperience.organization" type="text"></b-form-input>
-        </b-form-group>
-        <b-form-checkbox id="experience-location-georgia-checkbox" v-model="currentExperience.locationIsInGeorgia">
-          ორგანიზაცია საქართველოშია
-        </b-form-checkbox>
-        <div v-if="currentExperience.locationIsInGeorgia">
-          <label>
-            <b>რეგიონი & რაიონი</b>
-          </label>
-          <locations v-if="locationList.length>0"
-              idPrefix="experience"
-              :locations="locationList"
-              :currentLocationName="currentExperience.locationName"
-              :currentLocationUnitName="currentExperience.locationUnitName"
-              @onLocationChanged="onLocationChanged">
-          </locations>
-        </div>
-        <b-form-group label="მისამართი">
-          <b-form-input id="experience-address-info" v-model="currentExperience.additionalAddressInfo" type="text"></b-form-input>
-        </b-form-group>
-        <b-container class="periods">
-          <b-row no-gutters>
-            <b-col>
-              <div class="monthPeriod">
-                  <label>დასაწყისი</label>
-                  <month-period
-                    idPrefix="experience-start"
-                    :month="currentExperience.startMonth"
-                    :year="currentExperience.startYear"
-                    @month="onStartMonthChange"
-                    @year="onStartYearChange">
-                  </month-period>
-              </div>
-            </b-col>
-            <b-col>
-              <div class="monthPeriod" v-if="!workNow">
-                <label>დასასრული</label>
-                <month-period
-                  idPrefix="experience-end"
-                  :month="currentExperience.endMonth"
-                  :year="currentExperience.endYear"
-                  @month="onEndMonthChange"
-                  @year="onEndYearChange">
-                </month-period>
-              </div>
-              <div class="period-present-text" v-else>
-                დღემდე
-              </div>
-            </b-col>
-          </b-row>
-        </b-container>
-
-        <b-form-checkbox id="experience-still-working" v-model="workNow">
-          ახლაც აქ ვმუშაობ
-        </b-form-checkbox>
+      <b-form-group label="პოზიცია">
+        <occupations-autocomplete
+          idPrefix="experience-job-title"
+          v-model="currentExperience.jobTitle">
+        </occupations-autocomplete>
+      </b-form-group>
+      <b-form-group label="ორგანიზაცია">
+        <b-form-input id="experience-organization" v-model="currentExperience.organization" type="text"></b-form-input>
+      </b-form-group>
+      <b-form-checkbox id="experience-location-georgia-checkbox" v-model="currentExperience.locationIsInGeorgia">
+        ორგანიზაცია საქართველოშია
+      </b-form-checkbox>
+      <div v-if="currentExperience.locationIsInGeorgia">
+        <label>
+          <b>რეგიონი & რაიონი</b>
+        </label>
+        <locations v-if="locationList.length>0"
+            idPrefix="experience"
+            :locations="locationList"
+            :currentLocationName="currentExperience.locationName"
+            :currentLocationUnitName="currentExperience.locationUnitName"
+            @onLocationChanged="onLocationChanged">
+        </locations>
       </div>
+      <b-form-group label="მისამართი">
+        <b-form-input id="experience-address-info" v-model="currentExperience.additionalAddressInfo" type="text"></b-form-input>
+      </b-form-group>
+      <b-container class="periods">
+        <b-row no-gutters>
+          <b-col>
+            <div class="monthPeriod">
+                <label>დასაწყისი</label>
+                <month-period
+                  idPrefix="experience-start"
+                  :month="currentExperience.startMonth"
+                  :year="currentExperience.startYear"
+                  @month="onStartMonthChange"
+                  @year="onStartYearChange">
+                </month-period>
+            </div>
+          </b-col>
+          <b-col>
+            <div class="monthPeriod" v-if="!workNow">
+              <label>დასასრული</label>
+              <month-period
+                idPrefix="experience-end"
+                :month="currentExperience.endMonth"
+                :year="currentExperience.endYear"
+                @month="onEndMonthChange"
+                @year="onEndYearChange">
+              </month-period>
+            </div>
+            <div class="period-present-text" v-else>
+              დღემდე
+            </div>
+          </b-col>
+        </b-row>
+      </b-container>
+
+      <b-form-checkbox id="experience-still-working" v-model="workNow">
+        ახლაც აქ ვმუშაობ
+      </b-form-checkbox>
     </b-modal>
   </div>
 </div>
@@ -110,8 +105,7 @@ import monthPeriod from '../common/month-period'
 import utils from '../../utils'
 import libs from '../../libs'
 import { bus } from '../common/bus'
-import autocomplete from '../common/autocomplete'
-import {AUTOCOMPLETE_MINIMAL_CHARS} from '../../constants'
+import occupationsAutocomplete from '../common/occupations-autocomplete'
 
 const baseUrl = '/api/users/profile/experiences'
 
@@ -125,7 +119,6 @@ export default {
     workNow: true,
     locationList: [],
     experienceToSubmit: {},
-    occupationsList: [],
   }),
   async created() {
     this.currentExperience = this.experienceStartState()
@@ -133,11 +126,9 @@ export default {
       [
         {data: this.experiences},
         this.locationList,
-        this.occupationsList,
       ] = await Promise.all([
         this.$http.get(baseUrl),
         libs.fetchLocationsOfGeorgia(),
-        libs.searchOcupations(),
       ])
     } catch (error) {
     }
@@ -200,15 +191,6 @@ export default {
     onHide() {
       this.currentExperience = this.experienceStartState()
     },
-    async onAutocompleteInput(value) {
-      if (this.currentExperience.jobTitle === value) return
-
-      this.currentExperience.jobTitle = value
-
-      if (value.length < AUTOCOMPLETE_MINIMAL_CHARS) return
-
-      this.occupationsList = await libs.searchOcupations(value)
-    },
     async addExperience() {
       try {
         let response = await this.$http.post(baseUrl, this.experienceToSubmit, {headers: utils.getHeaders()})
@@ -256,16 +238,11 @@ export default {
         bus.$emit('error', error)
       }
     },
-    onClickOutside(event) {
-      event.stopPropagation()
-
-      this.$refs.jobTitleAutocomplete.closeSuggestions()
-    },
   },
   components: {
     'locations': locations,
     'month-period': monthPeriod,
-    'autocomplete': autocomplete,
+    'occupations-autocomplete': occupationsAutocomplete,
   },
 }
 </script>
