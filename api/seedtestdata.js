@@ -7,6 +7,8 @@ var client = new elasticsearch.Client({
 })
 const shortid = require('shortid')
 
+const ISCORawArray = require('./ISCORawArray')
+
 async function createIndex(name, option) {
   await client.indices.create({
     index: name,
@@ -685,15 +687,10 @@ const testOccupations = [
   { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' },
 ]
 
-const ISCOList = [
-  '1110 მეთაური, მთავრობა',
-  '1110 მთავარი საპარლამენტო ორგანიზატორი',
-  '1110 კონგრესის წევრი',
-  '1110 საბჭოს წევრი, ქალაქის თვითმმართველობა',
-  '1110 მმართველი, სახელმწიფო',
-  '1110 მმართველი, თანამეგობრობა',
-  '1110 გუბერნატორი, შტატი',
-  '1110 მერი',
+const testISCOList = ISCORawArray.map(nextISCOValue => ({ name: nextISCOValue }))
+
+const testUnprocessedOccupationToISCORelations = [
+  { occupationName: 'მთავარი მზარეულები', ISCOValue: '5122 შეფ-მზარეული' },
 ]
 
 const testDesirableTrainings = [
@@ -735,7 +732,14 @@ async function seedAllData(dropAll = false) {
       seedData(testOccupations, 'occupation', indexDefaultOptions, 'occupation', dropAll || false),
       seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false),
       seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false),
-      seedData(ISCOList, 'ISCOList', indexDefaultOptions, 'ISCOList', dropAll || false),
+      seedData(testISCOList, 'iscolist', indexDefaultOptions, 'iscolist', dropAll || true),
+      seedData(
+        testUnprocessedOccupationToISCORelations,
+        'unprocessedoccupationtoiscorelations',
+        indexDefaultOptions,
+        'unprocessedoccupationtoiscorelations',
+        dropAll || false,
+      ),
     ])
 
     process.exit(0)

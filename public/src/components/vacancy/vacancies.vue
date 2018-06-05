@@ -1,5 +1,7 @@
 <template>
 <div id="vacancies" class="vacancies-container">
+  <button @click="onISCOClick">ISCO button</button>
+
   <div class="vacancy-search-bar">
     <b-row class="upper-search-row vancay-add-row">
       <b-col class="vacancy-brand-column">
@@ -395,6 +397,13 @@ export default {
   //   },
   // },
   methods: {
+    async onISCOClick() {
+      console.log('ISCO button clicked!')
+
+      const result = await this.$http.get('/api/unprocessedOccupationToISCORelations')
+
+      console.log(123, result.data)
+    },
     percentStringToOpacity(str) {
       const calcVal = (str.slice(0, str.length - 1) / 100)
 

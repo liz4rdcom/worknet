@@ -23,8 +23,10 @@ elastic:
   formalEducationLevelType: 'formaleducationlevel'
   languagesIndex: 'languages'
   languagesType: 'languages'
-  ISCOListIndex: 'ISCOList'
-  ISCOListType: 'ISCOList'
+  ISCOListIndex: 'iscolist'
+  ISCOListType: 'iscolist'
+  unprocessedOccupationToISCORelationsIndex: 'unprocessedoccupationtoiscorelations'
+  unprocessedOccupationToISCORelationsType: 'unprocessedoccupationtoiscorelations'
 um:
   mongodbConnectionString: 'mongodb://localhost:27017/umpack'
   accessTokenSecret: 'myrandomstring'

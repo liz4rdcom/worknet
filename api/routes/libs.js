@@ -55,6 +55,16 @@ router.get('/languages', isAuthorized, async (req, res, next) => {
   }
 })
 
+router.get('/ISCOList', isAuthorized, async (req, res, next) => {
+  try {
+    let result = await libRepository.getISCOList()
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 module.exports = {
   router,
   baseUrl,

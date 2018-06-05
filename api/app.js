@@ -12,6 +12,7 @@ const skills = require('./routes/skills')
 const occupations = require('./routes/occupations')
 const desirableTrainings = require('./routes/desirable.trainings')
 const libs = require('./routes/libs')
+const unprocessedOccupationToISCORelations = require('./routes/unprocessed.occupation.to.ISCO.relations')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -29,6 +30,7 @@ app.use(skills.baseUrl, skills.router)
 app.use(occupations.baseUrl, occupations.router)
 app.use(desirableTrainings.baseUrl, desirableTrainings.router)
 app.use(libs.baseUrl, libs.router)
+app.use(unprocessedOccupationToISCORelations.baseUrl, unprocessedOccupationToISCORelations.router)
 
 app.use((response, req, res, next) => {
   // TODO logs

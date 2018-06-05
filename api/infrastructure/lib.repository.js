@@ -18,6 +18,8 @@ const formalEducationLevelIndex = config.get('elastic.formalEducationLevelIndex'
 const formalEducationLevelType = config.get('elastic.formalEducationLevelType')
 const languagesIndex = config.get('elastic.languagesIndex')
 const languagesType = config.get('elastic.languagesType')
+const ISCOListIndex = config.get('elastic.ISCOListIndex')
+const ISCOListType = config.get('elastic.ISCOListType')
 
 async function getLocationsInGeorgia() {
   let options = {
@@ -75,10 +77,23 @@ async function getLanguages() {
   return result.hits.hits.map(item => item._source.name)
 }
 
+async function getISCOList() {
+  let options = {
+    index: ISCOListIndex,
+    type: ISCOListType,
+    size: 10000,
+  }
+
+  let result = await client.search(options)
+
+  return result.hits.hits.map(item => item._source.name)
+}
+
 module.exports = {
   getLocationsInGeorgia,
   getEducationTypes,
   getEducationLevels,
   getFormalEducationLevels,
   getLanguages,
+  getISCOList,
 }
