@@ -167,11 +167,11 @@
               </b-card>
             </b-form-group>
 
-            <b-form-group>
+            <b-form-group id="vacancy-add-languages">
               <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
             </b-form-group>
 
-            <b-form-group>
+            <b-form-group id="vacancy-add-skills">
               <vacancy-skills :skills="vacancy.skills" :onChange="skillsOnChange"/>
             </b-form-group>
 

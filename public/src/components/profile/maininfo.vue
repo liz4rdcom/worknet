@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="maininfo">
     <b-card :title="profileTitle">
       <div>
         <img src="https://placekitten.com/500/350" alt="seeker" class="rounded-circle profile-picture">

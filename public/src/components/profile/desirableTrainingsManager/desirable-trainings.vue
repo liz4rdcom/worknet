@@ -1,5 +1,5 @@
 <template>
-<div class="desirable-trainings">
+<div class="desirable-trainings" id="desirable-trainings">
   <subset-selector
     idPrefix="desirable-trainings"
     ref="desirableTrainingInput"

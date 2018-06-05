@@ -1,5 +1,5 @@
 <template>
-<div class="desirable-jobs">
+<div class="desirable-jobs" id="desirable-jobs">
   <b-card title="სასურველი სამსახური">
     <subset-selector
       idPrefix="desirable-jobs"
