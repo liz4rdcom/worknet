@@ -685,6 +685,17 @@ const testOccupations = [
   { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' },
 ]
 
+const ISCOList = [
+  '1110 მეთაური, მთავრობა',
+  '1110 მთავარი საპარლამენტო ორგანიზატორი',
+  '1110 კონგრესის წევრი',
+  '1110 საბჭოს წევრი, ქალაქის თვითმმართველობა',
+  '1110 მმართველი, სახელმწიფო',
+  '1110 მმართველი, თანამეგობრობა',
+  '1110 გუბერნატორი, შტატი',
+  '1110 მერი',
+]
+
 const testDesirableTrainings = [
   { name: 'training 1' },
   { name: 'training 2' },
@@ -724,6 +735,7 @@ async function seedAllData(dropAll = false) {
       seedData(testOccupations, 'occupation', indexDefaultOptions, 'occupation', dropAll || false),
       seedData(testDesirableTrainings, 'desirabletraining', indexDefaultOptions, 'desirabletraining', dropAll || false),
       seedData(testLanguages, 'languages', indexDefaultOptions, 'languages', dropAll || false),
+      seedData(ISCOList, 'ISCOList', indexDefaultOptions, 'ISCOList', dropAll || false),
     ])
 
     process.exit(0)
