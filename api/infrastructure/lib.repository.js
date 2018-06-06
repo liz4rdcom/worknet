@@ -86,7 +86,7 @@ async function getISCOList() {
 
   let result = await client.search(options)
 
-  return result.hits.hits.map(item => item._source.name)
+  return result.hits.hits.map(item => item._source)
 }
 
 module.exports = {

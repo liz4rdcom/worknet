@@ -400,7 +400,8 @@ export default {
     async onISCOClick() {
       console.log('ISCO button clicked!')
 
-      const result = await this.$http.get('/api/unprocessedOccupationToISCORelations')
+      // const result = await this.$http.get('/api/libs/ISCOList')
+      const result = await this.$http.get('/api/unprocessedOccupationToISCORelations', { occupationName: 'Plumber', ISCOId: '17' })
 
       console.log(123, result.data)
     },

@@ -687,10 +687,10 @@ const testOccupations = [
   { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' },
 ]
 
-const testISCOList = ISCORawArray.map(nextISCOValue => ({ name: nextISCOValue }))
+const testISCOList = ISCORawArray.map((nextISCO, index) => ({ id: String(index), name: nextISCO }))
 
 const testUnprocessedOccupationToISCORelations = [
-  { occupationName: 'მთავარი მზარეულები', ISCOValue: '5122 შეფ-მზარეული' },
+  { occupationName: 'მთავარი მზარეულები', ISCOId: '5' },
 ]
 
 const testDesirableTrainings = [
@@ -738,7 +738,7 @@ async function seedAllData(dropAll = false) {
         'unprocessedoccupationtoiscorelations',
         indexDefaultOptions,
         'unprocessedoccupationtoiscorelations',
-        dropAll || false,
+        dropAll || true,
       ),
     ])
 
