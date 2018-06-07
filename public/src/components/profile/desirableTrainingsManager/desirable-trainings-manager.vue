@@ -2,6 +2,7 @@
 <div class="desirable-trainings-manager">
   <b-card :title="cardTitle">
     <b-button
+      id="add-desirable-trainings-button"
       v-if="!sectionOpen"
       size="lg"
       variant="success"
