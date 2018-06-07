@@ -297,7 +297,7 @@ async function getBySearch(params, all = false) {
 
   terms.push({
     query_string: {
-      query: params.filter ? '*' + params.filter + '*' : '*',
+      query: params.filter ? '*' + utils.escapeQuery(params.filter) + '*' : '*',
     },
   })
 

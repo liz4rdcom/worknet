@@ -8,13 +8,13 @@
 
     <experiences></experiences>
 
-    <desirable-jobs/>
-
-    <desirable-trainings-manager/>
-
     <languages></languages>
 
+    <desirable-jobs/>
+
     <desirable-job-locations></desirable-job-locations>
+
+    <desirable-trainings-manager/>
 
     <more-information></more-information>
   </div>

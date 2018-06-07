@@ -8,13 +8,13 @@ const client = new elasticsearch.Client({
 const index = config.get('elastic.desirableTrainingsIndex')
 const type = config.get('elastic.desirableTrainingsType')
 
-async function search(queryString) {
-  queryString = queryString || '*'
+const utils = require('./utils')
 
+async function search(queryString) {
   const options = {
     index,
     type,
-    q: '*' + queryString + '*',
+    q: !queryString ? '*' : '*' + utils.escapeQuery(queryString) + '*',
   }
 
   let result = await client.search(options)
