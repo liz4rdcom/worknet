@@ -1,3 +1,5 @@
+const {replaceAll} = require('../utils')
+
 function toObject(elasticHit) {
   let object = elasticHit._source
 
@@ -46,10 +48,23 @@ function constantMultiShouldQuery(pairs) {
   })
 }
 
+function escapeQuery(query) {
+  const escapeChars = ['+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '/']
+
+  let escapedQuery = query
+
+  escapeChars.forEach(char => {
+    escapedQuery = replaceAll(escapedQuery, char, '\\' + char)
+  })
+
+  return escapedQuery
+}
+
 module.exports = {
   toObject,
   constantScoreQuery,
   functionBoolScore,
   constantMultiMustQuery,
   constantMultiShouldQuery,
+  escapeQuery,
 }

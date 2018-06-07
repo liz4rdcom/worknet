@@ -8,11 +8,13 @@ const client = new elasticsearch.Client({
 const index = config.get('elastic.skillsIndex')
 const type = config.get('elastic.skillsType')
 
+const utils = require('./utils')
+
 async function search(queryString) {
   const options = {
     index,
     type,
-    q: !queryString ? '*' : '*' + queryString + '*',
+    q: !queryString ? '*' : '*' + utils.escapeQuery(queryString) + '*',
     size: 10000,
   }
 
