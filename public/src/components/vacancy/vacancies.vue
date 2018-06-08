@@ -109,7 +109,7 @@
         <b-form-checkbox
           class="full-width"
           id="interestedInInternship"
-          v-model="filterObject.interestedInInternship"
+          v-model="filterObject.isInternship"
         >
           სტაჟირება
         </b-form-checkbox>
@@ -118,38 +118,12 @@
       <b-col style="padding-left: 10px; padding-right: 10px;" v-if="!profileMatchingMode">
         <b-form-checkbox
           class="full-width"
-          id="interestedToBeVolunteer"
-          v-model="filterObject.interestedToBeVolunteer"
-        >
-          მოხალისე
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          d="interestedInTemporaryJob"
-          v-model="filterObject.interestedInTemporaryJob"
-        >
-          დროებითი
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          id="interestedInDangerousJob"
-          v-model="filterObject.interestedInDangerousJob"
-        >
-          სახიფათო
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
           id="drivingLicence"
           v-model="filterObject.hasDrivingLicence"
         >
           მართვის მოწმობა
         </b-form-checkbox>
-      </b-col>
 
-      <b-col style="padding-left: 10px; padding-right: 0px;" v-if="!profileMatchingMode">
         <b-form-checkbox
           class="full-width"
           id="militaryObligation"
@@ -358,10 +332,7 @@ export default {
       fullTime: false,
       partTime: false,
       shiftBased: false,
-      interestedInInternship: false,
-      interestedToBeVolunteer: false,
-      interestedInTemporaryJob: false,
-      interestedInDangerousJob: false,
+      isInternship: false,
       minimalSalary: null,
       maximalSalary: null,
       locations: [],
