@@ -754,6 +754,8 @@ async function matchUsersToVacancy(configFields, percent) {
     shiftBased,
 
     formalEducationLevelName,
+    isInternship,
+    militaryObligation,
 
     drivingLicenceA,
     drivingLicenceB,
@@ -844,6 +846,18 @@ async function matchUsersToVacancy(configFields, percent) {
           .slice(formalEducationLevels.indexOf(formalEducationLevelName))
           .map(nextVal => ['formalEducationLevelName.keyword', nextVal])
       )
+    )
+  }
+
+  if (isInternship) {
+    shoulds.push(
+      utils.constantScoreQuery('interestedInInternship', isInternship)
+    )
+  }
+
+  if (militaryObligation) {
+    shoulds.push(
+      utils.constantScoreQuery('militaryObligation', militaryObligation)
     )
   }
 
