@@ -941,7 +941,7 @@ export default {
           internship,
           drivingLicence,
           languages,
-          skills
+          skills,
         } = this.jobseekerSearchSwitches
 
         /*
