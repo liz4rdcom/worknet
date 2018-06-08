@@ -167,6 +167,17 @@
               </b-card>
             </b-form-group>
 
+            <b-form-group class="font-weight-bold">
+              <b-form-checkbox
+                id="vacancy-add-is-internship"
+                v-model="vacancy.isInternship"
+                :value="true"
+                :unchecked-value="false"
+              >
+                სტაჟირება
+              </b-form-checkbox>
+            </b-form-group>
+
             <b-form-group id="vacancy-add-languages">
               <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
             </b-form-group>
@@ -179,6 +190,17 @@
               <b-form-select id="vacancy-add-formal-education-level-name" v-model="vacancy.formalEducationLevelName">
                 <option v-for="(level, index) in formalEducationLevelsOptions" :key="index">{{level}}</option>
               </b-form-select>
+            </b-form-group>
+
+            <b-form-group class="font-weight-bold">
+              <b-form-checkbox
+                id="vacancy-add-military-obligation"
+                v-model="vacancy.militaryObligation"
+                :value="true"
+                :unchecked-value="false"
+              >
+                სამხედრო სამსახურის გავლა სავალდებულოა
+              </b-form-checkbox>
             </b-form-group>
 
             <b-form-group>
@@ -520,6 +542,8 @@ export default {
       partTime: null,
       shiftBased: null,
       formalEducationLevelName: '- აირჩიე -',
+      isInternship: false,
+      militaryObligation: false,
       drivingLicenceA: false,
       drivingLicenceB: false,
       drivingLicenceC: false,
@@ -652,6 +676,14 @@ export default {
             this.vacancy.formalEducationLevelName = vacancyResult.formalEducationLevelName
           }
 
+          if (!isNil(vacancyResult.isInternship)) {
+            this.vacancy.isInternship = vacancyResult.isInternship
+          }
+
+          if (!isNil(vacancyResult.militaryObligation)) {
+            this.vacancy.militaryObligation = vacancyResult.militaryObligation
+          }
+
           if (vacancyResult.drivingLicenceA ||
               vacancyResult.drivingLicenceB ||
               vacancyResult.drivingLicenceC ||
@@ -747,6 +779,8 @@ export default {
         fullTime: this.vacancy.fullTime,
         partTime: this.vacancy.partTime,
         shiftBased: this.vacancy.shiftBased,
+        isInternship: this.vacancy.isInternship,
+        militaryObligation: this.vacancy.militaryObligation,
         languages: this.vacancy.languages,
         skills: this.vacancy.skills,
         published,
