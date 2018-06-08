@@ -27,7 +27,11 @@ async function addRelation(occupationName, ISCOId) {
   let options = {
     index,
     type,
-    body: { occupationName, ISCOId },
+    body: { occupationName },
+  }
+
+  if (ISCOId) {
+    options.body.ISCOId = ISCOId
   }
 
   let result = await client.index(options)

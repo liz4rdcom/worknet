@@ -38,7 +38,11 @@ export default {
   },
   methods: {
     async searchDesirableJobs(desirableJob) {
-      return await this.$http.get(searchUrl, {params: {query: desirableJob}})
+      const result = await this.$http.get(searchUrl, {params: {query: desirableJob}})
+
+      console.log(55555555, result)
+
+      return result.data
     },
 
     async onAddNewDesirableJob(desirableJob) {

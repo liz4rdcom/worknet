@@ -8,9 +8,7 @@ const client = new elasticsearch.Client({
 const index = config.get('elastic.occupationIndex')
 const type = config.get('elastic.occupationType')
 
-async function search(queryString) {
-  queryString = queryString || '*'
-
+async function search(queryString = '*') {
   const options = {
     index,
     type,
@@ -19,7 +17,7 @@ async function search(queryString) {
 
   let result = await client.search(options)
 
-  return result.hits.hits.map(item => item._source.name)
+  return result.hits.hits.map(item => item._source)
 }
 
 async function exists(occupation) {

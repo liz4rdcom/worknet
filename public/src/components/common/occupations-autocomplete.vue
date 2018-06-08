@@ -34,7 +34,9 @@ export default {
     }
   },
   async created() {
-    this.occupations = await libs.searchOcupations()
+    const result = await libs.searchOcupations()
+
+    this.occupations = result.map(nextOccup => nextOccup.name)
   },
   methods: {
     async onAutocompleteInput(value) {
@@ -44,7 +46,9 @@ export default {
 
       if (value.length < AUTOCOMPLETE_MINIMAL_CHARS) return
 
-      this.occupations = await libs.searchOcupations(value)
+      const result = await libs.searchOcupations(value)
+
+      this.occupations = result.map(nextOccup => nextOccup.name)
     },
   },
   components: {
