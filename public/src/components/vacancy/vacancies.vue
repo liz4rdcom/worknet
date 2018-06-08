@@ -216,6 +216,22 @@
         >
           სასურ. სამუშაო ადგილი
         </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="militaryObligation"
+          v-model="profileMatchingFilters.militaryObligation"
+        >
+          სამხედრო ვალდებულება
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="internship"
+          v-model="profileMatchingFilters.internship"
+        >
+          სტაჟირება
+        </b-form-checkbox>
       </b-col>
 
       <b-col style="padding-right: 0px;" cols="auto" v-if="profileMatchingMode">
@@ -350,6 +366,8 @@ export default {
       jobExperiences: true,
       desirableJobs: true,
       desirableJobLocations: true,
+      militaryObligation: false,
+      internship: false,
     },
     profileMatchingHintText: 'პროფილის შევსების შემდეგ შეგიძლიათ მოძებნოთ ვაკანსიების სია, რომლებიც მიესადაგებიან თქვენს მიერ შევსებულ მონაცემებს',
   }),

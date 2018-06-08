@@ -303,6 +303,8 @@ const validateAndGenerateUserMatchingFields = (projectionConfigFields, percent) 
     salary,
     workSchedule,
     formalEducationLevel,
+    militaryObligation,
+    internship,
     drivingLicenses,
     languages,
     skills,
@@ -370,6 +372,14 @@ const validateAndGenerateUserMatchingFields = (projectionConfigFields, percent) 
 
   if (desirableJobLocations) {
     includeFields.push('desirableJobLocations')
+  }
+
+  if (militaryObligation) {
+    includeFields.push('militaryObligation')
+  }
+
+  if (internship) {
+    includeFields.push('interestedInInternship')
   }
 
   return includeFields
