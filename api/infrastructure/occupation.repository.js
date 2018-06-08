@@ -17,6 +17,8 @@ async function search(queryString = '*') {
 
   let result = await client.search(options)
 
+  console.log('ooooooooooooooooooooooooooo', result.hits.hits)
+
   return result.hits.hits.map(item => item._source)
 }
 
