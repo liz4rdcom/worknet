@@ -226,6 +226,8 @@ const testJobs = [
     'partTime': true,
     'shiftBased': true,
     'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
+    'isInternship': false,
+    'militaryObligation': false,
     'drivingLicenceA': true,
     'drivingLicenceB': true,
     'drivingLicenceC': true,
