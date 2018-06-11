@@ -54,6 +54,8 @@ function validateVacancy(vacancy) {
     partTime,
     shiftBased,
     formalEducationLevelName,
+    isInternship,
+    militaryObligation,
     drivingLicenceA,
     drivingLicenceB,
     drivingLicenceC,
@@ -159,6 +161,14 @@ function validateVacancy(vacancy) {
 
     if (formalEducationLevelName && !_.isString(formalEducationLevelName)) {
       throw new PermissionError('invalid formalEducationLevelName', 400)
+    }
+
+    if (!_.isNil(isInternship) && !_.isBoolean(isInternship)) {
+      throw new PermissionError('invalid isInternship', 400)
+    }
+
+    if (!_.isNil(militaryObligation) && !_.isBoolean(militaryObligation)) {
+      throw new PermissionError('invalid militaryObligation', 400)
     }
 
     if (!_.isNil(drivingLicenceA) && !_.isBoolean(drivingLicenceA)) {
@@ -297,6 +307,8 @@ const validateAndGenerateUserMatchingFields = (projectionConfigFields, percent) 
     salary,
     workSchedule,
     formalEducationLevel,
+    militaryObligation,
+    internship,
     drivingLicenses,
     languages,
     skills,
@@ -364,6 +376,14 @@ const validateAndGenerateUserMatchingFields = (projectionConfigFields, percent) 
 
   if (desirableJobLocations) {
     includeFields.push('desirableJobLocations')
+  }
+
+  if (militaryObligation) {
+    includeFields.push('militaryObligation')
+  }
+
+  if (internship) {
+    includeFields.push('interestedInInternship')
   }
 
   return includeFields

@@ -1,5 +1,5 @@
 <template>
-<div class="profile-skills">
+<div class="profile-skills" id="profile-skills">
   <b-card title="უნარები">
     <subset-selector
       idPrefix="profile-skills"

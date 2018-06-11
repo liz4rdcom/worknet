@@ -1041,6 +1041,8 @@ const validateAndFixSearchVacancyMatchings = (configFields, percent) => {
     partTime,
     shiftBased,
     formalEducationLevelName,
+    interestedInInternship,
+    militaryObligation,
     drivingLicenceA,
     drivingLicenceB,
     drivingLicenceC,

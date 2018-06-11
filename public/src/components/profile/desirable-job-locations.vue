@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="desirable-job-locations">
     <b-card title="სასურველი სამსახურის ადგილმდებარეობა">
       <div>
         <locations

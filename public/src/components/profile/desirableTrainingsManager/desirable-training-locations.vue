@@ -1,5 +1,5 @@
 <template>
-<div class="desirable-training-locations">
+<div class="desirable-training-locations" id="desirable-training-locations">
   <georgia-locations
     idPrefix="desirable-trainings"
     @onLocationChanged="onLocationChanged"

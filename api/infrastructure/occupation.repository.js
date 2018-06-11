@@ -8,16 +8,16 @@ const client = new elasticsearch.Client({
 const index = config.get('elastic.occupationIndex')
 const type = config.get('elastic.occupationType')
 
-async function search(queryString = '*') {
+const utils = require('./utils')
+
+async function search(queryString) {
   const options = {
     index,
     type,
-    q: '*' + queryString + '*',
+    q: !queryString ? '*' : '*' + utils.escapeQuery(queryString) + '*',
   }
 
   let result = await client.search(options)
-
-  console.log('ooooooooooooooooooooooooooo', result.hits.hits)
 
   return result.hits.hits.map(item => item._source)
 }

@@ -297,7 +297,7 @@ async function getBySearch(params, all = false) {
 
   terms.push({
     query_string: {
-      query: params.filter ? '*' + params.filter + '*' : '*',
+      query: params.filter ? '*' + utils.escapeQuery(params.filter) + '*' : '*',
     },
   })
 
@@ -345,11 +345,16 @@ function commonShoulds(user) {
     'fullTime',
     'partTime',
     'shiftBased',
+    'militaryObligation',
   ]
 
   let shoulds = Object.keys(user)
     .filter(key => booleanFields.includes(key) && user[key] != null)
     .map(key => utils.constantScoreQuery(key, user[key]))
+
+  if (user.interestedInInternship != null) {
+    shoulds.push(utils.constantScoreQuery('isInternship', user.interestedInInternship))
+  }
 
   return shoulds
 }

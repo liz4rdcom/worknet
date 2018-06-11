@@ -29,6 +29,10 @@ function isValidPhone(phone) {
   return /[+0-9]{6,}/.test(trimmedPhone)
 }
 
+function replaceAll(string, searchString, replaceString) {
+  return string.split(searchString).join(replaceString)
+}
+
 module.exports = {
   getUserNameFromRequest,
   stringContainsOnlyNumbers,
@@ -37,4 +41,5 @@ module.exports = {
   percentToString,
   isValidEmail,
   isValidPhone,
+  replaceAll,
 }

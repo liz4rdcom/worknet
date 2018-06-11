@@ -167,11 +167,22 @@
               </b-card>
             </b-form-group>
 
-            <b-form-group>
+            <b-form-group class="font-weight-bold">
+              <b-form-checkbox
+                id="vacancy-add-is-internship"
+                v-model="vacancy.isInternship"
+                :value="true"
+                :unchecked-value="false"
+              >
+                სტაჟირება
+              </b-form-checkbox>
+            </b-form-group>
+
+            <b-form-group id="vacancy-add-languages">
               <languages :languages="vacancy.languages" :onChange="languagesOnChange"/>
             </b-form-group>
 
-            <b-form-group>
+            <b-form-group id="vacancy-add-skills">
               <vacancy-skills :skills="vacancy.skills" :onChange="skillsOnChange"/>
             </b-form-group>
 
@@ -179,6 +190,17 @@
               <b-form-select id="vacancy-add-formal-education-level-name" v-model="vacancy.formalEducationLevelName">
                 <option v-for="(level, index) in formalEducationLevelsOptions" :key="index">{{level}}</option>
               </b-form-select>
+            </b-form-group>
+
+            <b-form-group class="font-weight-bold">
+              <b-form-checkbox
+                id="vacancy-add-military-obligation"
+                v-model="vacancy.militaryObligation"
+                :value="true"
+                :unchecked-value="false"
+              >
+                სამხედრო სამსახურის გავლა სავალდებულოა
+              </b-form-checkbox>
             </b-form-group>
 
             <b-form-group>
@@ -451,6 +473,27 @@
               </b-row>
             </b-form-group>
 
+            <b-form-group>
+              <b-row>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.militaryObligation"
+                    :button-variant="jobseekerSearchSwitches.militaryObligation ? 'outline-success' : 'outline-secondary'"
+                    :options="militaryObligationSwitchOptions"
+                    buttons
+                  />
+                </b-col>
+                <b-col>
+                  <b-form-radio-group
+                    v-model="jobseekerSearchSwitches.internship"
+                    :button-variant="jobseekerSearchSwitches.internship ? 'outline-success' : 'outline-secondary'"
+                    :options="internshipSwitchOptions"
+                    buttons
+                  />
+                </b-col>
+              </b-row>
+            </b-form-group>
+
             <b-row>
                 <b-col>
                   <div
@@ -520,6 +563,8 @@ export default {
       partTime: null,
       shiftBased: null,
       formalEducationLevelName: '- აირჩიე -',
+      isInternship: false,
+      militaryObligation: false,
       drivingLicenceA: false,
       drivingLicenceB: false,
       drivingLicenceC: false,
@@ -545,6 +590,8 @@ export default {
     drivingLicenceSwitchOptions: [{text: 'მართვის მოწმობა', value: true}, {text: 'X', value: false}],
     languagesSwitchOptions: [{text: 'ენები', value: true}, {text: 'X', value: false}],
     skillsSwitchOptions: [{text: 'უნარები', value: true}, {text: 'X', value: false}],
+    militaryObligationSwitchOptions: [{text: 'სამხედრო ვალდებულება', value: true}, {text: 'X', value: false}],
+    internshipSwitchOptions: [{text: 'სტაჟირება', value: true}, {text: 'X', value: false}],
     jobseekerSearchSwitches: {
       position: true,
       location: true,
@@ -554,6 +601,8 @@ export default {
       drivingLicence: true,
       languages: true,
       skills: true,
+      militaryObligation: false,
+      internship: false,
     },
     jobseekerSearchHintText: 'ვაკანსიის შევსების პარალელურად შეგიძლიათ მოძებნოთ სამსახურის მაძიებელთა სია, რომლებიც შეესადაგებიან შევსებულ ვაკანსიას. \n\n თუ დროებით არ გსურთ სიის ხილვა მაუსი დააჭირეთ ეკრანის შუაში არსებულ გამყოფ ღერძს, რის შედეგადაც მოხდება სიის დამალვა.',
     searchedJobseekers: null,
@@ -652,6 +701,14 @@ export default {
             this.vacancy.formalEducationLevelName = vacancyResult.formalEducationLevelName
           }
 
+          if (!isNil(vacancyResult.isInternship)) {
+            this.vacancy.isInternship = vacancyResult.isInternship
+          }
+
+          if (!isNil(vacancyResult.militaryObligation)) {
+            this.vacancy.militaryObligation = vacancyResult.militaryObligation
+          }
+
           if (vacancyResult.drivingLicenceA ||
               vacancyResult.drivingLicenceB ||
               vacancyResult.drivingLicenceC ||
@@ -747,6 +804,8 @@ export default {
         fullTime: this.vacancy.fullTime,
         partTime: this.vacancy.partTime,
         shiftBased: this.vacancy.shiftBased,
+        isInternship: this.vacancy.isInternship,
+        militaryObligation: this.vacancy.militaryObligation,
         languages: this.vacancy.languages,
         skills: this.vacancy.skills,
         published,
@@ -872,7 +931,18 @@ export default {
     },
     async searchJobseekersIfNecessary () {
       if (!this.jobseekerSearchHidden) {
-        const { position, location, salary, workSchedule, formalEducationLevel, drivingLicence, languages, skills } = this.jobseekerSearchSwitches
+        const {
+          position,
+          location,
+          salary,
+          workSchedule,
+          formalEducationLevel,
+          militaryObligation,
+          internship,
+          drivingLicence,
+          languages,
+          skills,
+        } = this.jobseekerSearchSwitches
 
         /*
           'position',
@@ -946,6 +1016,14 @@ export default {
           if (this.vacancy.formalEducationLevelName && this.vacancy.formalEducationLevelName !== '- აირჩიე -') {
             configFields.formalEducationLevelName = this.vacancy.formalEducationLevelName
           }
+        }
+
+        if (militaryObligation) {
+          configFields.militaryObligation = this.vacancy.militaryObligation
+        }
+
+        if (internship) {
+          configFields.interestedInInternship = this.vacancy.isInternship
         }
 
         if (drivingLicence) {

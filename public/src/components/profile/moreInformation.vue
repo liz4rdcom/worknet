@@ -82,10 +82,10 @@
           v-model.number="desirableSalary">
         </b-form-input>
         <b-input-group-button slot="right">
-          <b-btn @click="AddDesirableSalary">დამატება</b-btn>
+          <b-btn @click="AddDesirableSalary" id="moreinfo-salary-save">დამატება</b-btn>
         </b-input-group-button>
       </b-input-group>
-      <p v-if="desirableSalaryFilled === true">{{desirableSalary}} <b-btn @click="desirableSalaryChange">X</b-btn></p>
+      <p v-if="desirableSalaryFilled === true">{{desirableSalary}} <b-btn @click="desirableSalaryChange" id="moreinfo-salary-change">X</b-btn></p>
     </div>
     <div>
       <b-form-checkbox id="fullTime"

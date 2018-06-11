@@ -111,7 +111,7 @@
         <b-form-checkbox
           class="full-width"
           id="interestedInInternship"
-          v-model="filterObject.interestedInInternship"
+          v-model="filterObject.isInternship"
         >
           სტაჟირება
         </b-form-checkbox>
@@ -120,38 +120,12 @@
       <b-col style="padding-left: 10px; padding-right: 10px;" v-if="!profileMatchingMode">
         <b-form-checkbox
           class="full-width"
-          id="interestedToBeVolunteer"
-          v-model="filterObject.interestedToBeVolunteer"
-        >
-          მოხალისე
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          d="interestedInTemporaryJob"
-          v-model="filterObject.interestedInTemporaryJob"
-        >
-          დროებითი
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
-          id="interestedInDangerousJob"
-          v-model="filterObject.interestedInDangerousJob"
-        >
-          სახიფათო
-        </b-form-checkbox>
-
-        <b-form-checkbox
-          class="full-width"
           id="drivingLicence"
           v-model="filterObject.hasDrivingLicence"
         >
           მართვის მოწმობა
         </b-form-checkbox>
-      </b-col>
 
-      <b-col style="padding-left: 10px; padding-right: 0px;" v-if="!profileMatchingMode">
         <b-form-checkbox
           class="full-width"
           id="militaryObligation"
@@ -243,6 +217,22 @@
           v-model="profileMatchingFilters.desirableJobLocations"
         >
           სასურ. სამუშაო ადგილი
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="militaryObligation"
+          v-model="profileMatchingFilters.militaryObligation"
+        >
+          სამხედრო ვალდებულება
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          class="full-width"
+          id="internship"
+          v-model="profileMatchingFilters.internship"
+        >
+          სტაჟირება
         </b-form-checkbox>
       </b-col>
 
@@ -360,10 +350,7 @@ export default {
       fullTime: false,
       partTime: false,
       shiftBased: false,
-      interestedInInternship: false,
-      interestedToBeVolunteer: false,
-      interestedInTemporaryJob: false,
-      interestedInDangerousJob: false,
+      isInternship: false,
       minimalSalary: null,
       maximalSalary: null,
       locations: [],
@@ -381,6 +368,8 @@ export default {
       jobExperiences: true,
       desirableJobs: true,
       desirableJobLocations: true,
+      militaryObligation: false,
+      internship: false,
     },
     profileMatchingHintText: 'პროფილის შევსების შემდეგ შეგიძლიათ მოძებნოთ ვაკანსიების სია, რომლებიც მიესადაგებიან თქვენს მიერ შევსებულ მონაცემებს',
   }),
