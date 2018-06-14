@@ -685,11 +685,11 @@ const testSkills = [
 ]
 
 const testOccupations = [
-  { name: 'Plumber', ISCOId: '1265' },
-  { name: 'Electrical Engineer', ISCOId: '1269' },
-  { name: 'Merchant', ISCOId: '274' },
-  { name: 'Housekeeper', ISCOId: '4686' },
-  { name: 'Lion Tamer', ISCOId: '1839' },
+  { name: 'Plumber' },
+  { name: 'Electrical Engineer' },
+  { name: 'Merchant' },
+  { name: 'Housekeeper' },
+  { name: 'Lion Tamer' },
   { name: 'Web Developer' },
   { name: 'მთავარი მზარეულები' },
   { name: 'ფინანსთა მენეჯერები' },
@@ -697,11 +697,9 @@ const testOccupations = [
   { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' },
 ]
 
-const testISCOList = ISCORawArray.map((nextISCO, index) => ({ id: String(index), name: nextISCO }))
+const testISCOList = ISCORawArray.map((nextISCO, index) => ({ ...nextISCO, id: String(index) }))
 
 const testUnprocessedOccupationToISCORelations = [
-  { occupationName: 'Plumber' },
-  { occupationName: 'Electrical Engineer' },
   { occupationName: 'Web Developer', ISCOId: '426' },
   { occupationName: 'მთავარი მზარეულები', ISCOId: '2147' },
   { occupationName: 'ფინანსთა მენეჯერები', ISCOId: '1023' },
