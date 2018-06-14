@@ -7,7 +7,7 @@ var client = new elasticsearch.Client({
 })
 const shortid = require('shortid')
 
-const ISCORawArray = require('./ISCORawArray')
+const ISCOList = require('./ISCOList')
 
 async function createIndex(name, option) {
   await client.indices.create({
@@ -697,7 +697,7 @@ const testOccupations = [
   { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' },
 ]
 
-const testISCOList = ISCORawArray.map((nextISCO, index) => ({ ...nextISCO, id: String(index) }))
+const testISCOList = ISCOList
 
 const testUnprocessedOccupationToISCORelations = [
   { occupationName: 'Plumber' },
