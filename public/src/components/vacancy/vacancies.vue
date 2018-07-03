@@ -1,6 +1,7 @@
 <template>
 <div id="vacancies" class="vacancies-container">
   <button @click="onISCOClick">ISCO button</button>
+  <multiselect :options="['bumbum', 'kaka', 'chacha']"></multiselect>
 
   <div class="vacancy-search-bar">
     <b-row class="upper-search-row vancay-add-row">
@@ -389,8 +390,7 @@ export default {
     async onISCOClick() {
       console.log('ISCO button clicked!')
 
-      // const result = await this.$http.get('/api/libs/ISCOList')
-      const result = await this.$http.get('/api/unprocessedOccupationToISCORelations', { occupationName: 'Plumber', ISCOId: '17' })
+      const result = await this.$http.post('/api/unprocessedOccupationToISCORelations/process')
 
       console.log(123, result.data)
     },

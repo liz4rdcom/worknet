@@ -5,6 +5,8 @@ import BootstrapVue from 'bootstrap-vue'
 import '@/customized-bootstrap.scss'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'font-awesome/css/font-awesome.min.css'
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 import App from './App'
 import router from './router'
@@ -14,6 +16,7 @@ import webApi from './webApi'
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
+Vue.component('multiselect', Multiselect)
 Vue.prototype.$http = webApi
 
 Vue.filter('boolToText', function (value) {

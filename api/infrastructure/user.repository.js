@@ -737,6 +737,50 @@ async function saveUseMediationService(userName, useMediationService) {
   await client.updateByQuery(options)
 }
 
+async function saveJobExperienceISCOElem(userName, useMediationService) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName,
+        },
+      },
+      script: {
+        source: 'ctx._source.useMediationService = params.useMediationService',
+        params: {
+          useMediationService,
+        },
+      },
+    },
+  }
+
+  await client.updateByQuery(options)
+}
+
+async function saveOccupationToISCORelation(userName, useMediationService) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName,
+        },
+      },
+      script: {
+        source: 'ctx._source.useMediationService = params.useMediationService',
+        params: {
+          useMediationService,
+        },
+      },
+    },
+  }
+
+  await client.updateByQuery(options)
+}
+
 async function matchUsersToVacancy(configFields, percent) {
   let shoulds = []
 

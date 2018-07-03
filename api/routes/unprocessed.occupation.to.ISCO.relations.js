@@ -34,6 +34,16 @@ router.delete('/:id', isAuthorized, async (req, res, next) => {
   }
 })
 
+router.post('/process', isAuthorized, async (req, res, next) => {
+  try {
+    let result = await unprocessedOccupationToISCORelationsInter.process()
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 module.exports = {
   router,
   baseUrl,

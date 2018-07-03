@@ -2,6 +2,7 @@ const _ = require('lodash')
 const PermissionError = require('../exceptions/permission.error')
 const unprocessedOccupationToISCORelationsRepo = require('../infrastructure/unprocessed.occupation.to.ISCO.relations.repository')
 const occupationInteractor = require('../interactors/occupation.interactor')
+const occupationRepo = require('../infrastructure/occupation.repository')
 const libRepository = require('../infrastructure/lib.repository')
 
 async function addRelation(occupationName, ISCOId) {
@@ -34,7 +35,19 @@ async function deleteRelation(id) {
   return await unprocessedOccupationToISCORelationsRepo.deleteRelation(id)
 }
 
+async function process() {
+  let unprocessedList = await unprocessedOccupationToISCORelationsRepo.search()
+
+  await Promise.all([
+    occupationRepo.addMany(unprocessedList),
+
+  ])
+
+  return unprocessedList
+}
+
 module.exports = {
   addRelation,
   deleteRelation,
+  process,
 }

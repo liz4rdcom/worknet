@@ -52,8 +52,12 @@ async function add(occupation) {
   return await client.index(options)
 }
 
+async function addMany(occupations) {
+}
+
 module.exports = {
   search,
   exists,
   add,
+  addMany,
 }
